@@ -58,7 +58,7 @@ http://blogawesome.com/blog/pages-output/another-page/index.html
 </url>
 <url>
 <loc>
-http://blogawesome.com/blog/tags-output/very fetch/index.html
+http://blogawesome.com/blog/tags-output/tutorial/index.html
 </loc>
 <lastmod>
 2020-11-20
@@ -106,15 +106,7 @@ http://blogawesome.com/blog/posts-output/2014-03-10-first-post/index.html
 </url>
 <url>
 <loc>
-http://blogawesome.com/blog/posts-output/2020-10-23-documentation/index.html
-</loc>
-<lastmod>
-2020-11-20
-</lastmod>
-</url>
-<url>
-<loc>
-http://blogawesome.com/blog/posts-output/2014-11-04-second-post/index.html
+http://blogawesome.com/blog/posts-output/2020-11-20-api-reference/index.html
 </loc>
 <lastmod>
 2020-11-20

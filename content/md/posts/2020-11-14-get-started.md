@@ -1,6 +1,6 @@
 {:title "Get Started"
  :layout :post
- :tags  ["getstarted"]
+ :tags  ["getstarted", "tutorial"]
  :toc true}
 
 ---
@@ -45,3 +45,12 @@
 <br>
 
 4. Now when you open the Jupyter Notebook, you will see a kernel named `backtesting_clojure`. You can create new notebook using this kernel.
+
+<br>
+
+### Beginner tutorial
+<br>
+
+   ```
+   #some demo code, to-add
+   ```
