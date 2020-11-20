@@ -1,6 +1,5 @@
 {:title "Get Started"
  :layout :post
- :tags  ["getstarted", "tutorial"]
  :toc true}
 
 ---
