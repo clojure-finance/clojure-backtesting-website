@@ -64,9 +64,63 @@
     <h2>API reference</h2>
 </div>
 <div>
-    <ol class="toc"><li><a href="#make-an-order">Make an order</a></li><li><a href="#view-current-portfolio">View current portfolio</a></li><li><a href="#view-historical-portfolio-values-and-returns">View historical portfolio values and returns</a></li><li><a href="#generate-evaluation-report">Generate evaluation report</a></li><li><a href="#plot-graphs">Plot graphs</a></li></ol>
-    <hr /><h3 id="make-an-order">Make an order</h3><br /><h3 id="view-current-portfolio">View current portfolio</h3><br /><h3 id="view-historical-portfolio-values-and-returns">View historical portfolio values and returns</h3><br /><h3 id="generate-evaluation-report">Generate evaluation report</h3><br /><p><code>eval_report</code></p><p>Prints the evaluation report with all summary statistics.</p><p><strong>Parameters:</strong></p><ul><li>To-add</li></ul><br /><p>Example output:</p><pre><code># example output, to-add
-</code></pre><br /><h3 id="plot-graphs">Plot graphs</h3><br />
+    <ol class="toc"><li><a href="#read-data">Read data</a></li><li><a href="#merge-data">Merge data</a></li><li><a href="#portfolio">Portfolio</a></li><li><a href="#summary-statistics">Summary statistics</a></li><li><a href="#make-order">Make order</a></li><li><a href="#plot-graphs">Plot graphs</a></li></ol>
+    <hr /><h3 id="read-data">Read data</h3><p>Functions for reading csv data.
+<br /><br /></p><p><code>read-csv-row</code></p><p>Read the CSV file into memeory in a row by row format.</p><p><strong>Parameters:</strong></p><ul><li>file - path to the csv file to be read</li></ul><br /><p>Example:</p><pre><code>(read-csv-row "./resources/CRSP-extract.csv")
+
+;; output:
+&lt;type output here&gt;
+</code></pre><br /><p><code>read-csv-col</code></p><p>Read the CSV file into memeory in a column by column format.</p><p><strong>Parameters:</strong></p><ul><li>file - path to the csv file to be read</li></ul><br /><p>Example:</p><pre><code>(read-csv-col "./resources/CRSP-extract.csv")
+
+;; output:
+&lt;type output here&gt;
+</code></pre><hr /><h3 id="merge-data">Merge data</h3><p>Functions for merging the csv files either by row or by column.</p><br /><p><code>merge-data-row</code></p><p>Merge 2 CSV files row by row using left-join method, i.e. merging the trading data with the accounting data. Merging that data by row is recommended.</p><p><strong>Parameters:</strong></p><ul><li>file1 - the CRSP trading dataset</li><li>file2 - the COMPUSTAT accounting dataset</li></ul><p><strong>Example</strong>:</p><pre><code>(merge-data-row "./resources/CRSP-extract.csv" "./resources/Compustat-extract.csv")
+
+;; output:
+&lt;type output here&gt;
+</code></pre><br /><p><code>merge-csv-col</code></p><p>Merge 2 CSV files column by column using left-join method, i.e. merging the trading data with the accounting data.</p><p><strong>Parameters:</strong></p><ul><li>file1 - the CRSP trading dataset</li><li>file2 - the COMPUSTAT accounting dataset</li></ul><p><strong>Example</strong>:</p><pre><code># (merge-data-col "./resources/CRSP-extract.csv" "./resources/Compustat-extract.csv")
+
+;; output:
+&lt;type output here&gt;
+</code></pre><hr /><h3 id="portfolio">Portfolio</h3><p>Functions for creating and viewing the portfolio; and for inspecting historical records of portfolio values.</p><br /><p><code>init_portfolio</code></p><p>This function initialises the portfolio with cash only, user can input the initial capital they desire.</p><p><strong>Parameters:</strong></p><ul><li>date - the starting date of the portfolio</li><li>init-capital - the desired initial capital for the portfolio</li></ul><p><strong>Example</strong>:</p><pre><code>(init_portfolio "1980-12-1" 1000000)
+
+;; output:
+&lt;type output here&gt;
+</code></pre><hr /><h3 id="summary-statistics">Summary statistics</h3><p>Functions for computing and printing the summary statistics that evaluate the performance of the portfolio.</p><br /><p><code>eval-report</code></p><p>This function prints the evaluation report that includes all summary statiscs in a table format.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Example</strong>:</p><pre><code>(eval-report)
+
+;; output:
+&lt;type output here&gt;
+</code></pre><br /><p><code>portfolio-total</code></p><p>This function returns the current total value of the portfolio.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p>Example &amp; output:</p><pre><code>(portfolio-total)
+
+;; output:
+&lt;type output here&gt;
+</code></pre><br /><p><code>portfolio-daily-ret</code></p><p>This function returns the current daily return of the portfolio.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p>Example:</p><pre><code>(portfolio-daily-ret)
+
+;; output:
+&lt;type output here&gt;
+</code></pre><br /><p><code>portfolio-total-ret</code></p><p>This function returns the total daily return of the portfolio.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Example</strong>:</p><pre><code>(portfolio-total-ret)
+
+;; output:
+&lt;type output here&gt;
+</code></pre><hr /><h3 id="make-order">Make order</h3><p>Functions for making an order to trade a stock.</p><br /><p><code>order</code></p><p>This order function allows user to set orders.</p><p><strong>Parameters:</strong></p><ul><li>tic - the ticker of the stock to buy or sell</li><li>quantity - quantity to buy or sell, +ve means buy, -ve means sell</li><li>remaining - ???</li></ul><p>Example:</p><pre><code>(order AAPL 10)
+
+;; output:
+&lt;type output here&gt;
+
+
+(order IBM -10)
+
+;; output:
+&lt;type output here&gt;
+</code></pre><hr /><h3 id="plot-graphs">Plot graphs</h3><p>Functions for generating line plots on chosen variables.</p><br /><p><code>plot</code></p><p>This function allows users to plot line charts, single y-axis or dual y-axis. This plotting function works the best with Clojupyter Notebook. For Clojupyter tutorials, please refer to <a href="https://github.com/clojure-finance/clojure-backtesting/tree/master/clojupyter">this page</a>. For Clojupyter Notebook examples, please refer to <a href="https://github.com/clojure-finance/clojure-backtesting/tree/master/examples">here</a>.</p><p><strong>Parameters:</strong></p><ul><li>dataset - data to be plotted. The dataset should be in following format: <code>{:tic "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }</code></li><li>series - series name of the lines, e.g. :tic, which means ticker name</li><li>y1 - primary y axis, e.g. <code>:price</code>, trading price of the stock</li><li>y2 - <strong>optional</strong> secondary y axis, e.g. <code>:return</code>, daily return of the stock</li></ul><br /><p><strong>Example</strong>:</p><pre><code>(plot data :tic :date :price)
+;; output:
+&lt;type output here&gt;
+
+(plot data :tic :date :price :return)
+
+;; output:
+&lt;type output here&gt;
+</code></pre>
 </div>
 
 
