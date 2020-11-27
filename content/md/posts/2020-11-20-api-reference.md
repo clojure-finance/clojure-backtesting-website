@@ -8,6 +8,12 @@
 ### Make an order
 <br>
 
+### View current portfolio
+<br>
+
+### View historical portfolio values and returns
+<br>
+
 ### Generate evaluation report
 <br>
 
