@@ -4,7 +4,7 @@
  :toc true}
 
 ---
-### Read data
+### Read Data
 Functions for reading csv data.
 <br>
 <br>
@@ -51,7 +51,7 @@ Example:
 ---
 
 
-### Merge data
+### Merge Data
 Functions for merging the csv files either by row or by column.
 
 <br>
@@ -118,7 +118,7 @@ This function initialises the portfolio with cash only, user can input the initi
 
 ---
 
-### Summary statistics
+### Summary Statistics
 Functions for computing and printing the summary statistics that evaluate the performance of the portfolio. 
 
 <br>
@@ -194,7 +194,7 @@ This function returns the total daily return of the portfolio.
 
 ---
 
-### Make order
+### Make Order
 Functions for making an order to trade a stock.
 
 <br>
@@ -225,7 +225,7 @@ Example:
 
 ---
 
-### Plot graphs
+### Plot Graphs
 Functions for generating line plots on chosen variables.
 
 <br>

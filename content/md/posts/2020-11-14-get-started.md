@@ -4,7 +4,7 @@
 
 ---
 
-### Setting up the playground
+### Setting Up the Playground
 <br>
 
 1. Make sure there is **leiningen** and **jupyter notebook** installing on your local computer. (These two may require further environment dependencies, please refer to their official websites for details.)
@@ -47,7 +47,7 @@
 
 <br>
 
-### Beginner tutorial
+### Beginner Tutorial
 <br>
 
    ```
