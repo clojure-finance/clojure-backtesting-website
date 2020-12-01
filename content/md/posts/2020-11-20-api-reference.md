@@ -234,8 +234,8 @@ Functions for generating line plots on chosen variables.
 
 This function allows users to plot line charts, single y-axis or dual y-axis. This plotting function works the best with Clojupyter Notebook. For Clojupyter tutorials, please refer to [this page]. For Clojupyter Notebook examples, please refer to [here].
 
-[this page] :https://github.com/clojure-finance/clojure-backtesting/tree/master/clojupyter
-[here] :https://github.com/clojure-finance/clojure-backtesting/tree/master/examples
+[this page]: https://github.com/clojure-finance/clojure-backtesting/tree/master/clojupyter
+[here]: https://github.com/clojure-finance/clojure-backtesting/tree/master/examples
 
 **Parameters:**
 - dataset - data to be plotted. The dataset should be in following format: `{:tic "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }`
@@ -248,7 +248,7 @@ This function allows users to plot line charts, single y-axis or dual y-axis. Th
 **Example**:
 
 The file we used in this demonstration can be found [here].
-[here] :https://github.com/clojure-finance/clojure-backtesting/blob/master/resources/plotting-testing-data.csv
+[here]: https://github.com/clojure-finance/clojure-backtesting/blob/master/resources/plotting-testing-data.csv
 
 ```
 ;; define dataset:
@@ -262,12 +262,12 @@ The file we used in this demonstration can be found [here].
 ;;plotting the data in single y-axis
 (plot multistocks :tic :date :price)
 ;; output:
-<![alt text](https://github.com/clojure-finance/clojure-backtesting-website/blob/master/content/img/Multistocks%20Plot%20Single%20Axis.png "Singel Axis Plot")>
+![alt text](https://github.com/clojure-finance/clojure-backtesting-website/blob/master/content/img/Multistocks%20Plot%20Single%20Axis.png "Singel Axis Plot")
 
 
 ;;plotting the data in dual y-axis
 (plot multistocks :tic :date :price :return)
 
 ;; output:
-<![alt text](https://github.com/clojure-finance/clojure-backtesting-website/blob/master/content/img/Multistocks%20Plot%20Dual%20Axis.png "Dual Axis Plot")>
+![alt text](https://github.com/clojure-finance/clojure-backtesting-website/blob/master/content/img/Multistocks%20Plot%20Dual%20Axis.png "Dual Axis Plot")
 ```
