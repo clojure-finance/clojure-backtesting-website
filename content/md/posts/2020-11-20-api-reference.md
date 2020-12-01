@@ -116,6 +116,48 @@ This function initialises the portfolio with cash only, user can input the initi
 <type output here>
 ```
 
+<br>
+
+`view_portfolio`
+
+This function prints the portfolio in a table format. 
+
+**Example**:
+
+```
+(view_portfolio)
+
+;; output:
+| :asset |  :price | :aprc | :quantity | :tot_val |
+|--------+---------+-------+-----------+----------|
+|   cash |     N/A |   N/A |       N/A |    10295 |
+|   AAPL | 34.1875 | 29.42 |         0 |        0 |
+```
+
+<br>
+
+`view_portfolio_record`
+
+This function prints the historical values and daily returns of the portfolio in a table format. 
+
+**Example**:
+
+```
+(view_portfolio_record)
+
+;; output:
+|      :date | :tot_value | :daily_ret |
+|------------+------------+------------|
+| 1980-12-16 |     $10000 |      0.00% |
+| 1980-12-17 |     $10007 |      0.00% |
+| 1980-12-18 |     $10026 |      0.00% |
+| 1980-12-22 |     $10096 |      0.01% |
+| 1980-12-24 |     $10168 |      0.01% |
+| 1980-12-29 |     $10254 |      0.01% |
+| 1980-12-31 |     $10295 |      0.00% |
+```
+
+
 ---
 
 ### Summary Statistics
