@@ -257,19 +257,19 @@ The file we used in this demonstration can be found [in this link].
 
 ;; dataset sample:
 (first multistocks)
-;;output: 
+;; output: 
 <{:date "1980-12-15", :tic "AAPL", :price "27.3125", :return "-0.052061"}>
 ```
 
 ```
-;;plotting the data in single y-axis
+;; plotting the data in single y-axis
 (plot multistocks :tic :date :price)
 ;; output:
 ```
 ![alt text](https://github.com/clojure-finance/clojure-backtesting-website/blob/master/content/img/Multistocks%20Plot%20Single%20Axis.png "Singel Axis Plot")
 
 ```
-;;plotting the data in dual y-axis
+;; plotting the data in dual y-axis
 (plot multistocks :tic :date :price :return)
 ;; output:
 ```
