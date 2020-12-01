@@ -271,7 +271,7 @@ The file we used in this demonstration can be found [in this link].
 ```
 ;;plotting the data in dual y-axis
 (plot multistocks :tic :date :price :return)
-```
 ;; output:
+```
 ![alt text](https://github.com/clojure-finance/clojure-backtesting-website/blob/master/content/img/Multistocks%20Plot%20Dual%20Axis.png "Dual Axis Plot")
 
