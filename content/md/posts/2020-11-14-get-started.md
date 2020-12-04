@@ -22,6 +22,8 @@
 
    `make add_kernel`
 
+   (Jupyter notebook should be shut down before this step)
+
    When the process is done, you should see
 
        Installed jar:      target/uberjar/clojure-backtesting-0.1.0-SNAPSHOT-standalone.jar
