@@ -31,6 +31,8 @@
 
    `make add_kernel`
 
+   (Jupyter notebook should be shut down before this step)
+
    When the process is done, you should see:
 
    ```
