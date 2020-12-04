@@ -4,6 +4,14 @@
  :toc true}
 
 ---
+<style>
+/* table styles */
+table, th, td {
+  border: 1px solid black;
+  padding: 5px;
+}
+</style>
+
 ### Read Data
 Functions for reading csv data.
 <br>
@@ -36,8 +44,6 @@ Read the CSV file into memeory in a column by column format.
 
 **Parameters:**
 - file - path to the csv file to be read
-
-<br>
 
 Example:
 
@@ -122,6 +128,21 @@ This function initialises the portfolio with cash only, user can input the initi
 
 This function prints the portfolio in a table format. 
 
+**Parameters:**
+- none
+
+**Ouput explanation:**
+
+| &nbsp;Column&emsp;| &nbsp;Format &emsp;| &nbsp;Meaning  |
+| ------------ | :-----------: | :----------|
+| `asset`       | &nbsp;string | &nbsp;Cash or ticker of the stock         |
+| `price`     | &nbsp;float, $ | &nbsp;Price of the stock &emsp; |
+| `aprc`     | &nbsp;float, % | &nbsp;Adjusted price of the stock &emsp; |
+| `quantity`     | &nbsp;int or float | &nbsp;Quantity of the stock owned &emsp; |
+| `tot_val`     | &nbsp;int, $ | &nbsp;Total value of the stock &emsp; |
+
+<br>
+
 **Example**:
 
 ```
@@ -139,6 +160,19 @@ This function prints the portfolio in a table format.
 `view_portfolio_record`
 
 This function prints the historical values and daily returns of the portfolio in a table format. 
+
+**Parameters:**
+- none
+
+**Ouput explanation:**
+
+| &nbsp;Column&emsp;| &nbsp;Format &emsp;| &nbsp;Meaning  |
+| ------------ | :-----------: | :----------|
+| `date`       | &nbsp;YYYY-MM-DD | &nbsp;Date of record            |
+| `tot_value`     | &nbsp;int, $ | &nbsp;Total value of the portfolio &emsp; |
+| `daily_ret`     | &nbsp;float, % | &nbsp;Daily return of the portfolio &emsp; |
+
+<br>
 
 **Example**:
 
@@ -172,12 +206,41 @@ This function prints the evaluation report that includes all summary statiscs in
 **Parameters:**
 - none
 
+**Ouput explanation:**
+
+| &nbsp;Column&emsp;| &nbsp;Format &emsp;| &nbsp;Meaning  |
+| ------------ | :-----------: | :----------|
+| `date`       | &nbsp;YYYY-MM-DD | &nbsp;Date of record            |
+| `pnl-pt`     | &nbsp;float, $ | &nbsp;Profit and loss per trade &emsp; |
+| `ret-da`     | &nbsp;float, % | &nbsp;Daily return &emsp; |
+| `ret-r`      | &nbsp;float, % | &nbsp;Return of the portfolio calculated with a rolling fixed window of 1 year &emsp; |
+| `ret-tot`    | &nbsp;float, % | &nbsp;Total return of the portfolio, i.e. cumulative daily returns &emsp; |
+| `sharpe-e`   | &nbsp;float, % | &nbsp;Sharpe ratio of the portfolio caculated with an expanding window &emsp; |
+| `sharpe-r`   | &nbsp;float, % | &nbsp;Sharpe ratio of the portfolio calculated with a rolling fixed window of 1 year &emsp; |
+| `tot-val`    | &nbsp;int, %   | &nbsp;Total value of the portfolio, including cash and all purchased stocks &emsp; |
+| `vol-e`      | &nbsp;float, % | &nbsp;Volatility of the portfolio caculated with an expanding window &emsp; |
+| `vol-r`      | &nbsp;float, % | &nbsp;Volatility of the portfolio calculated with a rolling fixed window of 1 year &emsp; |
+
+<br>
+
 **Example**:
 ```
 (eval-report)
 
 ;; output:
-<type output here>
+
+|      :date | :pnl-pt | :ret-da | :ret-r | :ret-tot | :sharpe-e | :sharpe-r | :tot-val | :vol-e | :vol-r |
+|------------+---------+---------+--------+----------+-----------+-----------+----------+--------+--------|
+| 1980-12-16 |   $7.81 |   0.08% |  0.22% |    0.00% |     1.41% |    24.80% |   $10007 |  0.06% |  0.88% |
+| 1980-12-17 |  $13.37 |   0.19% |  0.96% |    0.00% |     2.81% |    63.55% |   $10026 |  0.10% |  1.51% |
+| 1980-12-18 |  $13.37 |   0.19% |  0.96% |    0.00% |     2.81% |    63.55% |   $10026 |  0.10% |  1.51% |
+| 1980-12-19 |  $32.32 |   0.70% |  0.62% |    0.01% |     3.07% |    12.48% |   $10096 |  0.31% |  4.99% |
+| 1980-12-22 |  $32.32 |   0.70% |  0.62% |    0.01% |     3.07% |    12.48% |   $10096 |  0.31% |  4.99% |
+| 1980-12-23 |  $42.14 |   0.71% |  0.82% |    0.02% |     4.88% |    15.01% |   $10168 |  0.34% |  5.44% |
+| 1980-12-24 |  $42.14 |   0.71% |  0.82% |    0.02% |     4.88% |    15.01% |   $10168 |  0.34% |  5.44% |
+| 1980-12-26 |  $50.84 |   0.84% |  0.68% |    0.03% |     6.80% |    11.66% |   $10254 |  0.37% |  5.86% |
+| 1980-12-29 |  $50.84 |   0.84% |  0.68% |    0.03% |     6.80% |    11.66% |   $10254 |  0.37% |  5.86% |
+| 1980-12-30 |  $49.17 |   0.40% |  0.68% |    0.03% |     8.62% |    12.62% |   $10295 |  0.34% |  5.35% |
 ```
 
 <br>
