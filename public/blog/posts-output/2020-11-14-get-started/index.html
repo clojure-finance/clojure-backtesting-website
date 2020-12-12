@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Clojure Backtesting Documentation: Get Started</title>
+    
+<meta name="keywords" content="">
+
+<meta name="description" content="Setting Up the Playground">
+
+<meta property="og:description" content="Setting Up the Playground">
+
+<meta property="og:url" content="http://blogawesome.com/blog/posts-output/2020-11-14-get-started/" />
+<meta property="og:title" content="Get Started" />
+<meta property="og:type" content="article" />
+
+    <link rel="canonical" href="http://blogawesome.com/blog/posts-output/2020-11-14-get-started/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" rel="stylesheet"
+          type="text/css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+    <link href="/blog/css/screen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Clojure Backtesting Documentation</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li ><a href="/blog/">Home</a></li>
+                <li
+                ><a href="/blog/archives/">Archives</a></li>
+                
+                <li
+                >
+                <a href="/blog/pages-output/about/">About</a>
+                </li>
+                
+                <li><a href="/blog/feed.xml">RSS</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-lg-9">
+            <div id="content">
+                
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">14 November 2020</div>
+        
+    </div>
+    <h2>Get Started</h2>
+</div>
+<div>
+    <ol class="toc"><li><a href="#setting-up-the-playground">Setting Up the Playground</a></li><li><a href="#beginner-tutorial">Beginner Tutorial</a></li></ol>
+    <hr /><h3 id="setting-up-the-playground">Setting Up the Playground</h3><br /><ol><li><p>Make sure there is <strong>leiningen</strong> and <strong>jupyter notebook</strong> installing on your local computer. (These two may require further environment dependencies, please refer to their official websites for details.)</p><ul><li><p>Installation guide for leiningen can be found at:</p><p><a href="https://github.com/technomancy/leiningen/wiki/Packaging">https://github.com/technomancy/leiningen/wiki/Packaging</a></p></li><li><p>Jupyter notebook can be installed at:</p><p><a href="https://jupyter.org/install">https://jupyter.org/install</a></p></li></ul></li></ol><br /><ol start="2"><li><p>If you download this project for the first time, go to the project directory and run</p><p><code>make init_clojupyter</code></p><p><em>Note that this operation may download plenty of required packages, which may take up some time.</em></p></li></ol><br /><ol start="3"><li><p>Run the following command so that the project could be compiled as a .jar file and added as a new Jupyter kernel:</p><p><code>make add_kernel</code></p><p>(Jupyter notebook should be shut down before this step)</p><p>When the process is done, you should see:</p><pre><code>Installed jar:      target/uberjar/clojure-backtesting-0.1.0-SNAPSHOT-standalone.jar
+Install directory:  ~/Library/Jupyter/kernels/backtesting_clojure
+Kernel identifier:  backtesting_clojure
+
+Installation successful.
+</code></pre></li></ol><br /><ol start="4"><li>Now when you open the Jupyter Notebook, you will see a kernel named <code>backtesting_clojure</code>. You can create new notebook using this kernel.</li></ol><br /><h3 id="beginner-tutorial">Beginner Tutorial</h3><br /><pre><code>#some demo code, to-add
+</code></pre>
+</div>
+
+
+    <div id="prev-next">
+        
+        <a href="/blog/posts-output/2020-11-20-api-reference/">&laquo; API reference</a>
+        
+        
+        <a class="right" href="/blog/posts-output/2016-01-07-docs/">Quick Start Guide &raquo;</a>
+        
+    </div>
+
+    
+
+
+</div>
+
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div id="sidebar">
+                <h3>Links</h3>
+                <ul id="links">
+                    <li><a href="http://cryogenweb.org/docs/home.html">Cryogen Docs</a></li>
+                    <li><a href="https://carmen.la/blog/archives/">Carmen's Blog</a></li>
+                    
+                    <li><a href="/blog/pages-output/another-page/">Another Page</a></li>
+                    
+                </ul>
+                
+                <div id="recent">
+                    <h3>Recent Posts</h3>
+                    <ul>
+                        
+                        <li><a href="/blog/posts-output/2020-11-20-api-reference/">API reference</a></li>
+                        
+                        <li><a href="/blog/posts-output/2020-11-14-get-started/">Get Started</a></li>
+                        
+                        <li><a href="/blog/posts-output/2016-01-07-docs/">Quick Start Guide</a></li>
+                        
+                    </ul>
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
+    <footer>Copyright &copy; 2020 HKU FBE
+        <p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a></p></footer>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="/blog/js/highlight.pack.js" type="text/javascript"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+</body>
+</html>

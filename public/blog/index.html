@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Clojure Backtesting Documentation</title>
+    
+    <meta name="description" content="This site serves as documentation for a backtesting framework written in Clojure.">
+    <meta name="keywords" content="">
+    
+    <link rel="canonical" href="http://blogawesome.com/blog/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" rel="stylesheet"
+          type="text/css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+    <link href="/blog/css/screen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/blog/">Clojure Backtesting Documentation</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li  class="active" ><a href="/blog/">Home</a></li>
+                <li
+                ><a href="/blog/archives/">Archives</a></li>
+                
+                <li
+                >
+                <a href="/blog/pages-output/about/">About</a>
+                </li>
+                
+                <li><a href="/blog/feed.xml">RSS</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-lg-9">
+            <div id="content">
+                
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">20 November 2020</div>
+        
+    </div>
+    <h2>API reference</h2>
+</div>
+<div>
+    <ol class="toc"><li><a href="#read-data">Read Data</a></li><li><a href="#merge-data">Merge Data</a></li><li><a href="#portfolio">Portfolio</a></li><li><a href="#summary-statistics">Summary Statistics</a></li><li><a href="#make-order">Make Order</a></li><li><a href="#plot-graphs">Plot Graphs</a></li></ol>
+    <hr /><style>
+/* table styles */
+table, th, td {
+  border: 1px solid black;
+  padding: 5px;
+}
+</style><h3 id="read-data">Read Data</h3><p>Functions for reading csv data.
+<br /><br /></p><p><code>read-csv-row</code></p><p>Read the CSV file into memeory in a row by row format.</p><p><strong>Parameters:</strong></p><ul><li>file - path to the csv file to be read</li></ul><br /><p>Example:</p><pre><code>(read-csv-row "./resources/CRSP-extract.csv")
+
+;; output:
+&lt;type output here&gt;
+</code></pre><br /><p><code>read-csv-col</code></p><p>Read the CSV file into memeory in a column by column format.</p><p><strong>Parameters:</strong></p><ul><li>file - path to the csv file to be read</li></ul><p>Example:</p><pre><code>(read-csv-col "./resources/CRSP-extract.csv")
+
+;; output:
+&lt;type output here&gt;
+</code></pre><hr /><h3 id="merge-data">Merge Data</h3><p>Functions for merging the csv files either by row or by column.</p><br /><p><code>merge-data-row</code></p><p>Merge 2 CSV files row by row using left-join method, i.e. merging the trading data with the accounting data. Merging that data by row is recommended.</p><p><strong>Parameters:</strong></p><ul><li>file1 - the CRSP trading dataset</li><li>file2 - the COMPUSTAT accounting dataset</li></ul><p><strong>Example</strong>:</p><pre><code>(merge-data-row "./resources/CRSP-extract.csv" "./resources/Compustat-extract.csv")
+
+;; output:
+&lt;type output here&gt;
+</code></pre><br /><p><code>merge-csv-col</code></p><p>Merge 2 CSV files column by column using left-join method, i.e. merging the trading data with the accounting data.</p><p><strong>Parameters:</strong></p><ul><li>file1 - the CRSP trading dataset</li><li>file2 - the COMPUSTAT accounting dataset</li></ul><p><strong>Example</strong>:</p><pre><code># (merge-data-col "./resources/CRSP-extract.csv" "./resources/Compustat-extract.csv")
+
+;; output:
+&lt;type output here&gt;
+</code></pre><hr /><h3 id="portfolio">Portfolio</h3><p>Functions for creating and viewing the portfolio; and for inspecting historical records of portfolio values.</p><br /><p><code>init_portfolio</code></p><p>This function initialises the portfolio with cash only, user can input the initial capital they desire.</p><p><strong>Parameters:</strong></p><ul><li>date - the starting date of the portfolio</li><li>init-capital - the desired initial capital for the portfolio</li></ul><p><strong>Example</strong>:</p><pre><code>(init_portfolio "1980-12-1" 1000000)
+
+;; output:
+&lt;type output here&gt;
+</code></pre><br /><p><code>view_portfolio</code></p><p>This function prints the portfolio in a table format.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> Column </th><th align="center"> Format  </th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>asset</code></td><td align="center"> string</td><td align="left"> Cash or ticker of the stock</td></tr><tr><td><code>price</code></td><td align="center"> float, $</td><td align="left"> Price of the stock  </td></tr><tr><td><code>aprc</code></td><td align="center"> float, %</td><td align="left"> Adjusted price of the stock  </td></tr><tr><td><code>quantity</code></td><td align="center"> int or float</td><td align="left"> Quantity of the stock owned  </td></tr><tr><td><code>tot_val</code></td><td align="center"> int, $</td><td align="left"> Total value of the stock  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code>(view_portfolio)
+
+;; output:
+| :asset |  :price | :aprc | :quantity | :tot_val |
+|--------+---------+-------+-----------+----------|
+|   cash |     N/A |   N/A |       N/A |    10295 |
+|   AAPL | 34.1875 | 29.42 |         0 |        0 |
+</code></pre><br /><p><code>view_portfolio_record</code></p><p>This function prints the historical values and daily returns of the portfolio in a table format.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> Column </th><th align="center"> Format  </th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>date</code></td><td align="center"> YYYY-MM-DD</td><td align="left"> Date of record</td></tr><tr><td><code>tot_value</code></td><td align="center"> int, $</td><td align="left"> Total value of the portfolio  </td></tr><tr><td><code>daily_ret</code></td><td align="center"> float, %</td><td align="left"> Daily return of the portfolio  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code>(view_portfolio_record)
+
+;; output:
+|      :date | :tot_value | :daily_ret |
+|------------+------------+------------|
+| 1980-12-16 |     $10000 |      0.00% |
+| 1980-12-17 |     $10007 |      0.00% |
+| 1980-12-18 |     $10026 |      0.00% |
+| 1980-12-22 |     $10096 |      0.01% |
+| 1980-12-24 |     $10168 |      0.01% |
+| 1980-12-29 |     $10254 |      0.01% |
+| 1980-12-31 |     $10295 |      0.00% |
+</code></pre><hr /><h3 id="summary-statistics">Summary Statistics</h3><p>Functions for computing and printing the summary statistics that evaluate the performance of the portfolio.</p><br /><p><code>eval-report</code></p><p>This function prints the evaluation report that includes all summary statiscs in a table format.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> Column </th><th align="center"> Format  </th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>date</code></td><td align="center"> YYYY-MM-DD</td><td align="left"> Date of record</td></tr><tr><td><code>pnl-pt</code></td><td align="center"> float, $</td><td align="left"> Profit and loss per trade  </td></tr><tr><td><code>ret-da</code></td><td align="center"> float, %</td><td align="left"> Daily return  </td></tr><tr><td><code>ret-r</code></td><td align="center"> float, %</td><td align="left"> Return of the portfolio calculated with a rolling fixed window of 1 year  </td></tr><tr><td><code>ret-tot</code></td><td align="center"> float, %</td><td align="left"> Total return of the portfolio, i.e. cumulative daily returns  </td></tr><tr><td><code>sharpe-e</code></td><td align="center"> float, %</td><td align="left"> Sharpe ratio of the portfolio caculated with an expanding window  </td></tr><tr><td><code>sharpe-r</code></td><td align="center"> float, %</td><td align="left"> Sharpe ratio of the portfolio calculated with a rolling fixed window of 1 year  </td></tr><tr><td><code>tot-val</code></td><td align="center"> int, %</td><td align="left"> Total value of the portfolio, including cash and all purchased stocks  </td></tr><tr><td><code>vol-e</code></td><td align="center"> float, %</td><td align="left"> Volatility of the portfolio caculated with an expanding window  </td></tr><tr><td><code>vol-r</code></td><td align="center"> float, %</td><td align="left"> Volatility of the portfolio calculated with a rolling fixed window of 1 year  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code>(eval-report)
+
+;; output:
+
+|      :date | :pnl-pt | :ret-da | :ret-r | :ret-tot | :sharpe-e | :sharpe-r | :tot-val | :vol-e | :vol-r |
+|------------+---------+---------+--------+----------+-----------+-----------+----------+--------+--------|
+| 1980-12-16 |   $7.81 |   0.08% |  0.22% |    0.00% |     1.41% |    24.80% |   $10007 |  0.06% |  0.88% |
+| 1980-12-17 |  $13.37 |   0.19% |  0.96% |    0.00% |     2.81% |    63.55% |   $10026 |  0.10% |  1.51% |
+| 1980-12-18 |  $13.37 |   0.19% |  0.96% |    0.00% |     2.81% |    63.55% |   $10026 |  0.10% |  1.51% |
+| 1980-12-19 |  $32.32 |   0.70% |  0.62% |    0.01% |     3.07% |    12.48% |   $10096 |  0.31% |  4.99% |
+| 1980-12-22 |  $32.32 |   0.70% |  0.62% |    0.01% |     3.07% |    12.48% |   $10096 |  0.31% |  4.99% |
+| 1980-12-23 |  $42.14 |   0.71% |  0.82% |    0.02% |     4.88% |    15.01% |   $10168 |  0.34% |  5.44% |
+| 1980-12-24 |  $42.14 |   0.71% |  0.82% |    0.02% |     4.88% |    15.01% |   $10168 |  0.34% |  5.44% |
+| 1980-12-26 |  $50.84 |   0.84% |  0.68% |    0.03% |     6.80% |    11.66% |   $10254 |  0.37% |  5.86% |
+| 1980-12-29 |  $50.84 |   0.84% |  0.68% |    0.03% |     6.80% |    11.66% |   $10254 |  0.37% |  5.86% |
+| 1980-12-30 |  $49.17 |   0.40% |  0.68% |    0.03% |     8.62% |    12.62% |   $10295 |  0.34% |  5.35% |
+</code></pre><br /><p><code>portfolio-total</code></p><p>This function returns the current total value of the portfolio.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p>Example &amp; output:</p><pre><code>(portfolio-total)
+
+;; output:
+&lt;type output here&gt;
+</code></pre><br /><p><code>portfolio-daily-ret</code></p><p>This function returns the current daily return of the portfolio.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p>Example:</p><pre><code>(portfolio-daily-ret)
+
+;; output:
+&lt;type output here&gt;
+</code></pre><br /><p><code>portfolio-total-ret</code></p><p>This function returns the total daily return of the portfolio.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Example</strong>:</p><pre><code>(portfolio-total-ret)
+
+;; output:
+&lt;type output here&gt;
+</code></pre><hr /><h3 id="make-order">Make Order</h3><p>Functions for making an order to trade a stock.</p><br /><p><code>order</code></p><p>This order function allows user to set orders.</p><p><strong>Parameters:</strong></p><ul><li>tic - the ticker of the stock to buy or sell</li><li>quantity - quantity to buy or sell, +ve means buy, -ve means sell</li><li>remaining - ???</li></ul><p>Example:</p><pre><code>(order AAPL 10)
+
+;; output:
+&lt;type output here&gt;
+
+
+(order IBM -10)
+
+;; output:
+&lt;type output here&gt;
+</code></pre><hr /><h3 id="plot-graphs">Plot Graphs</h3><p>Functions for generating line plots on chosen variables.</p><br /><p><code>plot</code></p><p>This function allows users to plot line charts, single y-axis or dual y-axis. This plotting function works the best with Clojupyter Notebook. For Clojupyter tutorials, please refer to <a href="https://github.com/clojure-finance/clojure-backtesting/tree/master/clojupyter">this page</a>. For Clojupyter Notebook examples, please refer to <a href="https://github.com/clojure-finance/clojure-backtesting/tree/master/examples">here</a>.</p><p><strong>Parameters:</strong></p><ul><li>dataset - data to be plotted. The dataset should be in following format: <code>{:tic "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }</code></li><li>series - series name of the lines, e.g. :tic, which means ticker name</li><li>y1 - primary y axis, e.g. <code>:price</code>, trading price of the stock</li><li>y2 - <strong>optional</strong> secondary y axis, e.g. <code>:return</code>, daily return of the stock</li></ul><br /><p><strong>Example</strong>:</p><pre><code>(plot data :tic :date :price)
+;; output:
+&lt;type output here&gt;
+
+(plot data :tic :date :price :return)
+
+;; output:
+&lt;type output here&gt;
+</code></pre>
+</div>
+
+
+    
+
+    <div id="prev-next">
+        
+        
+        <a class="right" href="/blog/posts-output/2020-11-14-get-started/">Get Started &raquo;</a>
+        
+    </div>
+</div>
+
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div id="sidebar">
+                <h3>Links</h3>
+                <ul id="links">
+                    <li><a href="http://cryogenweb.org/docs/home.html">Cryogen Docs</a></li>
+                    <li><a href="https://carmen.la/blog/archives/">Carmen's Blog</a></li>
+                    
+                    <li><a href="/blog/pages-output/another-page/">Another Page</a></li>
+                    
+                </ul>
+                
+                <div id="recent">
+                    <h3>Recent Posts</h3>
+                    <ul>
+                        
+                        <li><a href="/blog/posts-output/2020-11-20-api-reference/">API reference</a></li>
+                        
+                        <li><a href="/blog/posts-output/2020-11-14-get-started/">Get Started</a></li>
+                        
+                        <li><a href="/blog/posts-output/2016-01-07-docs/">Quick Start Guide</a></li>
+                        
+                    </ul>
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
+    <footer>Copyright &copy; 2020 HKU FBE
+        <p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a></p></footer>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="/blog/js/highlight.pack.js" type="text/javascript"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+</body>
+</html>
