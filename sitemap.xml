@@ -2,7 +2,7 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url>
 <loc>
-https://clojure-finance.github.io/clojure-backtesting-website/index.html
+https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/index.html
 </loc>
 <lastmod>
 2020-12-12
@@ -10,7 +10,7 @@ https://clojure-finance.github.io/clojure-backtesting-website/index.html
 </url>
 <url>
 <loc>
-https://clojure-finance.github.io/clojure-backtesting-website/posts/2020-11-14-get-started/index.html
+https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2020-11-14-get-started/index.html
 </loc>
 <lastmod>
 2020-12-12
@@ -18,7 +18,7 @@ https://clojure-finance.github.io/clojure-backtesting-website/posts/2020-11-14-g
 </url>
 <url>
 <loc>
-https://clojure-finance.github.io/clojure-backtesting-website/posts/2014-03-10-first-post/index.html
+https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2014-03-10-first-post/index.html
 </loc>
 <lastmod>
 2020-12-12
@@ -26,7 +26,7 @@ https://clojure-finance.github.io/clojure-backtesting-website/posts/2014-03-10-f
 </url>
 <url>
 <loc>
-https://clojure-finance.github.io/clojure-backtesting-website/posts/2020-11-20-api-reference/index.html
+https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2020-11-20-api-reference/index.html
 </loc>
 <lastmod>
 2020-12-12
@@ -34,7 +34,7 @@ https://clojure-finance.github.io/clojure-backtesting-website/posts/2020-11-20-a
 </url>
 <url>
 <loc>
-https://clojure-finance.github.io/clojure-backtesting-website/posts/2016-01-07-docs/index.html
+https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2016-01-07-docs/index.html
 </loc>
 <lastmod>
 2020-12-12
@@ -42,7 +42,7 @@ https://clojure-finance.github.io/clojure-backtesting-website/posts/2016-01-07-d
 </url>
 <url>
 <loc>
-https://clojure-finance.github.io/clojure-backtesting-website/authors/clojure-backtesting/index.html
+https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/authors/clojure-backtesting/index.html
 </loc>
 <lastmod>
 2020-12-12
@@ -50,7 +50,7 @@ https://clojure-finance.github.io/clojure-backtesting-website/authors/clojure-ba
 </url>
 <url>
 <loc>
-https://clojure-finance.github.io/clojure-backtesting-website/404.html
+https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/404.html
 </loc>
 <lastmod>
 2020-12-12
@@ -58,7 +58,7 @@ https://clojure-finance.github.io/clojure-backtesting-website/404.html
 </url>
 <url>
 <loc>
-https://clojure-finance.github.io/clojure-backtesting-website/archives/index.html
+https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/archives/index.html
 </loc>
 <lastmod>
 2020-12-12
@@ -66,7 +66,7 @@ https://clojure-finance.github.io/clojure-backtesting-website/archives/index.htm
 </url>
 <url>
 <loc>
-https://clojure-finance.github.io/clojure-backtesting-website/tags/index.html
+https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/tags/index.html
 </loc>
 <lastmod>
 2020-12-12
@@ -74,7 +74,7 @@ https://clojure-finance.github.io/clojure-backtesting-website/tags/index.html
 </url>
 <url>
 <loc>
-https://clojure-finance.github.io/clojure-backtesting-website/pages/about/index.html
+https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/pages/about/index.html
 </loc>
 <lastmod>
 2020-12-12
@@ -82,7 +82,7 @@ https://clojure-finance.github.io/clojure-backtesting-website/pages/about/index.
 </url>
 <url>
 <loc>
-https://clojure-finance.github.io/clojure-backtesting-website/pages/another-page/index.html
+https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/pages/another-page/index.html
 </loc>
 <lastmod>
 2020-12-12
