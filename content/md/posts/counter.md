@@ -1,0 +1,69 @@
+### ns: clojure-backtesting.counter
+
+#### Global Variables:
+
+1. **date**
+
+   An atom of type date-time in java-time.
+
+   The date will be updated by calling next-date.
+
+   **Only the dates that have entries in the dataset will be valid dates.**
+
+   **Relevent Functions:**
+
+   1. get-date
+
+      Get the current date the system is at.
+
+      1. Input: null
+      2. Output: A string: "yyyy-mm-dd"
+
+   2. next-date
+
+      Increment the current date to the nearest next valid date.
+
+      1. Input: null
+      2. Output: The new date after increment, a string: "yyyy-mm-dd".
+
+2. **tics-info**
+
+   An atom containing a vector of maps: {:AAPL {:start-date "1980-12-15" :end-date "2000-01-12" :pointer (atom {:num 2934 :reference `lazy seq`})} ... }
+
+   This variable generally stores the most necessary infomation needed for all the tickers available in the dataset. 
+
+   `:AAPL` keyword type: Ticker Name
+
+   `:start-date` string: The earliest date of the ticker.
+
+   `:end-date` string: The latest date of the ticker.
+
+   `:pointer` atom of map: The information of row to which the pointer of the ticker currently points. All the pointers are initially pointing to the first line of the ticker.
+
+   `:num` int: The row number
+
+   `:reference` lazy sequence: The lazy sequence of dateset starting at the pointed line.
+
+3. **available-tics**
+
+   An atom offering the information which may be needed to build a daily strategy or speed up the program: {:AAPL :pointer (atom {:num 2934 :reference `lazy seq`}) ... }
+
+   Only stores the tickers that is available 'today'. 
+
+   Possible Usages:
+
+   _Get the number of tickers available_
+
+   ```clojure
+   (count (keys (deref available-tics)))
+   ```
+
+   _Get the reference of ticker "AAPL"_
+
+   ```clojure
+   (get (deref (get (get (dref available-tics) :AAPL) :pointer)) :reference)
+   ```
+
+#### Global functions:
+
+1. 

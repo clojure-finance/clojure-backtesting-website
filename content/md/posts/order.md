@@ -1,0 +1,57 @@
+### ns: clojure-backtesting.order
+
+#### Global Variables:
+
+1. order-record: atom of vector of maps.
+
+   [{:date "yyyy-mm-dd" :tic "AAPL" :quantity 13} ... ]
+
+   This variable is automatically maintained by function order (regardless of `:print`).
+
+#### Global functions:
+
+1. order
+
+   1. **Input:** 
+
+      `tic`: string: name/ identifier of the ticker
+
+      `quantity`: int/double: the quantity to trade. If it > 0, buy the amount, else, sell the amount.
+
+      ***Optionals:***
+
+      `:remaining`: boolean: if the quantity given is the trading amount or the exact remaining amount. *By default, false.*
+
+      `:leverage`: boolean: if leverage is **allowed** (if necessary) in this order. Leverage includes buying on margin and short sell. You will only buy on margin if you run out of cash. We will also short sell only when you do not have enough stock. *By default, true.*
+
+      `:dataset`: lazy sequence: Specify the dataset to look for the order. Note that the function will search from the first line of the given dataset. So if used properly, it could speed up the program. *By default, (deref data-set).* 
+
+      `:print`: boolean: If to print the successful orders. By default, false.
+
+      ***Possible Usages:***
+
+      1. *Order with or without leverage:*
+
+         ```clojure
+         (order "AAPL" 10) ;with leverage, exact value trading
+         (order "AAPL" 10 :leverage false) ;without leverage, exact value trade
+         (order "AAPL" -10 :remaining true) ;with leverage, remaining value
+         (order "AAPL" -10 :leverage false :remaining true) ;without leverage, remaining value (This is a failed trade)
+         ```
+
+      2. *Use together with the available-tics: (This will buy 10 stocks from the first ticker that shows in available-tics.)*
+
+         ```clojure
+         (let [tics (deref available-tics) tic (name (first (keys (tics))))]
+           (order tic 10 :dataset (get (deref (get (get (dref available-tics) :AAPL) :pointer)) :reference))) ; The part after the dataset is copied from usages of available-tics
+         ```
+
+      3. *Print the order log:*
+
+         ```clojure
+         (order "AAPL" 10 :print true)
+         ```
+
+         
+
+      
