@@ -2,20 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Clojure Backtesting Documentation: Another Page</title>
+    <title>Clojure Backtesting Documentation: Preliminaries</title>
     
+<meta name="keywords" content="">
 
-<meta name="description" content="Look at this sweet pagethis is another custom page
-totally not a post">
+<meta name="description" content="Example Dataset Format">
 
-<meta property="og:description" content="Look at this sweet pagethis is another custom page
-totally not a post">
+<meta property="og:description" content="Example Dataset Format">
 
-<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/pages/another-page/" />
-<meta property="og:title" content="Another Page" />
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-10-Preliminaries/" />
+<meta property="og:title" content="Preliminaries" />
 <meta property="og:type" content="article" />
 
-    <link rel="canonical" href="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/pages/another-page/">
+    <link rel="canonical" href="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-10-Preliminaries/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" rel="stylesheet"
           type="text/css">
@@ -63,21 +62,30 @@ totally not a post">
         <div class="col-lg-9">
             <div id="content">
                 
-<div id="custom-page">
-    <div id="page-header">
-        <h2>Another Page</h2>
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">10 January 2021</div>
+        
     </div>
-    
-    <h2 id="look-at-this-sweet-page">Look at this sweet page</h2><p>this is another custom page
-totally not a post</p>
+    <h2>Preliminaries</h2>
+</div>
+<div>
+    <ol class="toc"><li><a href="#example-dataset-format">Example Dataset Format</a></li><li><a href="#standard-dataset-format">Standard Dataset Format</a></li></ol>
+    <hr /><h3 id="example-dataset-format">Example Dataset Format</h3><br /><h3 id="standard-dataset-format">Standard Dataset Format</h3><br /><p><em>Requirements:</em></p><ol><li>In csv file format</li><li><strong>Row based:</strong> rows are instances and columns are parameters. The first line is the header for each column.</li><li>Different tickers are uniquely identified by the Ticker ID or Name. And the same ticker has the same ID or name.</li><li>Same tickers are stored in clusters or blocks. The row numbers are continuous.</li><li>Dates within each cluster or block is in order from the earliest to the lastest date.</li></ol><br /><p><strong>Some remarks:</strong></p><ol><li>The date in init-portfolio must be a valid date in the dataset.</li></ol>
+</div>
+
 
     <div id="prev-next">
         
-        <a href="/clojure-backtesting-website/pages/about/">&laquo; About</a>
         
-        
+        <a class="right" href="/clojure-backtesting-website/posts/2021-01-09-counter/">Counter &raquo;</a>
         
     </div>
+
+    
+
+
 </div>
 
             </div>
@@ -87,10 +95,8 @@ totally not a post</p>
             <div id="sidebar">
                 <h3>Links</h3>
                 <ul id="links">
-                    <li><a href="http://cryogenweb.org/docs/home.html">Cryogen Docs</a></li>
-                    <li><a href="https://carmen.la/blog/archives/">Carmen's Blog</a></li>
-                    
-                    <li><a href="/clojure-backtesting-website/pages/another-page/">Another Page</a></li>
+                    <!-- <li><a href="http://cryogenweb.org/docs/home.html">Cryogen Docs</a></li>
+                    <li><a href="https://carmen.la/blog/archives/">Carmen's Blog</a></li> -->
                     
                 </ul>
                 
@@ -98,11 +104,11 @@ totally not a post</p>
                     <h3>Recent Posts</h3>
                     <ul>
                         
-                        <li><a href="/clojure-backtesting-website/posts/2020-11-20-api-reference/">API reference</a></li>
+                        <li><a href="/clojure-backtesting-website/posts/2021-01-10-Preliminaries/">Preliminaries</a></li>
                         
-                        <li><a href="/clojure-backtesting-website/posts/2020-11-14-get-started/">Get Started</a></li>
+                        <li><a href="/clojure-backtesting-website/posts/2021-01-09-counter/">Counter</a></li>
                         
-                        <li><a href="/clojure-backtesting-website/posts/2016-01-07-docs/">Quick Start Guide</a></li>
+                        <li><a href="/clojure-backtesting-website/posts/2021-01-08-data-management/">Data management</a></li>
                         
                     </ul>
                 </div>
@@ -111,7 +117,7 @@ totally not a post</p>
             </div>
         </div>
     </div>
-    <footer>Copyright &copy; 2020 clojure-backtesting
+    <footer>Copyright &copy; 2021 clojure-backtesting
         <p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a></p></footer>
 </div>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>

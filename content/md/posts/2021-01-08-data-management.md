@@ -1,4 +1,9 @@
-### ns: clojure-backtesting.data-management
+{:title "Data management"
+ :layout :post
+ :tags  []
+ :toc true}
+ 
+ ### ns: clojure-backtesting.data-management
 
 #### Global Variables:
 

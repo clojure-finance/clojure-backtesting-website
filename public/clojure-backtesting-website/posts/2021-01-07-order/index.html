@@ -2,12 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Clojure Backtesting Documentation</title>
+    <title>Clojure Backtesting Documentation: Order</title>
     
-    <meta name="description" content="This site serves as documentation for a backtesting framework written in Clojure.">
-    <meta name="keywords" content="">
-    
-    <link rel="canonical" href="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/">
+<meta name="keywords" content="">
+
+<meta name="description" content="This section is about ns: clojure-backtesting.order.">
+
+<meta property="og:description" content="This section is about ns: clojure-backtesting.order.">
+
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-07-order/" />
+<meta property="og:title" content="Order" />
+<meta property="og:type" content="article" />
+
+    <link rel="canonical" href="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-07-order/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" rel="stylesheet"
           type="text/css">
@@ -32,7 +39,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li  class="active" ><a href="/clojure-backtesting-website/">Home</a></li>
+                <li ><a href="/clojure-backtesting-website/">Home</a></li>
                 <li
                 ><a href="/clojure-backtesting-website/archives/">Archives</a></li>
                 
@@ -58,25 +65,36 @@
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <div class="col-lg-6">10 January 2021</div>
+        <div class="col-lg-6">7 January 2021</div>
         
     </div>
-    <h2>Preliminaries</h2>
+    <h2>Order</h2>
 </div>
 <div>
-    <ol class="toc"><li><a href="#example-dataset-format">Example Dataset Format</a></li><li><a href="#standard-dataset-format">Standard Dataset Format</a></li></ol>
-    <hr /><h3 id="example-dataset-format">Example Dataset Format</h3><br /><h3 id="standard-dataset-format">Standard Dataset Format</h3><br /><p><em>Requirements:</em></p><ol><li>In csv file format</li><li><strong>Row based:</strong> rows are instances and columns are parameters. The first line is the header for each column.</li><li>Different tickers are uniquely identified by the Ticker ID or Name. And the same ticker has the same ID or name.</li><li>Same tickers are stored in clusters or blocks. The row numbers are continuous.</li><li>Dates within each cluster or block is in order from the earliest to the lastest date.</li></ol><br /><p><strong>Some remarks:</strong></p><ol><li>The date in init-portfolio must be a valid date in the dataset.</li></ol>
+    <ol class="toc"><li><a href="#global-variables">Global Variables</a></li><li><a href="#global-functions">Global functions:</a></li></ol>
+    <hr /><p>This section is about <code>ns: clojure-backtesting.order</code>.</p><h3 id="global-variables">Global Variables</h3><br /><p><code>order-record</code>: atom of vector of maps.</p><p>[{:date "yyyy-mm-dd" :tic "AAPL" :quantity 13} ... ]</p><p>This variable is automatically maintained by function order (regardless of <code>:print</code>).</p><hr /><h3 id="global-functions">Global functions:</h3><br /><p><code>order</code></p><p><strong>Input:</strong></p><p><code>tic</code>: string: name/ identifier of the ticker</p><p><code>quantity</code>: int/double: the quantity to trade. If it &gt; 0, buy the amount, else, sell the amount.</p><br /><p><em><strong>Optionals:</strong></em></p><p><code>:remaining</code>: boolean: if the quantity given is the trading amount or the exact remaining amount. <em>By default, false.</em></p><p><code>:leverage</code>: boolean: if leverage is <strong>allowed</strong> (if necessary) in this order. Leverage includes buying on margin and short sell. You will only buy on margin if you run out of cash. We will also short sell only when you do not have enough stock. <em>By default, true.</em></p><p><code>:dataset</code>: lazy sequence: Specify the dataset to look for the order. Note that the function will search from the first line of the given dataset. So if used properly, it could speed up the program. <em>By default, (deref data-set).</em></p><p><code>:print</code>: boolean: If to print the successful orders. By default, false.</p><br /><p><strong>Possible Usages:</strong></p><ol><li><p><em>Order with or without leverage:</em></p><pre><code class="clojure">(order "AAPL" 10) ;with leverage, exact value trading
+(order "AAPL" 10 :leverage false) ;without leverage, exact value trade
+(order "AAPL" -10 :remaining true) ;with leverage, remaining value
+(order "AAPL" -10 :leverage false :remaining true) ;without leverage, remaining value (This is a failed trade)
+</code></pre></li><li><p><em>Use together with the available-tics: (This will buy 10 stocks from the first ticker that shows in available-tics.)</em></p><pre><code class="clojure">(let [tics (deref available-tics) tic (name (first (keys (tics))))]
+   (order tic 10 :dataset (get (deref (get (get (dref available-tics) :AAPL) :pointer)) :reference))) ; The part after the dataset is copied from usages of available-tics
+</code></pre></li><li><p><em>Print the order log:</em></p><pre><code class="clojure">(order "AAPL" 10 :print true)
+</code></pre></li></ol>
 </div>
 
-
-    
 
     <div id="prev-next">
         
+        <a href="/clojure-backtesting-website/posts/2021-01-08-data-management/">&laquo; Data management</a>
         
-        <a class="right" href="/clojure-backtesting-website/posts/2021-01-09-counter/">Counter &raquo;</a>
+        
+        <a class="right" href="/clojure-backtesting-website/posts/2020-11-20-api-reference/">API reference &raquo;</a>
         
     </div>
+
+    
+
+
 </div>
 
             </div>
