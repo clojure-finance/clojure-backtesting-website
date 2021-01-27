@@ -11,7 +11,7 @@ Link to website: [https://clojure-finance.github.io/clojure-backtesting-website/
 - Leiningen
 ```
 
-### Usage
+## Development
 
 To start the server:
 ```
