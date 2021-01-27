@@ -31,7 +31,7 @@
 
    `make add_kernel`
 
-   (Make sure that you have **terminated** the Jupyter notebook application before running this step)
+   (If there is an error, make sure that you have **terminated** the Jupyter notebook running kernels before running this step.)
 
    <br>
 
@@ -51,8 +51,12 @@
 
 <br>
 
-### Beginner Tutorial
+### Beginner Tutorials
 <br>
+
+[This tutorial](http://kimh.github.io/clojure-by-example/#about) is really useful for beginners in Clojure to pick up basis quickly.
+
+[This](https://clojuredocs.org/) is a more thorough documentation website for Clojure functions.
 
    ```
    #some demo code, to-add
