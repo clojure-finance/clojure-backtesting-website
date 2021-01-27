@@ -2,18 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Clojure Backtesting Documentation: About</title>
+    <title>Clojure Backtesting Documentation: Order</title>
     
+<meta name="keywords" content="">
 
-<meta name="description" content="This is the documentation for the backtesting library written in Clojure. The source code could be found at https://github.com/clojure-finance/clojure-backtesting.">
+<meta name="description" content="This section is about ns: clojure-backtesting.order.">
 
-<meta property="og:description" content="This is the documentation for the backtesting library written in Clojure. The source code could be found at https://github.com/clojure-finance/clojure-backtesting.">
+<meta property="og:description" content="This section is about ns: clojure-backtesting.order.">
 
-<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/pages/about/" />
-<meta property="og:title" content="About" />
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-23-order/" />
+<meta property="og:title" content="Order" />
 <meta property="og:type" content="article" />
 
-    <link rel="canonical" href="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/pages/about/">
+    <link rel="canonical" href="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-23-order/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" rel="stylesheet"
           type="text/css">
@@ -43,7 +44,7 @@
                 ><a href="/clojure-backtesting-website/archives/">Archives</a></li>
                 
                 <li
-                 class="active" >
+                >
                 <a href="/clojure-backtesting-website/pages/about/">About</a>
                 </li>
                 
@@ -61,18 +62,39 @@
         <div class="col-lg-9">
             <div id="content">
                 
-<div id="custom-page">
-    <div id="page-header">
-        <h2>About</h2>
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">23 January 2021</div>
+        
     </div>
-    
-    <p>This is the documentation for the backtesting library written in Clojure. The source code could be found at <a href="https://github.com/clojure-finance/clojure-backtesting">https://github.com/clojure-finance/clojure-backtesting</a>.</p>
+    <h2>Order</h2>
+</div>
+<div>
+    <ol class="toc"><li><a href="#global-variables">Global Variables</a></li><li><a href="#global-functions">Global functions:</a></li></ol>
+    <hr /><p>This section is about <code>ns: clojure-backtesting.order</code>.</p><h3 id="global-variables">Global Variables</h3><br /><p><code>order-record</code>: atom of vector of maps.</p><p>[{:date "yyyy-mm-dd" :tic "AAPL" :quantity 13} ... ]</p><p>This variable is automatically maintained by function order (regardless of <code>:print</code>).</p><hr /><h3 id="global-functions">Global functions:</h3><br /><p><code>order</code></p><p><strong>Input:</strong></p><p><code>tic</code>: string: name/ identifier of the ticker</p><p><code>quantity</code>: int/double: the quantity to trade. If it &gt; 0, buy the amount, else, sell the amount.</p><br /><p><em><strong>Optionals:</strong></em></p><p><code>:remaining</code>: boolean: if the quantity given is the trading amount or the exact remaining amount. <em>By default, false.</em></p><p><code>:leverage</code>: boolean: if leverage is <strong>allowed</strong> (if necessary) in this order. Leverage includes buying on margin and short sell. You will only buy on margin if you run out of cash. We will also short sell only when you do not have enough stock. <em>By default, true.</em></p><p><code>:dataset</code>: lazy sequence: Specify the dataset to look for the order. Note that the function will search from the first line of the given dataset. So if used properly, it could speed up the program. <em>By default, (deref data-set).</em></p><p><code>:print</code>: boolean: If to print the successful orders. By default, false.</p><br /><p><strong>Possible Usages:</strong></p><ol><li><p><em>Order with or without leverage:</em></p><pre><code class="clojure">(order "AAPL" 10) ;with leverage, exact value trading
+(order "AAPL" 10 :leverage false) ;without leverage, exact value trade
+(order "AAPL" -10 :remaining true) ;with leverage, remaining value
+(order "AAPL" -10 :leverage false :remaining true) ;without leverage, remaining value (This is a failed trade)
+</code></pre></li><li><p><em>Use together with the available-tics: (This will buy 10 stocks from the first ticker that shows in available-tics.)</em></p><pre><code class="clojure">(let [tics (deref available-tics) tic (name (first (keys (tics))))]
+   (order tic 10 :dataset (get (deref (get (get (dref available-tics) :AAPL) :pointer)) :reference))) ; The part after the dataset is copied from usages of available-tics
+</code></pre></li><li><p><em>Print the order log:</em></p><pre><code class="clojure">(order "AAPL" 10 :print true)
+</code></pre></li></ol>
+</div>
+
 
     <div id="prev-next">
         
+        <a href="/clojure-backtesting-website/posts/2021-01-24-counter/">&laquo; Counter</a>
         
+        
+        <a class="right" href="/clojure-backtesting-website/posts/2021-01-22-portfolio/">Portfolio &raquo;</a>
         
     </div>
+
+    
+
+
 </div>
 
             </div>
