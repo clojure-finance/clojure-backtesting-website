@@ -1,4 +1,4 @@
-{:title "Data management"
+{:title "Data Management"
  :layout :post
  :tags  []
  :toc true}

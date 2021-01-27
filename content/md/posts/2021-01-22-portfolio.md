@@ -3,7 +3,7 @@
  :tags  []
  :toc true}
 
----
+
 <style>
 /* table styles */
 table, th, td {
@@ -12,19 +12,21 @@ table, th, td {
 }
 </style>
 
+<br>
 
-### Portfolio
+### Portfolio Manipulation
 Functions for creating and viewing the portfolio; and for inspecting historical records of portfolio values.
 
-<br>
+---
+
 
 `init_portfolio`
 
-This function initialises the portfolio with cash only, user can input the initial capital they desire. 
+This function initialises the portfolio with cash and a date. Note that is is a **must** to call the function before executing functions e.g. `available-tics` and those in the `counter` namespace.
 
 **Parameters:**
-- date - the starting date of the portfolio
-- init-capital - the desired initial capital for the portfolio
+- date - the starting date of the portfolio, in format "YYYY-MM-DD"
+- init-capital - the desired initial capital for the portfolio (non-negative integer)
 
 **Example**:
 
@@ -32,7 +34,7 @@ This function initialises the portfolio with cash only, user can input the initi
 (init_portfolio "1980-12-1" 1000000)
 
 ;; output:
-<type output here>
+null
 ```
 
 <br>
@@ -65,7 +67,7 @@ This function prints the portfolio in a table format.
 | :asset |  :price | :aprc | :quantity | :tot_val |
 |--------+---------+-------+-----------+----------|
 |   cash |     N/A |   N/A |       N/A |    10295 |
-|   AAPL | 34.1875 | 29.42 |         0 |        0 |
+|   AAPL |   34.19 | 29.42 |         0 |        0 |
 ```
 
 <br>
@@ -84,6 +86,9 @@ This function prints the historical values and daily returns of the portfolio in
 | `date`       | &nbsp;YYYY-MM-DD | &nbsp;Date of record            |
 | `tot_value`     | &nbsp;int, $ | &nbsp;Total value of the portfolio &emsp; |
 | `daily_ret`     | &nbsp;float, % | &nbsp;Daily return of the portfolio &emsp; |
+| `tot_ret`       | &nbsp;float, % | &nbsp;Total return of the portfolio &emsp; |
+| `loan`          | &nbsp;int, $ | &nbsp;Amount of loan made (cumulative) &emsp; |
+| `leverage` | &nbsp;float, % | &nbsp;Leverage ratio given by (total debt / total equity) &emsp; |
 
 <br>
 
@@ -104,11 +109,31 @@ This function prints the historical values and daily returns of the portfolio in
 | 1980-12-31 |     $10295 |      0.00% |
 ```
 
-
 ---
 
-### Summary Statistics
+
+### Evaluation Metrics
 Functions for computing and printing the summary statistics that evaluate the performance of the portfolio. 
+
+<br>
+
+`update-eval-report`
+
+This function updates the evaluation metrics in the record. (see `eval-report` for the list of evaluation metrics computed)
+
+**Parameters:**
+- date - date to update the evaluation metrics, in format "YYYY-MM-DD"
+
+
+**Example**:
+```
+;; update the evaluation metrics today
+(update-eval-report (get-date)) 
+
+;; output:
+null
+```
+
 
 <br>
 
@@ -125,14 +150,9 @@ This function prints the evaluation report that includes all summary statiscs in
 | ------------ | :-----------: | :----------|
 | `date`       | &nbsp;YYYY-MM-DD | &nbsp;Date of record            |
 | `pnl-pt`     | &nbsp;float, $ | &nbsp;Profit and loss per trade &emsp; |
-| `ret-da`     | &nbsp;float, % | &nbsp;Daily return &emsp; |
-| `ret-r`      | &nbsp;float, % | &nbsp;Return of the portfolio calculated with a rolling fixed window of 1 year &emsp; |
-| `ret-tot`    | &nbsp;float, % | &nbsp;Total return of the portfolio, i.e. cumulative daily returns &emsp; |
-| `sharpe-e`   | &nbsp;float, % | &nbsp;Sharpe ratio of the portfolio caculated with an expanding window &emsp; |
-| `sharpe-r`   | &nbsp;float, % | &nbsp;Sharpe ratio of the portfolio calculated with a rolling fixed window of 1 year &emsp; |
+| `sharpe`     | &nbsp;float, % | &nbsp;Sharpe ratio of the portfolio caculated with an expanding window &emsp; |
 | `tot-val`    | &nbsp;int, %   | &nbsp;Total value of the portfolio, including cash and all purchased stocks &emsp; |
-| `vol-e`      | &nbsp;float, % | &nbsp;Volatility of the portfolio caculated with an expanding window &emsp; |
-| `vol-r`      | &nbsp;float, % | &nbsp;Volatility of the portfolio calculated with a rolling fixed window of 1 year &emsp; |
+| `vol`        | &nbsp;float, % | &nbsp;Volatility of the portfolio caculated with an expanding window &emsp; |
 
 <br>
 
@@ -142,18 +162,12 @@ This function prints the evaluation report that includes all summary statiscs in
 
 ;; output:
 
-|      :date | :pnl-pt | :ret-da | :ret-r | :ret-tot | :sharpe-e | :sharpe-r | :tot-val | :vol-e | :vol-r |
-|------------+---------+---------+--------+----------+-----------+-----------+----------+--------+--------|
-| 1980-12-16 |   $7.81 |   0.08% |  0.22% |    0.00% |     1.41% |    24.80% |   $10007 |  0.06% |  0.88% |
-| 1980-12-17 |  $13.37 |   0.19% |  0.96% |    0.00% |     2.81% |    63.55% |   $10026 |  0.10% |  1.51% |
-| 1980-12-18 |  $13.37 |   0.19% |  0.96% |    0.00% |     2.81% |    63.55% |   $10026 |  0.10% |  1.51% |
-| 1980-12-19 |  $32.32 |   0.70% |  0.62% |    0.01% |     3.07% |    12.48% |   $10096 |  0.31% |  4.99% |
-| 1980-12-22 |  $32.32 |   0.70% |  0.62% |    0.01% |     3.07% |    12.48% |   $10096 |  0.31% |  4.99% |
-| 1980-12-23 |  $42.14 |   0.71% |  0.82% |    0.02% |     4.88% |    15.01% |   $10168 |  0.34% |  5.44% |
-| 1980-12-24 |  $42.14 |   0.71% |  0.82% |    0.02% |     4.88% |    15.01% |   $10168 |  0.34% |  5.44% |
-| 1980-12-26 |  $50.84 |   0.84% |  0.68% |    0.03% |     6.80% |    11.66% |   $10254 |  0.37% |  5.86% |
-| 1980-12-29 |  $50.84 |   0.84% |  0.68% |    0.03% |     6.80% |    11.66% |   $10254 |  0.37% |  5.86% |
-| 1980-12-30 |  $49.17 |   0.40% |  0.68% |    0.03% |     8.62% |    12.62% |   $10295 |  0.34% |  5.35% |
+|      :date | :pnl-pt | :sharpe | :tot-val |  :vol |
+|------------+---------+---------+----------+-------|
+| 1980-12-18 |   $6714 |   1.41% |  $106714 | 4.60% |
+| 1981-12-21 |   $2166 |  15.72% |  $106499 | 0.40% |
+| 1982-12-20 |   $1702 |  23.22% |  $108511 | 0.35% |
+| 1983-12-19 |     $95 |   1.80% |  $100571 | 0.32% |
 ```
 
 <br>
@@ -210,36 +224,7 @@ This function returns the total daily return of the portfolio.
 <type output here>
 ```
 
----
 
-### Make Order
-Functions for making an order to trade a stock.
-
-<br>
-
-`order`
-
-This order function allows user to set orders. 
-
-**Parameters:**
-- tic - the ticker of the stock to buy or sell
-- quantity - quantity to buy or sell, +ve means buy, -ve means sell
-- remaining - ???
-
-Example:
-
-```
-(order AAPL 10)
-
-;; output:
-<type output here>
-
-
-(order IBM -10)
-
-;; output:
-<type output here>
-```
 
 ---
 

@@ -6,10 +6,6 @@
     
 <meta name="keywords" content="">
 
-<meta name="description" content="This section is about ns: clojure-backtesting.counter.">
-
-<meta property="og:description" content="This section is about ns: clojure-backtesting.counter.">
-
 <meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-24-counter/" />
 <meta property="og:title" content="Counter" />
 <meta property="og:type" content="article" />
@@ -71,16 +67,42 @@
     <h2>Counter</h2>
 </div>
 <div>
-    <ol class="toc"><li><a href="#global-variables">Global Variables</a></li><li><a href="#global-functions">Global functions</a></li></ol>
-    <hr /><p>This section is about <code>ns: clojure-backtesting.counter</code>.</p><h3 id="global-variables">Global Variables</h3><br /><p><code>date</code></p><p>An atom of type date-time in java-time.</p><p>The date will be updated by calling next-date.</p><p><strong>Only the dates that have entries in the dataset will be valid dates.</strong></p><p><strong>Relevent Functions:</strong></p><br /><p><code>get-date</code></p><p>Get the current date the system is at.</p><ol><li>Input: null</li><li>Output: A string: "yyyy-mm-dd"</li></ol><br /><p><code>next-date</code></p><p>Increment the current date to the nearest next valid date.</p><ol><li>Input: null</li><li>Output: The new date after increment, a string: "yyyy-mm-dd".</li></ol><br /><p><code>tics-info</code></p><p>An atom containing a vector of maps: {:AAPL {:start-date "1980-12-15" :end-date "2000-01-12" :pointer (atom {:num 2934 :reference <code>lazy seq</code>})} ... }</p><p>This variable generally stores the most necessary infomation needed for all the tickers available in the dataset.</p><p><code>:AAPL</code> keyword type: Ticker Name</p><p><code>:start-date</code> string: The earliest date of the ticker.</p><p><code>:end-date</code> string: The latest date of the ticker.</p><p><code>:pointer</code> atom of map: The information of row to which the pointer of the ticker currently points. All the pointers are initially pointing to the first line of the ticker.</p><p><code>:num</code> int: The row number</p><p><code>:reference</code> lazy sequence: The lazy sequence of dateset starting at the pointed line.</p><br /><p><code>available-tics</code></p><p>An atom offering the information which may be needed to build a daily strategy or speed up the program: {:AAPL :pointer (atom {:num 2934 :reference <code>lazy seq</code>}) ... }</p><p>Only stores the tickers that is available 'today'.</p><p>Possible Usages:</p><p><em>Get the number of tickers available</em></p><pre><code class="clojure">(count (keys (deref available-tics)))
-</code></pre><p><em>Get the reference of ticker "AAPL"</em></p><pre><code class="clojure">(get (deref (get (get (dref available-tics) :AAPL) :pointer)) :reference)
-</code></pre><hr /><h3 id="global-functions">Global functions</h3><br /><ol><li></li></ol>
+    
+    <style>
+/* table styles */
+table, th, td {
+  border: 1px solid black;
+  padding: 5px;
+}
+</style><br /><p><code>ns: clojure-backtesting.counter</code></p><p>This namespace features functions for getting basic configurations (date, list of available tickers) in the backtester.</p><hr /><p><strong>Important note:</strong> <em>Only dates that have one or more entries in the dataset will be valid dates.</em></p><br /><p><code>get-date</code></p><p>Return the current date that the system is configured at.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Example:</strong></p><pre><code>(get-date)
+
+;; output:
+"2020-12-10"
+</code></pre><br /><p><code>next-date</code></p><p>Increment the current date to the nearest next valid date in the system.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><pre><code>(next-date)
+
+;; output:
+"2020-12-11"
+</code></pre><br /><p><code>tics-info</code></p><p>An atom that contains a vector of maps. It stores the basic infomation needed for all the tickers available in the dataset.</p><p><strong>Explanation:</strong></p><table><thead><tr><th> Data </th><th align="center"> Format</th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>:AAPL</code></td><td align="center"> keyword</td><td align="left"> Ticker Name</td></tr><tr><td><code>:start-date</code></td><td align="center"> string</td><td align="left"> The earliest date of the ticker  </td></tr><tr><td><code>:end-date</code></td><td align="center"> string</td><td align="left"> The latest date of the ticker  </td></tr><tr><td><code>:pointer</code></td><td align="center"> atom of map</td><td align="left"> Address of the ticker's row information. All pointers are initially pointing to the first line of the ticker.  </td></tr><tr><td><code>:num</code></td><td align="center"> int</td><td align="left"> The row number  </td></tr><tr><td><code>:reference</code></td><td align="center"> lazy sequence</td><td align="left"> The lazy sequence of dateset starting at the pointed line  </td></tr></tbody></table><br /><p><strong>Example:</strong></p><pre><code>(deref tics-info)
+
+;; output:
+{:AAPL {:start-date "1980-12-15" :end-date "2000-01-12" :pointer (atom {:num 2934 :reference &lt;lazy-seq&gt;})} ... }
+</code></pre><br /><p><code>available-tics</code></p><p>Print out a list of tickers that is available on the "current date" (refer to <code>get-date</code>).</p><p><strong>Example:</strong></p><pre><code class="clojure">(deref available-tics)
+
+;; output:
+{:AAPL :pointer (atom {:num 2934 :reference `lazy seq`}) ... }
+</code></pre><br /><p><strong>Possible Usages:</strong></p><p>Get the number of tickers available</p><pre><code class="clojure">(count (keys (deref available-tics)))
+
+;; output:
+</code></pre><p>Get the reference of ticker "AAPL"</p><pre><code class="clojure">(get (deref (get (get (dref available-tics) :AAPL) :pointer)) :reference)
+
+;; output:
+</code></pre>
 </div>
 
 
     <div id="prev-next">
         
-        <a href="/clojure-backtesting-website/posts/2021-01-25-data-management/">&laquo; Data management</a>
+        <a href="/clojure-backtesting-website/posts/2021-01-25-data-management/">&laquo; Data Management</a>
         
         
         <a class="right" href="/clojure-backtesting-website/posts/2021-01-23-order/">Order &raquo;</a>
@@ -113,7 +135,7 @@
                         
                         <li><a href="/clojure-backtesting-website/posts/2021-01-26-preliminaries/">Preliminaries</a></li>
                         
-                        <li><a href="/clojure-backtesting-website/posts/2021-01-25-data-management/">Data management</a></li>
+                        <li><a href="/clojure-backtesting-website/posts/2021-01-25-data-management/">Data Management</a></li>
                         
                     </ul>
                 </div>
