@@ -7,7 +7,7 @@
 ### Setting Up the Playground
 <br>
 
-1. Make sure there is **leiningen** and **jupyter notebook** installing on your local computer. (These two may require further environment dependencies, please refer to their official websites for details.)
+1. Make sure that you have **leiningen** and **jupyter notebook** installed on your local machine. (These two may require further environment dependencies, please refer to their official websites for details.)
 
    - Installation guide for leiningen can be found at:
 
@@ -19,11 +19,11 @@
 
 <br>
 
-2. If you download this project for the first time, go to the project directory and run
+2. If you download this project for the **first time**, go to the repository root directory (i.e. `clojure-backtester/`) in the terminal and run
 
    `make init_clojupyter`
 
-   *Note that this operation may download plenty of required packages, which may take up some time.*
+   *Note that this operation may download a number of required packages, which may take up some time.*
 
 <br>
 
@@ -31,9 +31,11 @@
 
    `make add_kernel`
 
-   (Jupyter notebook should be shut down before this step)
+   (Make sure that you have **terminated** the Jupyter notebook application before running this step)
 
-   When the process is done, you should see:
+   <br>
+
+   When the process is done, you should see the following output:
 
    ```
    Installed jar:      target/uberjar/clojure-backtesting-0.1.0-SNAPSHOT-standalone.jar
@@ -45,7 +47,7 @@
 
 <br>
 
-4. Now when you open the Jupyter Notebook, you will see a kernel named `backtesting_clojure`. You can create new notebook using this kernel.
+4. Now when you restart the Jupyter Notebook application, you could select the kernel named `backtesting_clojure`. You can make use of the backtester by choosing this kernel.
 
 <br>
 

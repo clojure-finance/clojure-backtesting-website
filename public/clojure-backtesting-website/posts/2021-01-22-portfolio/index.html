@@ -2,15 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Clojure Backtesting Documentation: API reference</title>
+    <title>Clojure Backtesting Documentation: Portfolio</title>
     
 <meta name="keywords" content="">
 
-<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2020-11-20-api-reference/" />
-<meta property="og:title" content="API reference" />
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-22-portfolio/" />
+<meta property="og:title" content="Portfolio" />
 <meta property="og:type" content="article" />
 
-    <link rel="canonical" href="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2020-11-20-api-reference/">
+    <link rel="canonical" href="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-22-portfolio/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" rel="stylesheet"
           type="text/css">
@@ -44,7 +44,7 @@
                 <a href="/clojure-backtesting-website/pages/about/">About</a>
                 </li>
                 
-                <li><a href="/clojure-backtesting-website/feed.xml">RSS</a></li>
+                <!-- <li><a href="/clojure-backtesting-website/feed.xml">RSS</a></li> -->
             </ul>
         </div><!--/.nav-collapse -->
     </div><!--/.container-fluid -->
@@ -61,37 +61,20 @@
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <div class="col-lg-6">20 November 2020</div>
+        <div class="col-lg-6">22 January 2021</div>
         
     </div>
-    <h2>API reference</h2>
+    <h2>Portfolio</h2>
 </div>
 <div>
-    <ol class="toc"><li><a href="#read-data">Read Data</a></li><li><a href="#merge-data">Merge Data</a></li><li><a href="#portfolio">Portfolio</a></li><li><a href="#summary-statistics">Summary Statistics</a></li><li><a href="#make-order">Make Order</a></li><li><a href="#plot-graphs">Plot Graphs</a></li></ol>
+    <ol class="toc"><li><a href="#portfolio">Portfolio</a></li><li><a href="#summary-statistics">Summary Statistics</a></li><li><a href="#make-order">Make Order</a></li><li><a href="#plot-graphs">Plot Graphs</a></li></ol>
     <hr /><style>
 /* table styles */
 table, th, td {
   border: 1px solid black;
   padding: 5px;
 }
-</style><h3 id="read-data">Read Data</h3><p>Functions for reading csv data.
-<br /><br /></p><p><code>read-csv-row</code></p><p>Read the CSV file into memeory in a row by row format.</p><p><strong>Parameters:</strong></p><ul><li>file - path to the csv file to be read</li></ul><br /><p>Example:</p><pre><code>(read-csv-row "./resources/CRSP-extract.csv")
-
-;; output:
-&lt;type output here&gt;
-</code></pre><br /><p><code>read-csv-col</code></p><p>Read the CSV file into memeory in a column by column format.</p><p><strong>Parameters:</strong></p><ul><li>file - path to the csv file to be read</li></ul><p>Example:</p><pre><code>(read-csv-col "./resources/CRSP-extract.csv")
-
-;; output:
-&lt;type output here&gt;
-</code></pre><hr /><h3 id="merge-data">Merge Data</h3><p>Functions for merging the csv files either by row or by column.</p><br /><p><code>merge-data-row</code></p><p>Merge 2 CSV files row by row using left-join method, i.e. merging the trading data with the accounting data. Merging that data by row is recommended.</p><p><strong>Parameters:</strong></p><ul><li>file1 - the CRSP trading dataset</li><li>file2 - the COMPUSTAT accounting dataset</li></ul><p><strong>Example</strong>:</p><pre><code>(merge-data-row "./resources/CRSP-extract.csv" "./resources/Compustat-extract.csv")
-
-;; output:
-&lt;type output here&gt;
-</code></pre><br /><p><code>merge-csv-col</code></p><p>Merge 2 CSV files column by column using left-join method, i.e. merging the trading data with the accounting data.</p><p><strong>Parameters:</strong></p><ul><li>file1 - the CRSP trading dataset</li><li>file2 - the COMPUSTAT accounting dataset</li></ul><p><strong>Example</strong>:</p><pre><code># (merge-data-col "./resources/CRSP-extract.csv" "./resources/Compustat-extract.csv")
-
-;; output:
-&lt;type output here&gt;
-</code></pre><hr /><h3 id="portfolio">Portfolio</h3><p>Functions for creating and viewing the portfolio; and for inspecting historical records of portfolio values.</p><br /><p><code>init_portfolio</code></p><p>This function initialises the portfolio with cash only, user can input the initial capital they desire.</p><p><strong>Parameters:</strong></p><ul><li>date - the starting date of the portfolio</li><li>init-capital - the desired initial capital for the portfolio</li></ul><p><strong>Example</strong>:</p><pre><code>(init_portfolio "1980-12-1" 1000000)
+</style><h3 id="portfolio">Portfolio</h3><p>Functions for creating and viewing the portfolio; and for inspecting historical records of portfolio values.</p><br /><p><code>init_portfolio</code></p><p>This function initialises the portfolio with cash only, user can input the initial capital they desire.</p><p><strong>Parameters:</strong></p><ul><li>date - the starting date of the portfolio</li><li>init-capital - the desired initial capital for the portfolio</li></ul><p><strong>Example</strong>:</p><pre><code>(init_portfolio "1980-12-1" 1000000)
 
 ;; output:
 &lt;type output here&gt;
@@ -152,24 +135,29 @@ table, th, td {
 
 ;; output:
 &lt;type output here&gt;
-</code></pre><hr /><h3 id="plot-graphs">Plot Graphs</h3><p>Functions for generating line plots on chosen variables.</p><br /><p><code>plot</code></p><p>This function allows users to plot line charts, single y-axis or dual y-axis. This plotting function works the best with Clojupyter Notebook. For Clojupyter tutorials, please refer to <a href="https://github.com/clojure-finance/clojure-backtesting/tree/master/clojupyter">this page</a>. For Clojupyter Notebook examples, please refer to <a href="https://github.com/clojure-finance/clojure-backtesting/tree/master/examples">here</a>.</p><p><strong>Parameters:</strong></p><ul><li>dataset - data to be plotted. The dataset should be in following format: <code>{:tic "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }</code></li><li>series - series name of the lines, e.g. :tic, which means ticker name</li><li>y1 - primary y axis, e.g. <code>:price</code>, trading price of the stock</li><li>y2 - <strong>optional</strong> secondary y axis, e.g. <code>:return</code>, daily return of the stock</li></ul><br /><p><strong>Example</strong>:</p><pre><code>(plot data :tic :date :price)
-;; output:
-&lt;type output here&gt;
+</code></pre><hr /><h3 id="plot-graphs">Plot Graphs</h3><p>Functions for generating line plots on chosen variables.</p><br /><p><code>plot</code></p><p>This function allows users to plot line charts, single y-axis or dual y-axis. This plotting function works the best with Clojupyter Notebook. For Clojupyter tutorials, please refer to <a href="https://github.com/clojure-finance/clojure-backtesting/tree/master/clojupyter">this page</a>. For Clojupyter Notebook examples, please refer to <a href="https://github.com/clojure-finance/clojure-backtesting/tree/master/examples">here</a>.</p><p><strong>Parameters:</strong></p><ul><li>dataset - data to be plotted. The dataset should be in following format: <code>{:tic "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }</code></li><li>series - series name of the lines, e.g. :tic, which means ticker name</li><li>y1 - primary y axis, e.g. <code>:price</code>, trading price of the stock</li><li>y2 - <strong>optional</strong> secondary y axis, e.g. <code>:return</code>, daily return of the stock</li></ul><br /><p><strong>Example</strong>:</p><p>The file we used in this demonstration can be found <a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/resources/plotting-testing-data.csv">in this link</a>.</p><pre><code>;; define dataset:
+(def multistocks (read-csv-row "../resources/plotting-testing-data.csv"))
 
-(plot data :tic :date :price :return)
-
+;; dataset sample:
+(first multistocks)
+;; output: 
+&lt;{:date "1980-12-15", :tic "AAPL", :price "27.3125", :return "-0.052061"}&gt;
+</code></pre><pre><code>;; plotting the data in single y-axis
+(plot multistocks :tic :date :price)
 ;; output:
-&lt;type output here&gt;
-</code></pre>
+</code></pre><p><img src="https://github.com/clojure-finance/clojure-backtesting-website/blob/master/content/img/Multistocks%20Plot%20Single%20Axis.png" alt="alt text" title="Singel Axis Plot" /></p><pre><code>;; plotting the data in dual y-axis
+(plot multistocks :tic :date :price :return)
+;; output:
+</code></pre><p><img src="https://github.com/clojure-finance/clojure-backtesting-website/blob/master/content/img/Multistocks%20Plot%20Dual%20Axis.png" alt="alt text" title="Dual Axis Plot" /></p>
 </div>
 
 
     <div id="prev-next">
         
-        <a href="/clojure-backtesting-website/posts/2021-01-07-order/">&laquo; Order</a>
+        <a href="/clojure-backtesting-website/posts/2021-01-23-order/">&laquo; Order</a>
         
         
-        <a class="right" href="/clojure-backtesting-website/posts/2020-11-14-get-started/">Get Started &raquo;</a>
+        <a class="right" href="/clojure-backtesting-website/posts/2021-01-21-plotting/">API reference &raquo;</a>
         
     </div>
 
@@ -185,6 +173,7 @@ table, th, td {
             <div id="sidebar">
                 <h3>Links</h3>
                 <ul id="links">
+                    <li><a href="https://github.com/clojure-finance/clojure-backtesting">Github Repository</a></li>
                     <!-- <li><a href="http://cryogenweb.org/docs/home.html">Cryogen Docs</a></li>
                     <li><a href="https://carmen.la/blog/archives/">Carmen's Blog</a></li> -->
                     
@@ -194,11 +183,11 @@ table, th, td {
                     <h3>Recent Posts</h3>
                     <ul>
                         
-                        <li><a href="/clojure-backtesting-website/posts/2021-01-10-Preliminaries/">Preliminaries</a></li>
+                        <li><a href="/clojure-backtesting-website/posts/2021-01-27-get-started/">Get Started</a></li>
                         
-                        <li><a href="/clojure-backtesting-website/posts/2021-01-09-counter/">Counter</a></li>
+                        <li><a href="/clojure-backtesting-website/posts/2021-01-26-preliminaries/">Preliminaries</a></li>
                         
-                        <li><a href="/clojure-backtesting-website/posts/2021-01-08-data-management/">Data management</a></li>
+                        <li><a href="/clojure-backtesting-website/posts/2021-01-25-data-management/">Data management</a></li>
                         
                     </ul>
                 </div>

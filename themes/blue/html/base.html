@@ -41,7 +41,7 @@
                 <a href="{{nav-page.uri}}">{{nav-page.title}}</a>
                 </li>
                 {% endfor %}
-                <li><a href="{{rss-uri}}">RSS</a></li>
+                <!-- <li><a href="{{rss-uri}}">RSS</a></li> -->
             </ul>
         </div><!--/.nav-collapse -->
     </div><!--/.container-fluid -->
@@ -63,6 +63,7 @@
             <div id="sidebar">
                 <h3>Links</h3>
                 <ul id="links">
+                    <li><a href="https://github.com/clojure-finance/clojure-backtesting">Github Repository</a></li>
                     <!-- <li><a href="http://cryogenweb.org/docs/home.html">Cryogen Docs</a></li>
                     <li><a href="https://carmen.la/blog/archives/">Carmen's Blog</a></li> -->
                     {% for page in sidebar-pages %}
