@@ -237,15 +237,14 @@ Functions for generating line plots on chosen variables.
 
 This function allows users to plot line charts. This plotting function works the best with the Jupyter Notebook.
 
-[this page]: https://github.com/clojure-finance/clojure-backtesting/tree/master/clojupyter
-[here]: https://github.com/clojure-finance/clojure-backtesting/tree/master/examples
-
 **Parameters:**
 - dataset - contains a map of data to be plotted. Each map should be in the following format: `{:tic "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }`
 - `series` - series name of the lines to appear in the legend
 - `x` - key that contains that x-axis data in the dataset, e.g. `:date`
 - `y` - key that contains that y-axis data in the datset, e.g. `:portfolio-value`
 - `full-date` - boolean, set to true if you want to have full date (i.e. month, day, year) as labels in the x-axis; if set as false the function would automatically choose the appropariate labels
+
+**Note**: pass full-date as `true` when plotting variables in the **evaluation report**.
 
 <br>
 
