@@ -67,14 +67,14 @@
     <h2>Counter</h2>
 </div>
 <div>
-    <ol class="toc"><li><a href="#global-functions">Global functions</a></li></ol>
+    <ol class="toc"><li><a href="#date-configuration">Date Configuration</a></li><li><a href="#ticker-information">Ticker information</a></li></ol>
     <style>
 /* table styles */
 table, th, td {
   border: 1px solid black;
   padding: 5px;
 }
-</style><br /><p><code>ns: clojure-backtesting.counter</code></p><p>This namespace features functions for getting basic configurations (date, list of available tickers) in the backtester.</p><hr /><p><strong>Important note:</strong> <em>Only dates that have one or more entries in the dataset will be valid dates.</em></p><br /><p><code>get-date</code></p><p>Return the current date that the system is configured at.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Example:</strong></p><pre><code>(get-date)
+</style><br /><p><code>ns: clojure-backtesting.counter</code></p><p>This namespace features functions for getting basic configurations (date, list of available tickers) in the backtester.</p><hr /><h3 id="date-configuration">Date Configuration</h3><p><strong>Important note:</strong> <em>Only dates that have one or more entries in the dataset will be treated as valid dates.</em></p><br /><p><code>get-date</code></p><p>Return the current date that the system is configured at.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Example:</strong></p><pre><code>(get-date)
 
 ;; output:
 "2020-12-10"
@@ -82,7 +82,15 @@ table, th, td {
 
 ;; output:
 "2020-12-11"
-</code></pre><br /><p><code>tics-info</code></p><p>An atom that contains a vector of maps. It stores the basic infomation needed for all the tickers available in the dataset.</p><p><strong>Explanation:</strong></p><table><thead><tr><th> Data </th><th align="center"> Format</th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>:AAPL</code></td><td align="center"> keyword</td><td align="left"> Ticker Name</td></tr><tr><td><code>:start-date</code></td><td align="center"> string</td><td align="left"> The earliest date of the ticker  </td></tr><tr><td><code>:end-date</code></td><td align="center"> string</td><td align="left"> The latest date of the ticker  </td></tr><tr><td><code>:pointer</code></td><td align="center"> atom of map</td><td align="left"> Address of the ticker's row information. All pointers are initially pointing to the first line of the ticker.  </td></tr><tr><td><code>:num</code></td><td align="center"> int</td><td align="left"> The row number  </td></tr><tr><td><code>:reference</code></td><td align="center"> lazy sequence</td><td align="left"> The lazy sequence of dateset starting at the pointed line  </td></tr></tbody></table><br /><p><strong>Example:</strong></p><pre><code>(deref tics-info)
+</code></pre><br /><p><code>look-ahead-i-days</code></p><p>Return the date i days after the given date</p><p><strong>Parameters</strong>:</p><ul><li><code>date</code> - String type: "yyyy-mm-dd"</li><li><code>n</code>: int &gt;= 0</li></ul><p><strong>Example:</strong></p><pre><code>(look-ahead-n-days "2020-01-23" 3)
+
+;; output:
+"2020-01-26"
+</code></pre><br /><p><code>look-n-days-ago</code></p><p>Return the date n days before the given date (opposite of <code>look-ahead-n-days</code>)</p><p><strong>Parameters</strong>:</p><ul><li><code>date</code> - String type: "yyyy-mm-dd"</li><li><code>n</code>: int &gt;= 0</li></ul><p><strong>Example:</strong></p><pre><code>(look-i-days-ago "2020-01-23" 3)
+
+;; output:
+"2020-01-20"
+</code></pre><br /><hr /><h3 id="ticker-information">Ticker information</h3><br /><p><code>tics-info</code></p><p>An atom that contains a vector of maps. It stores the basic infomation needed for all the tickers available in the dataset.</p><p><strong>Explanation:</strong></p><table><thead><tr><th> Data </th><th align="center"> Format</th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>:AAPL</code></td><td align="center"> keyword</td><td align="left"> Ticker Name</td></tr><tr><td><code>:start-date</code></td><td align="center"> string</td><td align="left"> The earliest date of the ticker  </td></tr><tr><td><code>:end-date</code></td><td align="center"> string</td><td align="left"> The latest date of the ticker  </td></tr><tr><td><code>:pointer</code></td><td align="center"> atom of map</td><td align="left"> Address of the ticker's row information. All pointers are initially pointing to the first line of the ticker.  </td></tr><tr><td><code>:num</code></td><td align="center"> int</td><td align="left"> The row number  </td></tr><tr><td><code>:reference</code></td><td align="center"> lazy sequence</td><td align="left"> The lazy sequence of dateset starting at the pointed line  </td></tr></tbody></table><br /><p><strong>Example:</strong></p><pre><code>(deref tics-info)
 
 ;; output:
 {:AAPL {:start-date "1980-12-15" :end-date "2000-01-12" :pointer (atom {:num 2934 :reference &lt;lazy-seq&gt;})} ... }
@@ -95,15 +103,7 @@ table, th, td {
 ;; output:
 ("AAPL" "F" "IBM")
 </code></pre><p>Get the reference of ticker "AAPL"</p><pre><code class="clojure">(get (deref (get (get (dref available-tics) :AAPL) :pointer)) :reference)
-</code></pre><hr /><h3 id="global-functions">Global functions</h3><br /><p><code>look-ahead-i-days</code></p><p>Return the date i days after the given date</p><p><strong>Parameters</strong>:</p><ul><li><code>date</code> - String type: "yyyy-mm-dd"</li><li><code>n</code>: int &gt;= 0</li></ul><p><strong>Example:</strong></p><pre><code>;; to-write
-(look-ahead-n-days "2020-01-23" 3)
-;; returns:
-"2020-01-26"
-</code></pre><br /><p><code>look-n-days-ago</code></p><p>Return the date n days before the given date (opposite of <code>look-ahead-n-days</code>)</p><p><strong>Parameters</strong>:</p><ul><li><code>date</code> - String type: "yyyy-mm-dd"</li><li><code>n</code>: int &gt;= 0</li></ul><p><strong>Example:</strong></p><pre><code>;; to-write
-(look-i-days-ago "2020-01-23" 3)
-;; returns:
-"2020-01-20"
-</code></pre><br />
+</code></pre>
 </div>
 
 

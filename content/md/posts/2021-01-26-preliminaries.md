@@ -6,11 +6,16 @@
 ---
 
 ### Example Dataset Format
+
 <br>
 
+Both `Compustat-extract.csv` and `CRSP-extract.csv` are extracts of the dataset provided by the Center for Research in Security Prices, LLC.
 
+**Link to official documentation**: [http://crsp.org/files/CCM_Database_SAS_ASCII_R_FileFormats.pdf](http://crsp.org/files/CCM_Database_SAS_ASCII_R_FileFormats.pdf)
 
-#### Standard Dataset Format
+---
+
+### Standard Dataset Format
 
 <br>
 
@@ -28,9 +33,9 @@ _Requirements:_
 1. The date in init-portfolio must be a valid date in the dataset.
 2. Ticker should have a unique identifier named TICKER, which should not be null
 
-<br>
+---
 
-#### Large Dataset Format
+### Large Dataset Format
 
 <br>
 
