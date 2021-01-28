@@ -90,22 +90,22 @@ table, th, td {
 
 ;; output:
 "2020-01-20"
-</code></pre><br /><hr /><h3 id="ticker-information">Ticker information</h3><br /><p><code>tics-info</code></p><p>An atom that contains a vector of maps. It stores the basic infomation needed for all the tickers available in the dataset.</p><p><strong>Explanation:</strong></p><table><thead><tr><th> Data </th><th align="center"> Format</th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>:AAPL</code></td><td align="center"> keyword</td><td align="left"> Ticker Name</td></tr><tr><td><code>:start-date</code></td><td align="center"> string</td><td align="left"> The earliest date of the ticker  </td></tr><tr><td><code>:end-date</code></td><td align="center"> string</td><td align="left"> The latest date of the ticker  </td></tr><tr><td><code>:pointer</code></td><td align="center"> atom of map</td><td align="left"> Address of the ticker's row information. All pointers are initially pointing to the first line of the ticker.  </td></tr><tr><td><code>:num</code></td><td align="center"> int</td><td align="left"> The row number  </td></tr><tr><td><code>:reference</code></td><td align="center"> lazy sequence</td><td align="left"> The lazy sequence of dateset starting at the pointed line  </td></tr></tbody></table><br /><p><strong>Example:</strong></p><pre><code>(deref tics-info)
+</code></pre><br /><hr /><h3 id="ticker-information">Ticker information</h3><br /><p><code>tics-info</code></p><p>An atom that contains a vector of maps. It stores the basic infomation needed for all the tickers available in the dataset.</p><p><strong>Explanation:</strong></p><table><thead><tr><th> Data </th><th align="center"> Format</th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>:AAPL</code></td><td align="center"> keyword</td><td align="left"> Ticker Name</td></tr><tr><td><code>:start-date</code></td><td align="center"> string</td><td align="left"> The earliest date of the ticker  </td></tr><tr><td><code>:end-date</code></td><td align="center"> string</td><td align="left"> The latest date of the ticker  </td></tr><tr><td><code>:pointer</code></td><td align="center"> atom of map</td><td align="left"> Address of the ticker's row information. All pointers are initially pointing to the first line of the ticker.  </td></tr><tr><td><code>:num</code></td><td align="center"> int</td><td align="left"> The row number  </td></tr><tr><td><code>:reference</code></td><td align="center"> lazy sequence</td><td align="left"> The lazy sequence of dateset starting at the pointed line  </td></tr></tbody></table><br /><p><strong>Example:</strong></p><pre><code class="clojure">(deref tics-info)
 
 ;; output:
-{:AAPL {:start-date "1980-12-15" :end-date "2000-01-12" :pointer (atom {:num 2934 :reference &lt;lazy-seq&gt;})} ... }
+{"AAPL" {:start-date "1980-12-15" :end-date "2000-01-12" :pointer (atom {:num 2934 :reference &lt;lazy-seq&gt;})} ... }
 </code></pre><br /><p><code>available-tics</code></p><p>Print out a list of tickers that is available on the "current date" (refer to <code>get-date</code>).</p><p><strong>Example:</strong></p><pre><code class="clojure">(deref available-tics)
 
 ;; output:
-{:AAPL :pointer (atom {:num 2934 :reference `lazy seq`}) ... }
+{"AAPL" {:num 2934 :reference &lt;lazy seq&gt;} ... }
 </code></pre><br /><p><strong>Possible usages:</strong></p><ol><li><p><em>Get the list of tickers available on current date.</em></p><pre><code class="clojure">(keys (deref available-tics))
 
 ;; output:
 ("AAPL" "F" "IBM")
-</code></pre></li><li><p><em>Get the reference of ticker "AAPL"</em></p><pre><code class="clojure">(get (deref (get (get (dref available-tics) :AAPL) :pointer)) :reference)
+</code></pre></li><li><p><em>Get the reference of ticker "AAPL"</em></p><pre><code class="clojure">(get (get (dref available-tics) :AAPL) :reference)
 
 ;; output:
-15
+({:ewretd "-0.03238", :HSICCD "7379", :CUM-RET 0.7749812652956042, :CFACSHR "4", :date "1981-01-07", :INIT-PRICE 350.0, :OPENPRC "", :SECSTAT "R", :SHROUT "583.807", :TICKER "IBM", :APRC 759.6930117568751, :COMNAM "INTERNATIONAL BUSINESS MACHS COR"...}...)
 </code></pre></li></ol>
 </div>
 
