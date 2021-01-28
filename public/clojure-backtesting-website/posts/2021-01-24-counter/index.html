@@ -67,7 +67,7 @@
     <h2>Counter</h2>
 </div>
 <div>
-    
+    <ol class="toc"><li><a href="#global-functions">Global functions</a></li></ol>
     <style>
 /* table styles */
 table, th, td {
@@ -94,9 +94,15 @@ table, th, td {
 
 ;; output:
 </code></pre><p>Get the reference of ticker "AAPL"</p><pre><code class="clojure">(get (deref (get (get (dref available-tics) :AAPL) :pointer)) :reference)
-
-;; output:
-</code></pre>
+</code></pre><hr /><h3 id="global-functions">Global functions</h3><br /><p><code>look-ahead-i-days</code></p><p>Return the date i days after the given date</p><p><strong>Parameters</strong>:</p><ul><li><code>date</code> - String type: "yyyy-mm-dd"</li><li><code>n</code>: int &gt;= 0</li></ul><p><strong>Example:</strong></p><pre><code>;; to-write
+(look-ahead-n-days "2020-01-23" 3)
+;; returns:
+"2020-01-26"
+</code></pre><br /><p><code>look-n-days-ago</code></p><p>Return the date n days before the given date (opposite of <code>look-ahead-n-days</code>)</p><p><strong>Parameters</strong>:</p><ul><li><code>date</code> - String type: "yyyy-mm-dd"</li><li><code>n</code>: int &gt;= 0</li></ul><p><strong>Example:</strong></p><pre><code>;; to-write
+(look-i-days-ago "2020-01-23" 3)
+;; returns:
+"2020-01-20"
+</code></pre><br />
 </div>
 
 
