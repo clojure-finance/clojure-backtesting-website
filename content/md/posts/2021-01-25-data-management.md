@@ -109,11 +109,11 @@ Return a vector of map containing the required information for a given period **
 *Optional parameters (Strongly recommended):*
 
 - `pre` - vector: the previous result
-- `reference`: lazy: the dataset to refer to
+- `reference`: lazy: the dataset to refer to, by default, (deref data-set)
 
 *Remarks:*
 
-1. Use `pre` or `reference` only if the dataset is subject to the 'standard format' (refer to Dataset).
+1. Use `pre` to speed up the infomation retrieving.
 
 2. The logic of the function when `pre` is given is that if the length of the `pre` vector is less than `n`. The function will append one more record to the vector if matched. When the length is equal to `n`, the function will remove the first element of the `pre` and append a new matching result to the tail. And the function will only search in the context of `reference`, so do make sure that the reference given to it is correct.
 
