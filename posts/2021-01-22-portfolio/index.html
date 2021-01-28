@@ -67,25 +67,25 @@
     <h2>Portfolio</h2>
 </div>
 <div>
-    <ol class="toc"><li><a href="#portfolio">Portfolio</a></li><li><a href="#summary-statistics">Summary Statistics</a></li><li><a href="#make-order">Make Order</a></li><li><a href="#plot-graphs">Plot Graphs</a></li></ol>
-    <hr /><style>
+    <ol class="toc"><li><a href="#portfolio-manipulation">Portfolio Manipulation</a></li><li><a href="#evaluation-metrics">Evaluation Metrics</a></li><li><a href="#plot-graphs">Plot Graphs</a></li></ol>
+    <style>
 /* table styles */
 table, th, td {
   border: 1px solid black;
   padding: 5px;
 }
-</style><h3 id="portfolio">Portfolio</h3><p>Functions for creating and viewing the portfolio; and for inspecting historical records of portfolio values.</p><br /><p><code>init_portfolio</code></p><p>This function initialises the portfolio with cash only, user can input the initial capital they desire.</p><p><strong>Parameters:</strong></p><ul><li>date - the starting date of the portfolio</li><li>init-capital - the desired initial capital for the portfolio</li></ul><p><strong>Example</strong>:</p><pre><code>(init_portfolio "1980-12-1" 1000000)
+</style><br /><h3 id="portfolio-manipulation">Portfolio Manipulation</h3><p>Functions for creating and viewing the portfolio; and for inspecting historical records of portfolio values.</p><hr /><p><code>init_portfolio</code></p><p>This function initialises the portfolio with cash and a date. Note that is is a <strong>must</strong> to call the function before executing functions e.g. <code>available-tics</code> and those in the <code>counter</code> namespace.</p><p><strong>Parameters:</strong></p><ul><li><code>date</code> - the starting date of the portfolio, in format "YYYY-MM-DD"</li><li><code>init-capital</code> - the desired initial capital for the portfolio (non-negative integer)</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(init_portfolio "1980-12-1" 1000000)
 
 ;; output:
-&lt;type output here&gt;
-</code></pre><br /><p><code>view_portfolio</code></p><p>This function prints the portfolio in a table format.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> Column </th><th align="center"> Format  </th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>asset</code></td><td align="center"> string</td><td align="left"> Cash or ticker of the stock</td></tr><tr><td><code>price</code></td><td align="center"> float, $</td><td align="left"> Price of the stock  </td></tr><tr><td><code>aprc</code></td><td align="center"> float, %</td><td align="left"> Adjusted price of the stock  </td></tr><tr><td><code>quantity</code></td><td align="center"> int or float</td><td align="left"> Quantity of the stock owned  </td></tr><tr><td><code>tot_val</code></td><td align="center"> int, $</td><td align="left"> Total value of the stock  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code>(view_portfolio)
+null
+</code></pre><br /><p><code>view_portfolio</code></p><p>This function prints the portfolio in a table format.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> Column </th><th align="center"> Format  </th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>asset</code></td><td align="center"> string</td><td align="left"> Cash or ticker of the stock</td></tr><tr><td><code>price</code></td><td align="center"> float, $</td><td align="left"> Price of the stock  </td></tr><tr><td><code>aprc</code></td><td align="center"> float, %</td><td align="left"> Adjusted price of the stock  </td></tr><tr><td><code>quantity</code></td><td align="center"> int or float</td><td align="left"> Quantity of the stock owned  </td></tr><tr><td><code>tot_val</code></td><td align="center"> int, $</td><td align="left"> Total value of the stock  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code class="clojure">(view_portfolio)
 
 ;; output:
 | :asset |  :price | :aprc | :quantity | :tot_val |
 |--------+---------+-------+-----------+----------|
 |   cash |     N/A |   N/A |       N/A |    10295 |
-|   AAPL | 34.1875 | 29.42 |         0 |        0 |
-</code></pre><br /><p><code>view_portfolio_record</code></p><p>This function prints the historical values and daily returns of the portfolio in a table format.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> Column </th><th align="center"> Format  </th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>date</code></td><td align="center"> YYYY-MM-DD</td><td align="left"> Date of record</td></tr><tr><td><code>tot_value</code></td><td align="center"> int, $</td><td align="left"> Total value of the portfolio  </td></tr><tr><td><code>daily_ret</code></td><td align="center"> float, %</td><td align="left"> Daily return of the portfolio  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code>(view_portfolio_record)
+|   AAPL |   34.19 | 29.42 |         0 |        0 |
+</code></pre><br /><p><code>view_portfolio_record</code></p><p>This function prints the historical values and daily returns of the portfolio in a table format.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> Column </th><th align="center"> Format  </th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>date</code></td><td align="center"> YYYY-MM-DD</td><td align="left"> Date of record</td></tr><tr><td><code>tot_value</code></td><td align="center"> int, $</td><td align="left"> Total value of the portfolio  </td></tr><tr><td><code>daily_ret</code></td><td align="center"> float, %</td><td align="left"> Daily return of the portfolio  </td></tr><tr><td><code>tot_ret</code></td><td align="center"> float, %</td><td align="left"> Total return of the portfolio  </td></tr><tr><td><code>loan</code></td><td align="center"> int, $</td><td align="left"> Amount of loan made (cumulative)  </td></tr><tr><td><code>leverage</code></td><td align="center"> float, %</td><td align="left"> Leverage ratio given by (total debt / total equity)  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code class="clojure">(view_portfolio_record)
 
 ;; output:
 |      :date | :tot_value | :daily_ret |
@@ -97,58 +97,47 @@ table, th, td {
 | 1980-12-24 |     $10168 |      0.01% |
 | 1980-12-29 |     $10254 |      0.01% |
 | 1980-12-31 |     $10295 |      0.00% |
-</code></pre><hr /><h3 id="summary-statistics">Summary Statistics</h3><p>Functions for computing and printing the summary statistics that evaluate the performance of the portfolio.</p><br /><p><code>eval-report</code></p><p>This function prints the evaluation report that includes all summary statiscs in a table format.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> Column </th><th align="center"> Format  </th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>date</code></td><td align="center"> YYYY-MM-DD</td><td align="left"> Date of record</td></tr><tr><td><code>pnl-pt</code></td><td align="center"> float, $</td><td align="left"> Profit and loss per trade  </td></tr><tr><td><code>ret-da</code></td><td align="center"> float, %</td><td align="left"> Daily return  </td></tr><tr><td><code>ret-r</code></td><td align="center"> float, %</td><td align="left"> Return of the portfolio calculated with a rolling fixed window of 1 year  </td></tr><tr><td><code>ret-tot</code></td><td align="center"> float, %</td><td align="left"> Total return of the portfolio, i.e. cumulative daily returns  </td></tr><tr><td><code>sharpe-e</code></td><td align="center"> float, %</td><td align="left"> Sharpe ratio of the portfolio caculated with an expanding window  </td></tr><tr><td><code>sharpe-r</code></td><td align="center"> float, %</td><td align="left"> Sharpe ratio of the portfolio calculated with a rolling fixed window of 1 year  </td></tr><tr><td><code>tot-val</code></td><td align="center"> int, %</td><td align="left"> Total value of the portfolio, including cash and all purchased stocks  </td></tr><tr><td><code>vol-e</code></td><td align="center"> float, %</td><td align="left"> Volatility of the portfolio caculated with an expanding window  </td></tr><tr><td><code>vol-r</code></td><td align="center"> float, %</td><td align="left"> Volatility of the portfolio calculated with a rolling fixed window of 1 year  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code>(eval-report)
+</code></pre><hr /><h3 id="evaluation-metrics">Evaluation Metrics</h3><p>Functions for computing and printing the summary statistics that evaluate the performance of the portfolio.</p><br /><p><code>update-eval-report</code></p><p>This function updates the evaluation metrics in the record. (see <code>eval-report</code> for the list of evaluation metrics computed)</p><p><strong>Parameters:</strong></p><ul><li><code>date</code> - date to update the evaluation metrics, in format "YYYY-MM-DD"</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">;; update the evaluation metrics today
+(update-eval-report (get-date)) 
+
+;; output:
+null
+</code></pre><br /><p><code>eval-report</code></p><p>This function prints the evaluation report that includes all summary statiscs in a table format.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> Column </th><th align="center"> Format  </th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>date</code></td><td align="center"> YYYY-MM-DD</td><td align="left"> Date of record</td></tr><tr><td><code>pnl-pt</code></td><td align="center"> float, $</td><td align="left"> Profit and loss per trade  </td></tr><tr><td><code>sharpe</code></td><td align="center"> float, %</td><td align="left"> Sharpe ratio of the portfolio caculated with an expanding window  </td></tr><tr><td><code>tot-val</code></td><td align="center"> int, %</td><td align="left"> Total value of the portfolio, including cash and all purchased stocks  </td></tr><tr><td><code>vol</code></td><td align="center"> float, %</td><td align="left"> Volatility of the portfolio caculated with an expanding window  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code class="clojure">(eval-report)
 
 ;; output:
 
-|      :date | :pnl-pt | :ret-da | :ret-r | :ret-tot | :sharpe-e | :sharpe-r | :tot-val | :vol-e | :vol-r |
-|------------+---------+---------+--------+----------+-----------+-----------+----------+--------+--------|
-| 1980-12-16 |   $7.81 |   0.08% |  0.22% |    0.00% |     1.41% |    24.80% |   $10007 |  0.06% |  0.88% |
-| 1980-12-17 |  $13.37 |   0.19% |  0.96% |    0.00% |     2.81% |    63.55% |   $10026 |  0.10% |  1.51% |
-| 1980-12-18 |  $13.37 |   0.19% |  0.96% |    0.00% |     2.81% |    63.55% |   $10026 |  0.10% |  1.51% |
-| 1980-12-19 |  $32.32 |   0.70% |  0.62% |    0.01% |     3.07% |    12.48% |   $10096 |  0.31% |  4.99% |
-| 1980-12-22 |  $32.32 |   0.70% |  0.62% |    0.01% |     3.07% |    12.48% |   $10096 |  0.31% |  4.99% |
-| 1980-12-23 |  $42.14 |   0.71% |  0.82% |    0.02% |     4.88% |    15.01% |   $10168 |  0.34% |  5.44% |
-| 1980-12-24 |  $42.14 |   0.71% |  0.82% |    0.02% |     4.88% |    15.01% |   $10168 |  0.34% |  5.44% |
-| 1980-12-26 |  $50.84 |   0.84% |  0.68% |    0.03% |     6.80% |    11.66% |   $10254 |  0.37% |  5.86% |
-| 1980-12-29 |  $50.84 |   0.84% |  0.68% |    0.03% |     6.80% |    11.66% |   $10254 |  0.37% |  5.86% |
-| 1980-12-30 |  $49.17 |   0.40% |  0.68% |    0.03% |     8.62% |    12.62% |   $10295 |  0.34% |  5.35% |
-</code></pre><br /><p><code>portfolio-total</code></p><p>This function returns the current total value of the portfolio.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p>Example &amp; output:</p><pre><code>(portfolio-total)
-
-;; output:
-&lt;type output here&gt;
-</code></pre><br /><p><code>portfolio-daily-ret</code></p><p>This function returns the current daily return of the portfolio.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p>Example:</p><pre><code>(portfolio-daily-ret)
+|      :date | :pnl-pt | :sharpe | :tot-val |  :vol |
+|------------+---------+---------+----------+-------|
+| 1980-12-18 |   $6714 |   1.41% |  $106714 | 4.60% |
+| 1981-12-21 |   $2166 |  15.72% |  $106499 | 0.40% |
+| 1982-12-20 |   $1702 |  23.22% |  $108511 | 0.35% |
+| 1983-12-19 |     $95 |   1.80% |  $100571 | 0.32% |
+</code></pre><br /><p><code>portfolio-total</code></p><p>This function returns the current total value of the portfolio.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p>Example &amp; output:</p><pre><code class="clojure">(portfolio-total)
 
 ;; output:
 &lt;type output here&gt;
-</code></pre><br /><p><code>portfolio-total-ret</code></p><p>This function returns the total daily return of the portfolio.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Example</strong>:</p><pre><code>(portfolio-total-ret)
+</code></pre><br /><p><code>portfolio-daily-ret</code></p><p>This function returns the current daily return of the portfolio.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p>Example:</p><pre><code class="clojure">(portfolio-daily-ret)
 
 ;; output:
 &lt;type output here&gt;
-</code></pre><hr /><h3 id="make-order">Make Order</h3><p>Functions for making an order to trade a stock.</p><br /><p><code>order</code></p><p>This order function allows user to set orders.</p><p><strong>Parameters:</strong></p><ul><li>tic - the ticker of the stock to buy or sell</li><li>quantity - quantity to buy or sell, +ve means buy, -ve means sell</li><li>remaining - ???</li></ul><p>Example:</p><pre><code>(order AAPL 10)
+</code></pre><br /><p><code>portfolio-total-ret</code></p><p>This function returns the total daily return of the portfolio.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(portfolio-total-ret)
 
 ;; output:
 &lt;type output here&gt;
+</code></pre><hr /><h3 id="plot-graphs">Plot Graphs</h3><p>Functions for generating line plots on chosen variables.</p><br /><p><code>plot</code></p><p>This function allows users to plot line charts. This plotting function works the best with the Jupyter Notebook.</p><p><strong>Parameters:</strong></p><ul><li>dataset - contains a map of data to be plotted. Each map should be in the following format: <code>{:tic "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }</code></li><li><code>series</code> - series name of the lines to appear in the legend</li><li><code>x</code> - key that contains that x-axis data in the dataset, e.g. <code>:date</code></li><li><code>y</code> - key that contains that y-axis data in the datset, e.g. <code>:portfolio-value</code></li><li><code>full-date</code> - boolean, set to true if you want to have full date (i.e. month, day, year) as labels in the x-axis; if set as false the function would automatically choose the appropariate labels</li></ul><p><strong>Note</strong>: pass full-date as <code>true</code> when plotting variables in the <strong>evaluation report</strong>.</p><br /><p><strong>Example</strong>:</p><pre><code class="clojure">;; data to print: an atom of maps
 
+(first data) ;; print first row
+;; output
+;; {:date "1980-12-16", :pnl-pt 7.806415917975755, :sharpe 1.4142135623730954, :tot-val 10007.806415917976, :vol 0.05517816194058409}
 
-(order IBM -10)
+;; Add legend name to series
+(def data-to-plot
+ (map #(assoc % :plot "sharpe")
+  data))
 
-;; output:
-&lt;type output here&gt;
-</code></pre><hr /><h3 id="plot-graphs">Plot Graphs</h3><p>Functions for generating line plots on chosen variables.</p><br /><p><code>plot</code></p><p>This function allows users to plot line charts, single y-axis or dual y-axis. This plotting function works the best with Clojupyter Notebook. For Clojupyter tutorials, please refer to <a href="https://github.com/clojure-finance/clojure-backtesting/tree/master/clojupyter">this page</a>. For Clojupyter Notebook examples, please refer to <a href="https://github.com/clojure-finance/clojure-backtesting/tree/master/examples">here</a>.</p><p><strong>Parameters:</strong></p><ul><li>dataset - data to be plotted. The dataset should be in following format: <code>{:tic "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }</code></li><li>series - series name of the lines, e.g. :tic, which means ticker name</li><li>y1 - primary y axis, e.g. <code>:price</code>, trading price of the stock</li><li>y2 - <strong>optional</strong> secondary y axis, e.g. <code>:return</code>, daily return of the stock</li></ul><br /><p><strong>Example</strong>:</p><p>The file we used in this demonstration can be found <a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/resources/plotting-testing-data.csv">in this link</a>.</p><pre><code>;; define dataset:
-(def multistocks (read-csv-row "../resources/plotting-testing-data.csv"))
-
-;; dataset sample:
-(first multistocks)
-;; output: 
-&lt;{:date "1980-12-15", :tic "AAPL", :price "27.3125", :return "-0.052061"}&gt;
-</code></pre><pre><code>;; plotting the data in single y-axis
-(plot multistocks :tic :date :price)
-;; output:
-</code></pre><p><img src="https://github.com/clojure-finance/clojure-backtesting-website/blob/master/content/img/Multistocks%20Plot%20Single%20Axis.png" alt="alt text" title="Singel Axis Plot" /></p><pre><code>;; plotting the data in dual y-axis
-(plot multistocks :tic :date :price :return)
-;; output:
-</code></pre><p><img src="https://github.com/clojure-finance/clojure-backtesting-website/blob/master/content/img/Multistocks%20Plot%20Dual%20Axis.png" alt="alt text" title="Dual Axis Plot" /></p>
+;; Call plotting function
+(plot data-to-plot :plot :date :vol true)
+</code></pre><br /><p>Output:</p><br /><p><img src="/clojure-backtesting-website/img/plot-sharpe.png" alt="image" /></p>
 </div>
 
 
@@ -157,7 +146,7 @@ table, th, td {
         <a href="/clojure-backtesting-website/posts/2021-01-23-order/">&laquo; Order</a>
         
         
-        <a class="right" href="/clojure-backtesting-website/posts/2021-01-21-plotting/">API reference &raquo;</a>
+        <a class="right" href="/clojure-backtesting-website/posts/2020-12-31-example-golden-cross/">Example - Golden Cross &raquo;</a>
         
     </div>
 
@@ -187,7 +176,7 @@ table, th, td {
                         
                         <li><a href="/clojure-backtesting-website/posts/2021-01-26-preliminaries/">Preliminaries</a></li>
                         
-                        <li><a href="/clojure-backtesting-website/posts/2021-01-25-data-management/">Data management</a></li>
+                        <li><a href="/clojure-backtesting-website/posts/2021-01-25-data-management/">Data Management</a></li>
                         
                     </ul>
                 </div>

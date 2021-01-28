@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Clojure Backtesting Documentation: Data management</title>
+    <title>Clojure Backtesting Documentation: Data Management</title>
     
 <meta name="keywords" content="">
 
@@ -11,7 +11,7 @@
 <meta property="og:description" content="ns: clojure-backtesting.data-management">
 
 <meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-25-data-management/" />
-<meta property="og:title" content="Data management" />
+<meta property="og:title" content="Data Management" />
 <meta property="og:type" content="article" />
 
     <link rel="canonical" href="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-25-data-management/">
@@ -68,45 +68,38 @@
         <div class="col-lg-6">25 January 2021</div>
         
     </div>
-    <h2>Data management</h2>
+    <h2>Data Management</h2>
 </div>
 <div>
-    <ol class="toc"><li><a href="#read-data">Read Data</a></li><li><a href="#search-data">Search Data</a></li><li><a href="#merge-data">Merge Data</a></li></ol>
-    <br /><p><code>ns: clojure-backtesting.data-management</code></p><p>This namespace features functions for csv data manipulation.</p><hr /><h3 id="read-data">Read Data</h3><p>Functions for reading csv file.</p><br /><p><code>get-set</code></p><p>Return a set of ticker and date combinations.</p><p><strong>Parameters:</strong></p><ul><li>data - A row based dataset</li></ul><p><strong>Example:</strong></p><pre><code>;; to-check
-(get-set "./resources/CRSP-extract.csv")
+    <ol class="toc"><li><a href="#read-data">Read Data</a></li><li><a href="#search-data">Search Data</a></li><li><a href="#merge-data-not-recommended-potential-bugs">Merge Data <span style="color:red">(Not recommended, potential bugs)</span></a></li></ol>
+    <br /><p><code>ns: clojure-backtesting.data-management</code></p><p>This namespace features functions for csv data manipulation.</p><hr /><h3 id="read-data">Read Data</h3><p>Functions for reading csv file.</p><br /><p><code>get-set</code></p><p>Return a set of ticker and date combinations.</p><p><strong>Parameters:</strong></p><ul><li><code>data</code> - A row based dataset</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">(get-set "./resources/CRSP-extract.csv")
 
 ;; output:
-;; A set of maps
+;; a set of maps
 {{:tic "AAPL" :datadate "2020-12-10"}}
-</code></pre><br /><p><code>read-csv-row</code></p><p>Read the CSV file into memeory in a row by row format.</p><p><strong>Parameters:</strong></p><ul><li>file - path to the csv file to be read</li></ul><p><strong>Example:</strong></p><pre><code>(read-csv-row "./resources/CRSP-extract.csv")
+</code></pre><br /><p><code>read-csv-row</code></p><p>Read the CSV file into memeory in a row by row format.</p><p><strong>Parameters:</strong></p><ul><li><code>file</code> - path to the csv file to be read</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">(read-csv-row "./resources/CRSP-extract.csv")
 
 ;; output:
-&lt;{{:ewretd "0.002093", :HSICCD "3571", :CFACSHR "56", :date "1980-12-15", :OPENPRC "", :SECSTAT "R", :SHROUT "55.136", :TICKER "AAPL", :COMNAM "APPLE COMPUTER INC", :PRIMEXCH "Q", :TRDSTAT "A", :HEXCD "3", :RET "-0.052061", :EXCHCD "3", :CFACPR "56", :DLRET "", :PRC "27.3125", :vwretd "0.001605", :CUSIP "03783310", :NCUSIP "03783310", :PERMCO "00007", :PERMNO "14593", :SHRCD "11", :sprtrn "0.001702", :VOL "", :SICCD "3573"}...}&gt;
-</code></pre><br /><p><code>read-csv-col</code></p><p>Read the CSV file into memeory in a column by column format.</p><p><strong>Parameters:</strong></p><ul><li>file - path to the csv file to be read</li></ul><p>Example:</p><pre><code>(read-csv-col "./resources/CRSP-extract.csv")
+{{:ewretd "0.002093", :HSICCD "3571", :CFACSHR "56", :date "1980-12-15", :OPENPRC "", :SECSTAT "R", :SHROUT "55.136", :TICKER "AAPL", :COMNAM "APPLE COMPUTER INC", :PRIMEXCH "Q", :TRDSTAT "A", :HEXCD "3", :RET "-0.052061", :EXCHCD "3", :CFACPR "56", :DLRET "", :PRC "27.3125", :vwretd "0.001605", :CUSIP "03783310", :NCUSIP "03783310", :PERMCO "00007", :PERMNO "14593", :SHRCD "11", :sprtrn "0.001702", :VOL "", :SICCD "3573"}...}
+</code></pre><br /><p><code>read-csv-col</code></p><p>Read the CSV file into memeory in a column by column format.</p><p><strong>Parameters:</strong></p><ul><li><code>file</code> - path to the csv file to be read</li></ul><p>Example:</p><pre><code class="clojure">(read-csv-col "./resources/CRSP-extract.csv")
 
 ;; output:
-&lt;[[:ewretd ["0.002093" "-0.001389" "0.007502" "0.006936" "0.008056" "0.007997" "0.001412" "0.004105" "0.004242" "-0.005709" "0.001174" "0.009927" "0.009458" "0.010594" "0.005368" "-0.03238" "-0.00516" "0.008907" "0.004471" "-0.000664" "0.005702" "0.004183" "0.005738" "0.002124" "-0.010683" "-0.002868" "-0.004657" "0.001699" "-0.003975" "0.004729" "0.001001" "0.002597" "0.001105" "-0.018646" "0.001114" "0.004765" "0.007917" "0.007249" "-0.00282" "-0.001213" "-0.002401" "-0.004518" "-0.001726" "-5.5e-05" "0.001811" "-0.008043" "-0.001957" "0.001809" "0.002916" "-3.4e-05" "0.008656" "0.008212" "0.003819" "-0.001614" "0.002521" "0.001221" "0.002958" "0.003551" "-0.002266" "-0.001807" "0.011681" "0.005793" "0.006435" "-0.000237" "0.004204" "0.003192" "0.008718" "0.005984" "-0.000118" "0.009045" "0.001948" "-0.002487" "-0.000217" "0.007541" "0.005162" "0.002897" "0.002749" "-0.006616" "0.001807" "0.003888" "0.005053" "0.004563" "-0.005292" "-0.003674" "0.006399" "0.008239" "0.003353" "-0.002742" "0.000864" "0.002988" "0.006598" "0.001707" "-0.00814" "-0.005957" "0.00279" "-0.000297" "-0.013762" "-0.006381" "0.002456" "0.005405" "0.004743" "-0.007511" "0.000823" "0.002881" "0.005549" "0.005913" "0.001988" "-0.002401" "0.00334" "0.001324" "0.003778" "0.00442" "0.006344" "0.004271" "0.003653" "0.000907" "-0.011098" "-0.003048" "0.00273" "0.004895" "-8.9e-05" "-0.003319" "0.001876" "0.00827" "0.003869" "0.001707" "-0.008553" "0.000689" "-0.004752" "0.00258" "-0.001013" "0.003547" "-0.001183" "0.001235" "0.000481" "-0.005352" "-0.007092" "-0.006769" "-0.006941" "-0.0139" "-0.004077" "-0.000875" "0.006533" "0.004753" "0.001068" "-0.004419" "0.004426" "0.003234" "0.00429" "-0.012409" "-0.008818" "-0.00373" "-0.002009" "0.006128" "0.004585" "-0.002349" "0.001375" "0.004231" "0.006598"...]...]&gt;
-</code></pre><hr /><h3 id="search-data">Search Data</h3><p>Functions for retreiving rows based on certain conditions.</p><br /><p><code>last-quar</code></p><p>Return the last quarter of the given date of row. For instance, if the date of row is "2020-12-09", the returned date will be "2020-9-31".</p><p><strong>Parameters:</strong></p><ul><li>data - one row of the CRSP dataset</li></ul><p><strong>Example:</strong></p><pre><code>;; to-write
-(last-quar)
+[[:ewretd ["0.002093" "-0.001389" "0.007502" "0.006936" "0.008056" "0.007997" "0.001412" "0.004105" "0.004242" "-0.005709" "0.001174" "0.009927" "0.009458" "0.010594" "0.005368" "-0.03238" "-0.00516" "0.008907" "0.004471" "-0.000664" "0.005702" "0.004183" "0.005738" "0.002124" "-0.010683" "-0.002868" "-0.004657" "0.001699" "-0.003975" "0.004729" "0.001001" "0.002597" "0.001105" "-0.018646" "0.001114" "0.004765" "0.007917" "0.007249" "-0.00282" "-0.001213" "-0.002401" "-0.004518" "-0.001726" "-5.5e-05" "0.001811" "-0.008043" "-0.001957" "0.001809" "0.002916" "-3.4e-05" "0.008656" "0.008212" "0.003819" "-0.001614" "0.002521" "0.001221" "0.002958" "0.003551" "-0.002266" "-0.001807" "0.011681" "0.005793" "0.006435" "-0.000237" "0.004204" "0.003192" "0.008718" "0.005984" "-0.000118" "0.009045" "0.001948" "-0.002487" "-0.000217" "0.007541" "0.005162" "0.002897" "0.002749" "-0.006616" "0.001807" "0.003888" "0.005053" "0.004563" "-0.005292" "-0.003674" "0.006399" "0.008239" "0.003353" "-0.002742" "0.000864" "0.002988" "0.006598" "0.001707" "-0.00814" "-0.005957" "0.00279" "-0.000297" "-0.013762" "-0.006381" "0.002456" "0.005405" "0.004743" "-0.007511" "0.000823" "0.002881" "0.005549" "0.005913" "0.001988" "-0.002401" "0.00334" "0.001324" "0.003778" "0.00442" "0.006344" "0.004271" "0.003653" "0.000907" "-0.011098" "-0.003048" "0.00273" "0.004895" "-8.9e-05" "-0.003319" "0.001876" "0.00827" "0.003869" "0.001707" "-0.008553" "0.000689" "-0.004752" "0.00258" "-0.001013" "0.003547" "-0.001183" "0.001235" "0.000481" "-0.005352" "-0.007092" "-0.006769" "-0.006941" "-0.0139" "-0.004077" "-0.000875" "0.006533" "0.004753" "0.001068" "-0.004419" "0.004426" "0.003234" "0.00429" "-0.012409" "-0.008818" "-0.00373" "-0.002009" "0.006128" "0.004585" "-0.002349" "0.001375" "0.004231" "0.006598"...]...]
+</code></pre><hr /><h3 id="search-data">Search Data</h3><p>Functions for retreiving rows based on certain conditions.</p><br /><p><code>last-quar</code></p><p>Return the last quarter of the given date of row. For instance, if the date of row is "2020-12-09", the returned date will be "2020-09-31".</p><p><strong>Parameters:</strong></p><ul><li><code>data</code> - one row of the CRSP dataset</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">(last-quar "2020-12-09")
 
 ;; output:
-;; a map
-{:tic "AAPL" :datadate""}
-</code></pre><br /><p><code>look-n-days-ago</code></p><p>Return the date n days before the given date</p><p><strong>Parameters</strong>:</p><ul><li><code>date</code> - String type: "yyyy-mm-dd"</li><li><code>n</code>: int &gt;= 0</li></ul><p><strong>Example:</strong></p><pre><code>;; to-write
-
-</code></pre><br /><p><code>get-prev-n-days</code></p><p>Return a vector of map containing the required information for a given period <strong>from the current date (refer to ns:counter for the counting mechanism of the system)</strong></p><p><strong>Parameters</strong>:</p><ul><li><code>key</code>- keyword type: the name of the column</li><li><code>n</code>- int: the period length</li><li>tic`- string: the ticker name</li></ul><p><em>Optional parameters:</em></p><ul><li><code>pre</code> - vector: the previous result</li><li><code>reference</code>: lazy: which line of dataset to refer to first</li></ul><p><em>Remarks:</em></p><ol><li><p>Use <code>pre</code> or <code>reference</code> only if the dataset is subject to the 'standard format' (refer to Dataset).</p></li><li><p>The logic of the function when <code>pre</code> is given is that if the length of the <code>pre</code> vector is less than <code>n</code>. The function will append one more record to the vector if matched. When the length is equal to <code>n</code>, the function will remove the first element of the <code>pre</code> and append a new matching result to the tail. And the function will only search in the context of <code>reference</code>, so do make sure that the reference given to it is correct.</p></li></ol><p><strong>Example:</strong></p><pre><code>;; to-write
+"2020-09-31"
+</code></pre><br /><p><code>get-prev-n-days</code></p><p>Return a vector of map containing the required information for a given period <strong>from the current date (refer to ns:counter for the counting mechanism of the system)</strong></p><p><strong>Parameters</strong>:</p><ul><li><code>key</code>- keyword type: the name of the column</li><li><code>n</code>- int: the period length</li><li><code>tic</code>- string: the ticker name</li></ul><p><em>Optional parameters (Strongly recommended):</em></p><ul><li><code>pre</code> - vector: the previous result</li><li><code>reference</code>: lazy: the dataset to refer to</li></ul><p><em>Remarks:</em></p><ol><li><p>Use <code>pre</code> or <code>reference</code> only if the dataset is subject to the 'standard format' (refer to Dataset).</p></li><li><p>The logic of the function when <code>pre</code> is given is that if the length of the <code>pre</code> vector is less than <code>n</code>. The function will append one more record to the vector if matched. When the length is equal to <code>n</code>, the function will remove the first element of the <code>pre</code> and append a new matching result to the tail. And the function will only search in the context of <code>reference</code>, so do make sure that the reference given to it is correct.</p></li></ol><p><strong>Example:</strong></p><pre><code class="clojure">(get-prev-n-days :PRC 2 "AAPL")
 
 ;; output:
-;; vector of map
+;; a vector of map(s)
 [{:date "2020-11-10" :PRC "12"} {:date "2020-11-11" :PRC "19"}]
-</code></pre><hr /><h3 id="merge-data">Merge Data</h3><p>Functions for merging the csv files either by row or by column.</p><br /><p><code>merge-data-row</code></p><p>Merge 2 CSV files row by row using left-join method, i.e. merging the trading data with the accounting data. Merging that data by row is recommended.</p><p><strong>Parameters:</strong></p><ul><li>file1 - the CRSP trading dataset</li><li>file2 - the COMPUSTAT accounting dataset</li></ul><p><strong>Example</strong>:</p><pre><code>(merge-data-row "./resources/CRSP-extract.csv" "./resources/Compustat-extract.csv")
+</code></pre><br /><p><code>moving-average</code></p><p>Used as an example function about how to define wrapper functions to the above function output.</p><p><strong>Parameters:</strong></p><ul><li><code>key</code> - key of the content to extract from the map</li><li><code>vector</code> - a vector of maps</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">(moving-average (get-prev-n-days :PRC 2 "AAPL")) ;; usually combined using with (get-prev-n-days)
 
 ;; output:
-&lt;type output here&gt;
-</code></pre><br /><p><code>merge-csv-col</code></p><p>Merge 2 CSV files column by column using left-join method, i.e. merging the trading data with the accounting data.</p><p><strong>Parameters:</strong></p><ul><li>file1 - the CRSP trading dataset</li><li>file2 - the COMPUSTAT accounting dataset</li></ul><p><strong>Example</strong>:</p><pre><code># (merge-data-col "./resources/CRSP-extract.csv" "./resources/Compustat-extract.csv")
-
-;; output:
-&lt;type output here&gt;
+15.5
+</code></pre><hr /><h3 id="merge-data-not-recommended-potential-bugs">Merge Data <span style="color:red">(Not recommended, potential bugs)</span></h3><p><em><strong>We recommend you to not join the datasets, but search for the data seperately from two datasets.</strong></em></p><p>Functions for merging the csv files either by row or by column.</p><br /><p><code>merge-data-row</code></p><p>Merge 2 CSV files row by row using left-join method, i.e. merging the trading data with the accounting data. Merging that data by row is recommended.</p><p><strong>Parameters:</strong></p><ul><li><code>file1</code> - the CRSP trading dataset</li><li><code>file2</code> - the COMPUSTAT accounting dataset</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(merge-data-row "./resources/CRSP-extract.csv" "./resources/Compustat-extract.csv")
+</code></pre><br /><p><code>merge-csv-col</code></p><p>Merge 2 CSV files column by column using left-join method, i.e. merging the trading data with the accounting data.</p><p><strong>Parameters:</strong></p><ul><li><code>file1</code> - the CRSP trading dataset</li><li><code>file2</code> - the COMPUSTAT accounting dataset</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure"># (merge-data-col "./resources/CRSP-extract.csv" "./resources/Compustat-extract.csv")
 </code></pre><hr />
 </div>
 
@@ -146,7 +139,7 @@
                         
                         <li><a href="/clojure-backtesting-website/posts/2021-01-26-preliminaries/">Preliminaries</a></li>
                         
-                        <li><a href="/clojure-backtesting-website/posts/2021-01-25-data-management/">Data management</a></li>
+                        <li><a href="/clojure-backtesting-website/posts/2021-01-25-data-management/">Data Management</a></li>
                         
                     </ul>
                 </div>
