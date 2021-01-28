@@ -64,13 +64,138 @@
     <h2>Get Started</h2>
 </div>
 <div>
-    <ol class="toc"><li><a href="#setting-up-the-playground">Setting Up the Playground</a></li><li><a href="#beginner-tutorials">Beginner Tutorials</a></li></ol>
+    <ol class="toc"><li><a href="#setting-up-the-playground">Setting Up the Playground</a></li><li><a href="#beginner-tutorials">Beginner Tutorials</a></li><li><a href="#code-walkthrough">Code walkthrough</a></li></ol>
     <hr /><h3 id="setting-up-the-playground">Setting Up the Playground</h3><br /><ol><li><p>Make sure that you have <strong>leiningen</strong> and <strong>jupyter notebook</strong> installed on your local machine. (These two may require further environment dependencies, please refer to their official websites for details.)</p><ul><li><p>Installation guide for leiningen can be found at:</p><p><a href="https://github.com/technomancy/leiningen/wiki/Packaging">https://github.com/technomancy/leiningen/wiki/Packaging</a></p></li><li><p>Jupyter notebook can be installed at:</p><p><a href="https://jupyter.org/install">https://jupyter.org/install</a></p></li></ul></li></ol><br /><ol start="2"><li><p>If you download this project for the <strong>first time</strong>, go to the repository root directory (i.e. <code>clojure-backtester/</code>) in the terminal and run</p><p><code>make init_clojupyter</code></p><p><em>Note that this operation may download a number of required packages, which may take up some time.</em></p></li></ol><br /><ol start="3"><li><p>Run the following command so that the project could be compiled as a .jar file and added as a new Jupyter kernel:</p><p><code>make add_kernel</code></p><p>(If there is an error, make sure that you have <strong>terminated</strong> the Jupyter notebook running kernels before running this step.)</p><br /><p>When the process is done, you should see the following output:</p><pre><code>Installed jar:      target/uberjar/clojure-backtesting-0.1.0-SNAPSHOT-standalone.jar
 Install directory:  ~/Library/Jupyter/kernels/backtesting_clojure
 Kernel identifier:  backtesting_clojure
 
 Installation successful.
-</code></pre></li></ol><br /><ol start="4"><li>Now when you restart the Jupyter Notebook application, you could select the kernel named <code>backtesting_clojure</code>. You can make use of the backtester by choosing this kernel.</li></ol><br /><h3 id="beginner-tutorials">Beginner Tutorials</h3><br /><p><a href="http://kimh.github.io/clojure-by-example/#about">This tutorial</a> is really useful for beginners in Clojure to pick up basis quickly.</p><p><a href="https://clojuredocs.org/">This</a> is a more thorough documentation website for Clojure functions.</p><pre><code>#some demo code, to-add
+</code></pre></li></ol><br /><ol start="4"><li>Now when you restart the Jupyter Notebook application, you could select the kernel named <code>backtesting_clojure</code>. You can make use of the backtester by choosing this kernel.</li></ol><hr /><h3 id="beginner-tutorials">Beginner Tutorials</h3><br /><p>If you are new to clojure, we recommend having a quick read of the following tutorials first:</p><ul><li><p><a href="http://kimh.github.io/clojure-by-example/#about">Clojure by example</a> - useful for beginners pick up the syntax quickly</p></li><li><p><a href="https://clojuredocs.org/">Clojure docs</a> - a more thorough documentation that explains the built-in functions in Clojure</p></li></ul><hr /><h3 id="code-walkthrough">Code walkthrough</h3><p>We'll go through the code in <code>./examples/Simple trading strategy.ipynb</code> notebook to have a glimpse of how to write code that could be run with the backtester.</p><br /><p><strong>1. Import libraries</strong></p><p>To make use of the functions in the backtester library, it is necessary to import them whenever you create a new jupyter notebook file. Also make sure that you've compiled the <strong>most up-to-date</strong> clojure-backteser kernel, and have selected it in the Jupyter Notebook application.</p><pre><code>(ns clojure-backtesting.demo
+  (:require [clojure.test :refer :all]
+            [oz.notebook.clojupyter :as oz]
+            [clojure-backtesting.data :refer :all]
+            [clojure-backtesting.order :refer :all]
+            [clojure-backtesting.evaluate :refer :all]
+            [clojure-backtesting.plot :refer :all]
+            [clojure-backtesting.counter :refer :all]
+            [clojure-backtesting.parameters :refer :all]
+            [clojure.string :as str]
+            [clojure.pprint :as pprint]
+            [java-time :as t]
+            [clojupyter.kernel.version :as ver]
+            [clojupyter.misc.helper :as helper]
+  ) ;; require all libriaries from core
+  (:use clojure.pprint)
+)
+</code></pre><br /><p><strong>2. Import dataset</strong></p><p>Load the CRSP-extract.csv dataset to the program by providing its relative path. Note that it is a must to nest it with <code>read-csv-row</code> and <code>add-aprc</code>, as they respectively parse the csv file and automatically add the adjusted price column to the dataset.</p><pre><code>(reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
+</code></pre><br /><p><strong>3. Initialise portfolio</strong></p><p>Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the <code>init-portfolio</code> function.</p><pre><code>(init-portfolio "1980-12-16" 10000);
+</code></pre><br /><p><strong>4. Check available tickers</strong></p><p>You could check what tickers you could trade on the current date (i.e. 1980-12-16).</p><pre><code>(keys (deref available-tics))
+</code></pre><br /><p><strong>5. Write your strategy</strong></p><p>With all these set-up, you are ready to write your strategy.</p><p>The following demo is a trading strategy that follows a simple logic:</p><p>In a timespan of 10 days (inclusive of today),</p><ul><li>Buy 50 stocks of AAPL on the first day</li><li>Sell 10 stocks of AAPL on every other day</li></ul><pre><code>;; define the "time span", i.e. to trade in the coming 10 days 
+(def num-of-days (atom 10))                              
+
+(while (pos? @num-of-days) ;; check if num-of-days is &gt; 0
+    (do 
+        ;; write your trading strategy here
+        (if (= 10 @num-of-days) ;; check if num-of-days == 10
+            (do
+                (order "AAPL" 50) ; buy 50 stocks
+                (println ((fn [date] (str "Buy 50 stocks of AAPL on " date)) (get-date)))
+            )
+        )
+        (if (odd? @num-of-days) ;; check if num-of-days is odd
+            (do
+                (order "AAPL" -10) ; sell 10 stocks
+                (println ((fn [date] (str "Sell 10 stocks of AAPL on " date)) (get-date)))
+            )
+        )
+        
+        (update-eval-report (get-date)) ;; update the evaluation metrics every day
+        
+        ; move on to the next trading day
+        (next-date)
+        
+        ; decrement counter
+        (swap! num-of-days dec)
+    )
+)
+
+; check whether counter == 0
+(println ((fn [counter] (str "Counter: " counter)) @num-of-days))
+</code></pre><p>Note that in the above code, it is necessary to iteratively call <code>next-date</code> so that the system could "move on to the next trading day". (check the details <a href="https://clojure-finance.github.io/clojure-backtesting-website/posts/2021-01-24-counter/">here</a>)</p><br /><pre><code class="clojure">;; output:
+
+Buy 50 stocks of AAPL on 1980-12-16
+Sell 10 stocks of AAPL on 1980-12-17
+Sell 10 stocks of AAPL on 1980-12-19
+Sell 10 stocks of AAPL on 1980-12-23
+Sell 10 stocks of AAPL on 1980-12-26
+Sell 10 stocks of AAPL on 1980-12-30
+Counter: 0
+</code></pre><p>By printing these debugging messages, I could double-check whether the orders were accurate.</p><br /><p><strong>6. Check order record</strong></p><p>Alternatively, you could also directly view the order record.</p><pre><code class="clojure">(pprint/print-table (deref order-record))
+</code></pre><pre><code class="clojure">;; output:
+
+|      :date | :tic |  :price | :quantity | :reference |
+|------------+------+---------+-----------+------------|
+| 1980-12-17 | AAPL | 25.9375 |        50 |          1 |
+| 1980-12-18 | AAPL | 26.6875 |       -10 |          1 |
+| 1980-12-22 | AAPL | 29.6875 |       -10 |          1 |
+| 1980-12-24 | AAPL | 32.5625 |       -10 |          1 |
+| 1980-12-29 | AAPL | 36.0625 |       -10 |          1 |
+| 1980-12-31 | AAPL | 34.1875 |       -10 |          1 |
+</code></pre><br /><p><strong>7. View portfolio &amp; portfolio record</strong></p><p>You could view the portfolio and check the changes in portfolio value too.</p><pre><code class="clojure">(view-portfolio)
+</code></pre><pre><code class="clojure">;; output:
+| :asset |  :price | :aprc | :quantity | :tot-val |
+|--------+---------+-------+-----------+----------|
+|   cash |     N/A |   N/A |       N/A |    10295 |
+|   AAPL | 34.1875 | 29.42 |         0 |        0 |
+</code></pre><br /><pre><code class="clojure">(view-portfolio-record)
+</code></pre><pre><code class="clojure">;; output:
+|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage |
+|------------+------------+------------+----------+-------+-----------|
+| 1980-12-16 |     $10000 |      0.00% |    0.00% | $0.00 |     0.00% |
+| 1980-12-17 |     $10007 |      0.00% |    0.08% | $0.00 |     0.00% |
+| 1980-12-18 |     $10026 |      0.00% |    0.27% | $0.00 |     0.00% |
+| 1980-12-19 |     $10054 |      0.27% |    0.54% | $0.00 |     0.00% |
+| 1980-12-22 |     $10096 |      0.00% |    0.96% | $0.00 |     0.00% |
+| 1980-12-23 |     $10111 |      0.15% |    1.11% | $0.00 |     0.00% |
+| 1980-12-24 |     $10168 |      0.00% |    1.67% | $0.00 |     0.00% |
+| 1980-12-26 |     $10191 |      0.22% |    1.89% | $0.00 |     0.00% |
+| 1980-12-29 |     $10254 |      0.00% |    2.51% | $0.00 |     0.00% |
+| 1980-12-30 |     $10251 |     -0.03% |    2.48% | $0.00 |     0.00% |
+| 1980-12-31 |     $10295 |      0.00% |    2.91% | $0.00 |     0.00% |
+</code></pre><br /><p><strong>8. Generate evaluation report</strong></p><p>If you update the evaluation report every day (as <code>update-eval-report</code> is called for 10 times in the loop), you'll obtain a evluation report with daily records.</p><p>Detailed explanation of the evaluation metrics could be found <a href="">here</a>.</p><p>However, note that if you are traversing a large amount of dates, it would be better <strong>not</strong> to update the evaluation metrics every day as it would require a large amount of memory and computation time.</p><br /><pre><code>(eval-report)
+</code></pre><pre><code class="Clojure">;; output:
+|      :date | :pnl-pt | :sharpe | :tot-val |  :vol |
+|------------+---------+---------+----------+-------|
+| 1980-12-16 |      $7 |   1.41% |   $10007 | 0.06% |
+| 1980-12-17 |     $13 |   2.45% |   $10026 | 0.11% |
+| 1980-12-18 |     $13 |   0.00% |   $10026 | 0.00% |
+| 1980-12-19 |     $32 |   4.86% |   $10096 | 0.20% |
+| 1980-12-22 |     $32 |   7.88% |   $10096 | 0.12% |
+| 1980-12-23 |     $42 |   7.86% |   $10168 | 0.21% |
+| 1980-12-24 |     $42 |  15.31% |   $10168 | 0.11% |
+| 1980-12-26 |     $50 |  11.99% |   $10254 | 0.21% |
+| 1980-12-29 |     $50 |  22.48% |   $10254 | 0.11% |
+| 1980-12-30 |     $49 |  19.10% |   $10295 | 0.15% |
+
+</code></pre><br /><p><strong>9. Plot variables</strong></p><p>You could try plotting some variables shown in the portfolio record / evaluation report tables.</p><p><strong>Plotting values in portfolio record</strong></p><pre><code class="clojure">;; 1) Define the data to be the record that features the column
+(def data (deref portfolio-value))
+
+;; 2) Assign it to a new variable 'data-to-plot`, so that 
+;; we could have the legend name added (here = "port-value")
+(def data-to-plot
+ (map #(assoc % :plot "port-value")
+  data))
+
+;; 3) Pass the data and its keys to the plotting function
+;; last arg "false" means we do not need full date to be shown on the x-axis
+(plot data-to-plot :plot :date :daily-ret false)
+</code></pre><p><strong>Plotting values in evaluation report</strong></p><pre><code class="clojure">(def data (deref eval-record))
+(def data-to-plot
+ (map #(assoc % :plot "volatility")
+  data))
+
+;; Note that we need to set it as "true" for plotting values in eval-report
+(plot data-to-plot :plot :date :vol true)
 </code></pre>
 </div>
 

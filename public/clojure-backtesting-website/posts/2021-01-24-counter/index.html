@@ -90,9 +90,10 @@ table, th, td {
 
 ;; output:
 {:AAPL :pointer (atom {:num 2934 :reference `lazy seq`}) ... }
-</code></pre><br /><p><strong>Possible Usages:</strong></p><p>Get the number of tickers available</p><pre><code class="clojure">(count (keys (deref available-tics)))
+</code></pre><br /><p><strong>Possible Usages:</strong></p><p>Get the list of tickers available on current date</p><pre><code class="clojure">(keys (deref available-tics))
 
 ;; output:
+("AAPL" "F" "IBM")
 </code></pre><p>Get the reference of ticker "AAPL"</p><pre><code class="clojure">(get (deref (get (get (dref available-tics) :AAPL) :pointer)) :reference)
 </code></pre><hr /><h3 id="global-functions">Global functions</h3><br /><p><code>look-ahead-i-days</code></p><p>Return the date i days after the given date</p><p><strong>Parameters</strong>:</p><ul><li><code>date</code> - String type: "yyyy-mm-dd"</li><li><code>n</code>: int &gt;= 0</li></ul><p><strong>Example:</strong></p><pre><code>;; to-write
 (look-ahead-n-days "2020-01-23" 3)
