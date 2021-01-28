@@ -25,8 +25,8 @@ Functions for creating and viewing the portfolio; and for inspecting historical 
 This function initialises the portfolio with cash and a date. Note that is is a **must** to call the function before executing functions e.g. `available-tics` and those in the `counter` namespace.
 
 **Parameters:**
-- date - the starting date of the portfolio, in format "YYYY-MM-DD"
-- init-capital - the desired initial capital for the portfolio (non-negative integer)
+- `date` - the starting date of the portfolio, in format "YYYY-MM-DD"
+- `init-capital` - the desired initial capital for the portfolio (non-negative integer)
 
 **Example**:
 
@@ -122,7 +122,7 @@ Functions for computing and printing the summary statistics that evaluate the pe
 This function updates the evaluation metrics in the record. (see `eval-report` for the list of evaluation metrics computed)
 
 **Parameters:**
-- date - date to update the evaluation metrics, in format "YYYY-MM-DD"
+- `date` - date to update the evaluation metrics, in format "YYYY-MM-DD"
 
 
 **Example**:
@@ -235,46 +235,42 @@ Functions for generating line plots on chosen variables.
 
 `plot`
 
-This function allows users to plot line charts, single y-axis or dual y-axis. This plotting function works the best with Clojupyter Notebook. For Clojupyter tutorials, please refer to [this page]. For Clojupyter Notebook examples, please refer to [here].
+This function allows users to plot line charts. This plotting function works the best with the Jupyter Notebook.
 
 [this page]: https://github.com/clojure-finance/clojure-backtesting/tree/master/clojupyter
 [here]: https://github.com/clojure-finance/clojure-backtesting/tree/master/examples
 
 **Parameters:**
-- dataset - data to be plotted. The dataset should be in following format: `{:tic "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }`
-- series - series name of the lines, e.g. :tic, which means ticker name
-- y1 - primary y axis, e.g. `:price`, trading price of the stock
-- y2 - **optional** secondary y axis, e.g. `:return`, daily return of the stock
+- dataset - contains a map of data to be plotted. Each map should be in the following format: `{:tic "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }`
+- `series` - series name of the lines to appear in the legend
+- `x` - key that contains that x-axis data in the dataset, e.g. `:date`
+- `y` - key that contains that y-axis data in the datset, e.g. `:portfolio-value`
+- `full-date` - boolean, set to true if you want to have full date (i.e. month, day, year) as labels in the x-axis; if set as false the function would automatically choose the appropariate labels
 
 <br>
 
 **Example**:
 
-The file we used in this demonstration can be found [in this link].
+```clojure
+;; data to print: an atom of maps
 
-[in this link]: https://github.com/clojure-finance/clojure-backtesting/blob/master/resources/plotting-testing-data.csv
+(first data) ;; print first row
+;; output
+;; {:date "1980-12-16", :pnl-pt 7.806415917975755, :sharpe 1.4142135623730954, :tot-val 10007.806415917976, :vol 0.05517816194058409}
 
-```
-;; define dataset:
-(def multistocks (read-csv-row "../resources/plotting-testing-data.csv"))
+;; Add legend name to series
+(def data-to-plot
+ (map #(assoc % :plot "sharpe")
+  data))
 
-;; dataset sample:
-(first multistocks)
-;; output: 
-<{:date "1980-12-15", :tic "AAPL", :price "27.3125", :return "-0.052061"}>
+;; Call plotting function
+(plot data-to-plot :plot :date :vol true)
 ```
 
-```
-;; plotting the data in single y-axis
-(plot multistocks :tic :date :price)
-;; output:
-```
-![alt text](https://github.com/clojure-finance/clojure-backtesting-website/blob/master/content/img/Multistocks%20Plot%20Single%20Axis.png "Singel Axis Plot")
+<br>
 
-```
-;; plotting the data in dual y-axis
-(plot multistocks :tic :date :price :return)
-;; output:
-```
-![alt text](https://github.com/clojure-finance/clojure-backtesting-website/blob/master/content/img/Multistocks%20Plot%20Dual%20Axis.png "Dual Axis Plot")
+Output:
 
+<br>
+
+![image](/img/plot-sharpe.png)

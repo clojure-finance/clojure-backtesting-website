@@ -6,9 +6,9 @@
     
 <meta name="keywords" content="">
 
-<meta name="description" content="This section is about ns: clojure-backtesting.order.">
+<meta name="description" content="ns: clojure-backtesting.orderThis namespace features functions for making an order and viewing the order record.">
 
-<meta property="og:description" content="This section is about ns: clojure-backtesting.order.">
+<meta property="og:description" content="ns: clojure-backtesting.orderThis namespace features functions for making an order and viewing the order record.">
 
 <meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-23-order/" />
 <meta property="og:title" content="Order" />
@@ -71,25 +71,19 @@
     <h2>Order</h2>
 </div>
 <div>
-    <ol class="toc"><li><a href="#make-order">Make Order</a></li><li><a href="#global-variables">Global Variables</a></li><li><a href="#global-functions">Global functions:</a></li></ol>
-    <hr /><p>This section is about <code>ns: clojure-backtesting.order</code>.</p><h3 id="make-order">Make Order</h3><p>Functions for making an order to trade a stock.</p><br /><p><code>order</code></p><p>This order function allows user to set orders.</p><p><strong>Parameters:</strong></p><ul><li>tic - the ticker of the stock to buy or sell</li><li>quantity - quantity to buy or sell, +ve means buy, -ve means sell</li><li>remaining - ???</li></ul><p>Example:</p><pre><code>(order AAPL 10)
-
-;; output:
-&lt;type output here&gt;
-
-
-(order IBM -10)
-
-;; output:
-&lt;type output here&gt;
-</code></pre><hr /><h3 id="global-variables">Global Variables</h3><br /><p><code>order-record</code>: atom of vector of maps.</p><p>[{:date "yyyy-mm-dd" :tic "AAPL" :quantity 13} ... ]</p><p>This variable is automatically maintained by function order (regardless of <code>:print</code>).</p><hr /><h3 id="global-functions">Global functions:</h3><br /><p><code>order</code></p><p><strong>Input:</strong></p><p><code>tic</code>: string: name/ identifier of the ticker</p><p><code>quantity</code>: int/double: the quantity to trade. If it &gt; 0, buy the amount, else, sell the amount.</p><br /><p><em><strong>Optionals:</strong></em></p><p><code>:remaining</code>: boolean: if the quantity given is the trading amount or the exact remaining amount. <em>By default, false.</em> It is true, meaning that after this order, I want to have <code>quantity</code> amount of certain tickers on my account.</p><p><code>:leverage</code>: boolean: if leverage is <strong>allowed</strong> (if necessary) in this order. Leverage includes buying on margin and short sell. You will only buy on margin if you run out of cash. We will also short sell only when you do not have enough stock. <em>By default, true.</em></p><p><code>:dataset</code>: lazy sequence: Specify the dataset to look for the order. Note that the function will search from the first line of the given dataset. So if used properly, it could speed up the program. If you are using a standard format dataset, you do not need to use this argument.</p><p><code>:print</code>: boolean: If to print the successful orders. By default, false.</p><p><code>:direct</code>: boolean: If to direct the order record into a outer file. By default, true. You will find the file named <strong>out-order-record.csv</strong> in the same directory of your running program, i.e. if you create another clj file, it will be under the same layer of your clj file.</p><br /><p><strong>Possible Usages:</strong></p><ol><li><p><em>Order with or without leverage:</em></p><pre><code class="clojure">(order "AAPL" 10) ;with leverage, exact value trading
+    <ol class="toc"><li><a href="#make-order">Make Order</a></li><li><a href="#order-record">Order record</a></li></ol>
+    <p><code>ns: clojure-backtesting.order</code></p><p>This namespace features functions for making an order and viewing the order record.</p><hr /><h3 id="make-order">Make Order</h3><p>Functions for making an order to trade a stock.</p><br /><p><code>order</code></p><p>This order function allows user to set orders.</p><p><strong>Parameters:</strong></p><ul><li><code>tic</code> - name / identifier of the ticker to buy or sell (string)</li><li><code>quantity</code> - the quantity to trade. If it is positive, buy the amount, else if it negative, sell the amount. (int/double)</li></ul><p><em>Optional parameters:</em></p><ul><li><p><code>:remaining</code>: boolean: if the quantity given is the trading amount or the exact remaining amount. <em>By default, false.</em> It is true, meaning that after this order, I want to have <code>quantity</code> amount of certain tickers on my account.</p></li><li><p><code>:leverage</code>: boolean: if leverage is <strong>allowed</strong> (if necessary) in this order. Leverage includes buying on margin and short sell. You will only buy on margin if you run out of cash. We will also short sell only when you do not have enough stock. <em>By default, true.</em></p></li><li><p><code>:dataset</code>: lazy sequence: Specify the dataset to look for the order. Note that the function will search from the first line of the given dataset. So if used properly, it could speed up the program. If you are using a standard format dataset, you do not need to use this argument.</p></li><li><p><code>:print</code>: boolean: If to print the successful orders. By default, false.</p></li><li><p><code>:direct</code>: boolean: If to direct the order record into a outer file. By default, true. You will find the file named <strong>out-order-record.csv</strong> in the same directory of your running program, i.e. if you create another clj file, it will be under the same layer of your clj file.</p></li></ul><br /><p><strong>Possible usages:</strong></p><ol><li><p><em>Order with or without leverage:</em></p><pre><code class="clojure">(order "AAPL" 10) ;with leverage, exact value trading
 (order "AAPL" 10 :leverage false) ;without leverage, exact value trade
 (order "AAPL" -10 :remaining true) ;with leverage, remaining value
 (order "AAPL" -10 :leverage false :remaining true) ;without leverage, remaining value (This must be a failed trade)
 </code></pre></li><li><p><em>Use together with the available-tics: (This will buy 10 stocks from the first ticker that shows in available-tics.)</em></p><pre><code class="clojure">(let [tics (deref available-tics) tic (name (first (keys (tics))))]
    (order tic 10 :dataset (get (deref (get (get (dref available-tics) :AAPL) :pointer)) :reference))) ; The part after the dataset is copied from usages of available-tics
 </code></pre></li><li><p><em>Print the order log:</em></p><pre><code class="clojure">(order "AAPL" 10 :print true)
-</code></pre><p>​</p></li></ol>
+</code></pre><p>​</p></li></ol><hr /><h3 id="order-record">Order record</h3><br /><p><code>order-record</code></p><p>An atom that contains vector of maps. This variable is automatically maintained by the order function (regardless of <code>:print</code>).</p><p><strong>Example:</strong></p><pre><code class="clojure">(println order-record)
+
+;; output
+[{:date "1980-12-18" :tic "AAPL" :quantity 13} ... ]
+</code></pre>
 </div>
 
 
