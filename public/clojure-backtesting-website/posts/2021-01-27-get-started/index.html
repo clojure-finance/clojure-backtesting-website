@@ -196,14 +196,14 @@ Counter: 0
 ;; 3) Pass the data and its keys to the plotting function
 ;; last arg "false" means we do not need full date to be shown on the x-axis
 (plot data-to-plot :plot :date :daily-ret false)
-</code></pre><p><strong>Plotting values in evaluation report</strong></p><pre><code class="clojure">(def data (deref eval-record))
+</code></pre><br /><p>Output:</p><br /><p><img src="/clojure-backtesting-website/img/plot-portfolio-value.png" alt="image" /></p><br /><p><strong>Plotting values in evaluation report</strong></p><pre><code class="clojure">(def data (deref eval-record))
 (def data-to-plot
  (map #(assoc % :plot "volatility")
   data))
 
 ;; Note that we need to set it as "true" for plotting values in eval-report
 (plot data-to-plot :plot :date :vol true)
-</code></pre>
+</code></pre><br /><p>Output:</p><br /><p><img src="/clojure-backtesting-website/img/plot-volatility.png" alt="image" /></p>
 </div>
 
 

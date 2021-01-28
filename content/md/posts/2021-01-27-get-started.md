@@ -308,6 +308,16 @@ You could try plotting some variables shown in the portfolio record / evaluation
 (plot data-to-plot :plot :date :daily-ret false)
 ```
 
+<br>
+
+Output:
+
+<br>
+
+![image](/img/plot-portfolio-value.png)
+
+<br>
+
 **Plotting values in evaluation report**
 
 ```clojure
@@ -319,3 +329,11 @@ You could try plotting some variables shown in the portfolio record / evaluation
 ;; Note that we need to set it as "true" for plotting values in eval-report
 (plot data-to-plot :plot :date :vol true)
 ```
+
+<br>
+
+Output:
+
+<br>
+
+![image](/img/plot-volatility.png)
