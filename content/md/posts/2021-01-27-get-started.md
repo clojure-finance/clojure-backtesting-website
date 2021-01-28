@@ -35,7 +35,7 @@
 
    <br>
 
-   When the process is done, you should see the following output:
+   When the process is completed, you should see the following output:
 
    ```
    Installed jar:      target/uberjar/clojure-backtesting-0.1.0-SNAPSHOT-standalone.jar
@@ -129,9 +129,13 @@ You could check what tickers you could trade on the current date (i.e. 1980-12-1
 
 **5. Write your strategy**
 
-With all these set-up, you are ready to write your strategy.
+With all these set-up, you are ready to write your strategy. 
 
-The following demo is a trading strategy that follows a simple logic:
+<br>
+
+The following demo is a trading strategy that follows a simple logic.
+
+**Simple strategy**:
 
 In a timespan of 10 days (inclusive of today),
 - Buy 50 stocks of AAPL on the first day
@@ -171,7 +175,7 @@ In a timespan of 10 days (inclusive of today),
 (println ((fn [counter] (str "Counter: " counter)) @num-of-days))
 ```
 
-Note that in the above code, it is necessary to iteratively call `next-date` so that the system could "move on to the next trading day". (check the details [here](https://clojure-finance.github.io/clojure-backtesting-website/posts/2021-01-24-counter/))
+Note that in the above code, it is necessary to iteratively call `next-date` so that the system could "move on to the next trading day". (check the details in the *"Counter"* section)
 
 <br>
 
@@ -258,7 +262,7 @@ You could view the portfolio and check the changes in portfolio value too.
 
 If you update the evaluation report every day (as `update-eval-report` is called for 10 times in the loop), you'll obtain a evluation report with daily records.
 
-Detailed explanation of the evaluation metrics could be found [here]().
+Detailed explanation of the evaluation metrics could be found in the *"Portfolio"* section.
 
 However, note that if you are traversing a large amount of dates, it would be better **not** to update the evaluation metrics every day as it would require a large amount of memory and computation time.
 

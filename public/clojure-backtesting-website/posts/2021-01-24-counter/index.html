@@ -98,12 +98,15 @@ table, th, td {
 
 ;; output:
 {:AAPL :pointer (atom {:num 2934 :reference `lazy seq`}) ... }
-</code></pre><br /><p><strong>Possible Usages:</strong></p><p>Get the list of tickers available on current date</p><pre><code class="clojure">(keys (deref available-tics))
+</code></pre><br /><p><strong>Possible usages:</strong></p><ol><li><p><em>Get the list of tickers available on current date.</em></p><pre><code class="clojure">(keys (deref available-tics))
 
 ;; output:
 ("AAPL" "F" "IBM")
-</code></pre><p>Get the reference of ticker "AAPL"</p><pre><code class="clojure">(get (deref (get (get (dref available-tics) :AAPL) :pointer)) :reference)
-</code></pre>
+</code></pre></li><li><p><em>Get the reference of ticker "AAPL"</em></p><pre><code class="clojure">(get (deref (get (get (dref available-tics) :AAPL) :pointer)) :reference)
+
+;; output:
+15
+</code></pre></li></ol>
 </div>
 
 

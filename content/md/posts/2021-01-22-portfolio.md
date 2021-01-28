@@ -30,7 +30,7 @@ This function initialises the portfolio with cash and a date. Note that is is a 
 
 **Example**:
 
-```
+```clojure
 (init_portfolio "1980-12-1" 1000000)
 
 ;; output:
@@ -60,7 +60,7 @@ This function prints the portfolio in a table format.
 
 **Example**:
 
-```
+```clojure
 (view_portfolio)
 
 ;; output:
@@ -94,7 +94,7 @@ This function prints the historical values and daily returns of the portfolio in
 
 **Example**:
 
-```
+```clojure
 (view_portfolio_record)
 
 ;; output:
@@ -126,7 +126,7 @@ This function updates the evaluation metrics in the record. (see `eval-report` f
 
 
 **Example**:
-```
+```clojure
 ;; update the evaluation metrics today
 (update-eval-report (get-date)) 
 
@@ -157,7 +157,7 @@ This function prints the evaluation report that includes all summary statiscs in
 <br>
 
 **Example**:
-```
+```clojure
 (eval-report)
 
 ;; output:
@@ -181,7 +181,7 @@ This function returns the current total value of the portfolio.
 
 Example & output:
 
-```
+```clojure
 (portfolio-total)
 
 ;; output:
@@ -199,7 +199,7 @@ This function returns the current daily return of the portfolio.
 
 Example:
 
-```
+```clojure
 (portfolio-daily-ret)
 
 ;; output:
@@ -217,7 +217,7 @@ This function returns the total daily return of the portfolio.
 
 **Example**:
 
-```
+```clojure
 (portfolio-total-ret)
 
 ;; output:

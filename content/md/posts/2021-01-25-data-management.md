@@ -21,16 +21,15 @@ Functions for reading csv file.
 Return a set of ticker and date combinations.
 
 **Parameters:**
-- data - A row based dataset
+- `data` - A row based dataset
 
 **Example:**
 
 ```clojure
-;; to-check
 (get-set "./resources/CRSP-extract.csv")
 
 ;; output:
-;; A set of maps
+;; a set of maps
 {{:tic "AAPL" :datadate "2020-12-10"}}
 ```
 
@@ -41,7 +40,7 @@ Return a set of ticker and date combinations.
 Read the CSV file into memeory in a row by row format. 
 
 **Parameters:**
-- file - path to the csv file to be read
+- `file` - path to the csv file to be read
 
 **Example:**
 
@@ -60,7 +59,7 @@ Read the CSV file into memeory in a row by row format.
 Read the CSV file into memeory in a column by column format. 
 
 **Parameters:**
-- file - path to the csv file to be read
+- `file` - path to the csv file to be read
 
 Example:
 
@@ -84,12 +83,11 @@ Functions for retreiving rows based on certain conditions.
 Return the last quarter of the given date of row. For instance, if the date of row is "2020-12-09", the returned date will be "2020-09-31".
 
 **Parameters:**
-- data - one row of the CRSP dataset
+- `data` - one row of the CRSP dataset
 
 **Example:**
 
 ```clojure
-;; to-write
 (last-quar "2020-12-09")
 
 ;; output:
@@ -122,10 +120,10 @@ Return a vector of map containing the required information for a given period **
 **Example:**
 
 ```clojure
-;; to-write
 (get-prev-n-days :PRC 2 "AAPL")
+
 ;; output:
-;; vector of map
+;; a vector of map(s)
 [{:date "2020-11-10" :PRC "12"} {:date "2020-11-11" :PRC "19"}]
 ```
 <br>
@@ -136,22 +134,21 @@ Used as an example function about how to define wrapper functions to the above f
 
 **Parameters:**
 
-- key - key of the content to extract from the map
-- vector - a vector of maps
+- `key` - key of the content to extract from the map
+- `vector` - a vector of maps
 
 **Example:**
 
 ```clojure
-;; to-write
-(moving-average (get-prev-n-days :PRC 2 "AAPL"))
-;; usually combined using with (get-prev-n-days)
+(moving-average (get-prev-n-days :PRC 2 "AAPL")) ;; usually combined using with (get-prev-n-days)
+
 ;; output:
 15.5
 ```
 
 ---
 
-### Merge Data (Not recommended, potential bugs)
+### Merge Data <span style="color:red">(Not recommended, potential bugs)</span>
 
 ***We recommend you to not join the datasets, but search for the data seperately from two datasets.***
 
@@ -164,8 +161,8 @@ Functions for merging the csv files either by row or by column.
 Merge 2 CSV files row by row using left-join method, i.e. merging the trading data with the accounting data. Merging that data by row is recommended. 
 
 **Parameters:**
-- file1 - the CRSP trading dataset
-- file2 - the COMPUSTAT accounting dataset
+- `file1` - the CRSP trading dataset
+- `file2` - the COMPUSTAT accounting dataset
 
 **Example**:
 
@@ -180,8 +177,8 @@ Merge 2 CSV files row by row using left-join method, i.e. merging the trading da
 Merge 2 CSV files column by column using left-join method, i.e. merging the trading data with the accounting data. 
 
 **Parameters:**
-- file1 - the CRSP trading dataset
-- file2 - the COMPUSTAT accounting dataset
+- `file1` - the CRSP trading dataset
+- `file2` - the COMPUSTAT accounting dataset
 
 **Example**:
 
