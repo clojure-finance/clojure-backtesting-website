@@ -1,8 +1,7 @@
 {:title "Portfolio"
- :layout :post
- :tags  []
- :toc true}
-
+:layout :post
+:tags []
+:toc true}
 
 <style>
 /* table styles */
@@ -15,16 +14,17 @@ table, th, td {
 <br>
 
 ### Portfolio Manipulation
+
 Functions for creating and viewing the portfolio; and for inspecting historical records of portfolio values.
 
 ---
-
 
 `init_portfolio`
 
 This function initialises the portfolio with cash and a date. Note that is is a **must** to call the function before executing functions e.g. `available-tics` and those in the `counter` namespace.
 
 **Parameters:**
+
 - `date` - the starting date of the portfolio, in format "YYYY-MM-DD"
 - `init-capital` - the desired initial capital for the portfolio (non-negative integer)
 
@@ -41,20 +41,21 @@ null
 
 `view_portfolio`
 
-This function prints the portfolio in a table format. 
+This function prints the portfolio in a table format.
 
 **Parameters:**
+
 - none
 
 **Ouput explanation:**
 
-| &nbsp;Column&emsp;| &nbsp;Format &emsp;| &nbsp;Meaning  |
-| ------------ | :-----------: | :----------|
-| `asset`       | &nbsp;string | &nbsp;Cash or ticker of the stock         |
-| `price`     | &nbsp;float, $ | &nbsp;Price of the stock &emsp; |
-| `aprc`     | &nbsp;float, % | &nbsp;Adjusted price of the stock &emsp; |
-| `quantity`     | &nbsp;int or float | &nbsp;Quantity of the stock owned &emsp; |
-| `tot_val`     | &nbsp;int, $ | &nbsp;Total value of the stock &emsp; |
+| &nbsp;Column&emsp; | &nbsp;Format &emsp; | &nbsp;Meaning                            |
+| ------------------ | :-----------------: | :--------------------------------------- |
+| `asset`            |    &nbsp;string     | &nbsp;Cash or ticker of the stock        |
+| `price`            |   &nbsp;float, $    | &nbsp;Price of the stock &emsp;          |
+| `aprc`             |   &nbsp;float, %    | &nbsp;Adjusted price of the stock &emsp; |
+| `quantity`         | &nbsp;int or float  | &nbsp;Quantity of the stock owned &emsp; |
+| `tot_val`          |    &nbsp;int, $     | &nbsp;Total value of the stock &emsp;    |
 
 <br>
 
@@ -74,28 +75,29 @@ This function prints the portfolio in a table format.
 
 `view_portfolio_record`
 
-This function prints the historical values and daily returns of the portfolio in a table format. 
+This function prints the historical values and daily returns of the portfolio in a table format.
 
 **Parameters:**
-- none
+
+- `n` - no. of rows to print, if n <= 0, print entire record
 
 **Ouput explanation:**
 
-| &nbsp;Column&emsp;| &nbsp;Format &emsp;| &nbsp;Meaning  |
-| ------------ | :-----------: | :----------|
-| `date`       | &nbsp;YYYY-MM-DD | &nbsp;Date of record            |
-| `tot_value`     | &nbsp;int, $ | &nbsp;Total value of the portfolio &emsp; |
-| `daily_ret`     | &nbsp;float, % | &nbsp;Daily return of the portfolio &emsp; |
-| `tot_ret`       | &nbsp;float, % | &nbsp;Total return of the portfolio &emsp; |
-| `loan`          | &nbsp;int, $ | &nbsp;Amount of loan made (cumulative) &emsp; |
-| `leverage` | &nbsp;float, % | &nbsp;Leverage ratio given by (total debt / total equity) &emsp; |
+| &nbsp;Column&emsp; | &nbsp;Format &emsp; | &nbsp;Meaning                                                    |
+| ------------------ | :-----------------: | :--------------------------------------------------------------- |
+| `date`             |  &nbsp;YYYY-MM-DD   | &nbsp;Date of record                                             |
+| `tot_value`        |    &nbsp;int, $     | &nbsp;Total value of the portfolio &emsp;                        |
+| `daily_ret`        |   &nbsp;float, %    | &nbsp;Daily return of the portfolio &emsp;                       |
+| `tot_ret`          |   &nbsp;float, %    | &nbsp;Total return of the portfolio &emsp;                       |
+| `loan`             |    &nbsp;int, $     | &nbsp;Amount of loan made (cumulative) &emsp;                    |
+| `leverage`         |   &nbsp;float, %    | &nbsp;Leverage ratio given by (total debt / total equity) &emsp; |
 
 <br>
 
 **Example**:
 
 ```clojure
-(view_portfolio_record)
+(view_portfolio_record -1)
 
 ;; output:
 |      :date | :tot_value | :daily_ret |
@@ -111,9 +113,9 @@ This function prints the historical values and daily returns of the portfolio in
 
 ---
 
-
 ### Evaluation Metrics
-Functions for computing and printing the summary statistics that evaluate the performance of the portfolio. 
+
+Functions for computing and printing the summary statistics that evaluate the performance of the portfolio.
 
 <br>
 
@@ -122,18 +124,18 @@ Functions for computing and printing the summary statistics that evaluate the pe
 This function updates the evaluation metrics in the record. (see `eval-report` for the list of evaluation metrics computed)
 
 **Parameters:**
+
 - `date` - date to update the evaluation metrics, in format "YYYY-MM-DD"
 
-
 **Example**:
+
 ```clojure
 ;; update the evaluation metrics today
-(update-eval-report (get-date)) 
+(update-eval-report (get-date))
 
 ;; output:
 null
 ```
-
 
 <br>
 
@@ -142,23 +144,25 @@ null
 This function prints the evaluation report that includes all summary statiscs in a table format.
 
 **Parameters:**
-- none
+
+- `n` - no. of rows to print, if n <= 0, print entire record
 
 **Ouput explanation:**
 
-| &nbsp;Column&emsp;| &nbsp;Format &emsp;| &nbsp;Meaning  |
-| ------------ | :-----------: | :----------|
-| `date`       | &nbsp;YYYY-MM-DD | &nbsp;Date of record            |
-| `pnl-pt`     | &nbsp;float, $ | &nbsp;Profit and loss per trade &emsp; |
-| `sharpe`     | &nbsp;float, % | &nbsp;Sharpe ratio of the portfolio caculated with an expanding window &emsp; |
-| `tot-val`    | &nbsp;int, %   | &nbsp;Total value of the portfolio, including cash and all purchased stocks &emsp; |
-| `vol`        | &nbsp;float, % | &nbsp;Volatility of the portfolio caculated with an expanding window &emsp; |
+| &nbsp;Column&emsp; | &nbsp;Format &emsp; | &nbsp;Meaning                                                                      |
+| ------------------ | :-----------------: | :--------------------------------------------------------------------------------- |
+| `date`             |  &nbsp;YYYY-MM-DD   | &nbsp;Date of record                                                               |
+| `pnl-pt`           |   &nbsp;float, $    | &nbsp;Profit and loss per trade &emsp;                                             |
+| `sharpe`           |   &nbsp;float, %    | &nbsp;Sharpe ratio of the portfolio caculated with an expanding window &emsp;      |
+| `tot-val`          |    &nbsp;int, %     | &nbsp;Total value of the portfolio, including cash and all purchased stocks &emsp; |
+| `vol`              |   &nbsp;float, %    | &nbsp;Volatility of the portfolio caculated with an expanding window &emsp;        |
 
 <br>
 
 **Example**:
+
 ```clojure
-(eval-report)
+(eval-report -1)
 
 ;; output:
 
@@ -177,6 +181,7 @@ This function prints the evaluation report that includes all summary statiscs in
 This function returns the current total value of the portfolio.
 
 **Parameters:**
+
 - none
 
 Example & output:
@@ -195,6 +200,7 @@ Example & output:
 This function returns the current daily return of the portfolio.
 
 **Parameters:**
+
 - none
 
 Example:
@@ -213,6 +219,7 @@ Example:
 This function returns the total daily return of the portfolio.
 
 **Parameters:**
+
 - none
 
 **Example**:
@@ -224,11 +231,10 @@ This function returns the total daily return of the portfolio.
 <type output here>
 ```
 
-
-
 ---
 
 ### Plot Graphs
+
 Functions for generating line plots on chosen variables.
 
 <br>
@@ -238,6 +244,7 @@ Functions for generating line plots on chosen variables.
 This function allows users to plot line charts. This plotting function works the best with the Jupyter Notebook.
 
 **Parameters:**
+
 - dataset - contains a map of data to be plotted. Each map should be in the following format: `{:tic "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }`
 - `series` - series name of the lines to appear in the legend
 - `x` - key that contains that x-axis data in the dataset, e.g. `:date`

@@ -1,21 +1,22 @@
 {:title "Get Started"
- :layout :post
- :toc true}
+:layout :post
+:toc true}
 
 ---
 
 ### Setting Up the Playground
+
 <br>
 
 1. Make sure that you have **leiningen** and **jupyter notebook** installed on your local machine. (These two may require further environment dependencies, please refer to their official websites for details.)
 
    - Installation guide for leiningen can be found at:
 
-      <https://github.com/technomancy/leiningen/wiki/Packaging>
+     <https://github.com/technomancy/leiningen/wiki/Packaging>
 
-   - Jupyter notebook can be installed at: 
+   - Jupyter notebook can be installed at:
 
-      <https://jupyter.org/install>
+     <https://jupyter.org/install>
 
 <br>
 
@@ -23,7 +24,7 @@
 
    `make init_clojupyter`
 
-   *Note that this operation may download a number of required packages, which may take up some time.*
+   _Note that this operation may download a number of required packages, which may take up some time._
 
 <br>
 
@@ -41,7 +42,7 @@
    Installed jar:      target/uberjar/clojure-backtesting-0.1.0-SNAPSHOT-standalone.jar
    Install directory:  ~/Library/Jupyter/kernels/backtesting_clojure
    Kernel identifier:  backtesting_clojure
-         
+
    Installation successful.
    ```
 
@@ -61,13 +62,11 @@ If you are new to clojure, we recommend having a quick read of the following tut
 
 - [Clojure docs](https://clojuredocs.org/) - a more thorough documentation that explains the built-in functions in Clojure
 
-
 ---
 
 ### Code walkthrough
 
 We'll go through the code in `./examples/Simple trading strategy.ipynb` notebook to have a glimpse of how to write code that could be run with the backtester.
-
 
 <br>
 
@@ -109,7 +108,7 @@ Load the CRSP-extract.csv dataset to the program by providing its relative path.
 
 **3. Initialise portfolio**
 
-Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the `init-portfolio` function. 
+Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the `init-portfolio` function.
 
 ```
 (init-portfolio "1980-12-16" 10000);
@@ -129,7 +128,7 @@ You could check what tickers you could trade on the current date (i.e. 1980-12-1
 
 **5. Write your strategy**
 
-With all these set-up, you are ready to write your strategy. 
+With all these set-up, you are ready to write your strategy.
 
 <br>
 
@@ -138,15 +137,16 @@ The following demo is a trading strategy that follows a simple logic.
 **Simple strategy**:
 
 In a timespan of 10 days (inclusive of today),
+
 - Buy 50 stocks of AAPL on the first day
 - Sell 10 stocks of AAPL on every other day
 
 ```
-;; define the "time span", i.e. to trade in the coming 10 days 
-(def num-of-days (atom 10))                              
+;; define the "time span", i.e. to trade in the coming 10 days
+(def num-of-days (atom 10))
 
 (while (pos? @num-of-days) ;; check if num-of-days is > 0
-    (do 
+    (do
         ;; write your trading strategy here
         (if (= 10 @num-of-days) ;; check if num-of-days == 10
             (do
@@ -160,12 +160,12 @@ In a timespan of 10 days (inclusive of today),
                 (println ((fn [date] (str "Sell 10 stocks of AAPL on " date)) (get-date)))
             )
         )
-        
+
         (update-eval-report (get-date)) ;; update the evaluation metrics every day
-        
+
         ; move on to the next trading day
         (next-date)
-        
+
         ; decrement counter
         (swap! num-of-days dec)
     )
@@ -175,7 +175,7 @@ In a timespan of 10 days (inclusive of today),
 (println ((fn [counter] (str "Counter: " counter)) @num-of-days))
 ```
 
-Note that in the above code, it is necessary to iteratively call `next-date` so that the system could "move on to the next trading day". (check the details in the *"Counter"* section)
+Note that in the above code, it is necessary to iteratively call `next-date` so that the system could "move on to the next trading day". (check the details in the _"Counter"_ section)
 
 <br>
 
@@ -191,7 +191,7 @@ Sell 10 stocks of AAPL on 1980-12-30
 Counter: 0
 ```
 
-By printing these debugging messages, I could double-check whether the orders were accurate. 
+By printing these debugging messages, I could double-check whether the orders were accurate.
 
 <br>
 
@@ -222,10 +222,10 @@ Alternatively, you could also directly view the order record.
 
 You could view the portfolio and check the changes in portfolio value too.
 
-
 ```clojure
 (view-portfolio)
 ```
+
 ```clojure
 ;; output:
 | :asset |  :price | :aprc | :quantity | :tot-val |
@@ -237,8 +237,10 @@ You could view the portfolio and check the changes in portfolio value too.
 <br>
 
 ```clojure
-(view-portfolio-record)
+;; pass -1 so that the entire record is printed, else pass the no. of rows
+(view-portfolio-record -1)
 ```
+
 ```clojure
 ;; output:
 |      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage |
@@ -262,15 +264,17 @@ You could view the portfolio and check the changes in portfolio value too.
 
 If you update the evaluation report every day (as `update-eval-report` is called for 10 times in the loop), you'll obtain a evluation report with daily records.
 
-Detailed explanation of the evaluation metrics could be found in the *"Portfolio"* section.
+Detailed explanation of the evaluation metrics could be found in the _"Portfolio"_ section.
 
 However, note that if you are traversing a large amount of dates, it would be better **not** to update the evaluation metrics every day as it would require a large amount of memory and computation time.
 
 <br>
 
+```clojure
+;; pass -1 so that the entire record is printed, else pass the no. of rows
+(eval-report -1)
 ```
-(eval-report)
-```
+
 ```Clojure
 ;; output:
 |      :date | :pnl-pt | :sharpe | :tot-val |  :vol |
@@ -294,14 +298,13 @@ However, note that if you are traversing a large amount of dates, it would be be
 
 You could try plotting some variables shown in the portfolio record / evaluation report tables.
 
-
 **Plotting values in portfolio record**
 
 ```clojure
 ;; 1) Define the data to be the record that features the column
 (def data (deref portfolio-value))
 
-;; 2) Assign it to a new variable 'data-to-plot`, so that 
+;; 2) Assign it to a new variable 'data-to-plot`, so that
 ;; we could have the legend name added (here = "port-value")
 (def data-to-plot
  (map #(assoc % :plot "port-value")

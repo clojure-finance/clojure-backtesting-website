@@ -97,11 +97,11 @@ Installation successful.
 </code></pre><br /><p><strong>2. Import dataset</strong></p><p>Load the CRSP-extract.csv dataset to the program by providing its relative path. Note that it is a must to nest it with <code>read-csv-row</code> and <code>add-aprc</code>, as they respectively parse the csv file and automatically add the adjusted price column to the dataset.</p><pre><code>(reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
 </code></pre><br /><p><strong>3. Initialise portfolio</strong></p><p>Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the <code>init-portfolio</code> function.</p><pre><code>(init-portfolio "1980-12-16" 10000);
 </code></pre><br /><p><strong>4. Check available tickers</strong></p><p>You could check what tickers you could trade on the current date (i.e. 1980-12-16).</p><pre><code>(keys (deref available-tics))
-</code></pre><br /><p><strong>5. Write your strategy</strong></p><p>With all these set-up, you are ready to write your strategy.</p><br /><p>The following demo is a trading strategy that follows a simple logic.</p><p><strong>Simple strategy</strong>:</p><p>In a timespan of 10 days (inclusive of today),</p><ul><li>Buy 50 stocks of AAPL on the first day</li><li>Sell 10 stocks of AAPL on every other day</li></ul><pre><code>;; define the "time span", i.e. to trade in the coming 10 days 
-(def num-of-days (atom 10))                              
+</code></pre><br /><p><strong>5. Write your strategy</strong></p><p>With all these set-up, you are ready to write your strategy.</p><br /><p>The following demo is a trading strategy that follows a simple logic.</p><p><strong>Simple strategy</strong>:</p><p>In a timespan of 10 days (inclusive of today),</p><ul><li>Buy 50 stocks of AAPL on the first day</li><li>Sell 10 stocks of AAPL on every other day</li></ul><pre><code>;; define the "time span", i.e. to trade in the coming 10 days
+(def num-of-days (atom 10))
 
 (while (pos? @num-of-days) ;; check if num-of-days is &gt; 0
-    (do 
+    (do
         ;; write your trading strategy here
         (if (= 10 @num-of-days) ;; check if num-of-days == 10
             (do
@@ -115,12 +115,12 @@ Installation successful.
                 (println ((fn [date] (str "Sell 10 stocks of AAPL on " date)) (get-date)))
             )
         )
-        
+
         (update-eval-report (get-date)) ;; update the evaluation metrics every day
-        
+
         ; move on to the next trading day
         (next-date)
-        
+
         ; decrement counter
         (swap! num-of-days dec)
     )
@@ -154,7 +154,8 @@ Counter: 0
 |--------+---------+-------+-----------+----------|
 |   cash |     N/A |   N/A |       N/A |    10295 |
 |   AAPL | 34.1875 | 29.42 |         0 |        0 |
-</code></pre><br /><pre><code class="clojure">(view-portfolio-record)
+</code></pre><br /><pre><code class="clojure">;; pass -1 so that the entire record is printed, else pass the no. of rows
+(view-portfolio-record -1)
 </code></pre><pre><code class="clojure">;; output:
 |      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage |
 |------------+------------+------------+----------+-------+-----------|
@@ -169,7 +170,8 @@ Counter: 0
 | 1980-12-29 |     $10126 |      0.00% |    1.26% | $0.00 |     0.00% |
 | 1980-12-30 |     $10123 |     -0.03% |    1.22% | $0.00 |     0.00% |
 | 1980-12-31 |     $10119 |      0.00% |    1.19% | $0.00 |     0.00% |
-</code></pre><br /><p><strong>8. Generate evaluation report</strong></p><p>If you update the evaluation report every day (as <code>update-eval-report</code> is called for 10 times in the loop), you'll obtain a evluation report with daily records.</p><p>Detailed explanation of the evaluation metrics could be found in the <em>"Portfolio"</em> section.</p><p>However, note that if you are traversing a large amount of dates, it would be better <strong>not</strong> to update the evaluation metrics every day as it would require a large amount of memory and computation time.</p><br /><pre><code>(eval-report)
+</code></pre><br /><p><strong>8. Generate evaluation report</strong></p><p>If you update the evaluation report every day (as <code>update-eval-report</code> is called for 10 times in the loop), you'll obtain a evluation report with daily records.</p><p>Detailed explanation of the evaluation metrics could be found in the <em>"Portfolio"</em> section.</p><p>However, note that if you are traversing a large amount of dates, it would be better <strong>not</strong> to update the evaluation metrics every day as it would require a large amount of memory and computation time.</p><br /><pre><code class="clojure">;; pass -1 so that the entire record is printed, else pass the no. of rows
+(eval-report -1)
 </code></pre><pre><code class="Clojure">;; output:
 |      :date | :pnl-pt | :sharpe | :tot-val |  :vol |
 |------------+---------+---------+----------+-------|
@@ -187,7 +189,7 @@ Counter: 0
 </code></pre><br /><p><strong>9. Plot variables</strong></p><p>You could try plotting some variables shown in the portfolio record / evaluation report tables.</p><p><strong>Plotting values in portfolio record</strong></p><pre><code class="clojure">;; 1) Define the data to be the record that features the column
 (def data (deref portfolio-value))
 
-;; 2) Assign it to a new variable 'data-to-plot`, so that 
+;; 2) Assign it to a new variable 'data-to-plot`, so that
 ;; we could have the legend name added (here = "port-value")
 (def data-to-plot
  (map #(assoc % :plot "port-value")
