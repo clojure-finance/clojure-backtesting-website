@@ -1,4 +1,4 @@
-{:title "Example - Fundamental Analysis"
+{:title "Large Data"
  :layout :post
  :tags  []
  :toc true}

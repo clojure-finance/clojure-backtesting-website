@@ -171,6 +171,9 @@ In a timespan of 10 days (inclusive of today),
     )
 )
 
+; call this so as to create output files
+(end-order)
+
 ; check whether counter == 0
 (println ((fn [counter] (str "Counter: " counter)) @num-of-days))
 ```
@@ -220,7 +223,7 @@ Alternatively, you could also directly view the order record.
 
 **7. View portfolio & portfolio record**
 
-You could view the portfolio and check the changes in portfolio value too.
+You could view the portfolio and check the changes in portfolio value too. Note that the portfolio record could also be found in the `out_portfolio_value_record.csv` file.
 
 ```clojure
 (view-portfolio)
@@ -266,7 +269,9 @@ If you update the evaluation report every day (as `update-eval-report` is called
 
 Detailed explanation of the evaluation metrics could be found in the _"Portfolio"_ section.
 
-However, note that if you are traversing a large amount of dates, it would be better **not** to update the evaluation metrics every day as it would require a large amount of memory and computation time.
+However, note that if you are traversing a large amount of dates, it would be better **not** to update the evaluation metrics every day as it would require a large amount of memory and computation time, or to only print a small number of rows of the evaluation report.
+
+ Note that the evaluation report could also be found in the `out_evaluation_report.csv` file.
 
 <br>
 

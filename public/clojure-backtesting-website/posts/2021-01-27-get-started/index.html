@@ -126,6 +126,9 @@ Installation successful.
     )
 )
 
+; call this so as to create output files
+(end-order)
+
 ; check whether counter == 0
 (println ((fn [counter] (str "Counter: " counter)) @num-of-days))
 </code></pre><p>Note that in the above code, it is necessary to iteratively call <code>next-date</code> so that the system could "move on to the next trading day". (check the details in the <em>"Counter"</em> section)</p><br /><pre><code class="clojure">;; output:
@@ -148,7 +151,7 @@ Counter: 0
 | 1980-12-24 | AAPL | 32.5625 |       -10 |          1 |
 | 1980-12-29 | AAPL | 36.0625 |       -10 |          1 |
 | 1980-12-31 | AAPL | 34.1875 |       -10 |          1 |
-</code></pre><br /><p><strong>7. View portfolio &amp; portfolio record</strong></p><p>You could view the portfolio and check the changes in portfolio value too.</p><pre><code class="clojure">(view-portfolio)
+</code></pre><br /><p><strong>7. View portfolio &amp; portfolio record</strong></p><p>You could view the portfolio and check the changes in portfolio value too. Note that the portfolio record could also be found in the <code>out_portfolio_value_record.csv</code> file.</p><pre><code class="clojure">(view-portfolio)
 </code></pre><pre><code class="clojure">;; output:
 | :asset |  :price | :aprc | :quantity | :tot-val |
 |--------+---------+-------+-----------+----------|
@@ -170,7 +173,7 @@ Counter: 0
 | 1980-12-29 |     $10126 |      0.00% |    1.26% | $0.00 |     0.00% |
 | 1980-12-30 |     $10123 |     -0.03% |    1.22% | $0.00 |     0.00% |
 | 1980-12-31 |     $10119 |      0.00% |    1.19% | $0.00 |     0.00% |
-</code></pre><br /><p><strong>8. Generate evaluation report</strong></p><p>If you update the evaluation report every day (as <code>update-eval-report</code> is called for 10 times in the loop), you'll obtain a evluation report with daily records.</p><p>Detailed explanation of the evaluation metrics could be found in the <em>"Portfolio"</em> section.</p><p>However, note that if you are traversing a large amount of dates, it would be better <strong>not</strong> to update the evaluation metrics every day as it would require a large amount of memory and computation time.</p><br /><pre><code class="clojure">;; pass -1 so that the entire record is printed, else pass the no. of rows
+</code></pre><br /><p><strong>8. Generate evaluation report</strong></p><p>If you update the evaluation report every day (as <code>update-eval-report</code> is called for 10 times in the loop), you'll obtain a evluation report with daily records.</p><p>Detailed explanation of the evaluation metrics could be found in the <em>"Portfolio"</em> section.</p><p>However, note that if you are traversing a large amount of dates, it would be better <strong>not</strong> to update the evaluation metrics every day as it would require a large amount of memory and computation time, or to only print a small number of rows of the evaluation report.</p><p>Note that the evaluation report could also be found in the <code>out_evaluation_report.csv</code> file.</p><br /><pre><code class="clojure">;; pass -1 so that the entire record is printed, else pass the no. of rows
 (eval-report -1)
 </code></pre><pre><code class="Clojure">;; output:
 |      :date | :pnl-pt | :sharpe | :tot-val |  :vol |
