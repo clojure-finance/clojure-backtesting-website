@@ -64,7 +64,41 @@ If you are new to clojure, we recommend having a quick read of the following tut
 
 ---
 
-### Code walkthrough
+### Backtester Mode
+
+<br>
+
+You could run the backtester in two modes, which are the **lazy** and the **non-lazy** modes respectively:
+
+<br>
+
+1. **Lazy mode**
+- This is mainly for developmnet, and you need to run it with the original large-sized datasets named `data-CRSP-sorted.csv` and `data-Compustat-sorted.csv`.
+- To run the backtester in lazy mode, load the dataset in the following way:
+
+  ```clojure
+  ;; load CRSP
+  (load-large-dataset "../../data-sorted-cleaned/data-CRSP-sorted-cleaned.csv" "main" add-aprc-by-date)
+  ;; load compustat
+  (load-large-dataset "../../data-sorted-cleaned/data-Compustat-sorted-cleaned.csv" "compustat")
+  ```
+
+<br>
+
+2. **Non-lazy mode**
+
+- This is the default mode that the backtester is set in.
+- This is mainly for debugging, and you need to run it with the smaller datasets named `CRSP-extract.csv` and `Compustat-extract.csv`.
+- To run the backtester in non-lazy mode, load the dataset in the following way:
+
+  ```clojure
+  (reset! data-set (add-aprc (read-csv-row "./resources/CRSP-extract.csv")))
+  ```
+
+
+---
+
+### Code Walkthrough
 
 We'll go through the code in `./examples/Simple trading strategy.ipynb` notebook to have a glimpse of how to write code that could be run with the backtester.
 
