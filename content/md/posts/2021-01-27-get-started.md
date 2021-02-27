@@ -78,11 +78,17 @@ You could run the backtester in two modes, which are the **lazy** and the **non-
 
   ```clojure
   ;; load CRSP
-  (load-large-dataset "../../data-sorted-cleaned/data-CRSP-sorted-cleaned.csv" "main" add-aprc-by-date)
+  (load-large-dataset "data-CRSP-sorted-cleaned.csv" "main" add-aprc-by-date)
   ;; load compustat
-  (load-large-dataset "../../data-sorted-cleaned/data-Compustat-sorted-cleaned.csv" "compustat")
+  (load-large-dataset "data-Compustat-sorted-cleaned.csv" "compustat")
   ```
 
+- As the original dataset is quite big and takes time to run with the backtester, optionally you could create a smaller version by truncating some rows:
+
+  ```clojure
+  cat data-CRSP-sorted-cleaned.csv | tail 10000 > CRSP-smaller.csv
+  ```
+  
 <br>
 
 2. **Non-lazy mode**
