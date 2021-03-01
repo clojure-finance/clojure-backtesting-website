@@ -71,9 +71,9 @@ Kernel identifier:  backtesting_clojure
 
 Installation successful.
 </code></pre></li></ol><br /><ol start="4"><li>Now when you restart the Jupyter Notebook application, you could select the kernel named <code>backtesting_clojure</code>. You can make use of the backtester by choosing this kernel.</li></ol><hr /><h3 id="beginner-tutorials">Beginner Tutorials</h3><br /><p>If you are new to clojure, we recommend having a quick read of the following tutorials first:</p><ul><li><p><a href="http://kimh.github.io/clojure-by-example/#about">Clojure by example</a> - useful for beginners pick up the syntax quickly</p></li><li><p><a href="https://clojuredocs.org/">Clojure docs</a> - a more thorough documentation that explains the built-in functions in Clojure</p></li></ul><hr /><h3 id="backtester-mode">Backtester Mode</h3><br /><p>You could run the backtester in two modes, which are the <strong>lazy</strong> and the <strong>non-lazy</strong> modes respectively:</p><br /><ol><li><strong>Lazy mode</strong></li></ol><ul><li><p>This is mainly for developmnet, and you need to run it with the original large-sized datasets named <code>data-CRSP-sorted.csv</code> and <code>data-Compustat-sorted.csv</code>.</p></li><li><p>To run the backtester in lazy mode, load the dataset in the following way:</p><pre><code class="clojure">;; load CRSP
-(load-large-dataset "data-CRSP-sorted-cleaned.csv" "main" add-aprc-by-date)
+(load-large-dataset "data-CRSP.csv" "main" add-aprc-by-date)
 ;; load compustat
-(load-large-dataset "data-Compustat-sorted-cleaned.csv" "compustat")
+(load-large-dataset "data-Compustat.csv" "compustat")
 </code></pre></li><li><p>As the original dataset is quite big and takes time to run with the backtester, optionally you could create a smaller version by truncating some rows:</p><pre><code class="clojure">cat data-CRSP-sorted-cleaned.csv | tail 10000 &gt; CRSP-smaller.csv
 </code></pre></li></ul><br /><ol start="2"><li><strong>Non-lazy mode</strong></li></ol><ul><li><p>This is the default mode that the backtester is set in.</p></li><li><p>This is mainly for debugging, and you need to run it with the smaller datasets named <code>CRSP-extract.csv</code> and <code>Compustat-extract.csv</code>.</p></li><li><p>To run the backtester in non-lazy mode, load the dataset in the following way:</p><pre><code class="clojure">(reset! data-set (add-aprc (read-csv-row "./resources/CRSP-extract.csv")))
 </code></pre></li></ul><hr /><h3 id="code-walkthrough">Code Walkthrough</h3><p>We'll go through the code in <code>./examples/Simple trading strategy.ipynb</code> notebook to have a glimpse of how to write code that could be run with the backtester.</p><br /><p><strong>1. Import libraries</strong></p><p>To make use of the functions in the backtester library, it is necessary to import them whenever you create a new jupyter notebook file. Also make sure that you've compiled the <strong>most up-to-date</strong> clojure-backteser kernel, and have selected it in the Jupyter Notebook application.</p><pre><code>(ns clojure-backtesting.demo
@@ -172,7 +172,15 @@ Counter: 0
 | 1980-12-29 |     $10126 |      0.00% |    1.26% | $0.00 |     0.00% |
 | 1980-12-30 |     $10123 |     -0.03% |    1.22% | $0.00 |     0.00% |
 | 1980-12-31 |     $10119 |      0.00% |    1.19% | $0.00 |     0.00% |
-</code></pre><br /><p><strong>8. Generate evaluation report</strong></p><p>If you update the evaluation report every day (as <code>update-eval-report</code> is called for 10 times in the loop), you'll obtain a evluation report with daily records.</p><p>Detailed explanation of the evaluation metrics could be found in the <em>"Portfolio"</em> section.</p><p>However, note that if you are traversing a large amount of dates, it would be better <strong>not</strong> to update the evaluation metrics every day as it would require a large amount of memory and computation time, or to only print a small number of rows of the evaluation report.</p><p>Note that the evaluation report could also be found in the <code>out_evaluation_report.csv</code> file.</p><br /><pre><code class="clojure">;; pass -1 so that the entire record is printed, else pass the no. of rows
+</code></pre><pre><code class="clojure">;; only print first 3 rows of the portfolio record
+(view-portfolio-record 3)
+</code></pre><pre><code class="clojure">;; output:
+|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage |
+|------------+------------+------------+----------+-------+-----------|
+| 1980-12-16 |     $10000 |      0.00% |    0.00% | $0.00 |     0.00% |
+| 1980-12-17 |     $10000 |      0.00% |    0.00% | $0.00 |     0.00% |
+| 1980-12-18 |     $10016 |      0.00% |    0.16% | $0.00 |     0.00% |
+</code></pre><br /><p><strong>8. Generate evaluation report</strong></p><p>If you update the evaluation report every day (as <code>update-eval-report</code> is called for 10 times in the loop), you'll obtain a evluation report with daily records.</p><p>Detailed explanation of the evaluation metrics could be found in the <em>"Evaluate"</em> section.</p><p>However, note that if you are traversing a large amount of dates, it would be better <strong>not</strong> to update the evaluation metrics every day as it would require a large amount of memory and computation time. Alternatively, you could print a small number of rows of the evaluation report.</p><p>Note that the evaluation report could also be found in the <code>out_evaluation_report.csv</code> file.</p><br /><pre><code class="clojure">;; pass -1 so that the entire record is printed, else pass the no. of rows
 (eval-report -1)
 </code></pre><pre><code class="Clojure">;; output:
 |      :date | :pnl-pt | :sharpe | :tot-val |  :vol |
@@ -187,7 +195,14 @@ Counter: 0
 | 1980-12-26 |     $25 |  11.44% |   $10126 | 0.11% |
 | 1980-12-29 |     $25 |  11.21% |   $10126 | 0.11% |
 | 1980-12-30 |     $19 |  10.90% |   $10119 | 0.11% |
-
+</code></pre><pre><code class="clojure">;; just print the first 3 rows
+(eval-report 3)
+</code></pre><pre><code class="Clojure">;; output:
+|      :date | :pnl-pt | :sharpe | :tot-val |  :vol |
+|------------+---------+---------+----------+-------|
+| 1980-12-16 |      $0 |   0.00% |   $10000 | 0.00% |
+| 1980-12-17 |      $8 |   1.73% |   $10016 | 0.09% |
+| 1980-12-18 |      $8 |   0.00% |   $10016 | 0.00% |
 </code></pre><br /><p><strong>9. Plot variables</strong></p><p>You could try plotting some variables shown in the portfolio record / evaluation report tables.</p><p><strong>Plotting values in portfolio record</strong></p><pre><code class="clojure">;; 1) Define the data to be the record that features the column
 (def data (deref portfolio-value))
 

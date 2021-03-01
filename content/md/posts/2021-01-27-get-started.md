@@ -78,9 +78,9 @@ You could run the backtester in two modes, which are the **lazy** and the **non-
 
   ```clojure
   ;; load CRSP
-  (load-large-dataset "data-CRSP-sorted-cleaned.csv" "main" add-aprc-by-date)
+  (load-large-dataset "data-CRSP.csv" "main" add-aprc-by-date)
   ;; load compustat
-  (load-large-dataset "data-Compustat-sorted-cleaned.csv" "compustat")
+  (load-large-dataset "data-Compustat.csv" "compustat")
   ```
 
 - As the original dataset is quite big and takes time to run with the backtester, optionally you could create a smaller version by truncating some rows:
@@ -301,15 +301,29 @@ You could view the portfolio and check the changes in portfolio value too. Note 
 | 1980-12-31 |     $10119 |      0.00% |    1.19% | $0.00 |     0.00% |
 ```
 
+```clojure
+;; only print first 3 rows of the portfolio record
+(view-portfolio-record 3)
+```
+
+```clojure
+;; output:
+|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage |
+|------------+------------+------------+----------+-------+-----------|
+| 1980-12-16 |     $10000 |      0.00% |    0.00% | $0.00 |     0.00% |
+| 1980-12-17 |     $10000 |      0.00% |    0.00% | $0.00 |     0.00% |
+| 1980-12-18 |     $10016 |      0.00% |    0.16% | $0.00 |     0.00% |
+```
+
 <br>
 
 **8. Generate evaluation report**
 
 If you update the evaluation report every day (as `update-eval-report` is called for 10 times in the loop), you'll obtain a evluation report with daily records.
 
-Detailed explanation of the evaluation metrics could be found in the _"Portfolio"_ section.
+Detailed explanation of the evaluation metrics could be found in the _"Evaluate"_ section.
 
-However, note that if you are traversing a large amount of dates, it would be better **not** to update the evaluation metrics every day as it would require a large amount of memory and computation time, or to only print a small number of rows of the evaluation report.
+However, note that if you are traversing a large amount of dates, it would be better **not** to update the evaluation metrics every day as it would require a large amount of memory and computation time. Alternatively, you could print a small number of rows of the evaluation report.
 
  Note that the evaluation report could also be found in the `out_evaluation_report.csv` file.
 
@@ -334,9 +348,21 @@ However, note that if you are traversing a large amount of dates, it would be be
 | 1980-12-26 |     $25 |  11.44% |   $10126 | 0.11% |
 | 1980-12-29 |     $25 |  11.21% |   $10126 | 0.11% |
 | 1980-12-30 |     $19 |  10.90% |   $10119 | 0.11% |
-
 ```
 
+```clojure
+;; just print the first 3 rows
+(eval-report 3)
+```
+
+```Clojure
+;; output:
+|      :date | :pnl-pt | :sharpe | :tot-val |  :vol |
+|------------+---------+---------+----------+-------|
+| 1980-12-16 |      $0 |   0.00% |   $10000 | 0.00% |
+| 1980-12-17 |      $8 |   1.73% |   $10016 | 0.09% |
+| 1980-12-18 |      $8 |   0.00% |   $10016 | 0.00% |
+```
 <br>
 
 **9. Plot variables**
