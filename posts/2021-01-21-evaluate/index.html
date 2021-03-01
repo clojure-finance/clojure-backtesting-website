@@ -96,7 +96,7 @@ null
 </code></pre><br /><p><code>update-rolling-window</code></p><p>This function updates the time window for computing the rolling functions (i.e. <code>r-vol</code> and <code>r-sharpe</code>). By default, the time window is set as <code>30</code>.</p><p><strong>Parameters:</strong></p><ul><li><code>n</code> - new time window for computing the rolling functions in the evaluation report</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(update-rolling-window 3)
 
 ;; output:
-None
+Time window is updated as 3. ; success message
 </code></pre><br /><p><code>portfolio-total</code></p><p>This function returns the current total value of the portfolio.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(portfolio-total)
 
 ;; output:

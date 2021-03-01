@@ -77,12 +77,14 @@ Install directory:  ~/Library/Jupyter/kernels/backtesting_clojure
 Kernel identifier:  backtesting_clojure
 
 Installation successful.
-</code></pre></li></ol><br /><ol start="4"><li>Now when you restart the Jupyter Notebook application, you could select the kernel named <code>backtesting_clojure</code>. You can make use of the backtester by choosing this kernel.</li></ol><hr /><h3 id="beginner-tutorials">Beginner Tutorials</h3><br /><p>If you are new to clojure, we recommend having a quick read of the following tutorials first:</p><ul><li><p><a href="http://kimh.github.io/clojure-by-example/#about">Clojure by example</a> - useful for beginners pick up the syntax quickly</p></li><li><p><a href="https://clojuredocs.org/">Clojure docs</a> - a more thorough documentation that explains the built-in functions in Clojure</p></li></ul><hr /><h3 id="backtester-mode">Backtester Mode</h3><br /><p>You could run the backtester in two modes, which are the <strong>lazy</strong> and the <strong>non-lazy</strong> modes respectively:</p><br /><ol><li><strong>Lazy mode</strong></li></ol><ul><li><p>This is mainly for developmnet, and you need to run it with the original large-sized datasets named <code>data-CRSP-sorted.csv</code> and <code>data-Compustat-sorted.csv</code>.</p></li><li><p>To run the backtester in lazy mode, load the dataset in the following way:</p><pre><code class="clojure">;; load CRSP
+</code></pre></li></ol><br /><ol start="4"><li>Now when you restart the Jupyter Notebook application, you could select the kernel named <code>backtesting_clojure</code>. You can make use of the backtester by choosing this kernel.</li></ol><hr /><h3 id="beginner-tutorials">Beginner Tutorials</h3><br /><p>If you are new to clojure, we recommend having a quick read of the following tutorials first:</p><ul><li><p><a href="http://kimh.github.io/clojure-by-example/#about">Clojure by example</a> - useful for beginners pick up the syntax quickly</p></li><li><p><a href="https://clojuredocs.org/">Clojure docs</a> - a more thorough documentation that explains the built-in functions in Clojure</p></li></ul><hr /><h3 id="backtester-mode">Backtester Mode</h3><br /><p>You could run the backtester in two modes, which are the <strong>lazy</strong> and the <strong>non-lazy</strong> modes respectively. The only differences between the two modes lie within the way of loading the dataset and making an order.</p><br /><ol><li><strong>Lazy mode</strong></li></ol><ul><li><p>This is mainly for developmnet, and you need to run it with the original large-sized datasets named <code>data-CRSP-sorted.csv</code> and <code>data-Compustat-sorted.csv</code>.</p></li><li><p>Note that since these datasets are large in size (&gt; 10 GB), they are not included in <code>resources/</code> directory within the repository, and need to be downloaded separately.</p><p>(i) To run the backtester in lazy mode, load the dataset in the following way:</p><pre><code class="clojure">;; load CRSP
 (load-large-dataset "data-CRSP.csv" "main" add-aprc-by-date)
 ;; load compustat
 (load-large-dataset "data-Compustat.csv" "compustat")
-</code></pre></li><li><p>As the original dataset is quite big and takes time to run with the backtester, optionally you could create a smaller version by truncating some rows:</p><pre><code class="clojure">cat data-CRSP-sorted-cleaned.csv | tail 10000 &gt; CRSP-smaller.csv
-</code></pre></li></ul><br /><ol start="2"><li><strong>Non-lazy mode</strong></li></ol><ul><li><p>This is the default mode that the backtester is set in.</p></li><li><p>This is mainly for debugging, and you need to run it with the smaller datasets named <code>CRSP-extract.csv</code> and <code>Compustat-extract.csv</code>.</p></li><li><p>To run the backtester in non-lazy mode, load the dataset in the following way:</p><pre><code class="clojure">(reset! data-set (add-aprc (read-csv-row "./resources/CRSP-extract.csv")))
+</code></pre><p>As the original dataset is quite big and takes time to run with the backtester, optionally you could create a smaller version by truncating some rows:</p><pre><code class="clojure">cat data-CRSP-sorted-cleaned.csv | tail 10000 &gt; CRSP-smaller.csv
+</code></pre><p>(ii) An order could be made by calling the following function under the lazy mode:</p><pre><code class="clojure">(order-lazy "AAPL" 50) ; buy 50 stocks
+</code></pre></li></ul><br /><ol start="2"><li><strong>Non-lazy mode</strong></li></ol><ul><li><p>This is the default mode that the backtester is set in.</p></li><li><p>This is mainly for debugging, and you need to run it with the smaller datasets named <code>CRSP-extract.csv</code> and <code>Compustat-extract.csv</code>.</p><p>(i) To run the backtester in non-lazy mode, load the dataset in the following way:</p><pre><code class="clojure">(reset! data-set (add-aprc (read-csv-row "./resources/CRSP-extract.csv")))
+</code></pre><p>(ii) An order could be made by calling the following function under the non-lazy mode:</p><pre><code class="clojure">(order "AAPL" 50) ; buy 50 stocks
 </code></pre></li></ul><hr /><h3 id="code-walkthrough">Code Walkthrough</h3><p>We'll go through the code in <code>./examples/Simple trading strategy.ipynb</code> notebook to have a glimpse of how to write code that could be run with the backtester.</p><br /><p><strong>1. Import libraries</strong></p><p>To make use of the functions in the backtester library, it is necessary to import them whenever you create a new jupyter notebook file. Also make sure that you've compiled the <strong>most up-to-date</strong> clojure-backteser kernel, and have selected it in the Jupyter Notebook application.</p><pre><code>(ns clojure-backtesting.demo
   (:require [clojure.test :refer :all]
             [oz.notebook.clojupyter :as oz]
@@ -100,10 +102,12 @@ Installation successful.
   ) ;; require all libriaries from core
   (:use clojure.pprint)
 )
-</code></pre><br /><p><strong>2. Import dataset</strong></p><p>Load the CRSP-extract.csv dataset to the program by providing its relative path. Note that it is a must to nest it with <code>read-csv-row</code> and <code>add-aprc</code>, as they respectively parse the csv file and automatically add the adjusted price column to the dataset.</p><pre><code>(reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
+</code></pre><br /><p><strong>2. Import dataset</strong></p><p>Load the CRSP-extract.csv dataset to the program by providing its relative path. Note that it is a must to nest it with <code>read-csv-row</code> and <code>add-aprc</code>, as they respectively parse the csv file and automatically add the adjusted price column to the dataset.</p><p>(i) To load the dataset for <strong>non-lazy</strong> mode, import the extract dataset:</p><pre><code class="clojure">(reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
+</code></pre><p>(ii) To load the dataset for <strong>lazy</strong> mode, import the large dataset:</p><pre><code class="clojure">(load-large-dataset "../resources/CRSP-extract.csv" "main" add-aprc)
+(set-main "main")
 </code></pre><br /><p><strong>3. Initialise portfolio</strong></p><p>Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the <code>init-portfolio</code> function.</p><pre><code>(init-portfolio "1980-12-16" 10000);
 </code></pre><br /><p><strong>4. Check available tickers</strong></p><p>You could check what tickers you could trade on the current date (i.e. 1980-12-16).</p><pre><code>(keys (deref available-tics))
-</code></pre><br /><p><strong>5. Write your strategy</strong></p><p>With all these set-up, you are ready to write your strategy.</p><br /><p>The following demo is a trading strategy that follows a simple logic.</p><p><strong>Simple strategy</strong>:</p><p>In a timespan of 10 days (inclusive of today),</p><ul><li>Buy 50 stocks of AAPL on the first day</li><li>Sell 10 stocks of AAPL on every other day</li></ul><pre><code>;; define the "time span", i.e. to trade in the coming 10 days
+</code></pre><br /><p><strong>5. Write your strategy</strong></p><p>With all these set-up, you are ready to write your strategy.</p><br /><p>The following demo is a trading strategy that follows a simple logic.</p><p><strong>Simple strategy</strong>:</p><p>In a timespan of 10 days (inclusive of today),</p><ul><li>Buy 50 stocks of AAPL on the first day</li><li>Sell 10 stocks of AAPL on every other day</li></ul><p>(i) The following example code is for running under the <strong>non-lazy</strong> mode:</p><pre><code>;; define the "time span", i.e. to trade in the coming 10 days
 (def num-of-days (atom 10))
 
 (while (pos? @num-of-days) ;; check if num-of-days is &gt; 0
@@ -137,7 +141,38 @@ Installation successful.
 
 ; check whether counter == 0
 (println ((fn [counter] (str "Counter: " counter)) @num-of-days))
-</code></pre><p>Note that in the above code, it is necessary to iteratively call <code>next-date</code> so that the system could "move on to the next trading day". (check the details in the <em>"Counter"</em> section)</p><br /><pre><code class="clojure">;; output:
+</code></pre><p>(ii) The following example code is for running under the <strong>lazy</strong> mode:</p><pre><code class="clojure">;; define the "time span", i.e. to trade in the coming 10 days 
+(def num-of-days (atom 10))                              
+
+(while (pos? @num-of-days) ;; check if num-of-days is &gt; 0
+    (do 
+        ;; write your trading strategy here
+        (if (= 10 @num-of-days) ;; check if num-of-days == 10
+            (do
+                (order-lazy "AAPL" 50) ; buy 50 stocks
+                (println ((fn [date] (str "Buy 50 stocks of AAPL on " date)) (get-date)))
+            )
+        )
+        (if (odd? @num-of-days) ;; check if num-of-days is odd
+            (do
+                (order-lazy "AAPL" -10) ; sell 10 stocks
+                (println ((fn [date] (str "Sell 10 stocks of AAPL on " date)) (get-date)))
+            )
+        )
+        
+        (update-eval-report (get-date)) ;; update the evaluation metrics every day
+        
+        ; move on to the next trading day
+        (next-date)
+        
+        ; decrement counter
+        (swap! num-of-days dec)
+    )
+)
+
+; check whether counter == 0
+(println ((fn [counter] (str "Counter: " counter)) @num-of-days))
+</code></pre><p>Note that in the above snippets, it is necessary to iteratively call <code>next-date</code> so that the system could "move on to the next trading day". (check the details in the <em>"Counter"</em> section)</p><br /><pre><code class="clojure">;; output:
 
 Buy 50 stocks of AAPL on 1980-12-16
 Sell 10 stocks of AAPL on 1980-12-17
@@ -190,26 +225,26 @@ Counter: 0
 </code></pre><br /><p><strong>8. Generate evaluation report</strong></p><p>If you update the evaluation report every day (as <code>update-eval-report</code> is called for 10 times in the loop), you'll obtain a evluation report with daily records.</p><p>Detailed explanation of the evaluation metrics could be found in the <em>"Evaluate"</em> section.</p><p>However, note that if you are traversing a large amount of dates, it would be better <strong>not</strong> to update the evaluation metrics every day as it would require a large amount of memory and computation time. Alternatively, you could print a small number of rows of the evaluation report.</p><p>Note that the evaluation report could also be found in the <code>out_evaluation_report.csv</code> file.</p><br /><pre><code class="clojure">;; pass -1 so that the entire record is printed, else pass the no. of rows
 (eval-report -1)
 </code></pre><pre><code class="Clojure">;; output:
-|      :date | :pnl-pt | :sharpe | :tot-val |  :vol |
-|------------+---------+---------+----------+-------|
-| 1980-12-16 |      $0 |   0.00% |   $10000 | 0.00% |
-| 1980-12-17 |      $8 |   1.73% |   $10016 | 0.09% |
-| 1980-12-18 |      $8 |   0.00% |   $10016 | 0.00% |
-| 1980-12-19 |     $22 |   4.80% |   $10066 | 0.14% |
-| 1980-12-22 |     $22 |   5.39% |   $10066 | 0.12% |
-| 1980-12-23 |     $25 |   8.68% |   $10100 | 0.11% |
-| 1980-12-24 |     $25 |   9.13% |   $10100 | 0.11% |
-| 1980-12-26 |     $25 |  11.44% |   $10126 | 0.11% |
-| 1980-12-29 |     $25 |  11.21% |   $10126 | 0.11% |
-| 1980-12-30 |     $19 |  10.90% |   $10119 | 0.11% |
+|      :date | :tot-value |    :vol |  :r-vol |  :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
+|------------+------------+---------+---------+----------+-----------+---------+---------------|
+| 1980-12-16 |     $10000 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $0 |        0.0000 |
+| 1980-12-17 |     $10016 | 0.0407% | 0.0407% |  1.7321% |   1.7321% |      $8 |      100.0000 |
+| 1980-12-18 |     $10016 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $8 |        0.0000 |
+| 1980-12-19 |     $10066 | 0.0598% | 0.0598% |  4.8019% |   4.8019% |     $22 |      100.0000 |
+| 1980-12-22 |     $10066 | 0.0532% | 0.0532% |  5.3929% |   5.3929% |     $22 |      100.0000 |
+| 1980-12-23 |     $10100 | 0.0499% | 0.0499% |  8.6792% |   8.6792% |     $25 |      100.0000 |
+| 1980-12-24 |     $10100 | 0.0475% | 0.0475% |  9.1298% |   9.1298% |     $25 |      100.0000 |
+| 1980-12-26 |     $10126 | 0.0477% | 0.0477% | 11.4442% |  11.4442% |     $25 |      100.0000 |
+| 1980-12-29 |     $10126 | 0.0487% | 0.0487% | 11.2135% |  11.2135% |     $25 |      100.0000 |
+| 1980-12-30 |     $10119 | 0.0473% | 0.0473% | 10.9035% |  10.9035% |     $19 |      113.3677 |
 </code></pre><pre><code class="clojure">;; just print the first 3 rows
 (eval-report 3)
 </code></pre><pre><code class="Clojure">;; output:
-|      :date | :pnl-pt | :sharpe | :tot-val |  :vol |
-|------------+---------+---------+----------+-------|
-| 1980-12-16 |      $0 |   0.00% |   $10000 | 0.00% |
-| 1980-12-17 |      $8 |   1.73% |   $10016 | 0.09% |
-| 1980-12-18 |      $8 |   0.00% |   $10016 | 0.00% |
+|      :date | :tot-value |    :vol |  :r-vol |  :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
+|------------+------------+---------+---------+----------+-----------+---------+---------------|
+| 1980-12-16 |     $10000 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $0 |        0.0000 |
+| 1980-12-17 |     $10016 | 0.0407% | 0.0407% |  1.7321% |   1.7321% |      $8 |      100.0000 |
+| 1980-12-18 |     $10016 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $8 |        0.0000 |
 </code></pre><br /><p><strong>9. Plot variables</strong></p><p>You could try plotting some variables shown in the portfolio record / evaluation report tables.</p><p><strong>Plotting values in portfolio record</strong></p><pre><code class="clojure">;; 1) Define the data to be the record that features the column
 (def data (deref portfolio-value))
 
