@@ -68,13 +68,15 @@ If you are new to clojure, we recommend having a quick read of the following tut
 
 <br>
 
-You could run the backtester in two modes, which are the **lazy** and the **non-lazy** modes respectively:
+You could run the backtester in two modes, which are the **lazy** and the **non-lazy** modes respectively. The only differences between the two modes lie within the way of loading the dataset and making an order.
 
 <br>
 
 1. **Lazy mode**
 - This is mainly for developmnet, and you need to run it with the original large-sized datasets named `data-CRSP-sorted.csv` and `data-Compustat-sorted.csv`.
-- To run the backtester in lazy mode, load the dataset in the following way:
+- Note that since these datasets are large in size (> 10 GB), they are not included in `resources/` directory within the repository, and need to be downloaded separately.
+
+  (i) To run the backtester in lazy mode, load the dataset in the following way:
 
   ```clojure
   ;; load CRSP
@@ -83,10 +85,16 @@ You could run the backtester in two modes, which are the **lazy** and the **non-
   (load-large-dataset "data-Compustat.csv" "compustat")
   ```
 
-- As the original dataset is quite big and takes time to run with the backtester, optionally you could create a smaller version by truncating some rows:
+  As the original dataset is quite big and takes time to run with the backtester, optionally you could create a smaller version by truncating some rows:
 
   ```clojure
   cat data-CRSP-sorted-cleaned.csv | tail 10000 > CRSP-smaller.csv
+  ```
+
+  (ii) An order could be made by calling the following function under the lazy mode:
+
+  ```clojure
+  (order-lazy "AAPL" 50) ; buy 50 stocks
   ```
   
 <br>
@@ -95,10 +103,17 @@ You could run the backtester in two modes, which are the **lazy** and the **non-
 
 - This is the default mode that the backtester is set in.
 - This is mainly for debugging, and you need to run it with the smaller datasets named `CRSP-extract.csv` and `Compustat-extract.csv`.
-- To run the backtester in non-lazy mode, load the dataset in the following way:
+
+  (i) To run the backtester in non-lazy mode, load the dataset in the following way:
 
   ```clojure
   (reset! data-set (add-aprc (read-csv-row "./resources/CRSP-extract.csv")))
+  ```
+
+  (ii) An order could be made by calling the following function under the non-lazy mode:
+
+  ```clojure
+  (order "AAPL" 50) ; buy 50 stocks
   ```
 
 
@@ -140,8 +155,15 @@ To make use of the functions in the backtester library, it is necessary to impor
 
 Load the CRSP-extract.csv dataset to the program by providing its relative path. Note that it is a must to nest it with `read-csv-row` and `add-aprc`, as they respectively parse the csv file and automatically add the adjusted price column to the dataset.
 
-```
+(i) To load the dataset for **non-lazy** mode, import the extract dataset:
+```clojure 
 (reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
+```
+
+(ii) To load the dataset for **lazy** mode, import the large dataset:
+```clojure 
+(load-large-dataset "../resources/CRSP-extract.csv" "main" add-aprc)
+(set-main "main")
 ```
 
 <br>
@@ -181,6 +203,8 @@ In a timespan of 10 days (inclusive of today),
 - Buy 50 stocks of AAPL on the first day
 - Sell 10 stocks of AAPL on every other day
 
+
+(i) The following example code is for running under the **non-lazy** mode:
 ```
 ;; define the "time span", i.e. to trade in the coming 10 days
 (def num-of-days (atom 10))
@@ -218,7 +242,43 @@ In a timespan of 10 days (inclusive of today),
 (println ((fn [counter] (str "Counter: " counter)) @num-of-days))
 ```
 
-Note that in the above code, it is necessary to iteratively call `next-date` so that the system could "move on to the next trading day". (check the details in the _"Counter"_ section)
+(ii) The following example code is for running under the **lazy** mode:
+```clojure
+;; define the "time span", i.e. to trade in the coming 10 days 
+(def num-of-days (atom 10))                              
+
+(while (pos? @num-of-days) ;; check if num-of-days is > 0
+    (do 
+        ;; write your trading strategy here
+        (if (= 10 @num-of-days) ;; check if num-of-days == 10
+            (do
+                (order-lazy "AAPL" 50) ; buy 50 stocks
+                (println ((fn [date] (str "Buy 50 stocks of AAPL on " date)) (get-date)))
+            )
+        )
+        (if (odd? @num-of-days) ;; check if num-of-days is odd
+            (do
+                (order-lazy "AAPL" -10) ; sell 10 stocks
+                (println ((fn [date] (str "Sell 10 stocks of AAPL on " date)) (get-date)))
+            )
+        )
+        
+        (update-eval-report (get-date)) ;; update the evaluation metrics every day
+        
+        ; move on to the next trading day
+        (next-date)
+        
+        ; decrement counter
+        (swap! num-of-days dec)
+    )
+)
+
+; check whether counter == 0
+(println ((fn [counter] (str "Counter: " counter)) @num-of-days))
+```
+
+
+Note that in the above snippets, it is necessary to iteratively call `next-date` so that the system could "move on to the next trading day". (check the details in the _"Counter"_ section)
 
 <br>
 
@@ -336,18 +396,18 @@ However, note that if you are traversing a large amount of dates, it would be be
 
 ```Clojure
 ;; output:
-|      :date | :pnl-pt | :sharpe | :tot-val |  :vol |
-|------------+---------+---------+----------+-------|
-| 1980-12-16 |      $0 |   0.00% |   $10000 | 0.00% |
-| 1980-12-17 |      $8 |   1.73% |   $10016 | 0.09% |
-| 1980-12-18 |      $8 |   0.00% |   $10016 | 0.00% |
-| 1980-12-19 |     $22 |   4.80% |   $10066 | 0.14% |
-| 1980-12-22 |     $22 |   5.39% |   $10066 | 0.12% |
-| 1980-12-23 |     $25 |   8.68% |   $10100 | 0.11% |
-| 1980-12-24 |     $25 |   9.13% |   $10100 | 0.11% |
-| 1980-12-26 |     $25 |  11.44% |   $10126 | 0.11% |
-| 1980-12-29 |     $25 |  11.21% |   $10126 | 0.11% |
-| 1980-12-30 |     $19 |  10.90% |   $10119 | 0.11% |
+|      :date | :tot-value |    :vol |  :r-vol |  :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
+|------------+------------+---------+---------+----------+-----------+---------+---------------|
+| 1980-12-16 |     $10000 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $0 |        0.0000 |
+| 1980-12-17 |     $10016 | 0.0407% | 0.0407% |  1.7321% |   1.7321% |      $8 |      100.0000 |
+| 1980-12-18 |     $10016 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $8 |        0.0000 |
+| 1980-12-19 |     $10066 | 0.0598% | 0.0598% |  4.8019% |   4.8019% |     $22 |      100.0000 |
+| 1980-12-22 |     $10066 | 0.0532% | 0.0532% |  5.3929% |   5.3929% |     $22 |      100.0000 |
+| 1980-12-23 |     $10100 | 0.0499% | 0.0499% |  8.6792% |   8.6792% |     $25 |      100.0000 |
+| 1980-12-24 |     $10100 | 0.0475% | 0.0475% |  9.1298% |   9.1298% |     $25 |      100.0000 |
+| 1980-12-26 |     $10126 | 0.0477% | 0.0477% | 11.4442% |  11.4442% |     $25 |      100.0000 |
+| 1980-12-29 |     $10126 | 0.0487% | 0.0487% | 11.2135% |  11.2135% |     $25 |      100.0000 |
+| 1980-12-30 |     $10119 | 0.0473% | 0.0473% | 10.9035% |  10.9035% |     $19 |      113.3677 |
 ```
 
 ```clojure
@@ -357,11 +417,11 @@ However, note that if you are traversing a large amount of dates, it would be be
 
 ```Clojure
 ;; output:
-|      :date | :pnl-pt | :sharpe | :tot-val |  :vol |
-|------------+---------+---------+----------+-------|
-| 1980-12-16 |      $0 |   0.00% |   $10000 | 0.00% |
-| 1980-12-17 |      $8 |   1.73% |   $10016 | 0.09% |
-| 1980-12-18 |      $8 |   0.00% |   $10016 | 0.00% |
+|      :date | :tot-value |    :vol |  :r-vol |  :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
+|------------+------------+---------+---------+----------+-----------+---------+---------------|
+| 1980-12-16 |     $10000 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $0 |        0.0000 |
+| 1980-12-17 |     $10016 | 0.0407% | 0.0407% |  1.7321% |   1.7321% |      $8 |      100.0000 |
+| 1980-12-18 |     $10016 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $8 |        0.0000 |
 ```
 <br>
 
