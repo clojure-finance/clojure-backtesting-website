@@ -73,7 +73,7 @@ You could run the backtester in two modes, which are the **lazy** and the **non-
 <br>
 
 1. **Lazy mode**
-- This is mainly for development, and you need to run it with the original large-sized datasets named `data-CRSP-sorted.csv` and `data-Compustat-sorted.csv`.
+- This is mainly for development, and you need to run it with the original large-sized datasets named `data-CRSP.csv` and `data-Compustat.csv`.
 - Note that since these datasets are large in size (> 10 GB), they are not included in `resources/` directory within the repository, and need to be downloaded separately.
 
   (i) To run the backtester in lazy mode, load the dataset in the following way:
@@ -88,7 +88,7 @@ You could run the backtester in two modes, which are the **lazy** and the **non-
   As the original dataset is quite big and takes time to run with the backtester, optionally you could create a smaller version by truncating some rows:
 
   ```clojure
-  cat data-CRSP-sorted-cleaned.csv | tail 10000 > CRSP-smaller.csv
+  cat data-CRSP.csv | tail 10000 > CRSP-smaller.csv
   ```
 
   (ii) An order could be made by calling the following function under the lazy mode:
