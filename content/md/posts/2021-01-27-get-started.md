@@ -73,7 +73,7 @@ You could run the backtester in two modes, which are the **lazy** and the **non-
 <br>
 
 1. **Lazy mode**
-- This is mainly for developmnet, and you need to run it with the original large-sized datasets named `data-CRSP-sorted.csv` and `data-Compustat-sorted.csv`.
+- This is mainly for development, and you need to run it with the original large-sized datasets named `data-CRSP-sorted.csv` and `data-Compustat-sorted.csv`.
 - Note that since these datasets are large in size (> 10 GB), they are not included in `resources/` directory within the repository, and need to be downloaded separately.
 
   (i) To run the backtester in lazy mode, load the dataset in the following way:
