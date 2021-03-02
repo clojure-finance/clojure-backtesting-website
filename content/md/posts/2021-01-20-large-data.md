@@ -103,12 +103,66 @@ This order function allows user to set orders for large dataset.
 
    ```clojure
    (order "AAPL" 10 :print true)
-   ```
-
-   ​      
+   
+```
+   
 
 
 ---
+
+### Automation
+
+<br>
+
+`set-automation`
+
+Initiate an automation by this function.
+
+**Parameters:**
+
+- condition: function: a boolean function as condition
+- action: function: function to operate if condition is true
+
+**Return:**
+
+int: a unique identifier of this condition and action pair
+
+**Example:**
+
+```clojure
+(set-automation #((< (get (get (deref available-tics) "AAPL") :PRC))23)) #((order-lazy "AAPL" 0 :remaining true)))
+(stop-loss "AAPL" 23 -100)
+()
+```
+
+***Internal Implementation:***
+
+All the conditions are checked at the first line of the next-date function.
+
+```clojure
+(defn next-date
+  []
+  (check-automation)
+  ...)
+```
+
+<br>
+
+`cancel-automation`
+
+Delete an automation.
+
+**Parameter:**
+
+- num: int: the unique identifier returned by `set-automation`
+
+**Example:**
+
+```clojure
+(cancel-automation num)
+```
+
+-----------------
 
 ### Get Corresponding line
 
