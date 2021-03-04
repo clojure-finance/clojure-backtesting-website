@@ -45,7 +45,7 @@ All the large datasets are stored inside dataset-col, which is map of name being
 **Parameters:**
 
 - `name` - string: the name of the main dataset
-  - defination of main dataset: where the price and adjusted price inforamtion is in.
+- definition of main dataset: where the price and adjusted price inforamtion is in.
 
 **Possible usages:**
 
@@ -54,6 +54,8 @@ All the large datasets are stored inside dataset-col, which is map of name being
 ```
 
 <br>
+
+---
 
 ### Make Order
 
@@ -92,22 +94,19 @@ This order function allows user to set orders for large dataset.
 
 1. *Order with or without leverage:*
 
-   ```clojure
-   (order "AAPL" 10) ;with leverage, exact value trading
-   (order "AAPL" 10 :leverage false) ;without leverage, exact value trade
-   (order "AAPL" -10 :remaining true) ;with leverage, remaining value
-   (order "AAPL" -10 :leverage false :remaining true) ;without leverage, remaining value (This must be a failed trade)
-   ```
+    ```clojure
+    (order "AAPL" 10) ;with leverage, exact value trading
+    (order "AAPL" 10 :leverage false) ;without leverage, exact value trade
+    (order "AAPL" -10 :remaining true) ;with leverage, remaining value
+    (order "AAPL" -10 :leverage false :remaining true) ;without leverage, remaining value (This must be a failed trade)
+    ```
 
 2. *Print the order log:*
 
-   ```clojure
-   (order "AAPL" 10 :print true)
+    ```clojure
+    (order "AAPL" 10 :print true) 
+    ```
    
-```
-   
-
-
 ---
 
 ### Automation
@@ -164,9 +163,97 @@ Delete an automation.
 (cancel-automation num)
 ```
 
-#### Some Wrapper functions for usual automations:
+---
 
-to do
+### Limit orders
+
+<br>
+
+`stop-buy`
+
+Makes a stop buy order (executed once only when condition is fulfilled).
+
+**Parameter:**
+
+- `tic`: string: ticker to be traded
+- `prc`: num: the ticker will be bought when its adjusted price is greater than `prc`
+- `qty`: num: quantity to be traded
+- `mode`: "lazy or "non-lazy", the current backtester mode
+
+**Example:**
+
+```clojure
+(stop-buy "AAPL" 25 10 "non-lazy")
+
+;; output:
+Automation 1 dispatched.
+```
+
+<br>
+
+`limit-buy`
+
+Makes a limit buy order (executed once only when condition is fulfilled).
+
+**Parameter:**
+
+- `tic`: string: ticker to be traded
+- `prc`: num: the ticker will be bought when its adjusted price is smaller than `prc`
+- `qty`: num: quantity to be traded
+- `mode`: "lazy or "non-lazy", the current backtester mode
+
+**Example:**
+
+```clojure
+(limit-buy "AAPL" 25 10 "non-lazy")
+
+;; output:
+Automation 1 dispatched.
+```
+
+<br>
+
+`stop-sell`
+
+Makes a stop sell order (executed once only when condition is fulfilled).
+
+**Parameter:**
+
+- `tic`: string: ticker to be traded
+- `prc`: num: the ticker will be sold when its adjusted price is smaller than `prc`
+- `qty`: num: quantity to be traded
+- `mode`: "lazy or "non-lazy", the current backtester mode
+
+**Example:**
+
+```clojure
+(stop-buy "AAPL" 25 10 "non-lazy")
+
+;; output:
+Automation 1 dispatched.
+```
+
+<br>
+
+`limit-sell`
+
+Makes a limit sell order (executed once only when condition is fulfilled).
+
+**Parameter:**
+
+- `tic`: string: ticker to be traded
+- `prc`: num: the ticker will be sold when its adjusted price is greater than `prc`
+- `qty`: num: quantity to be traded
+- `mode`: "lazy or "non-lazy", the current backtester mode
+
+**Example:**
+
+```clojure
+(limit-sell "AAPL" 25 10 "non-lazy")
+
+;; output:
+Automation 1 dispatched.
+```
 
 
 
