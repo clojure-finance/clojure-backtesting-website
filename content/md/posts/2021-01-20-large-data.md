@@ -123,6 +123,10 @@ Initiate an automation by this function.
 - condition: function: a boolean function as condition
 - action: function: function to operate if condition is true
 
+*Optional:*
+
+- max-dispatch: int: the maximum dispatch times of the this automation. By default, infinite.
+
 **Return:**
 
 int: a unique identifier of this condition and action pair
@@ -131,8 +135,6 @@ int: a unique identifier of this condition and action pair
 
 ```clojure
 (set-automation #((< (get (get (deref available-tics) "AAPL") :PRC))23)) #((order-lazy "AAPL" 0 :remaining true)))
-(stop-loss "AAPL" 23 -100)
-()
 ```
 
 ***Internal Implementation:***
@@ -161,6 +163,12 @@ Delete an automation.
 ```clojure
 (cancel-automation num)
 ```
+
+#### Some Wrapper functions for usual automations:
+
+to do
+
+
 
 -----------------
 
