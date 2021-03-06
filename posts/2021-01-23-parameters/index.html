@@ -2,12 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Clojure Backtesting Documentation: Archives</title>
+    <title>Clojure Backtesting Documentation: Parameters</title>
     
-    <meta name="description" content="This site serves as documentation for a backtesting framework written in Clojure.">
-    <meta name="keywords" content="">
-    
-    <link rel="canonical" href="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/archives/">
+<meta name="keywords" content="">
+
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-23-parameters/" />
+<meta property="og:title" content="Parameters" />
+<meta property="og:type" content="article" />
+
+    <link rel="canonical" href="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-23-parameters/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" rel="stylesheet"
           type="text/css">
@@ -34,7 +37,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li ><a href="/clojure-backtesting-website/">Home</a></li>
                 <li
-                 class="active" ><a href="/clojure-backtesting-website/archives/">Archives</a></li>
+                ><a href="/clojure-backtesting-website/archives/">Archives</a></li>
                 
                 <li
                 >
@@ -55,65 +58,59 @@
         <div class="col-lg-9">
             <div id="content">
                 
-<div id="posts">
-    <div id="page-header">
-        <h2>Archives</h2>
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">23 January 2021</div>
+        
     </div>
+    <h2>Parameters</h2>
+</div>
+<div>
+    <ol class="toc"><li><a href="#margin-requirements">Margin Requirements</a></li></ol>
+    <style>
+/* table styles */
+table, th, td {
+  border: 1px solid black;
+  padding: 5px;
+}
+</style><br /><p><code>ns: clojure-backtesting.parameters</code></p><p>This namespace defines the parameters that are configurable in the backtester.</p><hr /><h3 id="margin-requirements">Margin Requirements</h3><br /><p><code>INITIAL-MARGIN</code></p><p>This variable stores the minimum ratio of cash to total value of securities that must be paid when buying on margin. The default value is set as <code>0.5</code>.</p><p><strong>Example:</strong></p><pre><code class="clojure">;; check the variable
+(println INITIAL-MARGIN)
+
+;; output:
+0.5
+</code></pre><br /><p><code>update-initial-margin</code></p><p>This function updates the initial margin.</p><p><strong>Parameters:</strong></p><ul><li><code>num</code> - new initial margin value, needs to be &gt; 0</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">;; update the variable
+(update-initial-margin 0.7)
+(println INITIAL-MARGIN)
+
+;; output:
+0.7
+</code></pre><br /><p><code>MAINTENANCE-MARGIN</code></p><p>This variable stores the minimum ratio of cash to total value of securities that must be maintained in the margin account. If the portfolio margin goes below the maintenance margin, all positions will be automatically closed. The default value is set as <code>0.25</code>.</p><p><strong>Example:</strong></p><pre><code class="clojure">;; check the variable
+(println MAINTENANCE-MARGIN)
+
+;; output:
+0.25
+</code></pre><br /><p><code>update-maintenance-margin</code></p><p>This function updates the maintenance margin.</p><p><strong>Parameters:</strong></p><ul><li><code>num</code> - new maintenance margin value, needs to be &gt; 0</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">;; update the variable
+(update-maintenance-margin 0.2)
+(println MAINTENANCE-MARGIN)
+
+;; output:
+0.2
+</code></pre><br />
+</div>
+
+
+    <div id="prev-next">
+        
+        <a href="/clojure-backtesting-website/posts/2021-01-24-counter/">&laquo; Counter</a>
+        
+        
+        <a class="right" href="/clojure-backtesting-website/posts/2021-01-22-order/">Order &raquo;</a>
+        
+    </div>
+
     
-        <h4>2021 January</h4>
-        <ul>
-        
-        <li>
-            Jan 27 - <a href="/clojure-backtesting-website/posts/2021-01-27-get-started/">Get Started</a>
-        </li>
-        
-        <li>
-            Jan 26 - <a href="/clojure-backtesting-website/posts/2021-01-26-preliminaries/">Preliminaries</a>
-        </li>
-        
-        <li>
-            Jan 25 - <a href="/clojure-backtesting-website/posts/2021-01-25-data-management/">Data Management</a>
-        </li>
-        
-        <li>
-            Jan 24 - <a href="/clojure-backtesting-website/posts/2021-01-24-counter/">Counter</a>
-        </li>
-        
-        <li>
-            Jan 23 - <a href="/clojure-backtesting-website/posts/2021-01-23-parameters/">Parameters</a>
-        </li>
-        
-        <li>
-            Jan 22 - <a href="/clojure-backtesting-website/posts/2021-01-22-order/">Order</a>
-        </li>
-        
-        <li>
-            Jan 21 - <a href="/clojure-backtesting-website/posts/2021-01-21-portfolio/">Portfolio</a>
-        </li>
-        
-        <li>
-            Jan 20 - <a href="/clojure-backtesting-website/posts/2021-01-20-evaluate/">Evaluate</a>
-        </li>
-        
-        <li>
-            Jan 19 - <a href="/clojure-backtesting-website/posts/2021-01-19-large-data/">Large Data</a>
-        </li>
-        
-        </ul>
-    
-        <h4>2020 December</h4>
-        <ul>
-        
-        <li>
-            Dec 31 - <a href="/clojure-backtesting-website/posts/2020-12-31-example-golden-cross/">Example - Golden Cross</a>
-        </li>
-        
-        <li>
-            Dec 30 - <a href="/clojure-backtesting-website/posts/2020-12-30-example-fundamental analysis/">Example - Fundamental Analysis</a>
-        </li>
-        
-        </ul>
-    
+
 
 </div>
 
