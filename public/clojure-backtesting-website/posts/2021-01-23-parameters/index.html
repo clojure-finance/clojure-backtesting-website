@@ -67,14 +67,15 @@
     <h2>Parameters</h2>
 </div>
 <div>
-    <ol class="toc"><li><a href="#margin-requirements">Margin Requirements</a></li><li><a href="#transaction-cost--loan-interest">Transaction Cost & Loan Interest</a></li></ol>
+    <ol class="toc"><li><a href="#trading-price">Trading Price</a></li><li><a href="#margin-requirements">Margin Requirements</a></li><li><a href="#transaction-cost--loan-interest">Transaction Cost & Loan Interest</a></li></ol>
     <style>
 /* table styles */
 table, th, td {
   border: 1px solid black;
   padding: 5px;
 }
-</style><br /><p><code>ns: clojure-backtesting.parameters</code></p><p>This namespace defines the parameters that are configurable in the backtester.</p><hr /><h3 id="margin-requirements">Margin Requirements</h3><br /><p><code>INITIAL-MARGIN</code></p><p>This variable stores the minimum ratio of cash to total value of securities that must be paid when buying on margin. The default value is set as <code>0.5</code>.</p><p><strong>Example:</strong></p><pre><code class="clojure">;; check the variable
+</style><br /><p><code>ns: clojure-backtesting.parameters</code></p><p>This namespace defines the parameters that are configurable in the backtester.</p><hr /><h3 id="trading-price">Trading Price</h3><p>The trading price is by default set to be closing price.</p><p>You can change it to opening price by changing the parameter.clj in <code>src/</code>:</p><pre><code class="clojure">(def PRICE-KEY :OPRNPRC)
+</code></pre><hr /><h3 id="margin-requirements">Margin Requirements</h3><br /><p><code>INITIAL-MARGIN</code></p><p>This variable stores the minimum ratio of cash to total value of securities that must be paid when buying on margin. The default value is set as <code>0.5</code>.</p><p><strong>Example:</strong></p><pre><code class="clojure">;; check the variable
 (println INITIAL-MARGIN)
 
 ;; output:
