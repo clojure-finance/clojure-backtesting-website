@@ -128,6 +128,19 @@ This variable stores the rate of the commission fee that is charged upon the exe
 0.0
 ```
 
+
+<br>
+
+`update-transaction-cost`
+
+This function updates the transaction cost.
+
+**Parameters:**
+
+- `num` - new initial margin value, needs to be within the range of [0,1).
+
+**Example:**
+
 ```clojure
 ;; update the variable
 (update-transaction-cost 0.2)
@@ -138,6 +151,7 @@ This variable stores the rate of the commission fee that is charged upon the exe
 ```
 
 <br>
+
 
 `INTEREST-RATE`
 
@@ -152,6 +166,17 @@ This variable stores the simple interest rate (per annum) that is incurred when 
 ;; output:
 0.0
 ```
+
+<br>
+
+`update-interest-rate`
+
+This function updates the interest rate.
+
+**Parameters:**
+
+- `num` - new initial margin value, needs to be within the range of [0,1).
+
 
 ```clojure
 ;; update the variable

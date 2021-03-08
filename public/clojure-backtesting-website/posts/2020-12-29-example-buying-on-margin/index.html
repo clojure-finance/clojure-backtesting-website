@@ -71,7 +71,7 @@
     <h2>Example - Buying on Margin</h2>
 </div>
 <div>
-    <ol class="toc"><li><a href="#initialisation">Initialisation</a></li><li><a href="#trade-without-leverage">Trade without Leverage</a></li><li><a href="#trade-with-leverage">Trade with Leverage</a></li><ol><li><a href="#initial-margin">Initial Margin</a></li><li><a href="#maintenance-margin">Maintenance margin</a></li></ol></ol>
+    <ol class="toc"><li><a href="#initialisation">Initialisation</a></li><li><a href="#trade-without-leverage">Trade without Leverage</a></li><li><a href="#trade-with-leverage">Trade with Leverage</a></li><ol><li><a href="#initial-margin">Initial Margin</a></li><li><a href="#maintenance-margin">Maintenance Margin</a></li></ol></ol>
     <br /><p><code>Examples/Buying on margin.ipynb</code></p><p>This file features the demo code for enabling or disabling leverage in the backtester.</p><hr /><h3 id="initialisation">Initialisation</h3><pre><code>; import libraries from kernel
 (ns clojure-backtesting.demo
   (:require [clojure.test :refer :all]
@@ -107,8 +107,8 @@
 (pprint/print-table (deref order-record))
 (view-portfolio)
 (view-portfolio-record -1)
+</code></pre><pre><code class="clojure">;; output:
 
-;; output:
 Order: 1980-12-16 | AAPL | 10.000000.
 
 |      :date | :tic |  :price | :aprc | :quantity |
@@ -136,8 +136,8 @@ Order: 1980-12-16 | AAPL | 10.000000.
 (pprint/print-table (deref order-record))
 (view-portfolio)
 (view-portfolio-record -1)
+</code></pre><pre><code class="clojure">;; output:
 
-;; output:
 Order request 1980-12-15 | AAPL | 10 fails.
 Failure reason: You do not have enough money to buy or have enough stock to sell. Try to solve by enabling leverage.
 
@@ -159,8 +159,8 @@ Failure reason: You do not have enough money to buy or have enough stock to sell
 (pprint/print-table (deref order-record))
 (view-portfolio)
 (view-portfolio-record -1)
+</code></pre><pre><code class="clojure">;; output:
 
-;; output:
 Order: 1980-12-16 | AAPL | 1.000000.
 
 |      :date | :tic |  :price | :aprc | :quantity |
@@ -190,8 +190,8 @@ Order: 1980-12-16 | AAPL | 1.000000.
 (pprint/print-table (deref order-record))
 (view-portfolio)
 (view-portfolio-record -1)
+</code></pre><pre><code>;; output:
 
-;; output:
 Order request 1980-12-15 | AAPL | 10 fails due to initial margin exceeding.
 
 | :asset | :price | :aprc | :quantity | :tot-val |
@@ -206,7 +206,7 @@ Order request 1980-12-15 | AAPL | 10 fails due to initial margin exceeding.
 
 ;; output:
 0.1
-</code></pre><pre><code class="clojure">(init-portfolio "1980-12-15" 100)
+</code></pre><br /><pre><code class="clojure">(init-portfolio "1980-12-15" 100)
 (order "AAPL" 10 :remaining true :print true) ;with leverage, remaining value
 
 (next-date)
@@ -216,8 +216,8 @@ Order request 1980-12-15 | AAPL | 10 fails due to initial margin exceeding.
 (pprint/print-table (deref order-record))
 (view-portfolio)
 (view-portfolio-record -1)
+</code></pre><pre><code class="clojure">;; output:
 
-;; output:
 Order: 1980-12-16 | AAPL | 10.000000.
 
 |      :date | :tic |  :price | :aprc | :quantity |
@@ -235,7 +235,7 @@ Order: 1980-12-16 | AAPL | 10.000000.
 | 1980-12-16 |    $100.00 |      0.00% |    0.00% | $158.19 |      1.58 |  38.73% |
 | 1980-12-17 |    $102.75 |      1.81% |    1.81% | $158.19 |      1.54 |  39.38% |
 | 1980-12-18 |    $106.00 |      2.02% |    3.83% | $158.19 |      1.49 |  40.12% |
-</code></pre><h4 id="maintenance-margin">Maintenance margin</h4><p>All positions will be automatically closed if the portfolio margin goes below the maintenace margin.</p><pre><code class="clojure">(init-portfolio "1980-12-15" 100)
+</code></pre><h4 id="maintenance-margin">Maintenance Margin</h4><p>All positions will be automatically closed if the portfolio margin goes below the maintenace margin.</p><pre><code class="clojure">(init-portfolio "1980-12-15" 100)
 (order "AAPL" -10 :remaining true :print true) ;with leverage, remaining value
 (order "F" 20 :remaining true :print true)
 
@@ -246,9 +246,7 @@ Order: 1980-12-16 | AAPL | 10.000000.
 (pprint/print-table (deref order-record))
 (view-portfolio)
 (view-portfolio-record -1)
-
-
-;; output:
+</code></pre><pre><code class="clojure">;; output:
 
 Order: 1980-12-16 | AAPL | -10.000000.
 Order: 1980-12-16 | F | 20.000000.

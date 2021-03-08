@@ -58,8 +58,11 @@ The trade would be allowed if you possess enough cash to pay.
 (pprint/print-table (deref order-record))
 (view-portfolio)
 (view-portfolio-record -1)
+```
 
+```clojure
 ;; output:
+
 Order: 1980-12-16 | AAPL | 10.000000.
 
 |      :date | :tic |  :price | :aprc | :quantity |
@@ -95,8 +98,10 @@ However, the trade would not be allowed if you do not have sufficient cash.
 (pprint/print-table (deref order-record))
 (view-portfolio)
 (view-portfolio-record -1)
-
+```
+```clojure
 ;; output:
+
 Order request 1980-12-15 | AAPL | 10 fails.
 Failure reason: You do not have enough money to buy or have enough stock to sell. Try to solve by enabling leverage.
 
@@ -125,8 +130,10 @@ Failure reason: You do not have enough money to buy or have enough stock to sell
 (pprint/print-table (deref order-record))
 (view-portfolio)
 (view-portfolio-record -1)
-
+```
+```clojure
 ;; output:
+
 Order: 1980-12-16 | AAPL | 1.000000.
 
 |      :date | :tic |  :price | :aprc | :quantity |
@@ -170,8 +177,10 @@ The purchase would not be allowed if the ratio of cash to total value of assets 
 (pprint/print-table (deref order-record))
 (view-portfolio)
 (view-portfolio-record -1)
-
+```
+```
 ;; output:
+
 Order request 1980-12-15 | AAPL | 10 fails due to initial margin exceeding.
 
 | :asset | :price | :aprc | :quantity | :tot-val |
@@ -193,6 +202,8 @@ Alternatively, you could manually **update the initial margin** to enable such a
 0.1
 ```
 
+<br>
+
 ```clojure
 (init-portfolio "1980-12-15" 100)
 (order "AAPL" 10 :remaining true :print true) ;with leverage, remaining value
@@ -204,8 +215,10 @@ Alternatively, you could manually **update the initial margin** to enable such a
 (pprint/print-table (deref order-record))
 (view-portfolio)
 (view-portfolio-record -1)
-
+```
+```clojure
 ;; output:
+
 Order: 1980-12-16 | AAPL | 10.000000.
 
 |      :date | :tic |  :price | :aprc | :quantity |
@@ -225,7 +238,7 @@ Order: 1980-12-16 | AAPL | 10.000000.
 | 1980-12-18 |    $106.00 |      2.02% |    3.83% | $158.19 |      1.49 |  40.12% |
 ```
 
-#### Maintenance margin
+#### Maintenance Margin
 
 All positions will be automatically closed if the portfolio margin goes below the maintenace margin.
 
@@ -241,8 +254,8 @@ All positions will be automatically closed if the portfolio margin goes below th
 (pprint/print-table (deref order-record))
 (view-portfolio)
 (view-portfolio-record -1)
-
-
+```
+```clojure
 ;; output:
 
 Order: 1980-12-16 | AAPL | -10.000000.
