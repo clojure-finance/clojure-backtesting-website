@@ -55,3 +55,33 @@ _Requirements:_
 1. The date in init-portfolio must be a valid date in the dataset.
 2. Ticker should have a unique identifier named TICKER, which should not be null
 
+---------------
+
+### Column Names
+
+<br>
+
+**CRSP:**
+
+- :PRC : closing price
+- :OPENPRC : opening price
+- :date : date
+- :TICKER : ticker name
+- :APRC : adjusted price
+
+**<span style="color:red">Remark:</span>**
+
+The trading price is by default set to be closing price.
+
+You can change it to opening price by changing the parameter.clj in `src/`:
+
+```clojure
+(def PRICE-KEY :OPRNPRC)
+```
+
+
+
+**Compustat:**
+
+- datadate: quartery date
+

@@ -20,6 +20,18 @@ This namespace defines the parameters that are configurable in the backtester.
 
 ---
 
+### Trading Price
+
+The trading price is by default set to be closing price.
+
+You can change it to opening price by changing the parameter.clj in `src/`:
+
+```clojure
+(def PRICE-KEY :OPRNPRC)
+```
+
+-----------------
+
 ### Margin Requirements
 
 <br>
