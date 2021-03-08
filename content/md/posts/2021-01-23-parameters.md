@@ -97,3 +97,57 @@ This function updates the maintenance margin.
 ```
 
 <br>
+
+### Transaction Cost & Loan Interest
+
+<br>
+
+`TRANSACTION-COST`
+
+This variable stores the rate of the commission fee that is charged upon the execution of an order. The default value is `0.0`.
+
+**Example:**
+
+```clojure
+;; check the variable
+(println TRANSACTION-COST)
+
+;; output:
+0.0
+```
+
+```clojure
+;; update the variable
+(update-transaction-cost 0.2)
+(println TRANSACTION-COST)
+
+;; output:
+0.2
+```
+
+<br>
+
+`INTEREST-RATE`
+
+This variable stores the simple interest rate (per annum) that is incurred when making a loan. Loan interests will be deducted at the end of every month. The default value is `0.0`.
+
+**Example:**
+
+```clojure
+;; check the variable
+(println INTEREST-RATE)
+
+;; output:
+0.0
+```
+
+```clojure
+;; update the variable
+(update-interest-rate 0.3)
+(println INTEREST-RATE)
+
+;; output:
+0.3
+```
+
+<br>

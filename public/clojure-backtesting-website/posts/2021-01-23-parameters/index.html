@@ -67,7 +67,7 @@
     <h2>Parameters</h2>
 </div>
 <div>
-    <ol class="toc"><li><a href="#margin-requirements">Margin Requirements</a></li></ol>
+    <ol class="toc"><li><a href="#margin-requirements">Margin Requirements</a></li><li><a href="#transaction-cost--loan-interest">Transaction Cost & Loan Interest</a></li></ol>
     <style>
 /* table styles */
 table, th, td {
@@ -96,6 +96,28 @@ table, th, td {
 
 ;; output:
 0.2
+</code></pre><br /><h3 id="transaction-cost--loan-interest">Transaction Cost &amp; Loan Interest</h3><br /><p><code>TRANSACTION-COST</code></p><p>This variable stores the rate of the commission fee that is charged upon the execution of an order. The default value is <code>0.0</code>.</p><p><strong>Example:</strong></p><pre><code class="clojure">;; check the variable
+(println TRANSACTION-COST)
+
+;; output:
+0.0
+</code></pre><pre><code class="clojure">;; update the variable
+(update-transaction-cost 0.2)
+(println TRANSACTION-COST)
+
+;; output:
+0.2
+</code></pre><br /><p><code>INTEREST-RATE</code></p><p>This variable stores the simple interest rate (per annum) that is incurred when making a loan. Loan interests will be deducted at the end of every month. The default value is <code>0.0</code>.</p><p><strong>Example:</strong></p><pre><code class="clojure">;; check the variable
+(println INTEREST-RATE)
+
+;; output:
+0.0
+</code></pre><pre><code class="clojure">;; update the variable
+(update-interest-rate 0.3)
+(println INTEREST-RATE)
+
+;; output:
+0.3
 </code></pre><br />
 </div>
 
