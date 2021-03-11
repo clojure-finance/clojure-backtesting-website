@@ -92,8 +92,8 @@
     <h1>Example - Fundamental Analysis</h1>
 </div>
 <div>
-    <ol class="toc"><li><a href="#initialisation">Initialisation</a></li><li><a href="#compute-return-on-equity-roe">Compute Return on Equity (ROE)</a></li><li><a href="#get-list-of-tickers-to-buy">Get list of tickers to buy</a></li><li><a href="#writing-the-strategy">Writing the strategy</a></li><li><a href="#check-records--performance">Check records & performance</a></li></ol>
-    <br /><p><code>Examples/Fundamental Analysis.ipynb</code></p><p>This file features the demo code for implementing a simple fundamental analysis strategy.</p><hr /><h3 id="initialisation">Initialisation</h3><pre><code>; import libraries from kernel
+    <ol class="toc"><li><a href="#initialisation">Initialisation</a></li><li><a href="#compute-return-on-equity-roe">Compute Return on Equity (ROE)</a></li><li><a href="#get-list-of-tickers-to-buy">Get List of Tickers to Buy</a></li><li><a href="#writing-the-strategy">Writing the Strategy</a></li><li><a href="#check-records--performance">Check Records & Performance</a></li></ol>
+    <br /><p><strong><code>Examples/Fundamental Analysis.ipynb</code></strong></p><p>This file features the demo code for implementing a simple fundamental analysis strategy.</p><hr /><h2 id="initialisation">Initialisation</h2><pre><code>; import libraries from kernel
 (ns clojure-backtesting.demo
   (:require [clojure.test :refer :all]
             [clojure-backtesting.data :refer :all]
@@ -116,7 +116,7 @@
 ; import dataset
 (reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
 
-</code></pre><h3 id="compute-return-on-equity-roe">Compute Return on Equity (ROE)</h3><pre><code class="clojure">;; Use merged database CRSP + COMPUSTAT
+</code></pre><h2 id="compute-return-on-equity-roe">Compute Return on Equity (ROE)</h2><pre><code class="clojure">;; Use merged database CRSP + COMPUSTAT
 ;; Compute the latest quarter ROE by using: niq / (share price * cshoq) in the merged dataset
 ;; output (a list of maps, followed by a map with the list of ROEs)
 ;; {:data {:tic "AAPL" :year "1980" :ROE 0.02}{...} :ROE [0.02 0.53 ...]}
@@ -147,12 +147,12 @@
         )
     )
 )
-</code></pre><br /><p>Making use of the above function, we write another function to only retrieve the set of ROE from the output of <code>get-set-roe</code>.</p><pre><code>(defn get-ROE
+</code></pre><br /><p>Making use of the above function, we write another function to only retrieve the set of ROE from the output of <code>get-set-roe</code>.</p><pre><code class="clojure">(defn get-ROE
             "return a set of ROE"  ;;{10.2 1.8 x.x ...}
         [dataset]
         (into #{} (get dataset :ROE-set))
         )
-</code></pre><h3 id="get-list-of-tickers-to-buy">Get list of tickers to buy</h3><p>Suppose that we want to get the list of tickers with ROE &gt;= 20th percentile. It could be done with the following steps.</p><pre><code class="clojure">;; load data
+</code></pre><h2 id="get-list-of-tickers-to-buy">Get List of Tickers to Buy</h2><p>Suppose that we want to get the list of tickers with ROE &gt;= 20th percentile. It could be done with the following steps.</p><pre><code class="clojure">;; load data
 (def data (get-set-roe (read-csv-row "../resources/data-testing-merged.csv") "1980-12-18"))
 
 ;; get the set of ROE
@@ -190,7 +190,7 @@
 )
 (println stock-to-buy-test)
 ;; output: #{IBM}
-</code></pre><br /><h3 id="writing-the-strategy">Writing the strategy</h3><p>Given all the essential functions, we could write the loop for making orders based on the ROE of companies on a certain date.</p><p>You could read the <strong>Code Walkthrough</strong> in the <em>"Get Started"</em> section if you are unfamiliar with the date configuration or update logic in the backtester.</p><br /><pre><code class="clojure">(init-portfolio "1980-12-18" 100000)
+</code></pre><br /><h2 id="writing-the-strategy">Writing the Strategy</h2><p>Given all the essential functions, we could write the loop for making orders based on the ROE of companies on a certain date.</p><p>You could read the <strong>Code Walkthrough</strong> in the <em>"Get Started"</em> section if you are unfamiliar with the date configuration or update logic in the backtester.</p><br /><pre><code class="clojure">(init-portfolio "1980-12-18" 100000)
 
 (def year-count 3) ;; hold the stock for 3 years
 (def start-year 1980)
@@ -272,7 +272,7 @@
       (order ticker -10)
   )
 )
-</code></pre><h3 id="check-records--performance">Check records &amp; performance</h3><pre><code class="clojure">(pprint/print-table (deref order-record))
+</code></pre><h2 id="check-records--performance">Check Records &amp; Performance</h2><pre><code class="clojure">(pprint/print-table (deref order-record))
 
 ;; output:
 |      :date | :tic | :price |   :aprc | :quantity |

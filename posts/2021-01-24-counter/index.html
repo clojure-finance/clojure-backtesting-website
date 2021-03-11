@@ -95,6 +95,9 @@ table, th, td {
   border: 1px solid black;
   padding: 5px;
 }
+td {
+  padding: 10px;
+}
 </style><br /><p><strong><code>ns: clojure-backtesting.counter</code></strong></p><p>This namespace features functions for getting basic configurations (date, list of available tickers) in the backtester.</p><hr /><h2 id="date-configuration">Date Configuration</h2><p><strong>Important note:</strong> <em>Only dates that have one or more entries in the dataset will be treated as valid dates.</em></p><br /><h3 id="get-date"><code>get-date</code></h3><p>Return the current date that the system is configured at.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Example:</strong></p><pre><code>(get-date)
 
 ;; output:
@@ -111,7 +114,7 @@ table, th, td {
 
 ;; output:
 "2020-01-20"
-</code></pre><br /><hr /><h2 id="ticker-information">Ticker Information</h2><br /><h3 id="tics-info"><code>tics-info</code></h3><p>An atom that contains a vector of maps. It stores the basic infomation needed for all the tickers available in the dataset.</p><p><strong>Explanation:</strong></p><table><thead><tr><th> Data </th><th align="center"> Format</th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>:AAPL</code></td><td align="center"> keyword</td><td align="left"> Ticker Name</td></tr><tr><td><code>:start-date</code></td><td align="center"> string</td><td align="left"> The earliest date of the ticker  </td></tr><tr><td><code>:end-date</code></td><td align="center"> string</td><td align="left"> The latest date of the ticker  </td></tr><tr><td><code>:pointer</code></td><td align="center"> atom of map</td><td align="left"> Address of the ticker's row information. All pointers are initially pointing to the first line of the ticker.  </td></tr><tr><td><code>:num</code></td><td align="center"> int</td><td align="left"> The row number  </td></tr><tr><td><code>:reference</code></td><td align="center"> lazy sequence</td><td align="left"> The lazy sequence of dateset starting at the pointed line  </td></tr></tbody></table><br /><p><strong>Example:</strong></p><pre><code class="clojure">(deref tics-info)
+</code></pre><br /><hr /><h2 id="ticker-information">Ticker Information</h2><br /><h3 id="tics-info"><code>tics-info</code></h3><p>An atom that contains a vector of maps. It stores the basic infomation needed for all the tickers available in the dataset.</p><p><strong>Explanation:</strong></p><table><thead><tr><th> <strong>Data</strong> </th><th align="center"> <strong>Type</strong></th><th align="left"> <strong>Meaning</strong></th></tr></thead><tbody><tr><td><code>:AAPL</code></td><td align="center"> keyword</td><td align="left">Ticker name</td></tr><tr><td><code>:start-date</code></td><td align="center"> string</td><td align="left">Earliest date of the ticker  </td></tr><tr><td><code>:end-date</code></td><td align="center"> string</td><td align="left">Latest date of the ticker  </td></tr><tr><td><code>:pointer</code></td><td align="center"> atom of map</td><td align="left">Address of the ticker's row information; all pointers are initially pointing to the first line of the ticker  </td></tr><tr><td><code>:num</code></td><td align="center"> int</td><td align="left">Row number  </td></tr><tr><td><code>:reference</code></td><td align="center"> lazy sequence</td><td align="left">Lazy sequence of dateset starting at the pointed line  </td></tr></tbody></table><br /><p><strong>Example:</strong></p><pre><code class="clojure">(deref tics-info)
 
 ;; output:
 {"AAPL" {:start-date "1980-12-15" :end-date "2000-01-12" :pointer (atom {:num 2934 :reference &lt;lazy-seq&gt;})} ... }
