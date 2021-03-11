@@ -9,4 +9,4 @@ This is the documentation for the backtesting library written in Clojure. The so
 
 **Report bugs**
 
-Clojure Backtesting Library is currently in maintenance mode. If you find any bugs or mistakes, we would appreciate your help in [reporting](https://github.com/clojure-finance/clojure-backtesting/issues) these issues and so we could repair them accordingly.
+Clojure Backtesting Library is currently in maintenance mode. If you find any bugs or mistakes, we would appreciate your help [report](https://github.com/clojure-finance/clojure-backtesting/issues) these issues so that we could repair them accordingly.

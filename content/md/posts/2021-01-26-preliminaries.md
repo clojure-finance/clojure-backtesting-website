@@ -5,7 +5,7 @@
 
 ---
 
-### Example Dataset Format
+## Example Dataset Format
 
 <br>
 
@@ -15,7 +15,7 @@ Both `Compustat-extract.csv` and `CRSP-extract.csv` are extracts of the dataset 
 
 ---
 
-### Standard Dataset Format
+## Standard Dataset Format
 
 <br>
 
@@ -35,7 +35,7 @@ _Requirements:_
 
 ---
 
-### Large Dataset Format
+## Large Dataset Format
 
 <br>
 
@@ -57,11 +57,11 @@ _Requirements:_
 
 ---------------
 
-### Column Names
+## Column Names
 
 <br>
 
-**CRSP:**
+### CRSP
 
 - :PRC : closing price
 - :OPENPRC : opening price
@@ -71,7 +71,7 @@ _Requirements:_
 
 **<span style="color:red">Remark:</span>**
 
-The trading price is by default set to be closing price.
+- The trading price is by default set to be closing price.
 
 You can change it to opening price by changing the parameter.clj in `src/`:
 
@@ -79,9 +79,9 @@ You can change it to opening price by changing the parameter.clj in `src/`:
 (def PRICE-KEY :OPRNPRC)
 ```
 
+<br>
 
-
-**Compustat:**
+### Compustat
 
 - datadate: quartery date
 

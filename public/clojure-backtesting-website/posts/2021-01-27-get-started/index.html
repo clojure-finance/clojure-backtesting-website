@@ -86,27 +86,29 @@
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <strong>27 January 2021</strong>
+        <!-- <strong>27 January 2021</strong> -->
         
     </div>
     <h1>Get Started</h1>
 </div>
 <div>
-    <ol class="toc"><li><a href="#setting-up-the-playground">Setting Up the Playground</a></li><li><a href="#beginner-tutorials">Beginner Tutorials</a></li><li><a href="#backtester-mode">Backtester Mode</a></li><li><a href="#code-walkthrough">Code Walkthrough</a></li></ol>
-    <hr /><h3 id="setting-up-the-playground">Setting Up the Playground</h3><br /><ol><li><p>Make sure that you have <strong>leiningen</strong> and <strong>jupyter notebook</strong> installed on your local machine. (These two may require further environment dependencies, please refer to their official websites for details.)</p><ul><li><p>Installation guide for leiningen can be found at:</p><p><a href="https://github.com/technomancy/leiningen/wiki/Packaging">https://github.com/technomancy/leiningen/wiki/Packaging</a></p></li><li><p>Jupyter notebook can be installed at:</p><p><a href="https://jupyter.org/install">https://jupyter.org/install</a></p></li></ul></li></ol><br /><ol start="2"><li><p>If you download this project for the <strong>first time</strong>, go to the repository root directory (i.e. <code>clojure-backtester/</code>) in the terminal and run</p><p><code>make init_clojupyter</code></p><p><em>Note that this operation may download a number of required packages, which may take up some time.</em></p></li></ol><br /><ol start="3"><li><p>Run the following command so that the project could be compiled as a .jar file and added as a new Jupyter kernel:</p><p><code>make add_kernel</code></p><p>(If there is an error, make sure that you have <strong>terminated</strong> the Jupyter notebook running kernels before running this step.)</p><br /><p>When the process is completed, you should see the following output:</p><pre><code>Installed jar:      target/uberjar/clojure-backtesting-0.1.0-SNAPSHOT-standalone.jar
+    <ol class="toc"><li><a href="#setting-up-the-playground">Setting Up the Playground</a></li><li><a href="#beginner-tutorials">Beginner Tutorials</a></li><li><a href="#backtester-mode">Backtester Mode</a></li><ol><li><a href="#lazy-mode">Lazy mode</a></li><li><a href="#non-lazy-mode">Non-lazy mode</a></li></ol><li><a href="#code-walkthrough">Code Walkthrough</a></li><ol><li><a href="#import-libraries">Import libraries</a></li><li><a href="#import-dataset">Import dataset</a></li><li><a href="#initialise-portfolio">Initialise portfolio</a></li><li><a href="#check-available-tickers">Check available tickers</a></li><li><a href="#write-your-strategy">Write your strategy</a></li><li><a href="#check-order-record">Check order record</a></li><li><a href="#view-portfolio--portfolio-record">View portfolio & portfolio record</a></li><li><a href="#generate-evaluation-report">Generate evaluation report</a></li><li><a href="#plot-variables">Plot variables</a></li><ol><li><a href="#plotting-values-in-portfolio-record">Plotting values in portfolio record</a></li><li><a href="#plotting-values-in-evaluation-report">Plotting values in evaluation report</a></li></ol></ol></ol>
+    <hr /><h2 id="setting-up-the-playground">Setting Up the Playground</h2><br /><ol><li><p>Make sure that you have <strong>leiningen</strong> and <strong>jupyter notebook</strong> installed on your local machine. (These two may require further environment dependencies, please refer to their official websites for details.)</p><ul><li><p>Installation guide for leiningen can be found at:</p><p><a href="https://github.com/technomancy/leiningen/wiki/Packaging">https://github.com/technomancy/leiningen/wiki/Packaging</a></p></li><li><p>Jupyter notebook can be installed at:</p><p><a href="https://jupyter.org/install">https://jupyter.org/install</a></p></li></ul></li></ol><br /><ol start="2"><li><p>If you download this project for the <strong>first time</strong>, go to the repository root directory (i.e. <code>clojure-backtester/</code>) in the terminal and run</p><pre><code>make init_clojupyter
+</code></pre><p><em>Note that this operation may download a number of required packages, which may take up some time.</em></p></li></ol><br /><ol start="3"><li><p>Run the following command so that the project could be compiled as a .jar file and added as a new Jupyter kernel:</p><pre><code>make add_kernel
+</code></pre><p>(If there is an error, make sure that you have <strong>terminated</strong> the Jupyter notebook running kernels before running this step.)</p><br /><p>When the process is completed, you should see the following output:</p><pre><code>Installed jar:      target/uberjar/clojure-backtesting-0.1.0-SNAPSHOT-standalone.jar
 Install directory:  ~/Library/Jupyter/kernels/backtesting_clojure
 Kernel identifier:  backtesting_clojure
 
 Installation successful.
-</code></pre></li></ol><br /><ol start="4"><li>Now when you restart the Jupyter Notebook application, you could select the kernel named <code>backtesting_clojure</code>. You can make use of the backtester by choosing this kernel.</li></ol><hr /><h3 id="beginner-tutorials">Beginner Tutorials</h3><br /><p>If you are new to clojure, we recommend having a quick read of the following tutorials first:</p><ul><li><p><a href="http://kimh.github.io/clojure-by-example/#about">Clojure by example</a> - useful for beginners pick up the syntax quickly</p></li><li><p><a href="https://clojuredocs.org/">Clojure docs</a> - a more thorough documentation that explains the built-in functions in Clojure</p></li></ul><hr /><h3 id="backtester-mode">Backtester Mode</h3><br /><p>You could run the backtester in two modes, which are the <strong>lazy</strong> and the <strong>non-lazy</strong> modes respectively. The only differences between the two modes lie within the way of loading the dataset and making an order.</p><br /><ol><li><strong>Lazy mode</strong></li></ol><ul><li><p>This is mainly for development, and you need to run it with the original large-sized datasets named <code>data-CRSP.csv</code> and <code>data-Compustat.csv</code>.</p></li><li><p>Note that since these datasets are large in size (&gt; 10 GB), they are not included in <code>resources/</code> directory within the repository, and need to be downloaded separately.</p><p>(i) To run the backtester in lazy mode, load the dataset in the following way:</p><pre><code class="clojure">;; load CRSP
+</code></pre></li></ol><br /><ol start="4"><li>Now when you restart the Jupyter Notebook application, you could select the kernel named <code>backtesting_clojure</code>. You can make use of the backtester by choosing this kernel.</li></ol><hr /><h2 id="beginner-tutorials">Beginner Tutorials</h2><br /><p>If you are new to clojure, we recommend having a quick read of the following tutorials first:</p><ul><li><p><a href="http://kimh.github.io/clojure-by-example/#about">Clojure by example</a> - useful for beginners pick up the syntax quickly</p></li><li><p><a href="https://clojuredocs.org/">Clojure docs</a> - a more thorough documentation that explains the built-in functions in Clojure</p></li></ul><hr /><h2 id="backtester-mode">Backtester Mode</h2><br /><p>You could run the backtester in two modes, which are the <strong>lazy</strong> and the <strong>non-lazy</strong> modes respectively. The only differences between the two modes lie within the way of loading the dataset and making an order.</p><br /><h3 id="lazy-mode">Lazy mode</h3><ul><li><p>This is mainly for development, and you need to run it with the original large-sized datasets named <code>data-CRSP.csv</code> and <code>data-Compustat.csv</code>.</p></li><li><p>Note that since these datasets are large in size (&gt; 10 GB), they are not included in <code>resources/</code> directory within the repository, and need to be downloaded separately.</p><p>(i) To run the backtester in lazy mode, load the dataset in the following way:</p><pre><code class="clojure">;; load CRSP
 (load-large-dataset "data-CRSP.csv" "main" add-aprc-by-date)
 ;; load compustat
 (load-large-dataset "data-Compustat.csv" "compustat")
 </code></pre><p>As the original dataset is quite big and takes time to run with the backtester, optionally you could create a smaller version by truncating some rows:</p><pre><code class="clojure">cat data-CRSP.csv | tail 10000 &gt; CRSP-smaller.csv
 </code></pre><p>(ii) An order could be made by calling the following function under the lazy mode:</p><pre><code class="clojure">(order-lazy "AAPL" 50) ; buy 50 stocks
-</code></pre></li></ul><br /><ol start="2"><li><strong>Non-lazy mode</strong></li></ol><ul><li><p>This is the default mode that the backtester is set in.</p></li><li><p>This is mainly for debugging, and you need to run it with the smaller datasets named <code>CRSP-extract.csv</code> and <code>Compustat-extract.csv</code>.</p><p>(i) To run the backtester in non-lazy mode, load the dataset in the following way:</p><pre><code class="clojure">(reset! data-set (add-aprc (read-csv-row "./resources/CRSP-extract.csv")))
+</code></pre></li></ul><br /><h3 id="non-lazy-mode">Non-lazy mode</h3><ul><li><p>This is the default mode that the backtester is set in.</p></li><li><p>This is mainly for debugging, and you need to run it with the smaller datasets named <code>CRSP-extract.csv</code> and <code>Compustat-extract.csv</code>.</p><p>(i) To run the backtester in non-lazy mode, load the dataset in the following way:</p><pre><code class="clojure">(reset! data-set (add-aprc (read-csv-row "./resources/CRSP-extract.csv")))
 </code></pre><p>(ii) An order could be made by calling the following function under the non-lazy mode:</p><pre><code class="clojure">(order "AAPL" 50) ; buy 50 stocks
-</code></pre></li></ul><hr /><h3 id="code-walkthrough">Code Walkthrough</h3><p>We'll go through the code in <code>./examples/Simple trading strategy.ipynb</code> notebook to have a glimpse of how to write code that could be run with the backtester.</p><br /><p><strong>1. Import libraries</strong></p><p>To make use of the functions in the backtester library, it is necessary to import them whenever you create a new jupyter notebook file. Also make sure that you've compiled the <strong>most up-to-date</strong> clojure-backteser kernel, and have selected it in the Jupyter Notebook application.</p><pre><code>(ns clojure-backtesting.demo
+</code></pre></li></ul><hr /><h2 id="code-walkthrough">Code Walkthrough</h2><p>We'll go through the code in <code>./examples/Simple trading strategy.ipynb</code> notebook to have a glimpse of how to write code that could be run with the backtester.</p><br /><h3 id="import-libraries">Import libraries</h3><p>To make use of the functions in the backtester library, it is necessary to import them whenever you create a new jupyter notebook file. Also make sure that you've compiled the <strong>most up-to-date</strong> clojure-backteser kernel, and have selected it in the Jupyter Notebook application.</p><pre><code>(ns clojure-backtesting.demo
   (:require [clojure.test :refer :all]
             [oz.notebook.clojupyter :as oz]
             [clojure-backtesting.data :refer :all]
@@ -123,12 +125,12 @@ Installation successful.
   ) ;; require all libriaries from core
   (:use clojure.pprint)
 )
-</code></pre><br /><p><strong>2. Import dataset</strong></p><p>Load the CRSP-extract.csv dataset to the program by providing its relative path. Note that it is a must to nest it with <code>read-csv-row</code> and <code>add-aprc</code>, as they respectively parse the csv file and automatically add the adjusted price column to the dataset.</p><p>(i) To load the dataset for <strong>non-lazy</strong> mode, import the extract dataset:</p><pre><code class="clojure">(reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
+</code></pre><br /><h3 id="import-dataset">Import dataset</h3><p>Load the CRSP-extract.csv dataset to the program by providing its relative path. Note that it is a must to nest it with <code>read-csv-row</code> and <code>add-aprc</code>, as they respectively parse the csv file and automatically add the adjusted price column to the dataset.</p><p>(i) To load the dataset for <strong>non-lazy</strong> mode, import the extract dataset:</p><pre><code class="clojure">(reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
 </code></pre><p>(ii) To load the dataset for <strong>lazy</strong> mode, import the large dataset:</p><pre><code class="clojure">(load-large-dataset "../resources/CRSP-extract.csv" "main" add-aprc)
 (set-main "main")
-</code></pre><br /><p><strong>3. Initialise portfolio</strong></p><p>Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the <code>init-portfolio</code> function.</p><pre><code>(init-portfolio "1980-12-16" 10000);
-</code></pre><br /><p><strong>4. Check available tickers</strong></p><p>You could check what tickers you could trade on the current date (i.e. 1980-12-16).</p><pre><code>(keys (deref available-tics))
-</code></pre><br /><p><strong>5. Write your strategy</strong></p><p>With all these set-up, you are ready to write your strategy.</p><br /><p>The following demo is a trading strategy that follows a simple logic.</p><p><strong>Simple strategy</strong>:</p><p>In a timespan of 10 days (inclusive of today),</p><ul><li>Buy 50 stocks of AAPL on the first day</li><li>Sell 10 stocks of AAPL on every other day</li></ul><p>(i) The following example code is for running under the <strong>non-lazy</strong> mode:</p><pre><code>;; define the "time span", i.e. to trade in the coming 10 days
+</code></pre><br /><h3 id="initialise-portfolio">Initialise portfolio</h3><p>Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the <code>init-portfolio</code> function.</p><pre><code>(init-portfolio "1980-12-16" 10000);
+</code></pre><br /><h3 id="check-available-tickers">Check available tickers</h3><p>You could check what tickers you could trade on the current date (i.e. 1980-12-16).</p><pre><code>(keys (deref available-tics))
+</code></pre><br /><h3 id="write-your-strategy">Write your strategy</h3><p>With all these set-up, you are ready to write your strategy.</p><br /><p>The following demo is a trading strategy that follows a simple logic.</p><p><strong>Simple strategy</strong>:</p><p>In a timespan of 10 days (inclusive of today),</p><ul><li>Buy 50 stocks of AAPL on the first day</li><li>Sell 10 stocks of AAPL on every other day</li></ul><p>(i) The following example code is for running under the <strong>non-lazy</strong> mode:</p><pre><code>;; define the "time span", i.e. to trade in the coming 10 days
 (def num-of-days (atom 10))
 
 (while (pos? @num-of-days) ;; check if num-of-days is &gt; 0
@@ -202,7 +204,7 @@ Sell 10 stocks of AAPL on 1980-12-23
 Sell 10 stocks of AAPL on 1980-12-26
 Sell 10 stocks of AAPL on 1980-12-30
 Counter: 0
-</code></pre><p>By printing these debugging messages, I could double-check whether the orders were accurate.</p><br /><p><strong>6. Check order record</strong></p><p>Alternatively, you could also directly view the order record.</p><pre><code class="clojure">(pprint/print-table (deref order-record))
+</code></pre><p>By printing these debugging messages, I could double-check whether the orders were accurate.</p><br /><h3 id="check-order-record">Check order record</h3><p>Alternatively, you could also directly view the order record.</p><pre><code class="clojure">(pprint/print-table (deref order-record))
 </code></pre><pre><code class="clojure">;; output:
 
 |      :date | :tic |  :price | :quantity | :reference |
@@ -213,7 +215,7 @@ Counter: 0
 | 1980-12-24 | AAPL | 32.5625 |       -10 |          1 |
 | 1980-12-29 | AAPL | 36.0625 |       -10 |          1 |
 | 1980-12-31 | AAPL | 34.1875 |       -10 |          1 |
-</code></pre><br /><p><strong>7. View portfolio &amp; portfolio record</strong></p><p>You could view the portfolio and check the changes in portfolio value too. Note that the portfolio record could also be found in the <code>out_portfolio_value_record.csv</code> file.</p><pre><code class="clojure">(view-portfolio)
+</code></pre><br /><h3 id="view-portfolio--portfolio-record">View portfolio &amp; portfolio record</h3><p>You could view the portfolio and check the changes in portfolio value too. Note that the portfolio record could also be found in the <code>out_portfolio_value_record.csv</code> file.</p><pre><code class="clojure">(view-portfolio)
 </code></pre><pre><code class="clojure">;; output:
 | :asset |  :price | :aprc | :quantity | :tot-val |
 |--------+---------+-------+-----------+----------|
@@ -243,7 +245,7 @@ Counter: 0
 | 1980-12-16 |     $10000 |      0.00% |    0.00% | $0.00 |     0.00% |
 | 1980-12-17 |     $10000 |      0.00% |    0.00% | $0.00 |     0.00% |
 | 1980-12-18 |     $10016 |      0.00% |    0.16% | $0.00 |     0.00% |
-</code></pre><br /><p><strong>8. Generate evaluation report</strong></p><p>If you update the evaluation report every day (as <code>update-eval-report</code> is called for 10 times in the loop), you'll obtain a evluation report with daily records.</p><p>Detailed explanation of the evaluation metrics could be found in the <em>"Evaluate"</em> section.</p><p>However, note that if you are traversing a large amount of dates, it would be better <strong>not</strong> to update the evaluation metrics every day as it would require a large amount of memory and computation time. Alternatively, you could print a small number of rows of the evaluation report.</p><p>Note that the evaluation report could also be found in the <code>out_evaluation_report.csv</code> file.</p><br /><pre><code class="clojure">;; pass -1 so that the entire record is printed, else pass the no. of rows
+</code></pre><br /><h3 id="generate-evaluation-report">Generate evaluation report</h3><p>If you update the evaluation report every day (as <code>update-eval-report</code> is called for 10 times in the loop), you'll obtain a evluation report with daily records.</p><p>Detailed explanation of the evaluation metrics could be found in the <em>"Evaluate"</em> section.</p><p>However, note that if you are traversing a large amount of dates, it would be better <strong>not</strong> to update the evaluation metrics every day as it would require a large amount of memory and computation time. Alternatively, you could print a small number of rows of the evaluation report.</p><p>Note that the evaluation report could also be found in the <code>out_evaluation_report.csv</code> file.</p><br /><pre><code class="clojure">;; pass -1 so that the entire record is printed, else pass the no. of rows
 (eval-report -1)
 </code></pre><pre><code class="Clojure">;; output:
 |      :date | :tot-value |    :vol |  :r-vol |  :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
@@ -266,7 +268,7 @@ Counter: 0
 | 1980-12-16 |     $10000 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $0 |        0.0000 |
 | 1980-12-17 |     $10016 | 0.0407% | 0.0407% |  1.7321% |   1.7321% |      $8 |      100.0000 |
 | 1980-12-18 |     $10016 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $8 |        0.0000 |
-</code></pre><br /><p><strong>9. Plot variables</strong></p><p>You could try plotting some variables shown in the portfolio record / evaluation report tables.</p><p><strong>Plotting values in portfolio record</strong></p><pre><code class="clojure">;; 1) Define the data to be the record that features the column
+</code></pre><br /><h3 id="plot-variables">Plot variables</h3><p>You could try plotting some variables shown in the portfolio record / evaluation report tables.</p><h4 id="plotting-values-in-portfolio-record">Plotting values in portfolio record</h4><pre><code class="clojure">;; 1) Define the data to be the record that features the column
 (def data (deref portfolio-value))
 
 ;; 2) Assign it to a new variable 'data-to-plot`, so that
@@ -278,14 +280,14 @@ Counter: 0
 ;; 3) Pass the data and its keys to the plotting function
 ;; last arg "false" means we do not need full date to be shown on the x-axis
 (plot data-to-plot :plot :date :daily-ret false)
-</code></pre><br /><p>Output:</p><br /><p><img src="/clojure-backtesting-website/img/plot-portfolio-value.png" alt="image" /></p><br /><p><strong>Plotting values in evaluation report</strong></p><pre><code class="clojure">(def data (deref eval-record))
+</code></pre><br /><p>Output:</p><br /><p><img src="/clojure-backtesting-website/img/plot-portfolio-value.png" alt="image" /></p><br /><h4 id="plotting-values-in-evaluation-report">Plotting values in evaluation report</h4><pre><code class="clojure">(def data (deref eval-record))
 (def data-to-plot
  (map #(assoc % :plot "volatility")
   data))
 
 ;; Note that we need to set it as "true" for plotting values in eval-report
 (plot data-to-plot :plot :date :vol true)
-</code></pre><br /><p>Output:</p><br /><p><img src="/clojure-backtesting-website/img/plot-volatility.png" alt="image" /></p>
+</code></pre><br /><p>Output:</p><br /><p><img src="/clojure-backtesting-website/img/plot-volatility.png" alt="" /></p>
 </div>
 
 <br/>
