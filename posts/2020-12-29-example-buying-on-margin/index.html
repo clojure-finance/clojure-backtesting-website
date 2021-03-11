@@ -1,7 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"><![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"><![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
 <head>
-    <meta charset="utf-8"/>
+    <!-- Website Template designed by www.downloadwebsitetemplates.co.uk -->
+    <!-- Modified to fit Cryogen.-->
+    <meta charset="UTF-8">
     <title>Clojure Backtesting Documentation: Example - Buying on Margin</title>
     
 <meta name="keywords" content="">
@@ -14,64 +19,80 @@
 <meta property="og:title" content="Example - Buying on Margin" />
 <meta property="og:type" content="article" />
 
-    <link rel="canonical" href="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2020-12-29-example-buying-on-margin/">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="//fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" rel="stylesheet"
-          type="text/css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57.png">
+    <link rel="shortcut icon" href="images/ico/favicon.png">
+    <!--[if IE]><![endif]-->
+    <link href="/clojure-backtesting-website/css/buttons.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/typography.css" rel="stylesheet" type="text/css" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
-    <link href="/clojure-backtesting-website/css/screen.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow-night-eighties.min.css">
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 <body>
 
+<div id="left">
 
-<nav class="navbar navbar-default">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/clojure-backtesting-website/">Clojure Backtesting Documentation</a>
+    <p id="logo">
+        <a title="Clojure Backtesting Documentation" href="/clojure-backtesting-website/">
+            <span class="fa fa-code"></span>
+            <span class="text">Clojure Backtesting</span>
+        </a>
+    </p>
+
+    <div id="menucont" class="bodycontainer clearfix">
+        <div class="menutitle">
+            <p><span class="fa fa-reorder"></span><strong>Menu</strong></p>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li ><a href="/clojure-backtesting-website/">Home</a></li>
-                <li
-                ><a href="/clojure-backtesting-website/archives/">Archives</a></li>
-                
-                <li
-                >
+        <ul class="menu">
+            <li ><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
+            <li ><a title="Archives" href="/clojure-backtesting-website/archives/">Archives</a></li>
+            
+            
+            <li >
                 <a href="/clojure-backtesting-website/pages/about/">About</a>
-                </li>
-                
-                <!-- <li><a href="/clojure-backtesting-website/feed.xml">RSS</a></li> -->
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div><!--/.container-fluid -->
-</nav>
+            </li>
+            
+            <!-- <li><a title="RSS" href="/clojure-backtesting-website/feed.xml">RSS</a></li> -->
+        </ul>
+    </div>
 
+    <div id="socialmedia" class="clearfix">
+        <ul>
+            <li>
+                <a title="GitHub" href="https://github.com/clojure-finance/clojure-backtesting" rel="external">
+                    <span class="fa fa-github"> 
+                        <span style="font-family: 'Montserrat';text-transform: uppercase;">&nbsp;Github</span>
+                    </span>
+                </a>
+            </li>
+            <!-- <li><a title="Stack Overflow" href="./" rel="external"><span class="fa fa-stack-overflow"></span></a></li>
+            <li><a title="Google+" href="./" rel="external"><span class="fa fa-google-plus"></span></a></li>
+            <li><a title="LinkedIn" href="./" rel="external"><span class="fa fa-linkedin"></span></a></li>
+            <li><a title="Last.fm" href="./" rel="external"><span class="fa fa-lastfm"></span></a></li> -->
+        </ul>
+    </div>
 
-<div class="container">
+</div>
 
-
-    <div class="row">
-        <div class="col-lg-9">
-            <div id="content">
-                
+<div id="right" class="clearfix">
+    
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <div class="col-lg-6">29 December 2020</div>
+        <!-- <strong>29 December 2020</strong> -->
         
     </div>
-    <h2>Example - Buying on Margin</h2>
+    <h1>Example - Buying on Margin</h1>
 </div>
 <div>
-    <ol class="toc"><li><a href="#initialisation">Initialisation</a></li><li><a href="#trade-without-leverage">Trade without Leverage</a></li><li><a href="#trade-with-leverage">Trade with Leverage</a></li><ol><li><a href="#initial-margin">Initial Margin</a></li><li><a href="#maintenance-margin">Maintenance Margin</a></li></ol></ol>
+    <ol class="toc"><li><a href="#initialisation">Initialisation</a></li><li><a href="#trade-without-leverage">Trade without Leverage</a></li><li><a href="#trade-with-leverage">Trade with Leverage</a></li><li><a href="#initial-margin">Initial Margin</a></li><li><a href="#maintenance-margin">Maintenance Margin</a></li></ol>
     <br /><p><code>Examples/Buying on margin.ipynb</code></p><p>This file features the demo code for enabling or disabling leverage in the backtester.</p><hr /><h3 id="initialisation">Initialisation</h3><pre><code>; import libraries from kernel
 (ns clojure-backtesting.demo
   (:require [clojure.test :refer :all]
@@ -97,7 +118,7 @@
 ; import dataset
 (reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
 
-</code></pre><h3 id="trade-without-leverage">Trade without Leverage</h3><p>The trade would be allowed if you possess enough cash to pay.</p><p><strong>Example:</strong></p><pre><code class="clojure">(init-portfolio "1980-12-15" 400)
+</code></pre><br /><h3 id="trade-without-leverage">Trade without Leverage</h3><p>The trade would be allowed if you possess enough cash to pay.</p><p><strong>Example:</strong></p><pre><code class="clojure">(init-portfolio "1980-12-15" 400)
 (order "AAPL" 10 :leverage false :remaining true :print true) ;without leverage, remaining value
 
 (next-date)
@@ -148,7 +169,7 @@ Failure reason: You do not have enough money to buy or have enough stock to sell
 |      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage | :margin |
 |------------+------------+------------+----------+-------+-----------+---------|
 | 1980-12-15 |    $100.00 |      0.00% |    0.00% | $0.00 |      0.00 |   0.00% |
-</code></pre><h3 id="trade-with-leverage">Trade with Leverage</h3><p><strong>Example:</strong></p><pre><code class="clojure">(init-portfolio "1980-12-15" 20)
+</code></pre><br /><h3 id="trade-with-leverage">Trade with Leverage</h3><p><strong>Example:</strong></p><pre><code class="clojure">(init-portfolio "1980-12-15" 20)
 
 (order "AAPL" 1 :print true) ;with leverage, exact value trade
 
@@ -178,9 +199,9 @@ Order: 1980-12-16 | AAPL | 1.000000.
 | 1980-12-16 |     $20.00 |      0.00% |    0.00% | $5.82 |      0.29 |  77.46% |
 | 1980-12-17 |     $20.27 |      0.17% |    0.17% | $5.82 |      0.29 |  77.70% |
 | 1980-12-18 |     $20.60 |      0.20% |    0.37% | $5.82 |      0.28 |  77.98% |
-</code></pre><br /><h4 id="initial-margin">Initial Margin</h4><p>The purchase would not be allowed if the ratio of cash to total value of assets bought on margin goes below the initial margin.</p><pre><code class="clojure">; check variable
+</code></pre><br /><h3 id="initial-margin">Initial Margin</h3><p>The purchase would not be allowed if the ratio of cash to total value of assets bought on margin goes below the initial margin.</p><pre><code class="clojure">; check variable
 (println INITIAL-MARGIN)
-</code></pre><p><strong>Example:</strong> order failed, since cash is insufficient.</p><pre><code class="clojure">(init-portfolio "1980-12-15" 100)
+</code></pre><br /><p><strong>Example:</strong> order failed, since cash is insufficient.</p><pre><code class="clojure">(init-portfolio "1980-12-15" 100)
 (order "AAPL" 10 :remaining true :print true) ;with leverage, remaining value
 
 (next-date)
@@ -201,12 +222,12 @@ Order request 1980-12-15 | AAPL | 10 fails due to initial margin exceeding.
 |      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage | :margin |
 |------------+------------+------------+----------+-------+-----------+---------|
 | 1980-12-15 |    $100.00 |      0.00% |    0.00% | $0.00 |      0.00 |   0.00% |
-</code></pre><p>Alternatively, you could manually <strong>update the initial margin</strong> to enable such a case. You could set it to nil in order to disable the initial margin requirement.</p><pre><code class="clojure">(update-initial-margin 0.1)
+</code></pre><br /><p>Alternatively, you could manually <strong>update the initial margin</strong> to enable such a case. You could set it to nil in order to disable the initial margin requirement.</p><pre><code class="clojure">(update-initial-margin 0.1)
 (println INITIAL-MARGIN)
 
 ;; output:
 0.1
-</code></pre><br /><pre><code class="clojure">(init-portfolio "1980-12-15" 100)
+</code></pre><br /><p><strong>Example:</strong> with initial margin udpated to 0.1</p><pre><code class="clojure">(init-portfolio "1980-12-15" 100)
 (order "AAPL" 10 :remaining true :print true) ;with leverage, remaining value
 
 (next-date)
@@ -235,7 +256,7 @@ Order: 1980-12-16 | AAPL | 10.000000.
 | 1980-12-16 |    $100.00 |      0.00% |    0.00% | $158.19 |      1.58 |  38.73% |
 | 1980-12-17 |    $102.75 |      1.81% |    1.81% | $158.19 |      1.54 |  39.38% |
 | 1980-12-18 |    $106.00 |      2.02% |    3.83% | $158.19 |      1.49 |  40.12% |
-</code></pre><h4 id="maintenance-margin">Maintenance Margin</h4><p>All positions will be automatically closed if the portfolio margin goes below the maintenace margin.</p><pre><code class="clojure">(init-portfolio "1980-12-15" 100)
+</code></pre><br /><br /><h3 id="maintenance-margin">Maintenance Margin</h3><p>All positions will be automatically closed if the portfolio margin goes below the maintenace margin.</p><br /><p><strong>Example:</strong></p><pre><code class="clojure">(init-portfolio "1980-12-15" 100)
 (order "AAPL" -10 :remaining true :print true) ;with leverage, remaining value
 (order "F" 20 :remaining true :print true)
 
@@ -272,10 +293,11 @@ Please reset the dataset and call init-portfolio again.
 </code></pre>
 </div>
 
+<br/>
 
     <div id="prev-next">
         
-        <a href="/clojure-backtesting-website/posts/2020-12-30-example-fundamental analysis/">&laquo; Example - Fundamental Analysis</a>
+        <a class="button" href="/clojure-backtesting-website/posts/2020-12-30-example-fundamental-analysis/">&laquo; Example - Fundamental Analysis</a>
         
         
     </div>
@@ -285,43 +307,16 @@ Please reset the dataset and call init-portfolio again.
 
 </div>
 
-            </div>
-        </div>
+<hr/>
+<div id="footercont" class="clearfix">Copyright &copy; 2021 clojure-backtesting
+    <p>Powered by <a href="http://cryogenweb.org">Cryogen</a> | Free Website Template by <a title="free website templates" href="http://www.downloadwebsitetemplates.co.uk" rel="external">Download Website Templates</a></p>
 
-        <div class="col-md-3">
-            <div id="sidebar">
-                <h3>Links</h3>
-                <ul id="links">
-                    <li><a href="https://github.com/clojure-finance/clojure-backtesting">Github Repository</a></li>
-                    <!-- <li><a href="http://cryogenweb.org/docs/home.html">Cryogen Docs</a></li>
-                    <li><a href="https://carmen.la/blog/archives/">Carmen's Blog</a></li> -->
-                    
-                </ul>
-                
-                <div id="recent">
-                    <h3>Recent Posts</h3>
-                    <ul>
-                        
-                        <li><a href="/clojure-backtesting-website/posts/2021-01-27-get-started/">Get Started</a></li>
-                        
-                        <li><a href="/clojure-backtesting-website/posts/2021-01-26-preliminaries/">Preliminaries</a></li>
-                        
-                        <li><a href="/clojure-backtesting-website/posts/2021-01-25-data-management/">Data Management</a></li>
-                        
-                    </ul>
-                </div>
-                
-                
-            </div>
-        </div>
-    </div>
-    <footer>Copyright &copy; 2021 clojure-backtesting
-        <p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a></p></footer>
+</div>
 </div>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="/clojure-backtesting-website/js/highlight.pack.js" type="text/javascript"></script>
 <script>hljs.initHighlightingOnLoad();</script>
+<script src="/clojure-backtesting-website/js/scripts.js" type="text/javascript"></script>
 
 
 </body>
