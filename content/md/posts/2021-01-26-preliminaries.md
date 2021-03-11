@@ -5,7 +5,7 @@
 
 ---
 
-### Example Dataset Format
+## Example Dataset Format
 
 <br>
 
@@ -15,11 +15,11 @@ Both `Compustat-extract.csv` and `CRSP-extract.csv` are extracts of the dataset 
 
 ---
 
-### Standard Dataset Format
+## Standard Dataset Format
 
 <br>
 
-_Requirements:_
+**Requirements:**
 
 1. In csv file format
 2. **Row based:** rows are instances and columns are parameters. The first line is the header for each column.
@@ -35,11 +35,11 @@ _Requirements:_
 
 ---
 
-### Large Dataset Format
+## Large Dataset Format
 
 <br>
 
-_Requirements:_
+**Requirements:**
 
 1. In csv file format
 2. **Row based:** rows are instances and columns are parameters. The first line is the header for each column.
@@ -57,21 +57,19 @@ _Requirements:_
 
 ---------------
 
-### Column Names
+## Column Names
 
-<br>
+### CRSP dataset
 
-**CRSP:**
-
-- :PRC : closing price
-- :OPENPRC : opening price
-- :date : date
-- :TICKER : ticker name
-- :APRC : adjusted price
+- `:PRC` : closing price
+- `:OPENPRC` : opening price
+- `:date` : date
+- `:TICKER` : ticker name
+- `:APRC` : adjusted price
 
 **<span style="color:red">Remark:</span>**
 
-The trading price is by default set to be closing price.
+- The trading price is by default set to be closing price.
 
 You can change it to opening price by changing the parameter.clj in `src/`:
 
@@ -79,9 +77,9 @@ You can change it to opening price by changing the parameter.clj in `src/`:
 (def PRICE-KEY :OPRNPRC)
 ```
 
+<br>
 
+### Compustat dataset
 
-**Compustat:**
-
-- datadate: quartery date
+- `datadate`: quarterly date
 

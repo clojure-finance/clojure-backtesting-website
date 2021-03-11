@@ -5,13 +5,13 @@
  
 <br>
 
-`Examples/Golden cross.ipynb`
+**`Examples/Golden cross.ipynb`**
 
 This file features the demo code for implementing the Golden Cross strategy.
 
 ---
 
-### Initialisation
+## Initialisation
 
 ```
 ; import libraries from kernel
@@ -41,7 +41,7 @@ This file features the demo code for implementing the Golden Cross strategy.
 
 <br>
 
-### Writing the strategy
+## Writing the Strategy
 
 The following code implements a trading strategy called Golden Rule:
 
@@ -79,7 +79,7 @@ So in the codes, MA50 and MA200 are compared on a daily basis, if golden cross o
 
 <br>
 
-### Check number of orders made
+## Check Number of Orders Made
 
 ```
 (count (deref order-record))
@@ -90,7 +90,7 @@ So in the codes, MA50 and MA200 are compared on a daily basis, if golden cross o
 
 <br>
 
-### Check records & performance
+## Check Records & Performance
 
 ```clojure
 ;; view final portfolio

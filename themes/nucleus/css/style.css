@@ -1,6 +1,7 @@
 /* ==================================================
    CSS Imports
 ================================================== */
+
 @import url("reset.css");
 @import url("typography.css");
 @import url("menu.css");
@@ -8,9 +9,9 @@
 /* ==================================================
    Google Fonts
 ================================================== */
-@import url("http://fonts.googleapis.com/css?family=Oxygen:300,400,700");
-@import url("http://fonts.googleapis.com/css?family=Montserrat:400,700");
 
+@import url("//fonts.googleapis.com/css?family=Oxygen:300,400,700");
+@import url("//fonts.googleapis.com/css?family=Montserrat:400,700");
 /* ==================================================
    Global Styles
 ================================================== */
@@ -21,7 +22,7 @@
     box-sizing: border-box;
 }
 
-pre code{
+pre code {
     display: block;
     overflow-x: auto;
     background: #2d2d2d;
@@ -32,7 +33,6 @@ pre code{
 html {
     height: 100%;
     overflow: auto;
-
     -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
@@ -40,12 +40,11 @@ html {
 
 body {
     font-family: "Oxygen", Arial, Verdana, Helvetica, sans-serif;
-    font-size: 15px;
+    font-size: 16px;
     color: #555;
     font-weight: 400;
     line-height: 28px;
     background: #FFF;
-
     text-rendering: optimizeLegibility;
     vertical-align: baseline;
 }
@@ -77,6 +76,7 @@ img {
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
     -ms-backface-visibility: hidden;
+    width: 80%;
 }
 
 img.imgfull {
@@ -117,11 +117,11 @@ img.imgfull {
     bottom: 0;
     width: 100%;
     max-width: 280px;
-    background: #A71E2E;
+    /* background: #A71E2E; */
+    background: #263238;
     color: #FFF;
     z-index: 3;
     overflow-y: auto;
-
     -webkit-overflow-scrolling: touch;
 }
 
@@ -145,7 +145,6 @@ img.imgfull {
     background: rgba(0, 0, 0, 0.2);
     font-size: 48px;
     margin: 0 0 10px 0;
-
     -webkit-border-radius: 80px;
     -moz-border-radius: 80px;
     border-radius: 80px;
@@ -220,28 +219,22 @@ img.imgfull {
 ================================================== */
 
 @media screen and (max-width: 768px) {
-
     #left {
         max-width: 200px;
     }
-
     #left #socialmedia ul {
         bottom: 20px;
         left: 20px;
     }
-
     #left #socialmedia ul li {
         margin: 0 8px 0 0;
     }
-
     #left #socialmedia ul li a {
         font-size: 21px;
     }
-
     #right {
         padding: 20px 20px 20px 230px;
     }
-
 }
 
 /* ==================================================
@@ -249,7 +242,6 @@ img.imgfull {
 ================================================== */
 
 @media screen and (max-width: 480px) {
-
     #left {
         position: relative;
         top: 0;
@@ -258,22 +250,18 @@ img.imgfull {
         max-width: 100%;
         padding: 20px;
     }
-
     #left p#logo a {
         padding: 0;
     }
-
     #left #socialmedia ul {
         position: relative;
         bottom: auto;
         left: auto;
         margin: 5px 0 0 0;
     }
-
     #left #socialmedia ul li a {
         font-size: 25px;
     }
-
     #right {
         position: relative;
         top: 0;
@@ -282,6 +270,4 @@ img.imgfull {
         max-width: 100%;
         padding: 30px 20px;
     }
-
 }
-
