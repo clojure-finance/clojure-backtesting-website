@@ -199,9 +199,9 @@ With all these set-up, you are ready to write your strategy.
 
 <br>
 
-The following demo is a trading strategy that follows a simple logic.
+The below demo is a trading strategy that follows a simple logic.
 
-**Simple strategy**:
+<u>**Simple strategy**</u>
 
 In a timespan of 10 days (inclusive of today),
 
@@ -210,7 +210,8 @@ In a timespan of 10 days (inclusive of today),
 
 
 (i) The following example code is for running under the **non-lazy** mode:
-```
+
+```clojure
 ;; define the "time span", i.e. to trade in the coming 10 days
 (def num-of-days (atom 10))
 
@@ -247,7 +248,10 @@ In a timespan of 10 days (inclusive of today),
 (println ((fn [counter] (str "Counter: " counter)) @num-of-days))
 ```
 
+<br>
+
 (ii) The following example code is for running under the **lazy** mode:
+
 ```clojure
 ;; define the "time span", i.e. to trade in the coming 10 days 
 (def num-of-days (atom 10))                              
@@ -282,6 +286,7 @@ In a timespan of 10 days (inclusive of today),
 (println ((fn [counter] (str "Counter: " counter)) @num-of-days))
 ```
 
+<br>
 
 Note that in the above snippets, it is necessary to iteratively call `next-date` so that the system could "move on to the next trading day". (check the details in the _"Counter"_ section)
 
@@ -434,7 +439,11 @@ However, note that if you are traversing a large amount of dates, it would be be
 
 You could try plotting some variables shown in the portfolio record / evaluation report tables.
 
+<br>
+
 #### Plotting values in portfolio record
+
+<br>
 
 ```clojure
 ;; 1) Define the data to be the record that features the column
@@ -463,6 +472,8 @@ Output:
 
 #### Plotting values in evaluation report
 
+<br>
+
 ```clojure
 (def data (deref eval-record))
 (def data-to-plot
@@ -479,4 +490,4 @@ Output:
 
 <br>
 
-![<img src="img/plot-volatility.png" width="250"/>](/img/plot-volatility.png)
+![image](/img/plot-volatility.png)

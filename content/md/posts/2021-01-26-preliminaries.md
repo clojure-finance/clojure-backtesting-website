@@ -19,7 +19,7 @@ Both `Compustat-extract.csv` and `CRSP-extract.csv` are extracts of the dataset 
 
 <br>
 
-_Requirements:_
+**Requirements:**
 
 1. In csv file format
 2. **Row based:** rows are instances and columns are parameters. The first line is the header for each column.
@@ -39,7 +39,7 @@ _Requirements:_
 
 <br>
 
-_Requirements:_
+**Requirements:**
 
 1. In csv file format
 2. **Row based:** rows are instances and columns are parameters. The first line is the header for each column.
@@ -59,15 +59,13 @@ _Requirements:_
 
 ## Column Names
 
-<br>
+### CRSP dataset
 
-### CRSP
-
-- :PRC : closing price
-- :OPENPRC : opening price
-- :date : date
-- :TICKER : ticker name
-- :APRC : adjusted price
+- `:PRC` : closing price
+- `:OPENPRC` : opening price
+- `:date` : date
+- `:TICKER` : ticker name
+- `:APRC` : adjusted price
 
 **<span style="color:red">Remark:</span>**
 
@@ -81,7 +79,7 @@ You can change it to opening price by changing the parameter.clj in `src/`:
 
 <br>
 
-### Compustat
+### Compustat dataset
 
-- datadate: quartery date
+- `datadate`: quarterly date
 

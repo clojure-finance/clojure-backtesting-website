@@ -10,17 +10,20 @@ table, th, td {
   border: 1px solid black;
   padding: 5px;
 }
+td {
+  padding: 10px;
+}
 </style>
 
 <br>
 
-`ns: clojure-backtesting.parameters`
+**`ns: clojure-backtesting.parameters`**
 
 This namespace defines the parameters that are configurable in the backtester.
 
 ---
 
-### Trading Price
+## Trading Price
 
 The trading price is by default set to be closing price.
 
@@ -32,11 +35,11 @@ You can change it to opening price by changing the parameter.clj in `src/`:
 
 -----------------
 
-### Margin Requirements
+## Margin Requirements
 
 <br>
 
-`INITIAL-MARGIN`
+### `INITIAL-MARGIN`
 
 This variable stores the minimum ratio of cash to total value of securities that must be paid when buying on margin. The default value is set as `0.5`.
 
@@ -52,7 +55,7 @@ This variable stores the minimum ratio of cash to total value of securities that
 
 <br>
 
-`update-initial-margin`
+### `update-initial-margin`
 
 This function updates the initial margin.
 
@@ -73,7 +76,7 @@ This function updates the initial margin.
 
 <br>
 
-`MAINTENANCE-MARGIN`
+### `MAINTENANCE-MARGIN`
 
 This variable stores the minimum ratio of cash to total value of securities that must be maintained in the margin account. If the portfolio margin goes below the maintenance margin, all positions will be automatically closed. The default value is set as `0.25`.
 
@@ -89,7 +92,7 @@ This variable stores the minimum ratio of cash to total value of securities that
 
 <br>
 
-`update-maintenance-margin`
+### `update-maintenance-margin`
 
 This function updates the maintenance margin.
 
@@ -108,13 +111,13 @@ This function updates the maintenance margin.
 0.2
 ```
 
+---
+
+## Transaction Cost & Loan Interest
+
 <br>
 
-### Transaction Cost & Loan Interest
-
-<br>
-
-`TRANSACTION-COST`
+### `TRANSACTION-COST`
 
 This variable stores the rate of the commission fee that is charged upon the execution of an order. The default value is `0.0`.
 
@@ -131,7 +134,7 @@ This variable stores the rate of the commission fee that is charged upon the exe
 
 <br>
 
-`update-transaction-cost`
+### `update-transaction-cost`
 
 This function updates the transaction cost.
 
@@ -153,7 +156,7 @@ This function updates the transaction cost.
 <br>
 
 
-`INTEREST-RATE`
+### `INTEREST-RATE`
 
 This variable stores the simple interest rate (per annum) that is incurred when making a loan. Loan interests will be deducted at the end of every month. The default value is `0.0`.
 
@@ -169,7 +172,7 @@ This variable stores the simple interest rate (per annum) that is incurred when 
 
 <br>
 
-`update-interest-rate`
+### `update-interest-rate`
 
 This function updates the interest rate.
 

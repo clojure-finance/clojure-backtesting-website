@@ -5,13 +5,13 @@
  
 <br>
 
-`Examples/Fundamental Analysis.ipynb`
+**`Examples/Fundamental Analysis.ipynb`**
 
 This file features the demo code for implementing a simple fundamental analysis strategy.
 
 ---
 
-### Initialisation
+## Initialisation
 
 ```
 ; import libraries from kernel
@@ -39,7 +39,7 @@ This file features the demo code for implementing a simple fundamental analysis 
 
 ```
 
-### Compute Return on Equity (ROE)
+## Compute Return on Equity (ROE)
 
 ```clojure
 ;; Use merged database CRSP + COMPUSTAT
@@ -78,7 +78,7 @@ This file features the demo code for implementing a simple fundamental analysis 
 
 Making use of the above function, we write another function to only retrieve the set of ROE from the output of `get-set-roe`.
 
-```
+```clojure
 (defn get-ROE
             "return a set of ROE"  ;;{10.2 1.8 x.x ...}
         [dataset]
@@ -86,7 +86,7 @@ Making use of the above function, we write another function to only retrieve the
         )
 ```
 
-### Get list of tickers to buy
+## Get List of Tickers to Buy
 
 Suppose that we want to get the list of tickers with ROE >= 20th percentile. It could be done with the following steps.
 
@@ -143,7 +143,7 @@ Eventually, we get the list of tickers that we want:
 
 <br>
 
-### Writing the strategy
+## Writing the Strategy
 
 Given all the essential functions, we could write the loop for making orders based on the ROE of companies on a certain date.
 
@@ -237,7 +237,7 @@ You could read the **Code Walkthrough** in the *"Get Started"* section if you ar
 )
 ```
 
-### Check records & performance
+## Check Records & Performance
 
 ```clojure
 (pprint/print-table (deref order-record))

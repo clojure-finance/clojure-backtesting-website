@@ -5,15 +5,15 @@
  
 <br>
 
-`Examples/Buying on margin.ipynb`
+**`Examples/Buying on margin.ipynb`**
 
 This file features the demo code for enabling or disabling leverage in the backtester.
 
 ---
 
-### Initialisation
+## Initialisation
 
-```
+```clojure
 ; import libraries from kernel
 (ns clojure-backtesting.demo
   (:require [clojure.test :refer :all]
@@ -43,7 +43,7 @@ This file features the demo code for enabling or disabling leverage in the backt
 
 <br>
 
-### Trade without Leverage
+## Trade without Leverage
 
 The trade would be allowed if you possess enough cash to pay.
 
@@ -118,7 +118,7 @@ Failure reason: You do not have enough money to buy or have enough stock to sell
 
 <br>
 
-### Trade with Leverage
+## Trade with Leverage
 
 **Example:**
 
@@ -159,7 +159,7 @@ Order: 1980-12-16 | AAPL | 1.000000.
 
 <br>
 
-### Initial Margin
+## Initial Margin
 
 The purchase would not be allowed if the ratio of cash to total value of assets bought on margin goes below the initial margin.
 
@@ -252,7 +252,7 @@ Order: 1980-12-16 | AAPL | 10.000000.
 
 <br>
 
-### Maintenance Margin
+## Maintenance Margin
 
 All positions will be automatically closed if the portfolio margin goes below the maintenace margin.
 

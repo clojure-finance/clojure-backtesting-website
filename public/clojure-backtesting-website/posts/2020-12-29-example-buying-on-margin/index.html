@@ -93,7 +93,7 @@
 </div>
 <div>
     <ol class="toc"><li><a href="#initialisation">Initialisation</a></li><li><a href="#trade-without-leverage">Trade without Leverage</a></li><li><a href="#trade-with-leverage">Trade with Leverage</a></li><li><a href="#initial-margin">Initial Margin</a></li><li><a href="#maintenance-margin">Maintenance Margin</a></li></ol>
-    <br /><p><code>Examples/Buying on margin.ipynb</code></p><p>This file features the demo code for enabling or disabling leverage in the backtester.</p><hr /><h3 id="initialisation">Initialisation</h3><pre><code>; import libraries from kernel
+    <br /><p><strong><code>Examples/Buying on margin.ipynb</code></strong></p><p>This file features the demo code for enabling or disabling leverage in the backtester.</p><hr /><h2 id="initialisation">Initialisation</h2><pre><code class="clojure">; import libraries from kernel
 (ns clojure-backtesting.demo
   (:require [clojure.test :refer :all]
             [clojure-backtesting.data :refer :all]
@@ -118,7 +118,7 @@
 ; import dataset
 (reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
 
-</code></pre><br /><h3 id="trade-without-leverage">Trade without Leverage</h3><p>The trade would be allowed if you possess enough cash to pay.</p><p><strong>Example:</strong></p><pre><code class="clojure">(init-portfolio "1980-12-15" 400)
+</code></pre><br /><h2 id="trade-without-leverage">Trade without Leverage</h2><p>The trade would be allowed if you possess enough cash to pay.</p><p><strong>Example:</strong></p><pre><code class="clojure">(init-portfolio "1980-12-15" 400)
 (order "AAPL" 10 :leverage false :remaining true :print true) ;without leverage, remaining value
 
 (next-date)
@@ -169,7 +169,7 @@ Failure reason: You do not have enough money to buy or have enough stock to sell
 |      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage | :margin |
 |------------+------------+------------+----------+-------+-----------+---------|
 | 1980-12-15 |    $100.00 |      0.00% |    0.00% | $0.00 |      0.00 |   0.00% |
-</code></pre><br /><h3 id="trade-with-leverage">Trade with Leverage</h3><p><strong>Example:</strong></p><pre><code class="clojure">(init-portfolio "1980-12-15" 20)
+</code></pre><br /><h2 id="trade-with-leverage">Trade with Leverage</h2><p><strong>Example:</strong></p><pre><code class="clojure">(init-portfolio "1980-12-15" 20)
 
 (order "AAPL" 1 :print true) ;with leverage, exact value trade
 
@@ -199,7 +199,7 @@ Order: 1980-12-16 | AAPL | 1.000000.
 | 1980-12-16 |     $20.00 |      0.00% |    0.00% | $5.82 |      0.29 |  77.46% |
 | 1980-12-17 |     $20.27 |      0.17% |    0.17% | $5.82 |      0.29 |  77.70% |
 | 1980-12-18 |     $20.60 |      0.20% |    0.37% | $5.82 |      0.28 |  77.98% |
-</code></pre><br /><h3 id="initial-margin">Initial Margin</h3><p>The purchase would not be allowed if the ratio of cash to total value of assets bought on margin goes below the initial margin.</p><pre><code class="clojure">; check variable
+</code></pre><br /><h2 id="initial-margin">Initial Margin</h2><p>The purchase would not be allowed if the ratio of cash to total value of assets bought on margin goes below the initial margin.</p><pre><code class="clojure">; check variable
 (println INITIAL-MARGIN)
 </code></pre><br /><p><strong>Example:</strong> order failed, since cash is insufficient.</p><pre><code class="clojure">(init-portfolio "1980-12-15" 100)
 (order "AAPL" 10 :remaining true :print true) ;with leverage, remaining value
@@ -256,7 +256,7 @@ Order: 1980-12-16 | AAPL | 10.000000.
 | 1980-12-16 |    $100.00 |      0.00% |    0.00% | $158.19 |      1.58 |  38.73% |
 | 1980-12-17 |    $102.75 |      1.81% |    1.81% | $158.19 |      1.54 |  39.38% |
 | 1980-12-18 |    $106.00 |      2.02% |    3.83% | $158.19 |      1.49 |  40.12% |
-</code></pre><br /><br /><h3 id="maintenance-margin">Maintenance Margin</h3><p>All positions will be automatically closed if the portfolio margin goes below the maintenace margin.</p><br /><p><strong>Example:</strong></p><pre><code class="clojure">(init-portfolio "1980-12-15" 100)
+</code></pre><br /><br /><h2 id="maintenance-margin">Maintenance Margin</h2><p>All positions will be automatically closed if the portfolio margin goes below the maintenace margin.</p><br /><p><strong>Example:</strong></p><pre><code class="clojure">(init-portfolio "1980-12-15" 100)
 (order "AAPL" -10 :remaining true :print true) ;with leverage, remaining value
 (order "F" 20 :remaining true :print true)
 
