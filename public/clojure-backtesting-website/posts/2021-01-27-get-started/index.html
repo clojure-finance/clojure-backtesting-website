@@ -108,14 +108,16 @@ Installation successful.
 </code></pre><p>(ii) An order could be made by calling the following function under the lazy mode:</p><pre><code class="clojure">(order-lazy "AAPL" 50) ; buy 50 stocks
 </code></pre></li></ul><br /><h3 id="non-lazy-mode">Non-lazy mode</h3><ul><li><p>This is the default mode that the backtester is set in.</p></li><li><p>This is mainly for debugging, and you need to run it with the smaller datasets named <code>CRSP-extract.csv</code> and <code>Compustat-extract.csv</code>.</p><p>(i) To run the backtester in non-lazy mode, load the dataset in the following way:</p><pre><code class="clojure">(reset! data-set (add-aprc (read-csv-row "./resources/CRSP-extract.csv")))
 </code></pre><p>(ii) An order could be made by calling the following function under the non-lazy mode:</p><pre><code class="clojure">(order "AAPL" 50) ; buy 50 stocks
-</code></pre></li></ul><hr /><h2 id="code-walkthrough">Code Walkthrough</h2><p>We'll go through the code in <code>./examples/Simple trading strategy.ipynb</code> notebook to have a glimpse of how to write code that could be run with the backtester.</p><br /><h3 id="import-libraries">Import libraries</h3><p>To make use of the functions in the backtester library, it is necessary to import them whenever you create a new jupyter notebook file. Also make sure that you've compiled the <strong>most up-to-date</strong> clojure-backteser kernel, and have selected it in the Jupyter Notebook application.</p><pre><code>(ns clojure-backtesting.demo
+</code></pre></li></ul><hr /><h2 id="code-walkthrough">Code Walkthrough</h2><p>We'll go through the code in <code>./examples/Simple trading strategy.ipynb</code> notebook to have a glimpse of how to write code that could be run with the backtester.</p><br /><h3 id="import-libraries">Import libraries</h3><p>To make use of the functions in the backtester library, it is necessary to import them whenever you create a new jupyter notebook file. Also make sure that you've compiled the <strong>most up-to-date</strong> clojure-backteser kernel, and have selected it in the Jupyter Notebook application.</p><pre><code class="clojure">(ns clojure-backtesting.demo
   (:require [clojure.test :refer :all]
             [oz.notebook.clojupyter :as oz]
             [clojure-backtesting.data :refer :all]
+            [clojure-backtesting.portfolio :refer :all]
             [clojure-backtesting.order :refer :all]
             [clojure-backtesting.evaluate :refer :all]
             [clojure-backtesting.plot :refer :all]
             [clojure-backtesting.counter :refer :all]
+            [clojure-backtesting.large-data :refer :all]
             [clojure-backtesting.parameters :refer :all]
             [clojure.string :as str]
             [clojure.pprint :as pprint]
@@ -128,8 +130,8 @@ Installation successful.
 </code></pre><br /><h3 id="import-dataset">Import dataset</h3><p>Load the CRSP-extract.csv dataset to the program by providing its relative path. Note that it is a must to nest it with <code>read-csv-row</code> and <code>add-aprc</code>, as they respectively parse the csv file and automatically add the adjusted price column to the dataset.</p><p>(i) To load the dataset for <strong>non-lazy</strong> mode, import the extract dataset:</p><pre><code class="clojure">(reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
 </code></pre><p>(ii) To load the dataset for <strong>lazy</strong> mode, import the large dataset:</p><pre><code class="clojure">(load-large-dataset "../resources/CRSP-extract.csv" "main" add-aprc)
 (set-main "main")
-</code></pre><br /><h3 id="initialise-portfolio">Initialise portfolio</h3><p>Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the <code>init-portfolio</code> function.</p><pre><code>(init-portfolio "1980-12-16" 10000);
-</code></pre><br /><h3 id="check-available-tickers">Check available tickers</h3><p>You could check what tickers you could trade on the current date (i.e. 1980-12-16).</p><pre><code>(keys (deref available-tics))
+</code></pre><br /><h3 id="initialise-portfolio">Initialise portfolio</h3><p>Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the <code>init-portfolio</code> function.</p><pre><code class="clojure">(init-portfolio "1980-12-16" 10000);
+</code></pre><br /><h3 id="check-available-tickers">Check available tickers</h3><p>You could check what tickers you could trade on the current date (i.e. 1980-12-16).</p><pre><code class="clojure">(keys (deref available-tics))
 </code></pre><br /><h3 id="write-your-strategy">Write your strategy</h3><p>With all these set-up, you are ready to write your strategy.</p><br /><p>The below demo is a trading strategy that follows a simple logic.</p><p><u><strong>Simple strategy</strong></u></p><p>In a timespan of 10 days (inclusive of today),</p><ul><li>Buy 50 stocks of AAPL on the first day</li><li>Sell 10 stocks of AAPL on every other day</li></ul><p>(i) The following example code is for running under the <strong>non-lazy</strong> mode:</p><pre><code class="clojure">;; define the "time span", i.e. to trade in the coming 10 days
 (def num-of-days (atom 10))
 
