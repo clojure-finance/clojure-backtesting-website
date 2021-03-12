@@ -97,6 +97,7 @@ You could run the backtester in two modes, which are the **lazy** and the **non-
   (order-lazy "AAPL" 50) ; buy 50 stocks
   ```
   
+
 <br>
 
 2. **Non-lazy mode**
@@ -129,15 +130,17 @@ We'll go through the code in `./examples/Simple trading strategy.ipynb` notebook
 
 To make use of the functions in the backtester library, it is necessary to import them whenever you create a new jupyter notebook file. Also make sure that you've compiled the **most up-to-date** clojure-backteser kernel, and have selected it in the Jupyter Notebook application.
 
-```
+```clojure
 (ns clojure-backtesting.demo
   (:require [clojure.test :refer :all]
             [oz.notebook.clojupyter :as oz]
             [clojure-backtesting.data :refer :all]
+            [clojure-backtesting.portfolio :refer :all]
             [clojure-backtesting.order :refer :all]
             [clojure-backtesting.evaluate :refer :all]
             [clojure-backtesting.plot :refer :all]
             [clojure-backtesting.counter :refer :all]
+            [clojure-backtesting.large-data :refer :all]
             [clojure-backtesting.parameters :refer :all]
             [clojure.string :as str]
             [clojure.pprint :as pprint]
@@ -172,7 +175,7 @@ Load the CRSP-extract.csv dataset to the program by providing its relative path.
 
 Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the `init-portfolio` function.
 
-```
+```clojure
 (init-portfolio "1980-12-16" 10000);
 ```
 
@@ -182,7 +185,7 @@ Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the `
 
 You could check what tickers you could trade on the current date (i.e. 1980-12-16).
 
-```
+```clojure
 (keys (deref available-tics))
 ```
 
@@ -205,7 +208,7 @@ In a timespan of 10 days (inclusive of today),
 
 
 (i) The following example code is for running under the **non-lazy** mode:
-```
+```clojure
 ;; define the "time span", i.e. to trade in the coming 10 days
 (def num-of-days (atom 10))
 
