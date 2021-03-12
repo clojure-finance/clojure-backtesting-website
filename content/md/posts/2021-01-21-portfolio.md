@@ -9,17 +9,23 @@ table, th, td {
   border: 1px solid black;
   padding: 5px;
 }
+td {
+  padding: 10px;
+}
 </style>
 
 <br>
 
-### Portfolio Manipulation
 
-Functions for creating and viewing the portfolio; and for inspecting historical records of portfolio values.
+**`ns: clojure-backtesting.portfolio`**
+
+This namespace features functions associated with manipulating and viewing the portfolio.
+
 
 ---
+## Portfolio Initialisation
 
-`init_portfolio`
+### `init_portfolio`
 
 This function initialises the portfolio with cash and a date. Note that is is a **must** to call the function before executing functions e.g. `available-tics` and those in the `counter` namespace.
 
@@ -37,9 +43,11 @@ This function initialises the portfolio with cash and a date. Note that is is a 
 null
 ```
 
-<br>
+---
 
-`view_portfolio`
+## Portfolio Inspection
+
+### `view_portfolio`
 
 This function prints the portfolio in a table format.
 
@@ -49,13 +57,13 @@ This function prints the portfolio in a table format.
 
 **Ouput explanation:**
 
-| &nbsp;Column&emsp; | &nbsp;Format &emsp; | &nbsp;Meaning                            |
+| &nbsp;**Column**&emsp; | &nbsp;**Format** &emsp; | &nbsp;**Meaning**                            |
 | ------------------ | :-----------------: | :--------------------------------------- |
-| `asset`            |    &nbsp;string     | &nbsp;Cash or ticker of the stock        |
-| `price`            |   &nbsp;float, $    | &nbsp;Price of the stock &emsp;          |
-| `aprc`             |   &nbsp;float, %    | &nbsp;Adjusted price of the stock &emsp; |
-| `quantity`         | &nbsp;int or float  | &nbsp;Quantity of the stock owned &emsp; |
-| `tot_val`          |    &nbsp;int, $     | &nbsp;Total value of the stock &emsp;    |
+| `asset`            |    &nbsp;string     | Cash or ticker of the stock        |
+| `price`            |   &nbsp;float, $    | Price of the stock &emsp;          |
+| `aprc`             |   &nbsp;float, %    | Adjusted price of the stock &emsp; |
+| `quantity`         | &nbsp;int or float  | Quantity of the stock owned &emsp; |
+| `tot_val`          |    &nbsp;int, $     | Total value of the stock &emsp;    |
 
 <br>
 
@@ -73,7 +81,7 @@ This function prints the portfolio in a table format.
 
 <br>
 
-`view_portfolio_record`
+### `view_portfolio_record`
 
 This function prints the historical values and daily returns of the portfolio in a table format.
 
@@ -83,15 +91,15 @@ This function prints the historical values and daily returns of the portfolio in
 
 **Ouput explanation:**
 
-| &nbsp;Column&emsp; | &nbsp;Format &emsp; | &nbsp;Meaning                                                    |
+| &nbsp;**Column**&emsp; | &nbsp;**Format** &emsp; | &nbsp;**Meaning**                                                    |
 | ------------------ | :-----------------: | :--------------------------------------------------------------- |
-| `date`             |  &nbsp;YYYY-MM-DD   | &nbsp;Date of record                                             |
-| `tot_value`        |    &nbsp;int, $     | &nbsp;Total value of the portfolio &emsp;                        |
-| `daily_ret`        |   &nbsp;float, %    | &nbsp;Daily return of the portfolio &emsp;                       |
-| `tot_ret`          |   &nbsp;float, %    | &nbsp;Total return of the portfolio &emsp;                       |
-| `loan`             |    &nbsp;int, $     | &nbsp;Amount of loan made (cumulative) &emsp;                    |
-| `leverage`         |   &nbsp;float, %    | &nbsp;Leverage ratio given by (total debt / total equity) &emsp; |
-| `margin`           |   &nbsp;float, %    | &nbsp;Portfolio margin given by (cash / total value of securities), > 0 if there is leverage &emsp;|
+| `date`             |  &nbsp;YYYY-MM-DD   | Date of record                                             |
+| `tot_value`        |    &nbsp;int, $     | Total value of the portfolio &emsp;                        |
+| `daily_ret`        |   &nbsp;float, %    | Daily return of the portfolio &emsp;                       |
+| `tot_ret`          |   &nbsp;float, %    | Total return of the portfolio &emsp;                       |
+| `loan`             |    &nbsp;int, $     | Amount of loan made (cumulative) &emsp;                    |
+| `leverage`         |   &nbsp;float, %    | Leverage ratio given by (total debt / total equity) &emsp; |
+| `margin`           |   &nbsp;float, %    | Portfolio margin given by (cash / total value of securities), > 0 if there is leverage &emsp;|
 
 <br>
 

@@ -5,15 +5,15 @@
  
 <br>
 
-`Examples/Buying on margin.ipynb`
+**`Examples/Buying on margin.ipynb`**
 
 This file features the demo code for enabling or disabling leverage in the backtester.
 
 ---
 
-### Initialisation
+## Initialisation
 
-```
+```clojure
 ; import libraries from kernel
 (ns clojure-backtesting.demo
   (:require [clojure.test :refer :all]
@@ -41,7 +41,9 @@ This file features the demo code for enabling or disabling leverage in the backt
 
 ```
 
-### Trade without Leverage
+<br>
+
+## Trade without Leverage
 
 The trade would be allowed if you possess enough cash to pay.
 
@@ -114,7 +116,9 @@ Failure reason: You do not have enough money to buy or have enough stock to sell
 | 1980-12-15 |    $100.00 |      0.00% |    0.00% | $0.00 |      0.00 |   0.00% |
 ```
 
-### Trade with Leverage
+<br>
+
+## Trade with Leverage
 
 **Example:**
 
@@ -155,7 +159,7 @@ Order: 1980-12-16 | AAPL | 1.000000.
 
 <br>
 
-#### Initial Margin
+## Initial Margin
 
 The purchase would not be allowed if the ratio of cash to total value of assets bought on margin goes below the initial margin.
 
@@ -163,6 +167,8 @@ The purchase would not be allowed if the ratio of cash to total value of assets 
 ; check variable
 (println INITIAL-MARGIN)
 ```
+
+<br>
 
 **Example:** order failed, since cash is insufficient.
 
@@ -192,6 +198,8 @@ Order request 1980-12-15 | AAPL | 10 fails due to initial margin exceeding.
 | 1980-12-15 |    $100.00 |      0.00% |    0.00% | $0.00 |      0.00 |   0.00% |
 ```
 
+<br>
+
 Alternatively, you could manually **update the initial margin** to enable such a case. You could set it to nil in order to disable the initial margin requirement.
 
 ```clojure
@@ -203,6 +211,8 @@ Alternatively, you could manually **update the initial margin** to enable such a
 ```
 
 <br>
+
+**Example:** with initial margin udpated to 0.1
 
 ```clojure
 (init-portfolio "1980-12-15" 100)
@@ -238,9 +248,17 @@ Order: 1980-12-16 | AAPL | 10.000000.
 | 1980-12-18 |    $106.00 |      2.02% |    3.83% | $158.19 |      1.49 |  40.12% |
 ```
 
-#### Maintenance Margin
+<br>
+
+<br>
+
+## Maintenance Margin
 
 All positions will be automatically closed if the portfolio margin goes below the maintenace margin.
+
+<br>
+
+**Example:**
 
 ```clojure
 (init-portfolio "1980-12-15" 100)

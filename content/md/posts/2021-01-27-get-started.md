@@ -4,7 +4,7 @@
 
 ---
 
-### Setting Up the Playground
+## Setting Up the Playground
 
 <br>
 
@@ -22,7 +22,9 @@
 
 2. If you download this project for the **first time**, go to the repository root directory (i.e. `clojure-backtester/`) in the terminal and run
 
-   `make init_clojupyter`
+   ```
+   make init_clojupyter
+   ```
 
    _Note that this operation may download a number of required packages, which may take up some time._
 
@@ -30,7 +32,9 @@
 
 3. Run the following command so that the project could be compiled as a .jar file and added as a new Jupyter kernel:
 
-   `make add_kernel`
+   ```
+   make add_kernel
+   ```
 
    (If there is an error, make sure that you have **terminated** the Jupyter notebook running kernels before running this step.)
 
@@ -52,7 +56,7 @@
 
 ---
 
-### Beginner Tutorials
+## Beginner Tutorials
 
 <br>
 
@@ -64,7 +68,7 @@ If you are new to clojure, we recommend having a quick read of the following tut
 
 ---
 
-### Backtester Mode
+## Backtester Mode
 
 <br>
 
@@ -72,7 +76,8 @@ You could run the backtester in two modes, which are the **lazy** and the **non-
 
 <br>
 
-1. **Lazy mode**
+### Lazy mode
+
 - This is mainly for development, and you need to run it with the original large-sized datasets named `data-CRSP.csv` and `data-Compustat.csv`.
 - Note that since these datasets are large in size (> 10 GB), they are not included in `resources/` directory within the repository, and need to be downloaded separately.
 
@@ -100,7 +105,7 @@ You could run the backtester in two modes, which are the **lazy** and the **non-
 
 <br>
 
-2. **Non-lazy mode**
+### Non-lazy mode
 
 - This is the default mode that the backtester is set in.
 - This is mainly for debugging, and you need to run it with the smaller datasets named `CRSP-extract.csv` and `Compustat-extract.csv`.
@@ -120,13 +125,13 @@ You could run the backtester in two modes, which are the **lazy** and the **non-
 
 ---
 
-### Code Walkthrough
+## Code Walkthrough
 
 We'll go through the code in `./examples/Simple trading strategy.ipynb` notebook to have a glimpse of how to write code that could be run with the backtester.
 
 <br>
 
-**1. Import libraries**
+### Import libraries
 
 To make use of the functions in the backtester library, it is necessary to import them whenever you create a new jupyter notebook file. Also make sure that you've compiled the **most up-to-date** clojure-backteser kernel, and have selected it in the Jupyter Notebook application.
 
@@ -154,7 +159,7 @@ To make use of the functions in the backtester library, it is necessary to impor
 
 <br>
 
-**2. Import dataset**
+### Import dataset
 
 Load the CRSP-extract.csv dataset to the program by providing its relative path. Note that it is a must to nest it with `read-csv-row` and `add-aprc`, as they respectively parse the csv file and automatically add the adjusted price column to the dataset.
 
@@ -171,7 +176,7 @@ Load the CRSP-extract.csv dataset to the program by providing its relative path.
 
 <br>
 
-**3. Initialise portfolio**
+### Initialise portfolio
 
 Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the `init-portfolio` function.
 
@@ -181,7 +186,7 @@ Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the `
 
 <br>
 
-**4. Check available tickers**
+### Check available tickers
 
 You could check what tickers you could trade on the current date (i.e. 1980-12-16).
 
@@ -191,15 +196,15 @@ You could check what tickers you could trade on the current date (i.e. 1980-12-1
 
 <br>
 
-**5. Write your strategy**
+### Write your strategy
 
 With all these set-up, you are ready to write your strategy.
 
 <br>
 
-The following demo is a trading strategy that follows a simple logic.
+The below demo is a trading strategy that follows a simple logic.
 
-**Simple strategy**:
+<u>**Simple strategy**</u>
 
 In a timespan of 10 days (inclusive of today),
 
@@ -245,7 +250,10 @@ In a timespan of 10 days (inclusive of today),
 (println ((fn [counter] (str "Counter: " counter)) @num-of-days))
 ```
 
+<br>
+
 (ii) The following example code is for running under the **lazy** mode:
+
 ```clojure
 ;; define the "time span", i.e. to trade in the coming 10 days 
 (def num-of-days (atom 10))                              
@@ -280,6 +288,7 @@ In a timespan of 10 days (inclusive of today),
 (println ((fn [counter] (str "Counter: " counter)) @num-of-days))
 ```
 
+<br>
 
 Note that in the above snippets, it is necessary to iteratively call `next-date` so that the system could "move on to the next trading day". (check the details in the _"Counter"_ section)
 
@@ -301,7 +310,7 @@ By printing these debugging messages, I could double-check whether the orders we
 
 <br>
 
-**6. Check order record**
+### Check order record
 
 Alternatively, you could also directly view the order record.
 
@@ -324,7 +333,7 @@ Alternatively, you could also directly view the order record.
 
 <br>
 
-**7. View portfolio & portfolio record**
+### View portfolio & portfolio record
 
 You could view the portfolio and check the changes in portfolio value too. Note that the portfolio record could also be found in the `out_portfolio_value_record.csv` file.
 
@@ -380,7 +389,7 @@ You could view the portfolio and check the changes in portfolio value too. Note 
 
 <br>
 
-**8. Generate evaluation report**
+### Generate evaluation report
 
 If you update the evaluation report every day (as `update-eval-report` is called for 10 times in the loop), you'll obtain a evluation report with daily records.
 
@@ -428,11 +437,15 @@ However, note that if you are traversing a large amount of dates, it would be be
 ```
 <br>
 
-**9. Plot variables**
+### Plot variables
 
 You could try plotting some variables shown in the portfolio record / evaluation report tables.
 
-**Plotting values in portfolio record**
+<br>
+
+#### Plotting values in portfolio record
+
+<br>
 
 ```clojure
 ;; 1) Define the data to be the record that features the column
@@ -459,7 +472,9 @@ Output:
 
 <br>
 
-**Plotting values in evaluation report**
+#### Plotting values in evaluation report
+
+<br>
 
 ```clojure
 (def data (deref eval-record))

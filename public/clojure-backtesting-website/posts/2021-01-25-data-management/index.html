@@ -1,7 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"><![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"><![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
 <head>
-    <meta charset="utf-8"/>
+    <!-- Website Template designed by www.downloadwebsitetemplates.co.uk -->
+    <!-- Modified to fit Cryogen.-->
+    <meta charset="UTF-8">
     <title>Clojure Backtesting Documentation: Data Management</title>
     
 <meta name="keywords" content="">
@@ -14,102 +19,119 @@
 <meta property="og:title" content="Data Management" />
 <meta property="og:type" content="article" />
 
-    <link rel="canonical" href="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-25-data-management/">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="//fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" rel="stylesheet"
-          type="text/css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57.png">
+    <link rel="shortcut icon" href="images/ico/favicon.png">
+    <!--[if IE]><![endif]-->
+    <link href="/clojure-backtesting-website/css/buttons.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/typography.css" rel="stylesheet" type="text/css" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
-    <link href="/clojure-backtesting-website/css/screen.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow-night-eighties.min.css">
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 <body>
 
+<div id="left">
 
-<nav class="navbar navbar-default">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/clojure-backtesting-website/">Clojure Backtesting Documentation</a>
+    <p id="logo">
+        <a title="Clojure Backtesting Documentation" href="/clojure-backtesting-website/">
+            <span class="fa fa-code"></span>
+            <span class="text">Clojure Backtesting</span>
+        </a>
+    </p>
+
+    <div id="menucont" class="bodycontainer clearfix">
+        <div class="menutitle">
+            <p><span class="fa fa-reorder"></span><strong>Menu</strong></p>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li ><a href="/clojure-backtesting-website/">Home</a></li>
-                <li
-                ><a href="/clojure-backtesting-website/archives/">Archives</a></li>
-                
-                <li
-                >
+        <ul class="menu">
+            <li ><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
+            <li ><a title="Archives" href="/clojure-backtesting-website/archives/">Archives</a></li>
+            
+            
+            <li >
                 <a href="/clojure-backtesting-website/pages/about/">About</a>
-                </li>
-                
-                <!-- <li><a href="/clojure-backtesting-website/feed.xml">RSS</a></li> -->
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div><!--/.container-fluid -->
-</nav>
+            </li>
+            
+            <!-- <li><a title="RSS" href="/clojure-backtesting-website/feed.xml">RSS</a></li> -->
+        </ul>
+    </div>
 
+    <div id="socialmedia" class="clearfix">
+        <ul>
+            <li>
+                <a title="GitHub" href="https://github.com/clojure-finance/clojure-backtesting" rel="external">
+                    <span class="fa fa-github"> 
+                        <span style="font-family: 'Montserrat';text-transform: uppercase;">&nbsp;Github</span>
+                    </span>
+                </a>
+            </li>
+            <!-- <li><a title="Stack Overflow" href="./" rel="external"><span class="fa fa-stack-overflow"></span></a></li>
+            <li><a title="Google+" href="./" rel="external"><span class="fa fa-google-plus"></span></a></li>
+            <li><a title="LinkedIn" href="./" rel="external"><span class="fa fa-linkedin"></span></a></li>
+            <li><a title="Last.fm" href="./" rel="external"><span class="fa fa-lastfm"></span></a></li> -->
+        </ul>
+    </div>
 
-<div class="container">
+</div>
 
-
-    <div class="row">
-        <div class="col-lg-9">
-            <div id="content">
-                
+<div id="right" class="clearfix">
+    
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <div class="col-lg-6">25 January 2021</div>
+        <!-- <strong>25 January 2021</strong> -->
         
     </div>
-    <h2>Data Management</h2>
+    <h1>Data Management</h1>
 </div>
 <div>
-    <ol class="toc"><li><a href="#read-data">Read Data</a></li><li><a href="#search-data">Search Data</a></li><li><a href="#merge-data-not-recommended-potential-bugs">Merge Data <span style="color:red">(Not recommended, potential bugs)</span></a></li></ol>
-    <br /><p><code>ns: clojure-backtesting.data-management</code></p><p>This namespace features functions for csv data manipulation.</p><hr /><h3 id="read-data">Read Data</h3><p>Functions for reading csv file.</p><br /><p><code>get-set</code></p><p>Return a set of ticker and date combinations.</p><p><strong>Parameters:</strong></p><ul><li><code>data</code> - A row based dataset</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">(get-set "./resources/CRSP-extract.csv")
+    <ol class="toc"><li><a href="#read-data">Read Data</a></li><ol><li><a href="#get-set"><code>get-set</code></a></li><li><a href="#read-csv-row"><code>read-csv-row</code></a></li><li><a href="#read-csv-col"><code>read-csv-col</code></a></li></ol><li><a href="#search-data">Search Data</a></li><ol><li><a href="#last-quar"><code>last-quar</code></a></li><li><a href="#get-prev-n-days"><code>get-prev-n-days</code></a></li><li><a href="#moving-average"><code>moving-average</code></a></li></ol><li><a href="#merge-data-not-recommended-potential-bugs">Merge Data <span style="color:red">(Not recommended, potential bugs)</span></a></li><ol><li><a href="#merge-data-row"><code>merge-data-row</code></a></li><li><a href="#merge-csv-col"><code>merge-csv-col</code></a></li></ol></ol>
+    <br /><p><strong><code>ns: clojure-backtesting.data-management</code></strong></p><p>This namespace features functions for csv data manipulation.</p><hr /><h2 id="read-data">Read Data</h2><p>Functions for reading csv file.</p><br /><h3 id="get-set"><code>get-set</code></h3><p>Return a set of ticker and date combinations.</p><p><strong>Parameters:</strong></p><ul><li><code>data</code> - A row based dataset</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">(get-set "./resources/CRSP-extract.csv")
 
 ;; output:
 ;; a set of maps
 {{:tic "AAPL" :datadate "2020-12-10"}}
-</code></pre><br /><p><code>read-csv-row</code></p><p>Read the CSV file into memeory in a row by row format.</p><p><strong>Parameters:</strong></p><ul><li><code>file</code> - path to the csv file to be read</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">(read-csv-row "./resources/CRSP-extract.csv")
+</code></pre><br /><h3 id="read-csv-row"><code>read-csv-row</code></h3><p>Read the CSV file into memeory in a row by row format.</p><p><strong>Parameters:</strong></p><ul><li><code>file</code> - path to the csv file to be read</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">(read-csv-row "./resources/CRSP-extract.csv")
 
 ;; output:
 {{:ewretd "0.002093", :HSICCD "3571", :CFACSHR "56", :date "1980-12-15", :OPENPRC "", :SECSTAT "R", :SHROUT "55.136", :TICKER "AAPL", :COMNAM "APPLE COMPUTER INC", :PRIMEXCH "Q", :TRDSTAT "A", :HEXCD "3", :RET "-0.052061", :EXCHCD "3", :CFACPR "56", :DLRET "", :PRC "27.3125", :vwretd "0.001605", :CUSIP "03783310", :NCUSIP "03783310", :PERMCO "00007", :PERMNO "14593", :SHRCD "11", :sprtrn "0.001702", :VOL "", :SICCD "3573"}...}
-</code></pre><br /><p><code>read-csv-col</code></p><p>Read the CSV file into memeory in a column by column format.</p><p><strong>Parameters:</strong></p><ul><li><code>file</code> - path to the csv file to be read</li></ul><p>Example:</p><pre><code class="clojure">(read-csv-col "./resources/CRSP-extract.csv")
+</code></pre><br /><h3 id="read-csv-col"><code>read-csv-col</code></h3><p>Read the CSV file into memeory in a column by column format.</p><p><strong>Parameters:</strong></p><ul><li><code>file</code> - path to the csv file to be read</li></ul><p>Example:</p><pre><code class="clojure">(read-csv-col "./resources/CRSP-extract.csv")
 
 ;; output:
 [[:ewretd ["0.002093" "-0.001389" "0.007502" "0.006936" "0.008056" "0.007997" "0.001412" "0.004105" "0.004242" "-0.005709" "0.001174" "0.009927" "0.009458" "0.010594" "0.005368" "-0.03238" "-0.00516" "0.008907" "0.004471" "-0.000664" "0.005702" "0.004183" "0.005738" "0.002124" "-0.010683" "-0.002868" "-0.004657" "0.001699" "-0.003975" "0.004729" "0.001001" "0.002597" "0.001105" "-0.018646" "0.001114" "0.004765" "0.007917" "0.007249" "-0.00282" "-0.001213" "-0.002401" "-0.004518" "-0.001726" "-5.5e-05" "0.001811" "-0.008043" "-0.001957" "0.001809" "0.002916" "-3.4e-05" "0.008656" "0.008212" "0.003819" "-0.001614" "0.002521" "0.001221" "0.002958" "0.003551" "-0.002266" "-0.001807" "0.011681" "0.005793" "0.006435" "-0.000237" "0.004204" "0.003192" "0.008718" "0.005984" "-0.000118" "0.009045" "0.001948" "-0.002487" "-0.000217" "0.007541" "0.005162" "0.002897" "0.002749" "-0.006616" "0.001807" "0.003888" "0.005053" "0.004563" "-0.005292" "-0.003674" "0.006399" "0.008239" "0.003353" "-0.002742" "0.000864" "0.002988" "0.006598" "0.001707" "-0.00814" "-0.005957" "0.00279" "-0.000297" "-0.013762" "-0.006381" "0.002456" "0.005405" "0.004743" "-0.007511" "0.000823" "0.002881" "0.005549" "0.005913" "0.001988" "-0.002401" "0.00334" "0.001324" "0.003778" "0.00442" "0.006344" "0.004271" "0.003653" "0.000907" "-0.011098" "-0.003048" "0.00273" "0.004895" "-8.9e-05" "-0.003319" "0.001876" "0.00827" "0.003869" "0.001707" "-0.008553" "0.000689" "-0.004752" "0.00258" "-0.001013" "0.003547" "-0.001183" "0.001235" "0.000481" "-0.005352" "-0.007092" "-0.006769" "-0.006941" "-0.0139" "-0.004077" "-0.000875" "0.006533" "0.004753" "0.001068" "-0.004419" "0.004426" "0.003234" "0.00429" "-0.012409" "-0.008818" "-0.00373" "-0.002009" "0.006128" "0.004585" "-0.002349" "0.001375" "0.004231" "0.006598"...]...]
-</code></pre><hr /><h3 id="search-data">Search Data</h3><p>Functions for retreiving rows based on certain conditions.</p><br /><p><code>last-quar</code></p><p>Return the last quarter of the given date of row. For instance, if the date of row is "2020-12-09", the returned date will be "2020-09-31".</p><p><strong>Parameters:</strong></p><ul><li><code>data</code> - one row of the CRSP dataset</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">(last-quar "2020-12-09")
+</code></pre><hr /><h2 id="search-data">Search Data</h2><p>Functions for retreiving rows based on certain conditions.</p><br /><h3 id="last-quar"><code>last-quar</code></h3><p>Return the last quarter of the given date of row. For instance, if the date of row is "2020-12-09", the returned date will be "2020-09-31".</p><p><strong>Parameters:</strong></p><ul><li><code>data</code> - one row of the CRSP dataset</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">(last-quar "2020-12-09")
 
 ;; output:
 "2020-09-31"
-</code></pre><br /><p><code>get-prev-n-days</code></p><p>Return a vector of map containing the required information for a given period <strong>from the current date (refer to ns:counter for the counting mechanism of the system)</strong></p><p><strong>Parameters</strong>:</p><ul><li><code>key</code>- keyword type: the name of the column</li><li><code>n</code>- int: the period length</li><li><code>tic</code>- string: the ticker name</li></ul><p><em>Optional parameters (Strongly recommended):</em></p><ul><li><code>pre</code> - vector: the previous result</li><li><code>reference</code>: lazy: the dataset to refer to, by default, (deref data-set)</li></ul><p><em>Remarks:</em></p><ol><li><p>Use <code>pre</code> to speed up the infomation retrieving.</p></li><li><p>The logic of the function when <code>pre</code> is given is that if the length of the <code>pre</code> vector is less than <code>n</code>. The function will append one more record to the vector if matched. When the length is equal to <code>n</code>, the function will remove the first element of the <code>pre</code> and append a new matching result to the tail. And the function will only search in the context of <code>reference</code>, so do make sure that the reference given to it is correct.</p></li></ol><p><strong>Example:</strong></p><pre><code class="clojure">(get-prev-n-days :PRC 2 "AAPL")
+</code></pre><br /><h3 id="get-prev-n-days"><code>get-prev-n-days</code></h3><p>Return a vector of map containing the required information for a given period <strong>from the current date (refer to ns:counter for the counting mechanism of the system)</strong></p><p><strong>Parameters</strong>:</p><ul><li><code>key</code>- keyword type: the name of the column</li><li><code>n</code>- int: the period length</li><li><code>tic</code>- string: the ticker name</li></ul><p><em>Optional parameters (Strongly recommended):</em></p><ul><li><code>pre</code> - vector: the previous result</li><li><code>reference</code>: lazy: the dataset to refer to, by default, (deref data-set)</li></ul><p><em>Remarks:</em></p><ol><li><p>Use <code>pre</code> to speed up the infomation retrieving.</p></li><li><p>The logic of the function when <code>pre</code> is given is that if the length of the <code>pre</code> vector is less than <code>n</code>. The function will append one more record to the vector if matched. When the length is equal to <code>n</code>, the function will remove the first element of the <code>pre</code> and append a new matching result to the tail. And the function will only search in the context of <code>reference</code>, so do make sure that the reference given to it is correct.</p></li></ol><p><strong>Example:</strong></p><pre><code class="clojure">(get-prev-n-days :PRC 2 "AAPL")
 
 ;; output:
 ;; a vector of map(s)
 [{:date "2020-11-10" :PRC "12"} {:date "2020-11-11" :PRC "19"}]
-</code></pre><br /><p><code>moving-average</code></p><p>Used as an example function about how to define wrapper functions to the above function output.</p><p><strong>Parameters:</strong></p><ul><li><code>key</code> - key of the content to extract from the map</li><li><code>vector</code> - a vector of maps</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">(moving-average (get-prev-n-days :PRC 2 "AAPL")) ;; usually combined using with (get-prev-n-days)
+</code></pre><br /><h3 id="moving-average"><code>moving-average</code></h3><p>Used as an example function about how to define wrapper functions to the above function output.</p><p><strong>Parameters:</strong></p><ul><li><code>key</code> - key of the content to extract from the map</li><li><code>vector</code> - a vector of maps</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">(moving-average (get-prev-n-days :PRC 2 "AAPL")) ;; usually combined using with (get-prev-n-days)
 
 ;; output:
 15.5
-</code></pre><hr /><h3 id="merge-data-not-recommended-potential-bugs">Merge Data <span style="color:red">(Not recommended, potential bugs)</span></h3><p><em><strong>We recommend you to not join the datasets, but search for the data seperately from two datasets.</strong></em></p><p>Functions for merging the csv files either by row or by column.</p><br /><p><code>merge-data-row</code></p><p>Merge 2 CSV files row by row using left-join method, i.e. merging the trading data with the accounting data. Merging that data by row is recommended.</p><p><strong>Parameters:</strong></p><ul><li><code>file1</code> - the CRSP trading dataset</li><li><code>file2</code> - the COMPUSTAT accounting dataset</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(merge-data-row "./resources/CRSP-extract.csv" "./resources/Compustat-extract.csv")
-</code></pre><br /><p><code>merge-csv-col</code></p><p>Merge 2 CSV files column by column using left-join method, i.e. merging the trading data with the accounting data.</p><p><strong>Parameters:</strong></p><ul><li><code>file1</code> - the CRSP trading dataset</li><li><code>file2</code> - the COMPUSTAT accounting dataset</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure"># (merge-data-col "./resources/CRSP-extract.csv" "./resources/Compustat-extract.csv")
+</code></pre><hr /><h2 id="merge-data-not-recommended-potential-bugs">Merge Data <span style="color:red">(Not recommended, potential bugs)</span></h2><p><em><strong>We recommend you to not join the datasets, but search for the data seperately from two datasets.</strong></em></p><p>Functions for merging the csv files either by row or by column.</p><br /><h3 id="merge-data-row"><code>merge-data-row</code></h3><p>Merge 2 CSV files row by row using left-join method, i.e. merging the trading data with the accounting data. Merging that data by row is recommended.</p><p><strong>Parameters:</strong></p><ul><li><code>file1</code> - the CRSP trading dataset</li><li><code>file2</code> - the COMPUSTAT accounting dataset</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(merge-data-row "./resources/CRSP-extract.csv" "./resources/Compustat-extract.csv")
+</code></pre><br /><h3 id="merge-csv-col"><code>merge-csv-col</code></h3><p>Merge 2 CSV files column by column using left-join method, i.e. merging the trading data with the accounting data.</p><p><strong>Parameters:</strong></p><ul><li><code>file1</code> - the CRSP trading dataset</li><li><code>file2</code> - the COMPUSTAT accounting dataset</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure"># (merge-data-col "./resources/CRSP-extract.csv" "./resources/Compustat-extract.csv")
 </code></pre><hr />
 </div>
 
+<br/>
 
     <div id="prev-next">
         
-        <a href="/clojure-backtesting-website/posts/2021-01-26-preliminaries/">&laquo; Preliminaries</a>
+        <a class="button" href="/clojure-backtesting-website/posts/2021-01-26-preliminaries/">&laquo; Preliminaries</a>
         
         
-        <a class="right" href="/clojure-backtesting-website/posts/2021-01-24-counter/">Counter &raquo;</a>
+        <a class="right button" href="/clojure-backtesting-website/posts/2021-01-24-counter/">Counter &raquo;</a>
         
     </div>
 
@@ -118,43 +140,16 @@
 
 </div>
 
-            </div>
-        </div>
+<hr/>
+<div id="footercont" class="clearfix">Copyright &copy; 2021 clojure-backtesting
+    <p>Powered by <a href="http://cryogenweb.org">Cryogen</a> | Free Website Template by <a title="free website templates" href="http://www.downloadwebsitetemplates.co.uk" rel="external">Download Website Templates</a></p>
 
-        <div class="col-md-3">
-            <div id="sidebar">
-                <h3>Links</h3>
-                <ul id="links">
-                    <li><a href="https://github.com/clojure-finance/clojure-backtesting">Github Repository</a></li>
-                    <!-- <li><a href="http://cryogenweb.org/docs/home.html">Cryogen Docs</a></li>
-                    <li><a href="https://carmen.la/blog/archives/">Carmen's Blog</a></li> -->
-                    
-                </ul>
-                
-                <div id="recent">
-                    <h3>Recent Posts</h3>
-                    <ul>
-                        
-                        <li><a href="/clojure-backtesting-website/posts/2021-01-27-get-started/">Get Started</a></li>
-                        
-                        <li><a href="/clojure-backtesting-website/posts/2021-01-26-preliminaries/">Preliminaries</a></li>
-                        
-                        <li><a href="/clojure-backtesting-website/posts/2021-01-25-data-management/">Data Management</a></li>
-                        
-                    </ul>
-                </div>
-                
-                
-            </div>
-        </div>
-    </div>
-    <footer>Copyright &copy; 2021 clojure-backtesting
-        <p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a></p></footer>
+</div>
 </div>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="/clojure-backtesting-website/js/highlight.pack.js" type="text/javascript"></script>
 <script>hljs.initHighlightingOnLoad();</script>
+<script src="/clojure-backtesting-website/js/scripts.js" type="text/javascript"></script>
 
 
 </body>

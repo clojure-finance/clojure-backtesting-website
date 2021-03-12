@@ -5,18 +5,18 @@
 
 <br>
 
-`ns: clojure-backtesting.data-management`
+**`ns: clojure-backtesting.data-management`**
 
 This namespace features functions for csv data manipulation.
 
 ---
 
-### Read Data
+## Read Data
 Functions for reading csv file.
 
 <br>
 
-`get-set`
+### `get-set`
 
 Return a set of ticker and date combinations.
 
@@ -35,7 +35,7 @@ Return a set of ticker and date combinations.
 
 <br>
 
-`read-csv-row`
+### `read-csv-row`
 
 Read the CSV file into memeory in a row by row format. 
 
@@ -53,8 +53,7 @@ Read the CSV file into memeory in a row by row format.
 
 <br>
 
-
-`read-csv-col`
+### `read-csv-col`
 
 Read the CSV file into memeory in a column by column format. 
 
@@ -72,13 +71,13 @@ Example:
 
 ---
 
-### Search Data
+## Search Data
 Functions for retreiving rows based on certain conditions.
 
 <br>
 
 
-`last-quar`
+### `last-quar`
 
 Return the last quarter of the given date of row. For instance, if the date of row is "2020-12-09", the returned date will be "2020-09-31".
 
@@ -96,7 +95,7 @@ Return the last quarter of the given date of row. For instance, if the date of r
 
 <br>
 
-`get-prev-n-days`
+### `get-prev-n-days`
 
 Return a vector of map containing the required information for a given period **from the current date (refer to ns:counter for the counting mechanism of the system)**
 
@@ -128,7 +127,7 @@ Return a vector of map containing the required information for a given period **
 ```
 <br>
 
-`moving-average`
+### `moving-average`
 
 Used as an example function about how to define wrapper functions to the above function output.
 
@@ -148,7 +147,7 @@ Used as an example function about how to define wrapper functions to the above f
 
 ---
 
-### Merge Data <span style="color:red">(Not recommended, potential bugs)</span>
+## Merge Data <span style="color:red">(Not recommended, potential bugs)</span>
 
 ***We recommend you to not join the datasets, but search for the data seperately from two datasets.***
 
@@ -156,7 +155,7 @@ Functions for merging the csv files either by row or by column.
 
 <br>
 
-`merge-data-row`
+### `merge-data-row`
 
 Merge 2 CSV files row by row using left-join method, i.e. merging the trading data with the accounting data. Merging that data by row is recommended. 
 
@@ -172,7 +171,7 @@ Merge 2 CSV files row by row using left-join method, i.e. merging the trading da
 <br>
 
 
-`merge-csv-col`
+### `merge-csv-col`
 
 Merge 2 CSV files column by column using left-join method, i.e. merging the trading data with the accounting data. 
 

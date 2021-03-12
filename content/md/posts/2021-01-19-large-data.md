@@ -5,19 +5,19 @@
 
 <br>
 
-`ns: large-data`
+**`ns: large-data`**
 
-This namespace features functions to handle large datasets that cannot be loaded to memory at one time, e.g. data-CRSP.csv.
+This namespace features functions that handle large datasets which cannot be loaded to memory at once, e.g. `data-CRSP.csv`.
 
 ---
 
-### Read in
+## Read In
 
 Lazily read in the large datasets, with unique name and function.
 
 <br>
 
-`load-large-dataset`
+### `load-large-dataset`
 
 **Parameters:**
 
@@ -40,7 +40,7 @@ All the large datasets are stored inside dataset-col, which is map of name being
 
 <br>
 
-`set-main`
+### `set-main`
 
 **Parameters:**
 
@@ -57,13 +57,13 @@ All the large datasets are stored inside dataset-col, which is map of name being
 
 ---
 
-### Make Order
+## Make Order
 
 Functions for making an order to trade a stock.
 
 <br>
 
-`order-lazy`
+### `order-lazy`
 
 This order function allows user to set orders for large dataset. 
 
@@ -109,11 +109,11 @@ This order function allows user to set orders for large dataset.
    
 ---
 
-### Automation
+## Automation
 
 <br>
 
-`set-automation`
+### `set-automation`
 
 Initiate an automation by this function.
 
@@ -149,7 +149,7 @@ All the conditions are checked at the first line of the next-date function.
 
 <br>
 
-`cancel-automation`
+### `cancel-automation`
 
 Delete an automation.
 
@@ -165,11 +165,11 @@ Delete an automation.
 
 ---
 
-### Limit orders
+## Limit orders
 
 <br>
 
-`stop-buy`
+### `stop-buy`
 
 Makes a stop buy order (executed once only when condition is fulfilled).
 
@@ -191,7 +191,7 @@ Automation 1 dispatched.
 
 <br>
 
-`limit-buy`
+### `limit-buy`
 
 Makes a limit buy order (executed once only when condition is fulfilled).
 
@@ -213,7 +213,7 @@ Automation 1 dispatched.
 
 <br>
 
-`stop-sell`
+### `stop-sell`
 
 Makes a stop sell order (executed once only when condition is fulfilled).
 
@@ -235,7 +235,7 @@ Automation 1 dispatched.
 
 <br>
 
-`limit-sell`
+### `limit-sell`
 
 Makes a limit sell order (executed once only when condition is fulfilled).
 
@@ -257,13 +257,13 @@ Automation 1 dispatched.
 
 
 
------------------
+---
 
-### Get Corresponding line
+## Get Corresponding Line
 
 <br>
 
-`get-compustat-line`
+### `get-compustat-line`
 
 This function reach out to compustat to find the corresponding line for CRSP.
 
