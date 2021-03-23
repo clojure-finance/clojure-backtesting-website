@@ -20,39 +20,51 @@
 
 <br>
 
-2. If you download this project for the **first time**, go to the repository root directory (i.e. `clojure-backtester/`) in the terminal and run
+#### Installation on Linux or Mac
 
-   ```
-   make init_clojupyter
-   ```
+Run the following command so that the project could be compiled as a .jar file and added as a new Jupyter kernel: (_Note that this operation may download a number of required packages, which may take up some time if you download them for the first time._)
 
-   _Note that this operation may download a number of required packages, which may take up some time._
+```
+make add_kernel
+```
 
-<br>
-
-3. Run the following command so that the project could be compiled as a .jar file and added as a new Jupyter kernel:
-
-   ```
-   make add_kernel
-   ```
-
-   (If there is an error, make sure that you have **terminated** the Jupyter notebook running kernels before running this step.)
-
-   <br>
-
-   When the process is completed, you should see the following output:
-
-   ```
-   Installed jar:      target/uberjar/clojure-backtesting-0.1.0-SNAPSHOT-standalone.jar
-   Install directory:  ~/Library/Jupyter/kernels/backtesting_clojure
-   Kernel identifier:  backtesting_clojure
-
-   Installation successful.
-   ```
+(If there is an error, make sure that you have **terminated** the Jupyter notebook running kernels before running this step.)
 
 <br>
 
-4. Now when you restart the Jupyter Notebook application, you could select the kernel named `backtesting_clojure`. You can make use of the backtester by choosing this kernel.
+When the process is completed, you should see the following output:
+
+```
+Installed jar:      target/uberjar/clojure-backtesting-0.1.0-SNAPSHOT-standalone.jar
+Install directory:  ~/Library/Jupyter/kernels/backtesting_clojure
+Kernel identifier:  backtesting_clojure
+
+Installation successful.
+```
+
+<br>
+
+#### Installation on Windows
+
+The backtester is proven to be working on Windows if set up correctly.
+1. Install Java 8+, Jupyter notebook.
+2. Install lein. Verify by typing `lein --version` in terminal. (Restart the shell after installing it.)
+3. Pull the repository from GitHub or simply download it. And `cd` to this directory.
+4. Input this into the shell:
+```
+lein uberjar;
+lein clojupyter remove-install backtesting_clojure;
+lein clojupyter install --ident backtesting_clojure --jarfile target/uberjar/clojure-backtesting-0.1.0-SNAPSHOT-standalone.jar
+```
+5. Repeat this step every time you update the backtester. 
+6. If the output of the above command is like:
+![373f2c4c235e05c728da361d1650cfaf的副本](https://user-images.githubusercontent.com/43634213/110751657-23eb1b00-827f-11eb-9232-fd02e80f35b4.png)
+You should go to the installed location (Install directory in the above picture) and drag the whole kernel folder into the `\kernels\` folder of the same level.
+And then, you should open the moved folder and find the .json file. Update the location in .json file to this new location.
+
+<br>
+
+Finally, when you restart the Jupyter Notebook application, you could select the kernel named `backtesting_clojure`. You can make use of the backtester by choosing this kernel.
 
 ---
 
@@ -105,7 +117,7 @@ You could run the backtester in two modes, which are the **lazy** and the **non-
 
 <br>
 
-### Non-lazy mode
+### Non-lazy mode (Not recommended)
 
 - This is the default mode that the backtester is set in.
 - This is mainly for debugging, and you need to run it with the smaller datasets named `CRSP-extract.csv` and `Compustat-extract.csv`.
