@@ -68,6 +68,14 @@ If you are new to clojure, we recommend having a quick read of the following tut
 
 ---
 
+## Help & Support
+
+<br>
+
+In case you would encounter difficulties in using the API within the backtester or have any suggestions for additional examples, feel free to post it [here](https://github.com/clojure-finance/clojure-backtesting/issues).
+
+---
+
 ## Backtester Mode
 
 <br>
