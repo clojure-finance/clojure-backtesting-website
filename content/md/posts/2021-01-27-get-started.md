@@ -74,9 +74,11 @@ Finally, when you restart the Jupyter Notebook application, you could select the
 
 If you are new to clojure, we recommend having a quick read of the following tutorials first:
 
-- [Clojure by example](http://kimh.github.io/clojure-by-example/#about) - useful for beginners pick up the syntax quickly
+- [Clojure by Example](http://kimh.github.io/clojure-by-example/#about) - useful for beginners pick up the syntax quickly
 
-- [Clojure docs](https://clojuredocs.org/) - a more thorough documentation that explains the built-in functions in Clojure
+- [Clojure Docs](https://clojuredocs.org/) - a more thorough documentation that explains the built-in functions in Clojure
+
+- [Clojure for the Brave and True](https://www.braveclojure.com/clojure-for-the-brave-and-true/) - a book that helps you learn Clojure in an in-depth manner
 
 ---
 
