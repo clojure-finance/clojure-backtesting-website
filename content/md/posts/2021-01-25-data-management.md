@@ -76,6 +76,26 @@ Functions for retreiving rows based on certain conditions.
 
 <br>
 
+### `get-price`
+
+Returns the price of the given ticker.
+
+**Parameters:**
+
+- `tic` - ticker name
+
+**Example:**
+
+```clojure
+(get-price "AAPL")
+
+;; output:
+"27.45"
+;;Note that the format is string
+```
+
+<br>
+
 
 ### `last-quar`
 
@@ -140,6 +160,26 @@ Used as an example function about how to define wrapper functions to the above f
 
 ```clojure
 (moving-average (get-prev-n-days :PRC 2 "AAPL")) ;; usually combined using with (get-prev-n-days)
+
+;; output:
+15.5
+```
+
+<br>
+
+### `moving-sd`
+
+Returns the standard deviation of the map.
+
+**Parameters:**
+
+- `key` - key of the content to extract from the map
+- `vector` - a vector of maps
+
+**Example:**
+
+```clojure
+(moving-sd (get-prev-n-days :PRC 2 "AAPL")) ;; usually combined using with (get-prev-n-days)
 
 ;; output:
 15.5
