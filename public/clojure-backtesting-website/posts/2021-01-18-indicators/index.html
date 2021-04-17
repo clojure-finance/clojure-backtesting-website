@@ -7,16 +7,16 @@
     <!-- Website Template designed by www.downloadwebsitetemplates.co.uk -->
     <!-- Modified to fit Cryogen.-->
     <meta charset="UTF-8">
-    <title>Clojure Backtesting Documentation: Example - Golden Cross</title>
+    <title>Clojure Backtesting Documentation: Indicators</title>
     
 <meta name="keywords" content="">
 
-<meta name="description" content="Examples/Golden cross.ipynb">
+<meta name="description" content="ns: indicators">
 
-<meta property="og:description" content="Examples/Golden cross.ipynb">
+<meta property="og:description" content="ns: indicators">
 
-<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2020-12-31-example-golden-cross/" />
-<meta property="og:title" content="Example - Golden Cross" />
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/2021-01-18-indicators/" />
+<meta property="og:title" content="Indicators" />
 <meta property="og:type" content="article" />
 
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -86,72 +86,39 @@
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <!-- <strong>31 December 2020</strong> -->
+        <!-- <strong>18 January 2021</strong> -->
         
     </div>
-    <h1>Example - Golden Cross</h1>
+    <h1>Indicators</h1>
 </div>
 <div>
-    <ol class="toc"><li><a href="#initialisation">Initialisation</a></li><li><a href="#writing-the-strategy">Writing the Strategy</a></li><li><a href="#check-number-of-orders-made">Check Number of Orders Made</a></li><li><a href="#check-records--performance">Check Records & Performance</a></li></ol>
-    <br /><p><strong><code>Examples/Golden cross.ipynb</code></strong></p><p>This file features the demo code for implementing the Golden Cross strategy.</p><hr /><h2 id="initialisation">Initialisation</h2><pre><code>; import libraries from kernel
-(ns clojure-backtesting.demo
-  (:require [clojure.test :refer :all]
-            [clojure-backtesting.data :refer :all]
-            [clojure-backtesting.data-management :refer :all]
-            [clojure-backtesting.order :refer :all]
-            [clojure-backtesting.evaluate :refer :all]
-            [clojure-backtesting.plot :refer :all]
-            [clojure-backtesting.counter :refer :all]
-            ;;[clojure-backtesting.parameters :refer :all]
-            [clojure.string :as str]
-            [clojure.pprint :as pprint]
-            [java-time :as t]
-            [clojupyter.kernel.version :as ver]
-            [clojure.edn :as edn]
-            [clojupyter.misc.helper :as helper]
-  ) ;; require all libriaries from core
-  (:use clojure.pprint)
-)
+    <ol class="toc"><li><a href="#moving-averages">Moving Averages</a></li><ol><li><a href="#ema"><code>EMA</code></a></li><li><a href="#tic-ema"><code>tic-EMA</code></a></li><li><a href="#macd"><code>MACD</code></a></li></ol><li><a href="#momentum-indicators">Momentum Indicators</a></li><ol><li><a href="#roc"><code>ROC</code></a></li><li><a href="#rsi"><code>RSI</code></a></li></ol><li><a href="#volatility">Volatility</a></li><ol><li><a href="#sd-last-n-days"><code>sd-last-n-days</code></a></li></ol></ol>
+    <br /><p><strong><code>ns: indicators</code></strong></p><p>This namespace encapsulates some popular indicators in stock market analysis.</p><hr /><h2 id="moving-averages">Moving Averages</h2><br /><h3 id="ema"><code>EMA</code></h3><p>This function calculates the Exponential Moving Average (EMA). Note that the result is true after you call it <code>EMA-CYCLE</code> in a row.</p><p>(Assocated parameter: <code>EMA-CYCLE</code>, by default, 20)</p><p><strong>Parameters:</strong></p><ul><li><code>price</code> - the price of a ticker</li><li><code>prev-ema</code> - ema of the last day</li></ul><p><strong>Possible usages:</strong></p><pre><code class="clojure">(def prev-EMA (get-price "AAPL")) ;;assign the lastest price to prev EMA as initialization
+(while
+  (def prev-EMA (EMA (get-price "AAPL") prev-EMA))) ;;continuously overwrite prev-EMA with the latest result
+</code></pre><br /><h3 id="tic-ema"><code>tic-EMA</code></h3><p>An alternative wrapper function of the <code>EMA</code> function.</p><p><strong>Parameters:</strong></p><ul><li><code>tic</code> - ticker name</li><li><code>key</code> - key of the price</li><li><code>prev-EMA</code> - ema of the last day</li></ul><p><strong>Possible usages:</strong></p><pre><code class="clojure">(def prev-EMA (get-price "AAPL")) ;; assign the lastest price to prev EMA as initialization
+(while
+  (def prev-EMA (tic-EMA "AAPL" :PRC prev-EMA))) ;;continuously overwrite prev-EMA with the latest result
+</code></pre><br /><h3 id="macd"><code>MACD</code></h3><p>This function calculates the Moving Average Convergence / Divergence (MACD).</p><p><strong>Parameters:</strong></p><ul><li><code>price</code> - the price of a ticker</li><li><code>ema-12</code> - 12-day ema of the last day</li><li><code>ema-26</code> - 26-day ema of the last day</li></ul><p><strong>Output:</strong></p><p><code>[MACD new-ema-12 new-ema-26]</code></p><p><strong>Possible usages:</strong></p><pre><code class="clojure">(def ema-12 (get-price "AAPL")) 
+(def ema-26 (get-price "AAPL"))
+;; assign the lastest price to prev EMA as initialization
+(while
+  (let [tmp (MACD (get-price "AAPL")
+        new-MACD (first tmp)] ;; this is the MACD result
+    (def ema-12 (nth tmp 1))
+    (def ema-26 (nth tmp 2)))) ;; continuously overwrite prev-EMA with the latest result
+</code></pre><br /><h2 id="momentum-indicators">Momentum Indicators</h2><h3 id="roc"><code>ROC</code></h3><p>This function calculates the Rate of Change (ROC) indicator.</p><p><strong>Parameters:</strong></p><ul><li><code>tic</code> - the name of the ticker</li><li><code>n</code> - time window</li></ul><p><strong>Possible usages:</strong></p><pre><code class="clojure">(ROC "AAPL" 20)
 
-; import dataset
-(reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
+;; output
+;; to-write
+</code></pre><br /><h3 id="rsi"><code>RSI</code></h3><p>This function calculates the Relative Strength Index (RSI) indicator.</p><p><strong>Parameters:</strong></p><ul><li><code>tic</code> - the name of the ticker</li><li><code>n</code> - time window</li></ul><p><strong>Output:</strong></p><p><code>RSI</code></p><p><strong>Possible usages:</strong></p><pre><code class="clojure">(RSI "AAPL" 20)
 
-</code></pre><br /><h2 id="writing-the-strategy">Writing the Strategy</h2><p>The following code implements a trading strategy called Golden Rule:</p><ul><li><p>MA 50 cross above the MA 200 (golden cross)</p></li><li><p>MA 200 cross below the MA 50 (death cross)</p></li></ul><p>So in the codes, MA50 and MA200 are compared on a daily basis, if golden cross occurs, then you set a buy order; if death cross occurs, then you set a sell order first.</p><pre><code class="clojure">(time (do (def MA50-vec-aapl [])
-          (def MA200-vec-aapl [])
-          (def MA50-vec-f [])
-          (def MA200-vec-f [])
-          (while (not= (get-date) "2016-12-29")
-            (do
-    ;; write your trading strategy here
-              (def tics (deref available-tics)) ;20 ms
-              (def MA50-vec-aapl (get-prev-n-days :PRC 50 "AAPL" MA50-vec-aapl (get (get tics "AAPL"):reference)))
-              (def MA200-vec-aapl (get-prev-n-days :PRC 200 "AAPL" MA200-vec-aapl (get (get tics "AAPL") :reference)))
-              (def MA50-vec-f (get-prev-n-days :PRC 50 "F" MA50-vec-f (get (get tics "F"):reference)))
-              (def MA200-vec-f (get-prev-n-days :PRC 200 "F" MA200-vec-f (get (get tics "F") :reference)))
-              (let [[MA50 MA200] [(moving-average :PRC MA50-vec-aapl) (moving-average :PRC MA200-vec-aapl)]]
-                (if (&gt; MA50 MA200)
-                  (order "AAPL" 1 :reference (get (get tics "AAPL") :reference) :print false) 
-                  (order "AAPL" 0 :remaining true :reference (get (get tics "AAPL") :reference))))
-              (let [[MA50 MA200] [(moving-average :PRC MA50-vec-f) (moving-average :PRC MA200-vec-f)]]
-                (if (&gt; MA50 MA200)
-                  (order "F" 1 :reference (get (get tics "F") :reference) :print false) 
-                  (order "F" 0 :remaining true :reference (get (get tics "F") :reference))))
-              ;(update-eval-report (get-date))
-              (next-date)))))
-(.close wrtr)
-</code></pre><br /><h2 id="check-number-of-orders-made">Check Number of Orders Made</h2><pre><code>(count (deref order-record))
+;; output
+;; to-write
+</code></pre><br /><h2 id="volatility">Volatility</h2><h3 id="sd-last-n-days"><code>sd-last-n-days</code></h3><p>This function calculates standard deviation of a stock for the last n days.</p><p><strong>Parameters:</strong></p><ul><li><code>tic</code> - the name of the ticker</li><li><code>n</code> - time window</li></ul><p><strong>Possible usages:</strong></p><pre><code class="clojure">(sd-last-n-days "AAPL" 20)
 
-;; output:
-9502
-</code></pre><br /><h2 id="check-records--performance">Check Records &amp; Performance</h2><pre><code class="clojure">;; view final portfolio
-(view-portfolio)
-
-;; output:
-| :asset | :price |  :aprc | :quantity | :tot-val |
-|--------+--------+--------+-----------+----------|
-|   cash |    N/A |    N/A |       N/A |   135759 |
-|   AAPL | 116.73 | 312.11 |        81 |    25280 |
-|      F |  14.87 | 605.11 |         0 |        0 |
+;; output
+;; to-write
 </code></pre>
 </div>
 
@@ -159,10 +126,10 @@
 
     <div id="prev-next">
         
-        <a class="button" href="/clojure-backtesting-website/posts/2021-01-18-indicators/">&laquo; Indicators</a>
+        <a class="button" href="/clojure-backtesting-website/posts/2021-01-19-large-data/">&laquo; Large Data</a>
         
         
-        <a class="right button" href="/clojure-backtesting-website/posts/2020-12-30-example-fundamental-analysis/">Example - Fundamental Analysis &raquo;</a>
+        <a class="right button" href="/clojure-backtesting-website/posts/2020-12-31-example-golden-cross/">Example - Golden Cross &raquo;</a>
         
     </div>
 
