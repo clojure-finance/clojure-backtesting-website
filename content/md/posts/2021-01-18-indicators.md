@@ -81,7 +81,7 @@ Moving Average Convergence / Divergence
 (def ema-26 (get-price "AAPL"))
 ;;assign the lastest price to prev EMA as initialization
 (while
-  (let [tmp (MACD (get-price "AAPL")
+  (let [tmp (MACD (get-price "AAPL") ema-12 ema-26)
         new-MACD (first tmp)] ;; this is the MACD result
     (def ema-12 (nth tmp 1))
     (def ema-26 (nth tmp 2)))) ;;continuously overwrite prev-EMA with the latest result
