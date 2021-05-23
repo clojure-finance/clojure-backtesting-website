@@ -11,7 +11,7 @@ This namespace encapsulates some popular indicators in stock market analysis.
 
 ---
 
-## Moving Averages
+## Trend Indicators
 
 <br>
 
@@ -85,6 +85,34 @@ This function calculates the Moving Average Convergence / Divergence (MACD).
 
 <br>
 
+### `parabolic-SAR`
+
+This function calculates the Parabolic Stop and Reverse (SAR).
+
+**Parameters:**
+
+- `tic` - the symbol of a ticker
+- `mode` - "lazy" or "non-lazy
+- `af` - acceleration factor
+- `prev-psar` - SAR value of the previous period
+
+**Output:**
+
+`parabolic-SAR`
+
+**Possible usages:**
+
+```clojure
+(let [prev-close (Double/parseDouble (get (first (get-prev-n-days :PRC 1 "OMFGA")) :PRC))]
+    (println (parabolic-SAR "OMFGA" "non-lazy" 0.2 prev-close))
+)
+
+;; output
+
+```
+
+<br>
+
 ## Momentum Indicators
 ### `ROC`
 
@@ -149,3 +177,23 @@ This function calculates standard deviation of a stock for the last n days.
 ;; output
 ;; to-write
 ```
+<br>
+
+### `ATR`
+
+This function calculates standard deviation of a stock for the last n days.
+
+**Parameters:**
+
+- `tic` - the name of the ticker
+- `mode` - "lazy" or "non-lazy"
+- `prev-atr` - previous ATR value
+- `n` - average of the daily TR values for the last n days
+
+**Possible usages:**
+
+```clojure
+;; output
+;; to-write
+```
+<br>
