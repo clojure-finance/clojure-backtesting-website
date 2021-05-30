@@ -7,7 +7,7 @@
 
 **`ns: indicators`**
 
-This namespace encapsulates some popular indicators in stock market analysis.
+This namespace includes the APIs for some popular technical analysis indicators.
 
 ---
 
@@ -17,7 +17,7 @@ This namespace encapsulates some popular indicators in stock market analysis.
 
 ### `EMA`
 
-This function calculates the Exponential Moving Average (EMA). Note that the result is true after you call it `EMA-CYCLE` in a row.
+This function calculates the Exponential Moving Average (EMA). Note that the result is `true` after you call the `EMA-CYCLE` in a row.
 
 (Assocated parameter: `EMA-CYCLE`, by default, 20)
 
@@ -29,9 +29,11 @@ This function calculates the Exponential Moving Average (EMA). Note that the res
 **Possible usages:**
 
 ```clojure
-(def prev-EMA (get-price "AAPL")) ;;assign the lastest price to prev EMA as initialization
+(def prev-EMA (get-price "AAPL")) 
+; assign the lastest price to prev EMA as initialisation
 (while
-  (def prev-EMA (EMA (get-price "AAPL") prev-EMA))) ;;continuously overwrite prev-EMA with the latest result
+  (def prev-EMA (EMA (get-price "AAPL") prev-EMA))) 
+  ; continuously overwrite prev-EMA with the latest result
 ```
 
 <br>
@@ -49,9 +51,11 @@ An alternative wrapper function of the `EMA` function.
 **Possible usages:**
 
 ```clojure
-(def prev-EMA (get-price "AAPL")) ;; assign the lastest price to prev EMA as initialization
+(def prev-EMA (get-price "AAPL")) 
+;; assign the lastest price to prev EMA as initialisation
 (while
-  (def prev-EMA (tic-EMA "AAPL" :PRC prev-EMA))) ;;continuously overwrite prev-EMA with the latest result
+  (def prev-EMA (tic-EMA "AAPL" :PRC prev-EMA))) 
+  ;; continuously overwrite prev-EMA with the latest result
 ```
 
 <br>
@@ -75,10 +79,11 @@ This function calculates the Moving Average Convergence / Divergence (MACD).
 ```clojure
 (def ema-12 (get-price "AAPL")) 
 (def ema-26 (get-price "AAPL"))
-;; assign the lastest price to prev EMA as initialization
+;; assign the lastest price to prev EMA as initialisation
 (while
   (let [tmp (MACD (get-price "AAPL") ema-12 ema-26)
-        new-MACD (first tmp)] ;; this is the MACD result
+        new-MACD (first tmp)] 
+        ;; this is the MACD result
     (def ema-12 (nth tmp 1))
     (def ema-26 (nth tmp 2)))) ;; continuously overwrite prev-EMA with the latest result
 ```
@@ -98,7 +103,7 @@ This function calculates the Parabolic Stop and Reverse (SAR).
 
 **Output:**
 
-`parabolic-SAR`
+- `parabolic-SAR`
 
 **Possible usages:**
 
@@ -106,9 +111,6 @@ This function calculates the Parabolic Stop and Reverse (SAR).
 (let [prev-close (Double/parseDouble (get (first (get-prev-n-days :PRC 1 "OMFGA")) :PRC))]
     (println (parabolic-SAR "OMFGA" "non-lazy" 0.2 prev-close))
 )
-
-;; output
-
 ```
 
 <br>
@@ -123,13 +125,14 @@ This function calculates the Rate of Change (ROC) indicator.
 - `tic` - the name of the ticker
 - `n` - time window
 
+**Output:**
+
+- `ROC`
+
 **Possible usages:**
 
 ```clojure
-(ROC "AAPL" 20)
-
-;; output
-;; to-write
+(println (ROC "AAPL" 20)
 ```
 
 <br>
@@ -145,21 +148,18 @@ This function calculates the Relative Strength Index (RSI) indicator.
 
 **Output:**
 
-`RSI`
+- `RSI`
 
 
 **Possible usages:**
 
 ```clojure
 (RSI "AAPL" 20)
-
-;; output
-;; to-write
 ```
 
 <br>
 
-## Volatility
+## Volatility indicators
 ### `sd-last-n-days`
 
 This function calculates standard deviation of a stock for the last n days.
@@ -172,10 +172,7 @@ This function calculates standard deviation of a stock for the last n days.
 **Possible usages:**
 
 ```clojure
-(sd-last-n-days "AAPL" 20)
-
-;; output
-;; to-write
+(println (sd-last-n-days "AAPL" 20))
 ```
 <br>
 
@@ -193,7 +190,49 @@ This function calculates standard deviation of a stock for the last n days.
 **Possible usages:**
 
 ```clojure
-;; output
-;; to-write
+(let [prev-atr (Double/parseDouble (get (first (get-prev-n-days :PRC 1 "OMFGA")) :PRC))]
+    (println (ATR "OMFGA" "non-lazy" prev-atr 10))
+    )
+```
+<br>
+
+
+### `keltner-channel`
+
+This function calculates the Keltner Channel value of a stock for the last n days.
+
+**Parameters:**
+
+- `tic` - the name of the ticker
+- `mode` - "lazy" or "non-lazy"
+- `window` - time window
+- `prev-atr` - previous ATR value
+
+**Possible usages:**
+
+```clojure
+(let [low-price (Double/parseDouble (get-by-key "OMFGA" :BIDLO "non-lazy"))
+      high-price (Double/parseDouble (get-by-key "OMFGA" :ASKHI "non-lazy"))
+      prev-atr (- high-price low-price)]
+  (println (keltner-channel "OMFGA" "non-lazy" 10 prev-atr))
+  )
+```
+<br>
+
+## Other indicators
+### `force-index`
+
+This function calculates the force index of a stock for the last n days.
+
+**Parameters:**
+
+- `tic` - the name of the ticker
+- `mode` - "lazy" or "non-lazy"
+- `window` - time window
+
+**Possible usages:**
+
+```clojure
+(force-index "OMFGA" "non-lazy" 20)
 ```
 <br>
