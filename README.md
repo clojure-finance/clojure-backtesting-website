@@ -15,7 +15,7 @@ Link to website: [https://clojure-finance.github.io/clojure-backtesting-website/
 
 To start the server:
 ```
-lein ring server
+lein serve
 ```
 
 
