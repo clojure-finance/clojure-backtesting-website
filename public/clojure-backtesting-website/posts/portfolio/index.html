@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"><![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"><![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
+<head>
+    <!-- Website Template designed by www.downloadwebsitetemplates.co.uk -->
+    <!-- Modified to fit Cryogen.-->
+    <meta charset="UTF-8">
+    <title>Clojure Backtesting Documentation: Portfolio</title>
+    
+<meta name="keywords" content="">
+
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/portfolio/" />
+<meta property="og:title" content="Portfolio" />
+<meta property="og:type" content="article" />
+
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57.png">
+    <link rel="shortcut icon" href="images/ico/favicon.png">
+    <!--[if IE]><![endif]-->
+    <link href="/clojure-backtesting-website/css/buttons.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/typography.css" rel="stylesheet" type="text/css" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow-night-eighties.min.css">
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+<body>
+
+<div id="left">
+
+    <p id="logo">
+        <a title="Clojure Backtesting Documentation" href="/clojure-backtesting-website/">
+            <span class="fa fa-code"></span>
+            <span class="text">Clojure Backtesting</span>
+        </a>
+    </p>
+
+    <div id="menucont" class="bodycontainer clearfix">
+        <div class="menutitle">
+            <p><span class="fa fa-reorder"></span><strong>Menu</strong></p>
+        </div>
+        <ul class="menu">
+            <li ><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
+            <li ><a title="Archives" href="/clojure-backtesting-website/archives/">Archives</a></li>
+            
+            
+            <li >
+                <a href="/clojure-backtesting-website/pages/about/">About</a>
+            </li>
+            
+            <!-- <li><a title="RSS" href="/clojure-backtesting-website/feed.xml">RSS</a></li> -->
+        </ul>
+    </div>
+
+    <div id="socialmedia" class="clearfix">
+        <ul>
+            <li>
+                <a title="GitHub" href="https://github.com/clojure-finance/clojure-backtesting" rel="external">
+                    <span class="fa fa-github"> 
+                        <span style="font-family: 'Montserrat';text-transform: uppercase;">&nbsp;Github</span>
+                    </span>
+                </a>
+            </li>
+            <!-- <li><a title="Stack Overflow" href="./" rel="external"><span class="fa fa-stack-overflow"></span></a></li>
+            <li><a title="Google+" href="./" rel="external"><span class="fa fa-google-plus"></span></a></li>
+            <li><a title="LinkedIn" href="./" rel="external"><span class="fa fa-linkedin"></span></a></li>
+            <li><a title="Last.fm" href="./" rel="external"><span class="fa fa-lastfm"></span></a></li> -->
+        </ul>
+    </div>
+
+</div>
+
+<div id="right" class="clearfix">
+    
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <!-- <strong>January 21, 2021</strong> -->
+        
+    </div>
+    <h1>Portfolio</h1>
+</div>
+<div>
+    <ol class="toc"><li><a href="#portfolio-initialisation">Portfolio Initialisation</a></li><ol><li><a href="#init-portfolio"><code>init_portfolio</code></a></li></ol><li><a href="#portfolio-inspection">Portfolio Inspection</a></li><ol><li><a href="#view-portfolio"><code>view_portfolio</code></a></li><li><a href="#view-portfolio-record"><code>view_portfolio_record</code></a></li></ol></ol>
+    <style>
+/* table styles */
+table, th, td {
+  border: 1px solid black;
+  padding: 5px;
+}
+td {
+  padding: 10px;
+}
+</style><br /><p><strong><code>ns: clojure-backtesting.portfolio</code></strong></p><p>This namespace features functions associated with manipulating and viewing the portfolio.</p><hr /><h2 id="portfolio-initialisation">Portfolio Initialisation</h2><h3 id="init-portfolio"><code>init_portfolio</code></h3><p>This function initialises the portfolio with cash and a date. Note that is is a <strong>must</strong> to call the function before executing functions e.g. <code>available-tics</code> and those in the <code>counter</code> namespace.</p><p><strong>Parameters:</strong></p><ul><li><code>date</code> - the starting date of the portfolio, in format "YYYY-MM-DD"</li><li><code>init-capital</code> - the desired initial capital for the portfolio (non-negative integer)</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(init_portfolio "1980-12-1" 1000000)
+
+;; output:
+null
+</code></pre><hr /><h2 id="portfolio-inspection">Portfolio Inspection</h2><h3 id="view-portfolio"><code>view_portfolio</code></h3><p>This function prints the portfolio in a table format.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> <strong>Column</strong> </th><th align="center"> <strong>Format</strong>  </th><th align="left"> <strong>Meaning</strong></th></tr></thead><tbody><tr><td><code>asset</code></td><td align="center"> string</td><td align="left">Cash or ticker of the stock</td></tr><tr><td><code>price</code></td><td align="center"> float, $</td><td align="left">Price of the stock  </td></tr><tr><td><code>aprc</code></td><td align="center"> float, %</td><td align="left">Adjusted price of the stock  </td></tr><tr><td><code>quantity</code></td><td align="center"> int or float</td><td align="left">Quantity of the stock owned  </td></tr><tr><td><code>tot_val</code></td><td align="center"> int, $</td><td align="left">Total value of the stock  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code class="clojure">(view_portfolio)
+
+;; output:
+| :asset |  :price | :aprc | :quantity | :tot_val |
+|--------+---------+-------+-----------+----------|
+|   cash |     N/A |   N/A |       N/A |    10295 |
+|   AAPL |   34.19 | 29.42 |         0 |        0 |
+</code></pre><br /><h3 id="view-portfolio-record"><code>view_portfolio_record</code></h3><p>This function prints the historical values and daily returns of the portfolio in a table format.</p><p><strong>Parameters:</strong></p><ul><li><code>n</code> - no. of rows to print, if n &lt;= 0, print entire record</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> <strong>Column</strong> </th><th align="center"> <strong>Format</strong>  </th><th align="left"> <strong>Meaning</strong></th></tr></thead><tbody><tr><td><code>date</code></td><td align="center"> YYYY-MM-DD</td><td align="left">Date of record</td></tr><tr><td><code>tot_value</code></td><td align="center"> int, $</td><td align="left">Total value of the portfolio  </td></tr><tr><td><code>daily_ret</code></td><td align="center"> float, %</td><td align="left">Daily return of the portfolio  </td></tr><tr><td><code>tot_ret</code></td><td align="center"> float, %</td><td align="left">Total return of the portfolio  </td></tr><tr><td><code>loan</code></td><td align="center"> int, $</td><td align="left">Amount of loan made (cumulative)  </td></tr><tr><td><code>leverage</code></td><td align="center"> float, %</td><td align="left">Leverage ratio given by (total debt / total equity)  </td></tr><tr><td><code>margin</code></td><td align="center"> float, %</td><td align="left">Portfolio margin given by (cash / total value of securities), &gt; 0 if there is leverage  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code class="clojure">(view_portfolio_record -1)
+
+;; output:
+|      :date | :tot-value | :daily-ret | :tot-ret |  :loan | :leverage | :margin |
+|------------+------------+------------+----------+--------+-----------+---------|
+| 1980-12-15 |    $210.00 |      0.00% |    0.00% |  $0.00 |      0.00 |   0.00% |
+| 1980-12-16 |    $210.00 |      0.00% |    0.00% | $48.19 |      0.23 |  81.34% |
+| 1980-12-17 |    $212.75 |      0.13% |    0.13% | $48.19 |      0.23 |  81.53% |
+| 1980-12-18 |    $216.00 |      0.15% |    0.27% | $48.19 |      0.22 |  81.76% |
+| 1980-12-19 |    $222.87 |      0.29% |    0.57% | $48.19 |      0.22 |  82.22% |
+| 1980-12-22 |    $228.51 |      0.23% |    0.80% | $48.19 |      0.21 |  82.58% |
+| 1980-12-23 |    $233.51 |      0.19% |    0.99% | $48.19 |      0.21 |  82.89% |
+| 1980-12-24 |    $239.84 |      0.23% |    1.23% | $48.19 |      0.20 |  83.27% |
+| 1980-12-26 |    $251.08 |      0.38% |    1.61% | $48.19 |      0.19 |  83.90% |
+</code></pre><pre><code class="clojure">(view_portfolio_record 3)
+
+;; output:
+|      :date | :tot-value | :daily-ret | :tot-ret |  :loan | :leverage | :margin |
+|------------+------------+------------+----------+--------+-----------+---------|
+| 1980-12-15 |    $210.00 |      0.00% |    0.00% |  $0.00 |      0.00 |   0.00% |
+| 1980-12-16 |    $210.00 |      0.00% |    0.00% | $48.19 |      0.23 |  81.34% |
+| 1980-12-17 |    $212.75 |      0.13% |    0.13% | $48.19 |      0.23 |  81.53% |
+</code></pre>
+</div>
+
+<br/>
+
+    <div id="prev-next">
+        
+        <a class="button" href="/clojure-backtesting-website/posts/order/">&laquo; Order</a>
+        
+        
+        <a class="right button" href="/clojure-backtesting-website/posts/evaluate/">Evaluate &raquo;</a>
+        
+    </div>
+
+    
+
+
+</div>
+
+<hr/>
+<div id="footercont" class="clearfix">Copyright &copy; 2021 clojure-backtesting
+    <span id="footerack">
+        <!-- <p>Powered by <a href="http://cryogenweb.org">Cryogen</a> | Free Website Template by <a title="free website templates" href="http://www.downloadwebsitetemplates.co.uk" rel="external">Download Website Templates</a></p> -->
+        <p>Powered by <a href="http://cryogenweb.org">Cryogen</a></p>
+    </span>
+</div>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="/clojure-backtesting-website/js/highlight.pack.js" type="application/javascript"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script src="/clojure-backtesting-website/js/scripts.js" type="application/javascript"></script>
+
+
+</body>
+</html>

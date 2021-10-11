@@ -7,15 +7,16 @@
     <!-- Website Template designed by www.downloadwebsitetemplates.co.uk -->
     <!-- Modified to fit Cryogen.-->
     <meta charset="UTF-8">
-    <title>Clojure Backtesting Documentation: Welcome to the Clojure Backtesting Library</title>
+    <title>Clojure Backtesting Documentation: Preliminaries</title>
     
+<meta name="keywords" content="">
 
-<meta name="description" content="IntroductionWelcome to the Clojure Backtesting Library! This is an open-source library for quantitative finance and trading developed at the Faculty of Business and Economics (&quot;HKU Business School&quot;) of the University of Hong Kong (HKU).">
+<meta name="description" content="Example Dataset Format">
 
-<meta property="og:description" content="IntroductionWelcome to the Clojure Backtesting Library! This is an open-source library for quantitative finance and trading developed at the Faculty of Business and Economics (&quot;HKU Business School&quot;) of the University of Hong Kong (HKU).">
+<meta property="og:description" content="Example Dataset Format">
 
-<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/" />
-<meta property="og:title" content="Welcome to the Clojure Backtesting Library" />
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/preliminaries/" />
+<meta property="og:title" content="Preliminaries" />
 <meta property="og:type" content="article" />
 
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -50,7 +51,7 @@
             <p><span class="fa fa-reorder"></span><strong>Menu</strong></p>
         </div>
         <ul class="menu">
-            <li  class="active" ><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
+            <li ><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
             <li ><a title="Archives" href="/clojure-backtesting-website/archives/">Archives</a></li>
             
             
@@ -82,17 +83,34 @@
 
 <div id="right" class="clearfix">
     
-<div id="custom-page">
-    <div id="page-header">
-        <h1>Welcome to the Clojure Backtesting Library</h1>
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <!-- <strong>January 26, 2021</strong> -->
+        
     </div>
-    
-    <h2 id="introduction">Introduction</h2><p>Welcome to the Clojure Backtesting Library! This is an open-source library for quantitative finance and trading developed at the Faculty of Business and Economics ("HKU Business School") of the University of Hong Kong (HKU).</p><h2 id="why-we-built-this">Why We Built This</h2><p>Clojure is a functional programming language that allows developers to work with high-level mathematical abstractions. Its fundamental features of immutability and laziness renders it the ideal candidate tool for financial modeling as well as distributed computation.</p><p>Here are some of the best things about Clojure:</p><ul><li><p>Clojure is a <strong>JVM-based language</strong>. This means that you're granted full access to Java's myriad of libraries.</p></li><li><p>Clojure is designed for <strong>concurrency</strong>. You can save your efforts spent on performance tuning and efficiency, and focus on writing the core functionalities.</p></li><li><p><strong>Lazy data structures</strong> are built-in in Clojure. It enables you to easily load datasets that larger than the memory size of your computer.</p></li></ul><p>According to the recent <a href="https://insights.stackoverflow.com/survey/2019">Stack Overflow developer survey</a>, 4 out of 5 of the top paying languages are functional programming languages (Clojure, F#, Scala and Elixir). Functional programming languages have also been gaining popularity in the financial industry, for example Jane Street has been using <a href="https://blog.janestreet.com/why-ocaml/">OCaml</a> as their primary development language, and many investment banks have made heavy use of Scala.</p><p>We believe that there are plenty of underlying potentialities in Clojure. Thus, we would like to make an effort in developing resources for this community. This backtesting library serves to be a resource that assists users to write trading strategies and evaluate the strategy performance.</p><br /><h2 id="table-of-contents">Table of Contents</h2><h3 id="part-i-installation--pre-requisites">Part I: Installation &amp; Pre-requisites</h3><ul><li><a href="/clojure-backtesting-website/posts/get-started">Get Started</a></li><li><a href="/clojure-backtesting-website/posts/preliminaries">Preliminaries</a></li></ul><h3 id="part-ii-api-documentation">Part II: API documentation</h3><ul><li><a href="/clojure-backtesting-website/posts/data-management">Data Management</a></li><li><a href="/clojure-backtesting-website/posts/counter">Counter</a></li><li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li><li><a href="/clojure-backtesting-website/posts/order">Order</a></li><li><a href="/clojure-backtesting-website/posts/portfolio">Portfolio</a></li><li><a href="/clojure-backtesting-website/posts/evaluate">Evaluate</a></li><li><a href="/clojure-backtesting-website/posts/large-data">Large Data</a></li></ul><h3 id="part-iii-examples">Part III: Examples</h3><ul><li><a href="/clojure-backtesting-website/posts/example-golden-cross">Golden Cross</a></li><li><a href="/clojure-backtesting-website/posts/example-fundamental-analysis">Fundamental Analysis</a></li><li><a href="/clojure-backtesting-website/posts/example-buying-on-margin">Buying on Margin</a></li></ul>
+    <h1>Preliminaries</h1>
+</div>
+<div>
+    <ol class="toc"><li><a href="#example-dataset-format">Example Dataset Format</a></li><li><a href="#standard-dataset-format">Standard Dataset Format</a></li><li><a href="#large-dataset-format">Large Dataset Format</a></li><li><a href="#column-names">Column Names</a></li><ol><li><a href="#crsp-dataset">CRSP dataset</a></li><li><a href="#compustat-dataset">Compustat dataset</a></li></ol></ol>
+    <hr /><h2 id="example-dataset-format">Example Dataset Format</h2><br /><p>Both <code>Compustat-extract.csv</code> and <code>CRSP-extract.csv</code> are extracts of the dataset provided by the Center for Research in Security Prices, LLC.</p><p><strong>Link to official documentation</strong>: <a href="http://crsp.org/files/CCM_Database_SAS_ASCII_R_FileFormats.pdf">http://crsp.org/files/CCM_Database_SAS_ASCII_R_FileFormats.pdf</a></p><hr /><h2 id="standard-dataset-format">Standard Dataset Format</h2><br /><p><strong>Requirements:</strong></p><ol><li>In csv file format</li><li><strong>Row based:</strong> rows are instances and columns are parameters. The first line is the header for each column.</li><li>Different tickers are uniquely identified by the Ticker ID or Name; and the same ticker should have the same ID or name.</li><li>Same tickers are stored in clusters or blocks. The row numbers are continuous.</li><li>Dates within each cluster or block is in order from the earliest to the lastest date.</li><li>The dataset is less than 100MB.</li></ol><p><strong>Some remarks:</strong></p><ol><li>The date in init-portfolio must be a valid date in the dataset.</li><li>Ticker should have a unique identifier named TICKER, which should not be null.</li></ol><hr /><h2 id="large-dataset-format">Large Dataset Format</h2><br /><p><strong>Requirements:</strong></p><ol><li>In csv file format</li><li><strong>Row based:</strong> rows are instances and columns are parameters. The first line is the header for each column.</li><li>Different tickers are uniquely identified by the Ticker ID or Name. And the same ticker has the same ID or name.</li><li>Tickers on the same date are stored in clusters or blocks.</li><li>Dates within each cluster or block is stored by alphabetical order of names.</li><li>The dataset is more than 100MB.</li></ol><br /><p><strong>Some remarks:</strong></p><ol><li>The date in init-portfolio must be a valid date in the dataset.</li><li>Ticker should have a unique identifier named TICKER, which should not be null</li></ol><hr /><h2 id="column-names">Column Names</h2><h3 id="crsp-dataset">CRSP dataset</h3><ul><li><code>:PRC</code> : closing price</li><li><code>:OPENPRC</code> : opening price</li><li><code>:date</code> : date</li><li><code>:TICKER</code> : ticker name</li><li><code>:APRC</code> : adjusted price</li></ul><p><strong><span style="color:red">Remark:</span></strong></p><ul><li>The trading price is by default set to be closing price.</li></ul><p>You can change it to opening price by changing the parameter.clj in <code>src/</code>:</p><pre><code class="clojure">(def PRICE-KEY :OPRNPRC)
+</code></pre><br /><h3 id="compustat-dataset">Compustat dataset</h3><ul><li><code>datadate</code>: quarterly date</li></ul>
+</div>
+
+<br/>
 
     <div id="prev-next">
         
+        <a class="button" href="/clojure-backtesting-website/posts/get-started/">&laquo; Get Started</a>
+        
+        
+        <a class="right button" href="/clojure-backtesting-website/posts/data-management/">Data Management &raquo;</a>
         
     </div>
+
+    
+
+
 </div>
 
 <hr/>

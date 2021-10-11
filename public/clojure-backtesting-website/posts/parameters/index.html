@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"><![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"><![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
+<head>
+    <!-- Website Template designed by www.downloadwebsitetemplates.co.uk -->
+    <!-- Modified to fit Cryogen.-->
+    <meta charset="UTF-8">
+    <title>Clojure Backtesting Documentation: Parameters</title>
+    
+<meta name="keywords" content="">
+
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/parameters/" />
+<meta property="og:title" content="Parameters" />
+<meta property="og:type" content="article" />
+
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57.png">
+    <link rel="shortcut icon" href="images/ico/favicon.png">
+    <!--[if IE]><![endif]-->
+    <link href="/clojure-backtesting-website/css/buttons.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/typography.css" rel="stylesheet" type="text/css" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow-night-eighties.min.css">
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+<body>
+
+<div id="left">
+
+    <p id="logo">
+        <a title="Clojure Backtesting Documentation" href="/clojure-backtesting-website/">
+            <span class="fa fa-code"></span>
+            <span class="text">Clojure Backtesting</span>
+        </a>
+    </p>
+
+    <div id="menucont" class="bodycontainer clearfix">
+        <div class="menutitle">
+            <p><span class="fa fa-reorder"></span><strong>Menu</strong></p>
+        </div>
+        <ul class="menu">
+            <li ><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
+            <li ><a title="Archives" href="/clojure-backtesting-website/archives/">Archives</a></li>
+            
+            
+            <li >
+                <a href="/clojure-backtesting-website/pages/about/">About</a>
+            </li>
+            
+            <!-- <li><a title="RSS" href="/clojure-backtesting-website/feed.xml">RSS</a></li> -->
+        </ul>
+    </div>
+
+    <div id="socialmedia" class="clearfix">
+        <ul>
+            <li>
+                <a title="GitHub" href="https://github.com/clojure-finance/clojure-backtesting" rel="external">
+                    <span class="fa fa-github"> 
+                        <span style="font-family: 'Montserrat';text-transform: uppercase;">&nbsp;Github</span>
+                    </span>
+                </a>
+            </li>
+            <!-- <li><a title="Stack Overflow" href="./" rel="external"><span class="fa fa-stack-overflow"></span></a></li>
+            <li><a title="Google+" href="./" rel="external"><span class="fa fa-google-plus"></span></a></li>
+            <li><a title="LinkedIn" href="./" rel="external"><span class="fa fa-linkedin"></span></a></li>
+            <li><a title="Last.fm" href="./" rel="external"><span class="fa fa-lastfm"></span></a></li> -->
+        </ul>
+    </div>
+
+</div>
+
+<div id="right" class="clearfix">
+    
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <!-- <strong>January 23, 2021</strong> -->
+        
+    </div>
+    <h1>Parameters</h1>
+</div>
+<div>
+    <ol class="toc"><li><a href="#trading-price">Trading Price</a></li><li><a href="#margin-requirements">Margin Requirements</a></li><ol><li><a href="#initial-margin"><code>INITIAL-MARGIN</code></a></li><li><a href="#update-initial-margin"><code>update-initial-margin</code></a></li><li><a href="#maintenance-margin"><code>MAINTENANCE-MARGIN</code></a></li><li><a href="#update-maintenance-margin"><code>update-maintenance-margin</code></a></li></ol><li><a href="#transaction-cost--loan-interest">Transaction Cost & Loan Interest</a></li><ol><li><a href="#transaction-cost"><code>TRANSACTION-COST</code></a></li><li><a href="#update-transaction-cost"><code>update-transaction-cost</code></a></li><li><a href="#interest-rate"><code>INTEREST-RATE</code></a></li><li><a href="#update-interest-rate"><code>update-interest-rate</code></a></li></ol></ol>
+    <style>
+/* table styles */
+table, th, td {
+  border: 1px solid black;
+  padding: 5px;
+}
+td {
+  padding: 10px;
+}
+</style><br /><p><strong><code>ns: clojure-backtesting.parameters</code></strong></p><p>This namespace defines the parameters that are configurable in the backtester.</p><hr /><h2 id="trading-price">Trading Price</h2><p>The trading price is by default set to be closing price.</p><p>You can change it to opening price by changing the parameter.clj in <code>src/</code>:</p><pre><code class="clojure">(def PRICE-KEY :OPRNPRC)
+</code></pre><hr /><h2 id="margin-requirements">Margin Requirements</h2><br /><h3 id="initial-margin"><code>INITIAL-MARGIN</code></h3><p>This variable stores the minimum ratio of cash to total value of securities that must be paid when buying on margin. The default value is set as <code>0.5</code>.</p><p><strong>Example:</strong></p><pre><code class="clojure">;; check the variable
+(println INITIAL-MARGIN)
+
+;; output:
+0.5
+</code></pre><br /><h3 id="update-initial-margin"><code>update-initial-margin</code></h3><p>This function updates the initial margin.</p><p><strong>Parameters:</strong></p><ul><li><code>num</code> - new initial margin value, needs to be &gt; 0</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">;; update the variable
+(update-initial-margin 0.7)
+(println INITIAL-MARGIN)
+
+;; output:
+0.7
+</code></pre><br /><h3 id="maintenance-margin"><code>MAINTENANCE-MARGIN</code></h3><p>This variable stores the minimum ratio of cash to total value of securities that must be maintained in the margin account. If the portfolio margin goes below the maintenance margin, all positions will be automatically closed. The default value is set as <code>0.25</code>.</p><p><strong>Example:</strong></p><pre><code class="clojure">;; check the variable
+(println MAINTENANCE-MARGIN)
+
+;; output:
+0.25
+</code></pre><br /><h3 id="update-maintenance-margin"><code>update-maintenance-margin</code></h3><p>This function updates the maintenance margin.</p><p><strong>Parameters:</strong></p><ul><li><code>num</code> - new maintenance margin value, needs to be &gt; 0</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">;; update the variable
+(update-maintenance-margin 0.2)
+(println MAINTENANCE-MARGIN)
+
+;; output:
+0.2
+</code></pre><hr /><h2 id="transaction-cost--loan-interest">Transaction Cost &amp; Loan Interest</h2><br /><h3 id="transaction-cost"><code>TRANSACTION-COST</code></h3><p>This variable stores the rate of the commission fee that is charged upon the execution of an order. The default value is <code>0.0</code>.</p><p><strong>Example:</strong></p><pre><code class="clojure">;; check the variable
+(println TRANSACTION-COST)
+
+;; output:
+0.0
+</code></pre><br /><h3 id="update-transaction-cost"><code>update-transaction-cost</code></h3><p>This function updates the transaction cost.</p><p><strong>Parameters:</strong></p><ul><li><code>num</code> - new initial margin value, needs to be within the range of [0,1).</li></ul><p><strong>Example:</strong></p><pre><code class="clojure">;; update the variable
+(update-transaction-cost 0.2)
+(println TRANSACTION-COST)
+
+;; output:
+0.2
+</code></pre><br /><h3 id="interest-rate"><code>INTEREST-RATE</code></h3><p>This variable stores the simple interest rate (per annum) that is incurred when making a loan. Loan interests will be deducted at the end of every month. The default value is <code>0.0</code>.</p><p><strong>Example:</strong></p><pre><code class="clojure">;; check the variable
+(println INTEREST-RATE)
+
+;; output:
+0.0
+</code></pre><br /><h3 id="update-interest-rate"><code>update-interest-rate</code></h3><p>This function updates the interest rate.</p><p><strong>Parameters:</strong></p><ul><li><code>num</code> - new initial margin value, needs to be within the range of [0,1).</li></ul><pre><code class="clojure">;; update the variable
+(update-interest-rate 0.3)
+(println INTEREST-RATE)
+
+;; output:
+0.3
+</code></pre><br />
+</div>
+
+<br/>
+
+    <div id="prev-next">
+        
+        <a class="button" href="/clojure-backtesting-website/posts/counter/">&laquo; Counter</a>
+        
+        
+        <a class="right button" href="/clojure-backtesting-website/posts/order/">Order &raquo;</a>
+        
+    </div>
+
+    
+
+
+</div>
+
+<hr/>
+<div id="footercont" class="clearfix">Copyright &copy; 2021 clojure-backtesting
+    <span id="footerack">
+        <!-- <p>Powered by <a href="http://cryogenweb.org">Cryogen</a> | Free Website Template by <a title="free website templates" href="http://www.downloadwebsitetemplates.co.uk" rel="external">Download Website Templates</a></p> -->
+        <p>Powered by <a href="http://cryogenweb.org">Cryogen</a></p>
+    </span>
+</div>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="/clojure-backtesting-website/js/highlight.pack.js" type="application/javascript"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script src="/clojure-backtesting-website/js/scripts.js" type="application/javascript"></script>
+
+
+</body>
+</html>
