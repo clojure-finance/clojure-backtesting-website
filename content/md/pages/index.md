@@ -31,21 +31,21 @@ Welcome to the Clojure Backtesting Library! This is an open-source library for q
 
 ### Part I: Installation & Pre-requisites
 
-- [Get Started](/posts/2021-01-27-get-started)
-- [Preliminaries](/posts/2021-01-26-preliminaries)
+- [Get Started](/posts/get-started)
+- [Preliminaries](/posts/preliminaries)
 
 ### Part II: API documentation
 
-- [Data Management](/posts/2021-01-25-data-management)
-- [Counter](/posts/2021-01-24-counter)
-- [Parameters](/posts/2021-01-23-parameters)
-- [Order](/posts/2021-01-22-order)
-- [Portfolio](/posts/2021-01-21-portfolio)
-- [Evaluate](/posts/2021-01-20-evaluate)
-- [Large Data](/posts/2021-01-19-large-data)
+- [Data Management](/posts/data-management)
+- [Counter](/posts/counter)
+- [Parameters](/posts/parameters)
+- [Order](/posts/order)
+- [Portfolio](/posts/portfolio)
+- [Evaluate](/posts/evaluate)
+- [Large Data](/posts/large-data)
 
 ### Part III: Examples
 
-- [Golden Cross](/posts/2020-12-31-example-golden-cross)
-- [Fundamental Analysis](/posts/2020-12-30-example-fundamental-analysis)
-- [Buying on Margin](/posts/2020-12-29-example-buying-on-margin)
+- [Golden Cross](/posts/example-golden-cross)
+- [Fundamental Analysis](/posts/example-fundamental-analysis)
+- [Buying on Margin](/posts/example-buying-on-margin)

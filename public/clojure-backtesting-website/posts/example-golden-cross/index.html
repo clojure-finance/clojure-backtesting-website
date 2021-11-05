@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"><![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"><![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
+<head>
+    <!-- Website Template designed by www.downloadwebsitetemplates.co.uk -->
+    <!-- Modified to fit Cryogen.-->
+    <meta charset="UTF-8">
+    <title>Clojure Backtesting Documentation: Example - Golden Cross</title>
+    
+<meta name="keywords" content="">
+
+<meta name="description" content="Examples/Golden cross.ipynb">
+
+<meta property="og:description" content="Examples/Golden cross.ipynb">
+
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/example-golden-cross/" />
+<meta property="og:title" content="Example - Golden Cross" />
+<meta property="og:type" content="article" />
+
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57.png">
+    <link rel="shortcut icon" href="images/ico/favicon.png">
+    <!--[if IE]><![endif]-->
+    <link href="/clojure-backtesting-website/css/buttons.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/typography.css" rel="stylesheet" type="text/css" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow-night-eighties.min.css">
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+<body>
+
+<div id="left">
+
+    <p id="logo">
+        <a title="Clojure Backtesting Documentation" href="/clojure-backtesting-website/">
+            <span class="fa fa-code"></span>
+            <span class="text">Clojure Backtesting</span>
+        </a>
+    </p>
+
+    <div id="menucont" class="bodycontainer clearfix">
+        <div class="menutitle">
+            <p><span class="fa fa-reorder"></span><strong>Menu</strong></p>
+        </div>
+        <ul class="menu">
+            <li ><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
+            <li ><a title="Archives" href="/clojure-backtesting-website/archives/">Archives</a></li>
+            
+            
+            <li >
+                <a href="/clojure-backtesting-website/pages/about/">About</a>
+            </li>
+            
+            <!-- <li><a title="RSS" href="/clojure-backtesting-website/feed.xml">RSS</a></li> -->
+        </ul>
+    </div>
+
+    <div id="socialmedia" class="clearfix">
+        <ul>
+            <li>
+                <a title="GitHub" href="https://github.com/clojure-finance/clojure-backtesting" rel="external">
+                    <span class="fa fa-github"> 
+                        <span style="font-family: 'Montserrat';text-transform: uppercase;">&nbsp;Github</span>
+                    </span>
+                </a>
+            </li>
+            <!-- <li><a title="Stack Overflow" href="./" rel="external"><span class="fa fa-stack-overflow"></span></a></li>
+            <li><a title="Google+" href="./" rel="external"><span class="fa fa-google-plus"></span></a></li>
+            <li><a title="LinkedIn" href="./" rel="external"><span class="fa fa-linkedin"></span></a></li>
+            <li><a title="Last.fm" href="./" rel="external"><span class="fa fa-lastfm"></span></a></li> -->
+        </ul>
+    </div>
+
+</div>
+
+<div id="right" class="clearfix">
+    
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <!-- <strong>December 31, 2020</strong> -->
+        
+    </div>
+    <h1>Example - Golden Cross</h1>
+</div>
+<div>
+    <ol class="toc"><li><a href="#initialisation">Initialisation</a></li><li><a href="#writing-the-strategy">Writing the Strategy</a></li><li><a href="#check-number-of-orders-made">Check Number of Orders Made</a></li><li><a href="#check-records--performance">Check Records & Performance</a></li></ol>
+    <br /><p><strong><code>Examples/Golden cross.ipynb</code></strong></p><p>This file features the demo code for implementing the Golden Cross strategy.</p><hr /><h2 id="initialisation">Initialisation</h2><pre><code>; import libraries from kernel
+(ns clojure-backtesting.demo
+  (:require [clojure.test :refer :all]
+            [clojure-backtesting.data :refer :all]
+            [clojure-backtesting.data-management :refer :all]
+            [clojure-backtesting.order :refer :all]
+            [clojure-backtesting.evaluate :refer :all]
+            [clojure-backtesting.plot :refer :all]
+            [clojure-backtesting.counter :refer :all]
+            ;;[clojure-backtesting.parameters :refer :all]
+            [clojure.string :as str]
+            [clojure.pprint :as pprint]
+            [java-time :as t]
+            [clojupyter.kernel.version :as ver]
+            [clojure.edn :as edn]
+            [clojupyter.misc.helper :as helper]
+  ) ;; require all libriaries from core
+  (:use clojure.pprint)
+)
+
+; import dataset
+(reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
+
+</code></pre><br /><h2 id="writing-the-strategy">Writing the Strategy</h2><p>The following code implements a trading strategy called Golden Rule:</p><ul><li><p>MA 50 cross above the MA 200 (golden cross)</p></li><li><p>MA 200 cross below the MA 50 (death cross)</p></li></ul><p>So in the codes, MA50 and MA200 are compared on a daily basis, if golden cross occurs, then you set a buy order; if death cross occurs, then you set a sell order first.</p><pre><code class="clojure">(time (do (def MA50-vec-aapl [])
+          (def MA200-vec-aapl [])
+          (def MA50-vec-f [])
+          (def MA200-vec-f [])
+          (while (not= (get-date) "2016-12-29")
+            (do
+    ;; write your trading strategy here
+              (def tics (deref available-tics)) ;20 ms
+              (def MA50-vec-aapl (get-prev-n-days :PRC 50 "AAPL" MA50-vec-aapl (get (get tics "AAPL"):reference)))
+              (def MA200-vec-aapl (get-prev-n-days :PRC 200 "AAPL" MA200-vec-aapl (get (get tics "AAPL") :reference)))
+              (def MA50-vec-f (get-prev-n-days :PRC 50 "F" MA50-vec-f (get (get tics "F"):reference)))
+              (def MA200-vec-f (get-prev-n-days :PRC 200 "F" MA200-vec-f (get (get tics "F") :reference)))
+              (let [[MA50 MA200] [(moving-average :PRC MA50-vec-aapl) (moving-average :PRC MA200-vec-aapl)]]
+                (if (&gt; MA50 MA200)
+                  (order "AAPL" 1 :reference (get (get tics "AAPL") :reference) :print false) 
+                  (order "AAPL" 0 :remaining true :reference (get (get tics "AAPL") :reference))))
+              (let [[MA50 MA200] [(moving-average :PRC MA50-vec-f) (moving-average :PRC MA200-vec-f)]]
+                (if (&gt; MA50 MA200)
+                  (order "F" 1 :reference (get (get tics "F") :reference) :print false) 
+                  (order "F" 0 :remaining true :reference (get (get tics "F") :reference))))
+              ;(update-eval-report (get-date))
+              (next-date)))))
+(.close wrtr)
+</code></pre><br /><h2 id="check-number-of-orders-made">Check Number of Orders Made</h2><pre><code>(count (deref order-record))
+
+;; output:
+9502
+</code></pre><br /><h2 id="check-records--performance">Check Records &amp; Performance</h2><pre><code class="clojure">;; view final portfolio
+(view-portfolio)
+
+;; output:
+| :asset | :price |  :aprc | :quantity | :tot-val |
+|--------+--------+--------+-----------+----------|
+|   cash |    N/A |    N/A |       N/A |   135759 |
+|   AAPL | 116.73 | 312.11 |        81 |    25280 |
+|      F |  14.87 | 605.11 |         0 |        0 |
+</code></pre>
+</div>
+
+<br/>
+
+    <div id="prev-next">
+        
+        <a class="button" href="/clojure-backtesting-website/posts/indicators/">&laquo; Indicators</a>
+        
+        
+        <a class="right button" href="/clojure-backtesting-website/posts/example-fundamental-analysis/">Example - Fundamental Analysis &raquo;</a>
+        
+    </div>
+
+    
+
+
+</div>
+
+<hr/>
+<div id="footercont" class="clearfix">Copyright &copy; 2021 clojure-backtesting
+    <span id="footerack">
+        <!-- <p>Powered by <a href="http://cryogenweb.org">Cryogen</a> | Free Website Template by <a title="free website templates" href="http://www.downloadwebsitetemplates.co.uk" rel="external">Download Website Templates</a></p> -->
+        <p>Powered by <a href="http://cryogenweb.org">Cryogen</a></p>
+    </span>
+</div>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="/clojure-backtesting-website/js/highlight.pack.js" type="application/javascript"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script src="/clojure-backtesting-website/js/scripts.js" type="application/javascript"></script>
+
+
+</body>
+</html>
