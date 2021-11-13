@@ -6,7 +6,7 @@
 
 ## Introduction
 
-Welcome to the Clojure Backtesting Library! This is an open-source library for quantitative finance and trading developed at the Faculty of Business and Economics ("HKU Business School") of the University of Hong Kong (HKU). 
+Welcome to the Clojure Backtesting Library! This is an open-source library for quantitative finance and trading developed at the HKU Business School. 
 
 ## Features
 
