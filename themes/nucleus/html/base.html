@@ -45,7 +45,6 @@
         </div>
         <ul class="menu">
             <li {% if home %} class="active" {% endif %}><a title="Home" href="{{index-uri}}">Home</a></li>
-            <li {% if archives %} class="active" {% endif %}><a title="Archives" href="{{archives-uri}}">Archives</a></li>
             {% if tags|not-empty %}
             <li {%ifequal uri tags-uri %} class="active" {% endifequal %}><a title="Tags" href="{{tags-uri}}">Tags</a></li>
             {% endif %}
@@ -54,6 +53,7 @@
                 <a href="{{nav-page.uri}}">{{nav-page.title}}</a>
             </li>
             {% endfor %}
+            <li {% if archives %} class="active" {% endif %}><a title="Archives" href="{{archives-uri}}">Archives</a></li>
             <!-- <li><a title="RSS" href="{{rss-uri}}">RSS</a></li> -->
         </ul>
     </div>
