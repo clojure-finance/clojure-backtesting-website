@@ -1,4 +1,4 @@
-{:title "Portfolio"
+{:title "Portfolio Management"
 :date "2021-01-21"
 :layout :post
 :tags []
@@ -14,10 +14,6 @@ td {
   padding: 10px;
 }
 </style>
-
-<br>
-
-# Portfolio Management
 
 This page features functions associated with manipulating and viewing the portfolio.
 

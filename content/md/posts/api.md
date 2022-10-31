@@ -15,7 +15,6 @@ td {
   padding: 10px;
 }
 </style>
-<br>
 
 Below are the documentations for basic APIs of the backtester.
 

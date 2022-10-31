@@ -1,4 +1,4 @@
-{:title "Evaluate"
+{:title "Evaluatation"
 :date "2021-01-20"
 :layout :post
 :tags []
@@ -12,9 +12,6 @@ table, th, td {
 }
 </style>
 
-<br>
-
-# Evaluation
 
 This page features functions for computing metrics to evaluate portfolio performance and printing the evaluation report.
 
@@ -25,8 +22,8 @@ This page features functions for computing metrics to evaluate portfolio perform
 
 This function updates the evaluation metrics in the record. (see `print-eval-report` for the list of evaluation metrics computed)
 
-| Argument |
-| -------- |
+| No Argument |
+| ----------- |
 
 **Return**
 
@@ -166,8 +163,6 @@ Time window is updated as 3. ; success message
 ## Plot Graphs
 
 Functions for generating line plots on chosen variables.
-
-<br>
 
 ### `plot`
 
