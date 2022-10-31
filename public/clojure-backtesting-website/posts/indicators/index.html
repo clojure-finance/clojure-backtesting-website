@@ -11,11 +11,11 @@
     
 <meta name="keywords" content="">
 
-<meta name="description" content="IndicatorsThis page introduces the API related to calculating stock market indicators. All the functions here without extra specified, will calculate indicator for the current date, according to the global date pointer.">
+<meta name="description" content="This page introduces the API related to calculating stock market indicators. All the functions here without extra specified, will calculate indicator for the current date, according to the global date pointer.">
 
-<meta property="og:description" content="IndicatorsThis page introduces the API related to calculating stock market indicators. All the functions here without extra specified, will calculate indicator for the current date, according to the global date pointer.">
+<meta property="og:description" content="This page introduces the API related to calculating stock market indicators. All the functions here without extra specified, will calculate indicator for the current date, according to the global date pointer.">
 
-<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/Indicators/" />
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/indicators/" />
 <meta property="og:title" content="Indicators" />
 <meta property="og:type" content="article" />
 
@@ -57,6 +57,7 @@
             <li><a href="/clojure-backtesting-website/posts/api/">Basic APIs</a></li>
             <li><a href="/clojure-backtesting-website/posts/portfolio">Porfolio Mangement</a></li>
             <li><a href="/clojure-backtesting-website/posts/evaluate">Evaluation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/indicators">Indicators</a></li>
             <li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li>
         </ul>
     </div>
@@ -90,8 +91,17 @@
     <h1>Indicators</h1>
 </div>
 <div>
-    <ol class="toc"><li><a href="#indicators">Indicators</a></li><ol><li><a href="#this-page-introduces-the-api-related-to-calculating-stock-market-indicators-all-the-functions-here-without-extra-specified-will-calculate-indicator-for-the-current-date-according-to-the-global-date-pointer">This page introduces the API related to calculating stock market indicators. All the functions here without extra specified, will calculate indicator for the current date, according to the global date pointer.</a></li><li><a href="#trend-indicators">Trend Indicators</a></li><ol><li><a href="#moving-avg">moving-avg</a></li><li><a href="#moving-sd">moving-sd</a></li><li><a href="#ema">EMA</a></li><li><a href="#ema-generator">EMA-generator</a></li><li><a href="#macd">MACD</a></li><li><a href="#macd-generator">MACD-generator</a></li><li><a href="#parabolic-sar"><code>parabolic-SAR</code></a></li></ol><li><a href="#momentum-indicators">Momentum Indicators</a></li><ol><li><a href="#roc"><code>ROC</code></a></li><li><a href="#rsi"><code>RSI</code></a></li></ol><li><a href="#volatility-indicators">Volatility indicators</a></li><ol><li><a href="#atr"><code>ATR</code></a></li><li><a href="#keltner-channel"><code>keltner-channel</code></a></li></ol></ol></ol>
-    <h1 id="indicators">Indicators</h1><h5 id="this-page-introduces-the-api-related-to-calculating-stock-market-indicators-all-the-functions-here-without-extra-specified-will-calculate-indicator-for-the-current-date-according-to-the-global-date-pointer">This page introduces the API related to calculating stock market indicators. All the functions here without extra specified, will calculate indicator for the current date, according to the global date pointer.</h5><h2 id="trend-indicators">Trend Indicators</h2><h4 id="moving-avg">moving-avg</h4><p>Calculate the n days' moving average of a security.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>Indicate the target security</td><td> </td></tr><tr><td><code>n</code></td><td>Positive Integer &gt; 1</td><td>Indicate length of the moving window including today</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>Double, if the security exists. <code>nil</code> otherwise.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (moving-avg "APL" 10)
+    <ol class="toc"><li><a href="#trend-indicators">Trend Indicators</a></li><ol><li><a href="#moving-avg">moving-avg</a></li><li><a href="#moving-sd">moving-sd</a></li><li><a href="#ema">EMA</a></li><li><a href="#ema-generator">EMA-generator</a></li><li><a href="#macd">MACD</a></li><li><a href="#macd-generator">MACD-generator</a></li><li><a href="#parabolic-sar"><code>parabolic-SAR</code></a></li></ol><li><a href="#momentum-indicators">Momentum Indicators</a></li><ol><li><a href="#roc"><code>ROC</code></a></li><li><a href="#rsi"><code>RSI</code></a></li></ol><li><a href="#volatility-indicators">Volatility indicators</a></li><ol><li><a href="#atr"><code>ATR</code></a></li><li><a href="#keltner-channel"><code>keltner-channel</code></a></li></ol></ol>
+    <style>
+/* table styles */
+table, th, td {
+  border: 1px solid black;
+  padding: 5px;
+}
+td {
+  padding: 10px;
+}
+</style><p>This page introduces the API related to calculating stock market indicators. All the functions here without extra specified, will calculate indicator for the current date, according to the global date pointer.</p><h2 id="trend-indicators">Trend Indicators</h2><h4 id="moving-avg">moving-avg</h4><p>Calculate the n days' moving average of a security.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>Indicate the target security</td><td> </td></tr><tr><td><code>n</code></td><td>Positive Integer &gt; 1</td><td>Indicate length of the moving window including today</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>Double, if the security exists. <code>nil</code> otherwise.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (moving-avg "APL" 10)
 </code></pre><h4 id="moving-sd">moving-sd</h4><p>Calculate the n days' moving standard deviation of a security.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>Indicate the target security</td><td> </td></tr><tr><td><code>n</code></td><td>Positive Integer &gt; 1</td><td>Indicate length of the moving window including today</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>Double, if the security exists. <code>nil</code> otherwise.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (moving-sd "APL" 10)
 </code></pre><h4 id="ema">EMA</h4><p>Calculate the EMA of a security. If called the first time, will return the <code>EMA-CYCLE</code>-day moving average. After this, EMA will be updated based on its <a href="https://corporatefinanceinstitute.com/resources/knowledge/trading-investing/exponential-moving-average-ema/">definition</a>. <em>This update process is automatic.</em></p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>Indicate the target security</td><td> </td></tr></tbody></table><p><strong>Relevant Parameter</strong></p><p><code>EMA-CYCLE</code>: the length of moving average when EMA first called.</p><p><strong>Return</strong></p><p>Double, if the security exists. <code>nil</code> otherwise.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (EMA "APL")
 </code></pre><br /><h4 id="ema-generator">EMA-generator</h4><p>Generator of the EMA function for the specified cycle.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>cycle</code></td><td>Positive Int</td><td>Indicate the size of cycle</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>EMA function having the same usage as above with a different cycle.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (def EMA10 (EMA-generator 10))
@@ -129,12 +139,12 @@ true
 <br/>
 
     <div id="prev-next">
+        <!-- 
+        <a class="button" href="/clojure-backtesting-website/posts/deprecated/indicators2/">&laquo; Indicators2</a>
         
-        <a class="button" href="/clojure-backtesting-website/posts/large-data/">&laquo; Large Data</a>
         
-        
-        <a class="right button" href="/clojure-backtesting-website/posts/indicators2/">Indicators &raquo;</a>
-        
+        <a class="right button" href="/clojure-backtesting-website/posts/deprecated/example-golden-cross/">Example - Golden Cross &raquo;</a>
+         -->
     </div>
 
     

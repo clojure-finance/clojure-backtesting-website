@@ -39,6 +39,7 @@ If you are new to language Clojure or backtesters in general, you are recommende
 - [Basic APIs](/posts/api)
 - [Portfolio](/posts/portfolio)
 - [Evaluate](/posts/evaluate)
+- [Indicators](/posts/indicators)
 - [Parameters](/posts/parameters)
 
 ### Part III: Examples (Not ready yet)

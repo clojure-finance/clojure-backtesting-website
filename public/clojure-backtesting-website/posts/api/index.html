@@ -11,6 +11,10 @@
     
 <meta name="keywords" content="">
 
+<meta name="description" content="Below are the documentations for basic APIs of the backtester.">
+
+<meta property="og:description" content="Below are the documentations for basic APIs of the backtester.">
+
 <meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/api/" />
 <meta property="og:title" content="Basic APIs" />
 <meta property="og:type" content="article" />
@@ -53,6 +57,7 @@
             <li><a href="/clojure-backtesting-website/posts/api/">Basic APIs</a></li>
             <li><a href="/clojure-backtesting-website/posts/portfolio">Porfolio Mangement</a></li>
             <li><a href="/clojure-backtesting-website/posts/evaluate">Evaluation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/indicators">Indicators</a></li>
             <li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li>
         </ul>
     </div>
@@ -96,7 +101,7 @@ table, th, td {
 td {
   padding: 10px;
 }
-</style><br /><p>Below are the documentations for basic APIs of the backtester.</p><h2 id="import-datasets">Import Datasets</h2><h4 id="load-dataset">load-dataset</h4><p>Import the supported dataset that contains the stock market information.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>dataset directory</code></td><td>String</td><td>The path of the dataset directory</td><td>The creation of the supported dataset can be found in this tutorial.</td></tr><tr><td><code>role</code></td><td>"main" / "compustat"</td><td> </td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>"Date range: {start date} ~ {end data}"</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (load-dataset "/Volumes/T7/CRSP" "main")
+</style><p>Below are the documentations for basic APIs of the backtester.</p><h2 id="import-datasets">Import Datasets</h2><h4 id="load-dataset">load-dataset</h4><p>Import the supported dataset that contains the stock market information.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>dataset directory</code></td><td>String</td><td>The path of the dataset directory</td><td>The creation of the supported dataset can be found in this tutorial.</td></tr><tr><td><code>role</code></td><td>"main" / "compustat"</td><td> </td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>"Date range: {start date} ~ {end data}"</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (load-dataset "/Volumes/T7/CRSP" "main")
 "Date range: 1972-01-03 ~ 2017-02-10"
 </code></pre><br /><h2 id="state-starting-postition">State Starting Postition</h2><h4 id="init-portfolio">init-portfolio</h4><p>Initialize the starting date and capital.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>date</code></td><td>String</td><td>Indicate the starting date</td><td>If this date is missing in the dataset (i.e. it is a weekend), will use the nearest earlier date instead. If it is also unavailable, will use the nearest later date.</td></tr><tr><td><code>capital</code></td><td>Number</td><td>Indicate the initial capital</td><td>Will be given in the form of cash</td></tr></tbody></table><p><strong>Return</strong></p><p>"Date: {actual starting data (may be different from <code>date</code>)} Cash: ${<code>capital</code>}"</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (init-portfolio "1980-04-07" 2000)
 "Date: 1980-04-07 Cash: $2000"
@@ -151,10 +156,10 @@ nil
 <br/>
 
     <div id="prev-next">
-        
+        <!-- 
         
         <a class="right button" href="/clojure-backtesting-website/posts/get-started/">Get Started &raquo;</a>
-        
+         -->
     </div>
 
     

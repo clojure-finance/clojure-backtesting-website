@@ -7,12 +7,16 @@
     <!-- Website Template designed by www.downloadwebsitetemplates.co.uk -->
     <!-- Modified to fit Cryogen.-->
     <meta charset="UTF-8">
-    <title>Clojure Backtesting Documentation: Portfolio</title>
+    <title>Clojure Backtesting Documentation: Portfolio Management</title>
     
 <meta name="keywords" content="">
 
+<meta name="description" content="This page features functions associated with manipulating and viewing the portfolio.">
+
+<meta property="og:description" content="This page features functions associated with manipulating and viewing the portfolio.">
+
 <meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/portfolio/" />
-<meta property="og:title" content="Portfolio" />
+<meta property="og:title" content="Portfolio Management" />
 <meta property="og:type" content="article" />
 
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -53,6 +57,7 @@
             <li><a href="/clojure-backtesting-website/posts/api/">Basic APIs</a></li>
             <li><a href="/clojure-backtesting-website/posts/portfolio">Porfolio Mangement</a></li>
             <li><a href="/clojure-backtesting-website/posts/evaluate">Evaluation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/indicators">Indicators</a></li>
             <li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li>
         </ul>
     </div>
@@ -83,10 +88,10 @@
         <!-- <strong>2021年1月21日</strong> -->
         
     </div>
-    <h1>Portfolio</h1>
+    <h1>Portfolio Management</h1>
 </div>
 <div>
-    <ol class="toc"><li><a href="#portfolio-management">Portfolio Management</a></li><ol><li><a href="#portfolio-initialization">Portfolio Initialization</a></li><ol><li><a href="#init-portfolio"><code>init_portfolio</code></a></li></ol><li><a href="#portfolio-inspection">Portfolio Inspection</a></li><ol><li><a href="#print-portfolio"><code>print_portfolio</code></a></li><li><a href="#print-portfolio-record"><code>print_portfolio_record</code></a></li></ol></ol></ol>
+    <ol class="toc"><li><a href="#portfolio-initialization">Portfolio Initialization</a></li><ol><li><a href="#init-portfolio"><code>init_portfolio</code></a></li></ol><li><a href="#portfolio-inspection">Portfolio Inspection</a></li><ol><li><a href="#print-portfolio"><code>print_portfolio</code></a></li><li><a href="#print-portfolio-record"><code>print_portfolio_record</code></a></li></ol></ol>
     <style>
 /* table styles */
 table, th, td {
@@ -96,7 +101,7 @@ table, th, td {
 td {
   padding: 10px;
 }
-</style><br /><h1 id="portfolio-management">Portfolio Management</h1><p>This page features functions associated with manipulating and viewing the portfolio.</p><hr /><h2 id="portfolio-initialization">Portfolio Initialization</h2><h3 id="init-portfolio"><code>init_portfolio</code></h3><p>This function initialises the portfolio with cash and a date. Note that is is a <strong>must</strong> to call the function before executing functions e.g. <code>available-tics</code> and those in the <code>counter</code> namespace.</p><p><strong>Parameters:</strong></p><ul><li><code>date</code> - the starting date of the portfolio, in format "YYYY-MM-DD"</li><li><code>init-capital</code> - the desired initial capital for the portfolio (non-negative integer)</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(init_portfolio "1980-12-1" 1000000)
+</style><p>This page features functions associated with manipulating and viewing the portfolio.</p><hr /><h2 id="portfolio-initialization">Portfolio Initialization</h2><h3 id="init-portfolio"><code>init_portfolio</code></h3><p>This function initialises the portfolio with cash and a date. Note that is is a <strong>must</strong> to call the function before executing functions e.g. <code>available-tics</code> and those in the <code>counter</code> namespace.</p><p><strong>Parameters:</strong></p><ul><li><code>date</code> - the starting date of the portfolio, in format "YYYY-MM-DD"</li><li><code>init-capital</code> - the desired initial capital for the portfolio (non-negative integer)</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(init_portfolio "1980-12-1" 1000000)
 
 ;; output:
 null
@@ -135,12 +140,12 @@ null
 <br/>
 
     <div id="prev-next">
-        
-        <a class="button" href="/clojure-backtesting-website/posts/order/">&laquo; Order</a>
+        <!-- 
+        <a class="button" href="/clojure-backtesting-website/posts/deprecated/order/">&laquo; Order</a>
         
         
         <a class="right button" href="/clojure-backtesting-website/posts/user-guide/">User Guide &raquo;</a>
-        
+         -->
     </div>
 
     
