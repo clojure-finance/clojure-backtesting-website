@@ -17,14 +17,13 @@ td {
 
 <br>
 
+# Portfolio Management
 
-**`ns: clojure-backtesting.portfolio`**
-
-This namespace features functions associated with manipulating and viewing the portfolio.
+This page features functions associated with manipulating and viewing the portfolio.
 
 
 ---
-## Portfolio Initialisation
+## Portfolio Initialization
 
 ### `init_portfolio`
 
@@ -48,7 +47,7 @@ null
 
 ## Portfolio Inspection
 
-### `view_portfolio`
+### `print_portfolio`
 
 This function prints the portfolio in a table format.
 
@@ -82,7 +81,7 @@ This function prints the portfolio in a table format.
 
 <br>
 
-### `view_portfolio_record`
+### `print_portfolio_record`
 
 This function prints the historical values and daily returns of the portfolio in a table format.
 

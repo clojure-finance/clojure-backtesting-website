@@ -4,8 +4,6 @@
  :navbar? true
  :home? true}
 
-## Introduction
-
 Welcome to the Clojure Backtesting Library! This is an open-source library for quantitative finance and trading developed at the HKU Business School. 
 
 ## Features
@@ -29,22 +27,21 @@ Welcome to the Clojure Backtesting Library! This is an open-source library for q
 
 ## Table of Contents
 
+If you are new to language Clojure or backtesters in general, you are recommended to go through the below documents one by one in order.
+
 ### Part I: Installation & Pre-requisites
 
 - [Get Started](/posts/get-started)
-- [Preliminaries](/posts/preliminaries)
+- [User Guide](/posts/user-guide)
 
 ### Part II: API documentation
 
-- [Data Management](/posts/data-management)
-- [Counter](/posts/counter)
-- [Parameters](/posts/parameters)
-- [Order](/posts/order)
+- [Basic APIs](/posts/api)
 - [Portfolio](/posts/portfolio)
 - [Evaluate](/posts/evaluate)
-- [Large Data](/posts/large-data)
+- [Parameters](/posts/parameters)
 
-### Part III: Examples
+### Part III: Examples (Not ready yet)
 
 - [Golden Cross](/posts/example-golden-cross)
 - [Fundamental Analysis](/posts/example-fundamental-analysis)

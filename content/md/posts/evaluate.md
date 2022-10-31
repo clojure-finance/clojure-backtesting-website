@@ -14,35 +14,34 @@ table, th, td {
 
 <br>
 
-**`ns: clojure-backtesting.evaluate`**
+# Evaluation
 
-This namespace features functions for computing metrics to evaluate portfolio performance and printing the evaluation report.
+This page features functions for computing metrics to evaluate portfolio performance and printing the evaluation report.
 
 ---
-## Calculating Evalaution Metrics
+## Calculate Evaluation Metrics
 
-### `update-eval-report`
+#### update-eval-report
 
-This function updates the evaluation metrics in the record. (see `eval-report` for the list of evaluation metrics computed)
+This function updates the evaluation metrics in the record. (see `print-eval-report` for the list of evaluation metrics computed)
 
-**Parameters:**
+| Argument |
+| -------- |
 
-- `date` - date to update the evaluation metrics, in format "YYYY-MM-DD"
+**Return**
 
-**Example**:
+`nil`
+
+**Example**
 
 ```clojure
+=> (update-eval-report)
 ;; update the evaluation metrics today
-(update-eval-report (get-date))
-
-;; output:
-null
 ```
 
----
 ## Inspection of Evaluation Report
 
-### `eval-report`
+### `print-eval-report`
 
 This function prints the evaluation report that includes all summary statiscs in a table format.
 
@@ -62,8 +61,6 @@ This function prints the evaluation report that includes all summary statiscs in
 | `r-sharpe`         |   &nbsp;float, %    | &nbsp;Sharpe ratio of the portfolio caculated with a rolling window &emsp;         |
 | `pnl-pt`           |   &nbsp;float, $    | &nbsp;Profit and loss per trade &emsp;                                             |
 | `max-drawdown`     |   &nbsp;float, $    | &nbsp;Maximum drawdown of the portfolio &emsp;                                     |
-
-
 
 
 <br>
@@ -146,7 +143,7 @@ This function returns the total daily return of the portfolio.
 
 ---
 
-## Updating Configuration
+## Update Configuration
 ### `update-rolling-window`
 
 This function updates the time window for computing the rolling functions (i.e. `r-vol` and `r-sharpe`). By default, the time window is set as `30`.
@@ -166,7 +163,7 @@ Time window is updated as 3. ; success message
 
 ---
 
-## Plotting Graphs
+## Plot Graphs
 
 Functions for generating line plots on chosen variables.
 
@@ -178,7 +175,7 @@ This function allows users to plot line charts. This plotting function works the
 
 **Parameters:**
 
-- dataset - contains a map of data to be plotted. Each map should be in the following format: `{:tic "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }`
+- dataset - contains a map of data to be plotted. Each map should be in the following format: `{:permno "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }`
 - `series` - series name of the lines to appear in the legend
 - `x` - key that contains that x-axis data in the dataset, e.g. `:date`
 - `y` - key that contains that y-axis data in the datset, e.g. `:portfolio-value`

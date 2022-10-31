@@ -15,7 +15,7 @@
 
 <meta property="og:description" content="Examples/Buying on margin.ipynb">
 
-<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/example-buying-on-margin/" />
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/examples/example-buying-on-margin/" />
 <meta property="og:title" content="Example - Buying on Margin" />
 <meta property="og:type" content="article" />
 
@@ -130,7 +130,7 @@
 
 Order: 1980-12-16 | AAPL | 10.000000.
 
-|      :date | :tic |  :price | :aprc | :quantity |
+|      :date | :permno |  :price | :aprc | :quantity |
 |------------+------+---------+-------+-----------|
 | 1980-12-16 | AAPL | 25.3125 | 25.82 |        10 |
 
@@ -182,7 +182,7 @@ Failure reason: You do not have enough money to buy or have enough stock to sell
 
 Order: 1980-12-16 | AAPL | 1.000000.
 
-|      :date | :tic |  :price | :aprc | :quantity |
+|      :date | :permno |  :price | :aprc | :quantity |
 |------------+------+---------+-------+-----------|
 | 1980-12-16 | AAPL | 25.3125 | 25.82 |         1 |
 
@@ -239,7 +239,7 @@ Order request 1980-12-15 | AAPL | 10 fails due to initial margin exceeding.
 
 Order: 1980-12-16 | AAPL | 10.000000.
 
-|      :date | :tic |  :price | :aprc | :quantity |
+|      :date | :permno |  :price | :aprc | :quantity |
 |------------+------+---------+-------+-----------|
 | 1980-12-16 | AAPL | 25.3125 | 25.82 |        10 |
 
@@ -272,7 +272,7 @@ Order: 1980-12-16 | F | 20.000000.
 1980-12-15: You have lost all cash. Closing all positions.
 Please reset the dataset and call init-portfolio again.
 
-|      :date | :tic |  :price |  :aprc | :quantity |
+|      :date | :permno |  :price |  :aprc | :quantity |
 |------------+------+---------+--------+-----------|
 | 1980-12-16 | AAPL | 25.3125 |  25.82 |       -10 |
 | 1980-12-16 |    F |   18.75 | 100.64 |        20 |
@@ -295,8 +295,10 @@ Please reset the dataset and call init-portfolio again.
 
     <div id="prev-next">
         
-        <a class="button" href="/clojure-backtesting-website/posts/examples/example-buying-on-margin/">&laquo; Example - Buying on Margin</a>
+        <a class="button" href="/clojure-backtesting-website/posts/example-fundamental-analysis/">&laquo; Example - Fundamental Analysis</a>
         
+        
+        <a class="right button" href="/clojure-backtesting-website/posts/example-buying-on-margin/">Example - Buying on Margin &raquo;</a>
         
     </div>
 

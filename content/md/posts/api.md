@@ -1,4 +1,4 @@
-{:title "API"
+{:title "Basic APIs"
  :date "2022-10-16"
  :layout :post
  :tags  []
@@ -16,10 +16,6 @@ td {
 }
 </style>
 <br>
-
----
-
-# Fundamental APIs
 
 Below are the documentations for basic APIs of the backtester.
 
@@ -45,6 +41,8 @@ Import the supported dataset that contains the stock market information.
 "Date range: 1972-01-03 ~ 2017-02-10"
 ```
 
+<br>
+
 ## State Starting Postition
 
 #### init-portfolio
@@ -69,7 +67,9 @@ Initialize the starting date and capital.
 
 **Remarks**
 
-- More details about portfolio can be found [here](todo).
+- More details about portfolio can be found [here](/posts/portfolio).
+
+<br>
 
 ## Make Orders
 
@@ -99,6 +99,8 @@ All pending orders. Vector of maps.
 => (order "APL" 0 :remaining true)
 ```
 
+<br>
+
 ## Move Time Pointer
 
 The backtester is used to simulate real-world trading situations. Therefore, there is a date pointer in the platform that times the global clock of the system. Users can move forward through time and cannot go back. Also, users have access to only market information till "today", not future. Below functions are used to interact with the date pointer.
@@ -121,6 +123,8 @@ A string representing the current date.
 "1980-04-07"
 ```
 
+<br>
+
 #### next-date
 
 Move the date pointer forward to the next valid date, skipping over weekends, holidays.
@@ -138,6 +142,8 @@ The new date, if succeed. Otherwise if it has reached the end date, `nil`.
 => (next-date)
 "1980-04-08"
 ```
+
+<br>
 
 #### get-prev-n-date
 
@@ -157,6 +163,8 @@ A date string if searching succeed. If the search passes the starting date, retu
 => (get-prev-n-date 3)
 "1980-04-01"
 ```
+
+<br>
 
 ## Retrieve Information From Datasets
 
@@ -184,6 +192,8 @@ For example,
 ...
 ```
 
+<br>
+
 #### get-info-map
 
 Get all the market information for today in the format of map, where security is the key and information of the security is the value.
@@ -208,12 +218,14 @@ For example,
 ...
 ```
 
+<br>
+
 #### available-permnos
 
 Gets all available permnos today.
 
-| Argument |
-| -------- |
+| No Argument |
+| ----------- |
 
 **Return**
 
@@ -228,6 +240,8 @@ A a sequence permno strings.
 => (get-permno-info "none")
 nil
 ```
+
+<br>
 
 #### get-permno-info
 
@@ -251,6 +265,8 @@ A map of information if the security exists, otherwise `nil`.
 nil
 ```
 
+<br>
+
 #### get-permno-price
 
 Continuing from `get-permno-info`, get only the price for the specified security.
@@ -271,6 +287,8 @@ A double representing the closing price of the security, otherwise `nil`.
 => (get-permno-price "none")
 nil
 ```
+
+<br>
 
 #### get-permno-by-key
 
@@ -294,6 +312,8 @@ Value of arbitrary type depending on the key if the map contains the key, otherw
 nil
 ```
 
+<br>
+
 #### get-prev-n-days
 
 Get information of the past n days (not including today, skipping weekends).
@@ -316,6 +336,8 @@ A sequence (length <= n) of sequence (length = number of securitys) of maps that
 => (conj (get-prev-n-days (- n 1)) (get-info))
 ...
 ```
+
+<br>
 
 #### get-permno-prev-n-days
 

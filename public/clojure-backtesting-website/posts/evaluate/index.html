@@ -47,19 +47,13 @@
             <p><span class="fa fa-reorder"></span><strong>Menu</strong></p>
         </div>
         <ul class="menu">
-            <li ><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
-            
-            
-            <li >
-                <a href="/clojure-backtesting-website/pages/about/">About</a>
-            </li>
-            
-            <li >
-                <a href="/clojure-backtesting-website/pages/examples/">Examples</a>
-            </li>
-            
-            <li ><a title="Archives" href="/clojure-backtesting-website/archives/">Archives</a></li>
-            <!-- <li><a title="RSS" href="/clojure-backtesting-website/feed.xml">RSS</a></li> -->
+            <li><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
+            <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+            <li><a href="/clojure-backtesting-website/posts/user-guide/">User Guide</a></li>
+            <li><a href="/clojure-backtesting-website/posts/api/">Basic APIs</a></li>
+            <li><a href="/clojure-backtesting-website/posts/portfolio">Porfolio Mangement</a></li>
+            <li><a href="/clojure-backtesting-website/posts/evaluate">Evaluation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li>
         </ul>
     </div>
 
@@ -92,19 +86,16 @@
     <h1>Evaluate</h1>
 </div>
 <div>
-    <ol class="toc"><li><a href="#calculating-evalaution-metrics">Calculating Evalaution Metrics</a></li><ol><li><a href="#update-eval-report"><code>update-eval-report</code></a></li></ol><li><a href="#inspection-of-evaluation-report">Inspection of Evaluation Report</a></li><ol><li><a href="#eval-report"><code>eval-report</code></a></li><li><a href="#portfolio-total"><code>portfolio-total</code></a></li><li><a href="#portfolio-daily-ret"><code>portfolio-daily-ret</code></a></li><li><a href="#portfolio-total-ret"><code>portfolio-total-ret</code></a></li></ol><li><a href="#updating-configuration">Updating Configuration</a></li><ol><li><a href="#update-rolling-window"><code>update-rolling-window</code></a></li></ol><li><a href="#plotting-graphs">Plotting Graphs</a></li><ol><li><a href="#plot"><code>plot</code></a></li></ol></ol>
+    <ol class="toc"><li><a href="#evaluation">Evaluation</a></li><ol><li><a href="#calculate-evaluation-metrics">Calculate Evaluation Metrics</a></li><ol><li><a href="#update-eval-report">update-eval-report</a></li></ol><li><a href="#inspection-of-evaluation-report">Inspection of Evaluation Report</a></li><ol><li><a href="#print-eval-report"><code>print-eval-report</code></a></li><li><a href="#portfolio-total"><code>portfolio-total</code></a></li><li><a href="#portfolio-daily-ret"><code>portfolio-daily-ret</code></a></li><li><a href="#portfolio-total-ret"><code>portfolio-total-ret</code></a></li></ol><li><a href="#update-configuration">Update Configuration</a></li><ol><li><a href="#update-rolling-window"><code>update-rolling-window</code></a></li></ol><li><a href="#plot-graphs">Plot Graphs</a></li><ol><li><a href="#plot"><code>plot</code></a></li></ol></ol></ol>
     <style>
 /* table styles */
 table, th, td {
   border: 1px solid black;
   padding: 5px;
 }
-</style><br /><p><strong><code>ns: clojure-backtesting.evaluate</code></strong></p><p>This namespace features functions for computing metrics to evaluate portfolio performance and printing the evaluation report.</p><hr /><h2 id="calculating-evalaution-metrics">Calculating Evalaution Metrics</h2><h3 id="update-eval-report"><code>update-eval-report</code></h3><p>This function updates the evaluation metrics in the record. (see <code>eval-report</code> for the list of evaluation metrics computed)</p><p><strong>Parameters:</strong></p><ul><li><code>date</code> - date to update the evaluation metrics, in format "YYYY-MM-DD"</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">;; update the evaluation metrics today
-(update-eval-report (get-date))
-
-;; output:
-null
-</code></pre><hr /><h2 id="inspection-of-evaluation-report">Inspection of Evaluation Report</h2><h3 id="eval-report"><code>eval-report</code></h3><p>This function prints the evaluation report that includes all summary statiscs in a table format.</p><p><strong>Parameters:</strong></p><ul><li><code>n</code> - no. of rows to print, if n &lt;= 0, print entire record</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> Column </th><th align="center"> Format  </th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>date</code></td><td align="center"> YYYY-MM-DD</td><td align="left"> Date of record</td></tr><tr><td><code>tot-val</code></td><td align="center"> int, %</td><td align="left"> Total value of the portfolio, including cash and all purchased stocks  </td></tr><tr><td><code>vol</code></td><td align="center"> float, %</td><td align="left"> Volatility of the portfolio caculated with an expanding window  </td></tr><tr><td><code>r-vol</code></td><td align="center"> float, %</td><td align="left"> Volatility of the portfolio caculated with a rolling window  </td></tr><tr><td><code>sharpe</code></td><td align="center"> float, %</td><td align="left"> Sharpe ratio of the portfolio caculated with an expanding window  </td></tr><tr><td><code>r-sharpe</code></td><td align="center"> float, %</td><td align="left"> Sharpe ratio of the portfolio caculated with a rolling window  </td></tr><tr><td><code>pnl-pt</code></td><td align="center"> float, $</td><td align="left"> Profit and loss per trade  </td></tr><tr><td><code>max-drawdown</code></td><td align="center"> float, $</td><td align="left"> Maximum drawdown of the portfolio  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code class="clojure">(eval-report -1)
+</style><br /><h1 id="evaluation">Evaluation</h1><p>This page features functions for computing metrics to evaluate portfolio performance and printing the evaluation report.</p><hr /><h2 id="calculate-evaluation-metrics">Calculate Evaluation Metrics</h2><h4 id="update-eval-report">update-eval-report</h4><p>This function updates the evaluation metrics in the record. (see <code>print-eval-report</code> for the list of evaluation metrics computed)</p><table><thead><tr><th>Argument</th></tr></thead><tbody></tbody></table><p><strong>Return</strong></p><p><code>nil</code></p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (update-eval-report)
+;; update the evaluation metrics today
+</code></pre><h2 id="inspection-of-evaluation-report">Inspection of Evaluation Report</h2><h3 id="print-eval-report"><code>print-eval-report</code></h3><p>This function prints the evaluation report that includes all summary statiscs in a table format.</p><p><strong>Parameters:</strong></p><ul><li><code>n</code> - no. of rows to print, if n &lt;= 0, print entire record</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> Column </th><th align="center"> Format  </th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>date</code></td><td align="center"> YYYY-MM-DD</td><td align="left"> Date of record</td></tr><tr><td><code>tot-val</code></td><td align="center"> int, %</td><td align="left"> Total value of the portfolio, including cash and all purchased stocks  </td></tr><tr><td><code>vol</code></td><td align="center"> float, %</td><td align="left"> Volatility of the portfolio caculated with an expanding window  </td></tr><tr><td><code>r-vol</code></td><td align="center"> float, %</td><td align="left"> Volatility of the portfolio caculated with a rolling window  </td></tr><tr><td><code>sharpe</code></td><td align="center"> float, %</td><td align="left"> Sharpe ratio of the portfolio caculated with an expanding window  </td></tr><tr><td><code>r-sharpe</code></td><td align="center"> float, %</td><td align="left"> Sharpe ratio of the portfolio caculated with a rolling window  </td></tr><tr><td><code>pnl-pt</code></td><td align="center"> float, $</td><td align="left"> Profit and loss per trade  </td></tr><tr><td><code>max-drawdown</code></td><td align="center"> float, $</td><td align="left"> Maximum drawdown of the portfolio  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code class="clojure">(eval-report -1)
 
 ;; output:
 
@@ -130,11 +121,11 @@ null
 
 ;; output:
 0.0017210374553336212
-</code></pre><hr /><h2 id="updating-configuration">Updating Configuration</h2><h3 id="update-rolling-window"><code>update-rolling-window</code></h3><p>This function updates the time window for computing the rolling functions (i.e. <code>r-vol</code> and <code>r-sharpe</code>). By default, the time window is set as <code>30</code>.</p><p><strong>Parameters:</strong></p><ul><li><code>n</code> - new time window for computing the rolling functions in the evaluation report</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(update-rolling-window 3)
+</code></pre><hr /><h2 id="update-configuration">Update Configuration</h2><h3 id="update-rolling-window"><code>update-rolling-window</code></h3><p>This function updates the time window for computing the rolling functions (i.e. <code>r-vol</code> and <code>r-sharpe</code>). By default, the time window is set as <code>30</code>.</p><p><strong>Parameters:</strong></p><ul><li><code>n</code> - new time window for computing the rolling functions in the evaluation report</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(update-rolling-window 3)
 
 ;; output:
 Time window is updated as 3. ; success message
-</code></pre><hr /><h2 id="plotting-graphs">Plotting Graphs</h2><p>Functions for generating line plots on chosen variables.</p><br /><h3 id="plot"><code>plot</code></h3><p>This function allows users to plot line charts. This plotting function works the best with the Jupyter Notebook.</p><p><strong>Parameters:</strong></p><ul><li>dataset - contains a map of data to be plotted. Each map should be in the following format: <code>{:tic "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }</code></li><li><code>series</code> - series name of the lines to appear in the legend</li><li><code>x</code> - key that contains that x-axis data in the dataset, e.g. <code>:date</code></li><li><code>y</code> - key that contains that y-axis data in the datset, e.g. <code>:portfolio-value</code></li><li><code>full-date</code> - boolean, set to true if you want to have full date (i.e. month, day, year) as labels in the x-axis; if set as false the function would automatically choose the appropariate labels</li></ul><p><strong>Note</strong>: pass full-date as <code>true</code> when plotting variables in the <strong>evaluation report</strong>.</p><br /><p><strong>Example</strong>:</p><pre><code class="clojure">;; data to print: an atom of maps
+</code></pre><hr /><h2 id="plot-graphs">Plot Graphs</h2><p>Functions for generating line plots on chosen variables.</p><br /><h3 id="plot"><code>plot</code></h3><p>This function allows users to plot line charts. This plotting function works the best with the Jupyter Notebook.</p><p><strong>Parameters:</strong></p><ul><li>dataset - contains a map of data to be plotted. Each map should be in the following format: <code>{:permno "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }</code></li><li><code>series</code> - series name of the lines to appear in the legend</li><li><code>x</code> - key that contains that x-axis data in the dataset, e.g. <code>:date</code></li><li><code>y</code> - key that contains that y-axis data in the datset, e.g. <code>:portfolio-value</code></li><li><code>full-date</code> - boolean, set to true if you want to have full date (i.e. month, day, year) as labels in the x-axis; if set as false the function would automatically choose the appropariate labels</li></ul><p><strong>Note</strong>: pass full-date as <code>true</code> when plotting variables in the <strong>evaluation report</strong>.</p><br /><p><strong>Example</strong>:</p><pre><code class="clojure">;; data to print: an atom of maps
 
 (first data) ;; print first row
 ;; output
@@ -154,7 +145,7 @@ Time window is updated as 3. ; success message
 
     <div id="prev-next">
         
-        <a class="button" href="/clojure-backtesting-website/posts/portfolio/">&laquo; Portfolio</a>
+        <a class="button" href="/clojure-backtesting-website/posts/user-guide/">&laquo; User Guide</a>
         
         
         <a class="right button" href="/clojure-backtesting-website/posts/large-data/">Large Data &raquo;</a>
