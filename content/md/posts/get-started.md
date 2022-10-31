@@ -9,19 +9,23 @@
 
 <br>
 
-1. Make sure that you have **leiningen** and **jupyter notebook** installed on your local machine. (These two may require further environment dependencies, please refer to their official websites for details.)
+#### Requirement
 
-   - Installation guide for leiningen can be found at:
+Make sure that you have **leiningen** and **jupyter notebook** installed on your local machine. (These two may require further environment dependencies, please refer to their official websites for details.)
 
-     <https://github.com/technomancy/leiningen/wiki/Packaging>
+- Installation guide for leiningen can be found at:
 
-   - Jupyter notebook can be installed at:
+  <https://github.com/technomancy/leiningen/wiki/Packaging>
 
-     <https://jupyter.org/install>
+- Jupyter notebook can be installed at:
+
+  <https://jupyter.org/install>
 
 <br>
 
 #### Installation on Linux or Mac
+
+Clone the repository from GitHub or simply download it. And `cd` to this directory.
 
 Run the following command so that the project could be compiled as a .jar file and added as a new Jupyter kernel: (_Note that this operation may download a number of required packages, which may take up some time if you download them for the first time._)
 
@@ -50,26 +54,28 @@ Installation successful.
 The backtester is proven to be working on Windows if set up correctly.
 1. Install Java 8+, Jupyter notebook.
 2. Install lein. Verify by typing `lein --version` in terminal. (Restart the shell after installing it.)
-3. Pull the repository from GitHub or simply download it. And `cd` to this directory.
-4. Input this into the shell:
+3. Clone the repository from GitHub or simply download it. And `cd` to this directory.
+4. Input this into the shell under its root directory:
 ```
 lein uberjar;
 lein clojupyter remove-install backtesting_clojure;
 lein clojupyter install --ident backtesting_clojure --jarfile target/uberjar/clojure-backtesting-0.1.0-SNAPSHOT-standalone.jar
 ```
-5. Repeat this step every time you update the backtester. 
-6. If the output of the above command is like:
-![373f2c4c235e05c728da361d1650cfaf的副本](https://user-images.githubusercontent.com/43634213/110751657-23eb1b00-827f-11eb-9232-fd02e80f35b4.png)
-You should go to the installed location (Install directory in the above picture) and drag the whole kernel folder into the `\kernels\` folder of the same level.
-And then, you should open the moved folder and find the .json file. Update the location in .json file to this new location.
+5. [Repeat this step every time you update the backtester. ]
 
-<br>
+6. If the output of the above command is like:
+  ![373f2c4c235e05c728da361d1650cfaf的副本](https://user-images.githubusercontent.com/43634213/110751657-23eb1b00-827f-11eb-9232-fd02e80f35b4.png)
+
+  You should go to the installed location (Install directory in the above picture) and drag the whole kernel folder into the `\kernels\` folder of the same level.
+  And then, you should open the moved folder and find the .json file. Update the location in .json file to this new location.
+
+#### Verify installation
 
 Finally, when you restart the Jupyter Notebook application, you could select the kernel named `backtesting_clojure`. You can make use of the backtester by choosing this kernel.
 
 ---
 
-## Beginner Tutorials
+## Clojure Beginner Tutorials
 
 <br>
 
@@ -91,92 +97,32 @@ In case you would encounter difficulties in using the API within the backtester 
 
 ---
 
-## Backtester Mode
-
-<br>
-
-You could run the backtester in two modes, which are the **lazy** and the **non-lazy** modes respectively. The only differences between the two modes lie within the way of loading the dataset and making an order.
-
-<br>
-
-### Lazy mode
-
-- This is mainly for development, and you need to run it with the original large-sized datasets named `data-CRSP.csv` and `data-Compustat.csv`.
-- Note that since these datasets are large in size (> 10 GB), they are not included in `resources/` directory within the repository, and need to be downloaded separately.
-
-  (i) To run the backtester in lazy mode, load the dataset in the following way:
-
-  ```clojure
-  ;; load CRSP
-  (load-large-dataset "data-CRSP.csv" "main" add-aprc-by-date)
-  ;; load compustat
-  (load-large-dataset "data-Compustat.csv" "compustat")
-  ```
-
-  As the original dataset is quite big and takes time to run with the backtester, optionally you could create a smaller version by truncating some rows:
-
-  ```clojure
-  cat data-CRSP.csv | tail 10000 > CRSP-smaller.csv
-  ```
-
-  (ii) An order could be made by calling the following function under the lazy mode:
-
-  ```clojure
-  (order-lazy "AAPL" 50) ; buy 50 stocks
-  ```
-  
-
-<br>
-
-### Non-lazy mode (Not recommended)
-
-- This is the default mode that the backtester is set in.
-- This is mainly for debugging, and you need to run it with the smaller datasets named `CRSP-extract.csv` and `Compustat-extract.csv`.
-
-  (i) To run the backtester in non-lazy mode, load the dataset in the following way:
-
-  ```clojure
-  (reset! data-set (add-aprc (read-csv-row "./resources/CRSP-extract.csv")))
-  ```
-
-  (ii) An order could be made by calling the following function under the non-lazy mode:
-
-  ```clojure
-  (order "AAPL" 50) ; buy 50 stocks
-  ```
-
-
----
-
 ## Code Walkthrough
 
 We'll go through the code in `./examples/Simple trading strategy.ipynb` notebook to have a glimpse of how to write code that could be run with the backtester.
-
-<br>
 
 ### Import libraries
 
 To make use of the functions in the backtester library, it is necessary to import them whenever you create a new jupyter notebook file. Also make sure that you've compiled the **most up-to-date** clojure-backteser kernel, and have selected it in the Jupyter Notebook application.
 
 ```clojure
+; import libraries from kernel
 (ns clojure-backtesting.demo
-  (:require [clojure.test :refer :all]
-            [oz.notebook.clojupyter :as oz]
-            [clojure-backtesting.data :refer :all]
+  (:require [clojure-backtesting.data :refer :all]
+            [clojure-backtesting.data-management :refer :all]
             [clojure-backtesting.portfolio :refer :all]
             [clojure-backtesting.order :refer :all]
             [clojure-backtesting.evaluate :refer :all]
             [clojure-backtesting.plot :refer :all]
             [clojure-backtesting.counter :refer :all]
-            [clojure-backtesting.large-data :refer :all]
+            [clojure-backtesting.automation :refer :all]
             [clojure-backtesting.parameters :refer :all]
+            [clojure-backtesting.indicators :refer :all]
+            [clojure-backtesting.direct :refer :all]
             [clojure.string :as str]
+            [clojure.java.io :as io]
             [clojure.pprint :as pprint]
-            [java-time :as t]
-            [clojupyter.kernel.version :as ver]
-            [clojupyter.misc.helper :as helper]
   ) ;; require all libriaries from core
-  (:use clojure.pprint)
 )
 ```
 
@@ -184,17 +130,10 @@ To make use of the functions in the backtester library, it is necessary to impor
 
 ### Import dataset
 
-Load the CRSP-extract.csv dataset to the program by providing its relative path. Note that it is a must to nest it with `read-csv-row` and `add-aprc`, as they respectively parse the csv file and automatically add the adjusted price column to the dataset.
+Load the CRSP dataset to the program by providing its path. 
 
-(i) To load the dataset for **non-lazy** mode, import the extract dataset:
-```clojure 
-(reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
-```
-
-(ii) To load the dataset for **lazy** mode, import the large dataset:
-```clojure 
-(load-large-dataset "../resources/CRSP-extract.csv" "main" add-aprc)
-(set-main "main")
+```clojure
+(load-dataset "/Volumes/T7/CRSP" "main" add-aprc)
 ```
 
 <br>
@@ -209,12 +148,12 @@ Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the `
 
 <br>
 
-### Check available tickers
+### Check available securities
 
-You could check what tickers you could trade on the current date (i.e. 1980-12-16).
+You could check what securities you could trade on the current date (i.e. 1980-12-16).
 
 ```clojure
-(keys (deref available-tics))
+(available-permnos)
 ```
 
 <br>
@@ -231,51 +170,8 @@ The below demo is a trading strategy that follows a simple logic.
 
 In a timespan of 10 days (inclusive of today),
 
-- Buy 50 stocks of AAPL on the first day
-- Sell 10 stocks of AAPL on every other day
-
-
-(i) The following example code is for running under the **non-lazy** mode:
-```clojure
-;; define the "time span", i.e. to trade in the coming 10 days
-(def num-of-days (atom 10))
-
-(while (pos? @num-of-days) ;; check if num-of-days is > 0
-    (do
-        ;; write your trading strategy here
-        (if (= 10 @num-of-days) ;; check if num-of-days == 10
-            (do
-                (order "AAPL" 50) ; buy 50 stocks
-                (println ((fn [date] (str "Buy 50 stocks of AAPL on " date)) (get-date)))
-            )
-        )
-        (if (odd? @num-of-days) ;; check if num-of-days is odd
-            (do
-                (order "AAPL" -10) ; sell 10 stocks
-                (println ((fn [date] (str "Sell 10 stocks of AAPL on " date)) (get-date)))
-            )
-        )
-
-        (update-eval-report (get-date)) ;; update the evaluation metrics every day
-
-        ; move on to the next trading day
-        (next-date)
-
-        ; decrement counter
-        (swap! num-of-days dec)
-    )
-)
-
-; call this so as to create output files
-(end-order)
-
-; check whether counter == 0
-(println ((fn [counter] (str "Counter: " counter)) @num-of-days))
-```
-
-<br>
-
-(ii) The following example code is for running under the **lazy** mode:
+- Buy 50 stocks of permno 14593 on the first day
+- Sell 10 stocks of permno 14593 on every other day
 
 ```clojure
 ;; define the "time span", i.e. to trade in the coming 10 days 
@@ -286,19 +182,17 @@ In a timespan of 10 days (inclusive of today),
         ;; write your trading strategy here
         (if (= 10 @num-of-days) ;; check if num-of-days == 10
             (do
-                (order-lazy "AAPL" 50) ; buy 50 stocks
-                (println ((fn [date] (str "Buy 50 stocks of AAPL on " date)) (get-date)))
+                (order "14593" 50 :print true) ; buy 50 stocks
             )
         )
         (if (odd? @num-of-days) ;; check if num-of-days is odd
             (do
-                (order-lazy "AAPL" -10) ; sell 10 stocks
-                (println ((fn [date] (str "Sell 10 stocks of AAPL on " date)) (get-date)))
+                (order "14593" -10 :print true) ; sell 10 stocks
             )
         )
         
-        (update-eval-report (get-date)) ;; update the evaluation metrics every day
-        
+        (update-eval-report) ;; update the evaluation metrics every day
+        (println (get-date))
         ; move on to the next trading day
         (next-date)
         
@@ -306,27 +200,32 @@ In a timespan of 10 days (inclusive of today),
         (swap! num-of-days dec)
     )
 )
-
-; check whether counter == 0
-(println ((fn [counter] (str "Counter: " counter)) @num-of-days))
 ```
 
 <br>
 
-Note that in the above snippets, it is necessary to iteratively call `next-date` so that the system could "move on to the next trading day". (check the details in the _"Counter"_ section)
+Note that in the above snippets, it is necessary to iteratively call `next-date` so that the system could "move on to the next trading day". (check details [here](/posts/api#move-time-pointer))
 
 <br>
 
 ```clojure
 ;; output:
-
-Buy 50 stocks of AAPL on 1980-12-16
-Sell 10 stocks of AAPL on 1980-12-17
-Sell 10 stocks of AAPL on 1980-12-19
-Sell 10 stocks of AAPL on 1980-12-23
-Sell 10 stocks of AAPL on 1980-12-26
-Sell 10 stocks of AAPL on 1980-12-30
-Counter: 0
+1980-12-16
+Order: 1980-12-17 | 14593 | 50.000000.
+1980-12-17
+Order: 1980-12-18 | 14593 | -10.000000.
+1980-12-18
+1980-12-19
+Order: 1980-12-22 | 14593 | -10.000000.
+1980-12-22
+1980-12-23
+Order: 1980-12-24 | 14593 | -10.000000.
+1980-12-24
+1980-12-26
+Order: 1980-12-29 | 14593 | -10.000000.
+1980-12-29
+1980-12-30
+Order: 1980-12-31 | 14593 | -10.000000.
 ```
 
 By printing these debugging messages, I could double-check whether the orders were accurate.
@@ -342,16 +241,15 @@ Alternatively, you could also directly view the order record.
 ```
 
 ```clojure
-;; output:
-
-|      :date | :tic |  :price | :quantity | :reference |
-|------------+------+---------+-----------+------------|
-| 1980-12-17 | AAPL | 25.9375 |        50 |          1 |
-| 1980-12-18 | AAPL | 26.6875 |       -10 |          1 |
-| 1980-12-22 | AAPL | 29.6875 |       -10 |          1 |
-| 1980-12-24 | AAPL | 32.5625 |       -10 |          1 |
-| 1980-12-29 | AAPL | 36.0625 |       -10 |          1 |
-| 1980-12-31 | AAPL | 34.1875 |       -10 |          1 |
+;; output
+|      :date |  :tic |  :price | :aprc | :quantity |
+|------------+-------+---------+-------+-----------|
+| 1980-12-17 | 14593 | 25.9375 | 25.35 |        50 |
+| 1980-12-18 | 14593 | 26.6875 | 25.67 |       -10 |
+| 1980-12-22 | 14593 | 29.6875 | 26.88 |       -10 |
+| 1980-12-24 | 14593 | 32.5625 | 27.98 |       -10 |
+| 1980-12-29 | 14593 | 36.0625 | 29.25 |       -10 |
+| 1980-12-31 | 14593 | 34.1875 | 28.58 |       -10 |
 ```
 
 <br>
@@ -366,48 +264,33 @@ You could view the portfolio and check the changes in portfolio value too. Note 
 
 ```clojure
 ;; output:
-| :asset |  :price | :aprc | :quantity | :tot-val |
-|--------+---------+-------+-----------+----------|
-|   cash |     N/A |   N/A |       N/A |    10295 |
-|   AAPL | 34.1875 | 29.42 |         0 |        0 |
+| :asset | :price | :aprc | :quantity | :tot-val |
+|--------+--------+-------+-----------+----------|
+|   cash |    N/A |   N/A |       N/A | 10116.11 |
 ```
 
 <br>
 
 ```clojure
-;; pass -1 so that the entire record is printed, else pass the no. of rows
-(view-portfolio-record -1)
+;; pass none so that the entire record is printed, else pass the no. of rows
+(view-portfolio-record)
 ```
 
 ```clojure
 ;; output:
 |      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage |
 |------------+------------+------------+----------+-------+-----------|
-| 1980-12-16 |     $10000 |      0.00% |    0.00% | $0.00 |     0.00% |
-| 1980-12-17 |     $10000 |      0.00% |    0.00% | $0.00 |     0.00% |
-| 1980-12-18 |     $10016 |      0.00% |    0.16% | $0.00 |     0.00% |
-| 1980-12-19 |     $10043 |      0.27% |    0.44% | $0.00 |     0.00% |
-| 1980-12-22 |     $10066 |      0.00% |    0.66% | $0.00 |     0.00% |
-| 1980-12-23 |     $10081 |      0.15% |    0.81% | $0.00 |     0.00% |
-| 1980-12-24 |     $10100 |      0.00% |    1.00% | $0.00 |     0.00% |
-| 1980-12-26 |     $10122 |      0.22% |    1.22% | $0.00 |     0.00% |
-| 1980-12-29 |     $10126 |      0.00% |    1.26% | $0.00 |     0.00% |
-| 1980-12-30 |     $10123 |     -0.03% |    1.22% | $0.00 |     0.00% |
-| 1980-12-31 |     $10119 |      0.00% |    1.19% | $0.00 |     0.00% |
-```
-
-```clojure
-;; only print first 3 rows of the portfolio record
-(view-portfolio-record 3)
-```
-
-```clojure
-;; output:
-|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage |
-|------------+------------+------------+----------+-------+-----------|
-| 1980-12-16 |     $10000 |      0.00% |    0.00% | $0.00 |     0.00% |
-| 1980-12-17 |     $10000 |      0.00% |    0.00% | $0.00 |     0.00% |
-| 1980-12-18 |     $10016 |      0.00% |    0.16% | $0.00 |     0.00% |
+| 1980-12-16 |  $10000.00 |      0.00% |    0.00% | $0.00 |      0.00 |
+| 1980-12-17 |  $10000.00 |      0.00% |    0.00% | $0.00 |      0.00 |
+| 1980-12-18 |  $10016.25 |      0.00% |    0.07% | $0.00 |      0.00 |
+| 1980-12-19 |  $10043.73 |      0.12% |    0.19% | $0.00 |      0.00 |
+| 1980-12-22 |  $10066.29 |      0.00% |    0.29% | $0.00 |      0.00 |
+| 1980-12-23 |  $10081.29 |      0.06% |    0.35% | $0.00 |      0.00 |
+| 1980-12-24 |  $10100.29 |      0.00% |    0.43% | $0.00 |      0.00 |
+| 1980-12-26 |  $10122.77 |      0.10% |    0.53% | $0.00 |      0.00 |
+| 1980-12-29 |  $10126.41 |      0.00% |    0.55% | $0.00 |      0.00 |
+| 1980-12-30 |  $10123.21 |     -0.01% |    0.53% | $0.00 |      0.00 |
+| 1980-12-31 |  $10119.51 |     -0.02% |    0.52% | $0.00 |      0.00 |
 ```
 
 <br>
@@ -425,38 +308,28 @@ However, note that if you are traversing a large amount of dates, it would be be
 <br>
 
 ```clojure
-;; pass -1 so that the entire record is printed, else pass the no. of rows
-(eval-report -1)
+;; pass none so that the entire record is printed, else pass the no. of rows
+(print-eval-report)
 ```
 
 ```Clojure
-;; output:
+;; output
 |      :date | :tot-value |    :vol |  :r-vol |  :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
 |------------+------------+---------+---------+----------+-----------+---------+---------------|
-| 1980-12-16 |     $10000 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $0 |        0.0000 |
-| 1980-12-17 |     $10016 | 0.0407% | 0.0407% |  1.7321% |   1.7321% |      $8 |      100.0000 |
-| 1980-12-18 |     $10016 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $8 |        0.0000 |
-| 1980-12-19 |     $10066 | 0.0598% | 0.0598% |  4.8019% |   4.8019% |     $22 |      100.0000 |
-| 1980-12-22 |     $10066 | 0.0532% | 0.0532% |  5.3929% |   5.3929% |     $22 |      100.0000 |
-| 1980-12-23 |     $10100 | 0.0499% | 0.0499% |  8.6792% |   8.6792% |     $25 |      100.0000 |
-| 1980-12-24 |     $10100 | 0.0475% | 0.0475% |  9.1298% |   9.1298% |     $25 |      100.0000 |
-| 1980-12-26 |     $10126 | 0.0477% | 0.0477% | 11.4442% |  11.4442% |     $25 |      100.0000 |
-| 1980-12-29 |     $10126 | 0.0487% | 0.0487% | 11.2135% |  11.2135% |     $25 |      100.0000 |
-| 1980-12-30 |     $10119 | 0.0473% | 0.0473% | 10.9035% |  10.9035% |     $19 |      113.3677 |
+| 1980-12-17 |     $10000 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $0 |        0.0000 |
+| 1980-12-18 |     $10015 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $7 |        0.0000 |
+| 1980-12-19 |     $10042 | 0.0578% | 0.0578% |  3.1854% |   3.1854% |     $21 |      100.0000 |
+| 1980-12-22 |     $10064 | 0.0517% | 0.0517% |  5.3929% |   5.3929% |     $21 |      100.0000 |
+| 1980-12-23 |     $10078 | 0.0490% | 0.0490% |  6.9722% |   6.9722% |     $26 |      100.0000 |
+| 1980-12-24 |     $10097 | 0.0461% | 0.0461% |  9.1301% |   9.1301% |     $24 |      100.0000 |
+| 1980-12-26 |     $10119 | 0.0491% | 0.0491% | 10.4957% |  10.4957% |     $29 |      100.0000 |
+| 1980-12-29 |     $10122 | 0.0473% | 0.0473% | 11.2136% |  11.2136% |     $24 |      100.0000 |
+| 1980-12-30 |     $10119 | 0.0467% | 0.0467% | 11.0778% |  11.0778% |     $23 |      111.5205 |
 ```
 
 ```clojure
 ;; just print the first 3 rows
 (eval-report 3)
-```
-
-```Clojure
-;; output:
-|      :date | :tot-value |    :vol |  :r-vol |  :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
-|------------+------------+---------+---------+----------+-----------+---------+---------------|
-| 1980-12-16 |     $10000 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $0 |        0.0000 |
-| 1980-12-17 |     $10016 | 0.0407% | 0.0407% |  1.7321% |   1.7321% |      $8 |      100.0000 |
-| 1980-12-18 |     $10016 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $8 |        0.0000 |
 ```
 <br>
 

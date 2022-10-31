@@ -15,7 +15,7 @@
 
 <meta property="og:description" content="Examples/Fundamental Analysis.ipynb">
 
-<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/example-fundamental-analysis/" />
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/examples/example-fundamental-analysis/" />
 <meta property="og:title" content="Example - Fundamental Analysis" />
 <meta property="og:type" content="article" />
 
@@ -117,10 +117,10 @@
 </code></pre><h2 id="compute-return-on-equity-roe">Compute Return on Equity (ROE)</h2><pre><code class="clojure">;; Use merged database CRSP + COMPUSTAT
 ;; Compute the latest quarter ROE by using: niq / (share price * cshoq) in the merged dataset
 ;; output (a list of maps, followed by a map with the list of ROEs)
-;; {:data {:tic "AAPL" :year "1980" :ROE 0.02}{...} :ROE [0.02 0.53 ...]}
+;; {:data {:permno "AAPL" :year "1980" :ROE 0.02}{...} :ROE [0.02 0.53 ...]}
 
 (defn get-set-roe
-    "return a set of maps of tickers and datadate" ;;{:tic "AAPL", :datadate "1981/3/31", :ROE x.x}
+    "return a set of maps of tickers and datadate" ;;{:permno "AAPL", :datadate "1981/3/31", :ROE x.x}
     [file date]
     (loop [remaining file
             result-set []
@@ -137,7 +137,7 @@
                 (if (= date (get first-line :datadate))
                     (let [[niq PRC cshoq] (map edn/read-string [(get first-line :niq)(get first-line :PRC)(get first-line :cshoq)])
                           ROE (/ niq (* PRC cshoq))]
-                        (recur next-remaining (conj result-set {:tic (get first-line :tic) :year year :ROE ROE}) (conj ROE-list ROE))
+                        (recur next-remaining (conj result-set {:permno (get first-line :permno) :year year :ROE ROE}) (conj ROE-list ROE))
                     )
                     (recur next-remaining result-set ROE-list)
                 )  
@@ -176,7 +176,7 @@
                 ;;conj the stock ticker whose ROE &gt;= roe-20
                 ;;(if (not= -1 (compare roe-20 (get first-line :ROE)))
                 (if (&gt;= (get first-line :ROE) roe-20)
-                    (recur next-remaining (conj result-set (get first-line :tic)))           
+                    (recur next-remaining (conj result-set (get first-line :permno)))           
                     (recur next-remaining result-set)            
                 )  
             )
@@ -273,7 +273,7 @@
 </code></pre><h2 id="check-records--performance">Check Records &amp; Performance</h2><pre><code class="clojure">(pprint/print-table (deref order-record))
 
 ;; output:
-|      :date | :tic | :price |   :aprc | :quantity |
+|      :date | :permno | :price |   :aprc | :quantity |
 |------------+------+--------+---------+-----------|
 | 1980-12-19 |  IBM | 64.625 |  736.07 |        10 |
 | 1981-12-22 |  IBM | 56.875 |  714.58 |       -10 |
@@ -318,10 +318,10 @@
 
     <div id="prev-next">
         
-        <a class="button" href="/clojure-backtesting-website/posts/examples/example-fundamental-analysis/">&laquo; Example - Fundamental Analysis</a>
+        <a class="button" href="/clojure-backtesting-website/posts/examples/example-golden-cross/">&laquo; Example - Golden Cross</a>
         
         
-        <a class="right button" href="/clojure-backtesting-website/posts/examples/example-buying-on-margin/">Example - Buying on Margin &raquo;</a>
+        <a class="right button" href="/clojure-backtesting-website/posts/example-fundamental-analysis/">Example - Fundamental Analysis &raquo;</a>
         
     </div>
 

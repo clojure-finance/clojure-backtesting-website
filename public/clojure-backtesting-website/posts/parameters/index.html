@@ -47,19 +47,13 @@
             <p><span class="fa fa-reorder"></span><strong>Menu</strong></p>
         </div>
         <ul class="menu">
-            <li ><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
-            
-            
-            <li >
-                <a href="/clojure-backtesting-website/pages/about/">About</a>
-            </li>
-            
-            <li >
-                <a href="/clojure-backtesting-website/pages/examples/">Examples</a>
-            </li>
-            
-            <li ><a title="Archives" href="/clojure-backtesting-website/archives/">Archives</a></li>
-            <!-- <li><a title="RSS" href="/clojure-backtesting-website/feed.xml">RSS</a></li> -->
+            <li><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
+            <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+            <li><a href="/clojure-backtesting-website/posts/user-guide/">User Guide</a></li>
+            <li><a href="/clojure-backtesting-website/posts/api/">Basic APIs</a></li>
+            <li><a href="/clojure-backtesting-website/posts/portfolio">Porfolio Mangement</a></li>
+            <li><a href="/clojure-backtesting-website/posts/evaluate">Evaluation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li>
         </ul>
     </div>
 
@@ -92,7 +86,7 @@
     <h1>Parameters</h1>
 </div>
 <div>
-    <ol class="toc"><li><a href="#trading-price">Trading Price</a></li><li><a href="#margin-requirements">Margin Requirements</a></li><ol><li><a href="#initial-margin"><code>INITIAL-MARGIN</code></a></li><li><a href="#update-initial-margin"><code>update-initial-margin</code></a></li><li><a href="#maintenance-margin"><code>MAINTENANCE-MARGIN</code></a></li><li><a href="#update-maintenance-margin"><code>update-maintenance-margin</code></a></li></ol><li><a href="#transaction-cost--loan-interest">Transaction Cost & Loan Interest</a></li><ol><li><a href="#transaction-cost"><code>TRANSACTION-COST</code></a></li><li><a href="#update-transaction-cost"><code>update-transaction-cost</code></a></li><li><a href="#interest-rate"><code>INTEREST-RATE</code></a></li><li><a href="#update-interest-rate"><code>update-interest-rate</code></a></li></ol></ol>
+    <ol class="toc"><li><a href="#configurable-parameters">Configurable Parameters</a></li><ol><li><a href="#trading-price">Trading Price</a></li><li><a href="#margin-requirements">Margin Requirements</a></li><ol><li><a href="#initial-margin"><code>INITIAL-MARGIN</code></a></li><li><a href="#update-initial-margin"><code>update-initial-margin</code></a></li><li><a href="#maintenance-margin"><code>MAINTENANCE-MARGIN</code></a></li><li><a href="#update-maintenance-margin"><code>update-maintenance-margin</code></a></li></ol><li><a href="#transaction-cost--loan-interest">Transaction Cost & Loan Interest</a></li><ol><li><a href="#transaction-cost"><code>TRANSACTION-COST</code></a></li><li><a href="#update-transaction-cost"><code>update-transaction-cost</code></a></li><li><a href="#interest-rate"><code>INTEREST-RATE</code></a></li><li><a href="#update-interest-rate"><code>update-interest-rate</code></a></li></ol><li><a href="#indicator-parameters">Indicator Parameters</a></li><ol><li><a href="#ema-cycle"><code>EMA-CYCLE</code></a></li><li><a href="#macd-signal"><code>MACD-SIGNAL</code></a></li><li><a href="#macd-short"><code>MACD-SHORT</code></a></li><li><a href="#macd-long"><code>MACD-LONG</code></a></li><li><a href="#rsi-cycle"><code>RSI-CYCLE</code></a></li></ol></ol></ol>
     <style>
 /* table styles */
 table, th, td {
@@ -102,7 +96,7 @@ table, th, td {
 td {
   padding: 10px;
 }
-</style><br /><p><strong><code>ns: clojure-backtesting.parameters</code></strong></p><p>This namespace defines the parameters that are configurable in the backtester.</p><hr /><h2 id="trading-price">Trading Price</h2><p>The trading price is by default set to be closing price.</p><p>You can change it to opening price by changing the parameter.clj in <code>src/</code>:</p><pre><code class="clojure">(def PRICE-KEY :OPRNPRC)
+</style><br /><h1 id="configurable-parameters">Configurable Parameters</h1><p>This namespace defines the parameters that are configurable in the backtester.</p><hr /><h2 id="trading-price">Trading Price</h2><p>The trading price is by default set to be closing price.</p><p>You can change it to opening price by changing the parameter.clj in <code>src/</code>:</p><pre><code class="clojure">(def PRICE-KEY :OPRNPRC)
 </code></pre><hr /><h2 id="margin-requirements">Margin Requirements</h2><br /><h3 id="initial-margin"><code>INITIAL-MARGIN</code></h3><p>This variable stores the minimum ratio of cash to total value of securities that must be paid when buying on margin. The default value is set as <code>0.5</code>.</p><p><strong>Example:</strong></p><pre><code class="clojure">;; check the variable
 (println INITIAL-MARGIN)
 
@@ -147,7 +141,7 @@ td {
 
 ;; output:
 0.3
-</code></pre><br />
+</code></pre><br /><h2 id="indicator-parameters">Indicator Parameters</h2><p>Below parameters are associated with corresponding indicator calculators. They can all be changed by function <code>CHANGE-{parameter name}</code>. For example, <code>EMA-CYCLE</code> can be changed by <code>(CHANGE-EMA-CYCLE 15)</code>.</p><h3 id="ema-cycle"><code>EMA-CYCLE</code></h3><p>Cycle of the EMA formula. By default, 20.</p><h3 id="macd-signal"><code>MACD-SIGNAL</code></h3><p>Cycle of the MACD signal line. By default, 9.</p><h3 id="macd-short"><code>MACD-SHORT</code></h3><p>Cycle of the MACD short line. By default, 12.</p><h3 id="macd-long"><code>MACD-LONG</code></h3><p>Cycle of the MACD long line. By default, 26.</p><h3 id="rsi-cycle"><code>RSI-CYCLE</code></h3><p>Cycle of the RSI  formula. By default, 14.</p>
 </div>
 
 <br/>

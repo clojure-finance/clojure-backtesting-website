@@ -18,7 +18,7 @@ td {
 
 <br>
 
-**`ns: clojure-backtesting.parameters`**
+# Configurable Parameters
 
 This namespace defines the parameters that are configurable in the backtester.
 
@@ -192,3 +192,27 @@ This function updates the interest rate.
 ```
 
 <br>
+
+## Indicator Parameters
+
+Below parameters are associated with corresponding indicator calculators. They can all be changed by function `CHANGE-{parameter name}`. For example, `EMA-CYCLE` can be changed by `(CHANGE-EMA-CYCLE 15)`.
+
+### `EMA-CYCLE`
+
+Cycle of the EMA formula. By default, 20.
+
+### `MACD-SIGNAL` 
+
+Cycle of the MACD signal line. By default, 9.
+
+### `MACD-SHORT` 
+
+Cycle of the MACD short line. By default, 12.
+
+### `MACD-LONG` 
+
+Cycle of the MACD long line. By default, 26.
+
+### `RSI-CYCLE` 
+
+Cycle of the RSI  formula. By default, 14.
