@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"><![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"><![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
+<head>
+    <!-- Website Template designed by www.downloadwebsitetemplates.co.uk -->
+    <!-- Modified to fit Cryogen.-->
+    <meta charset="UTF-8">
+    <title>Clojure Backtesting Documentation: Basic APIs</title>
+    
+<meta name="keywords" content="">
+
+<meta name="description" content="Below are the documentations for basic APIs of the backtester.">
+
+<meta property="og:description" content="Below are the documentations for basic APIs of the backtester.">
+
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/api/" />
+<meta property="og:title" content="Basic APIs" />
+<meta property="og:type" content="article" />
+
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57.png">
+    <link rel="shortcut icon" href="images/ico/favicon.png">
+    <!--[if IE]><![endif]-->
+    <link href="/clojure-backtesting-website/css/buttons.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/typography.css" rel="stylesheet" type="text/css" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow-night-eighties.min.css">
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+<body>
+
+<div id="left">
+
+    <p id="logo">
+        <a title="Clojure Backtesting Documentation" href="/clojure-backtesting-website/">
+            <span class="fa fa-code"></span>
+            <span class="text">Clojure Backtesting</span>
+        </a>
+    </p>
+
+    <div id="menucont" class="bodycontainer clearfix">
+        <div class="menutitle">
+            <p><span class="fa fa-reorder"></span><strong>Menu</strong></p>
+        </div>
+        <ul class="menu">
+            <li><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
+            <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+            <li><a href="/clojure-backtesting-website/posts/user-guide/">User Guide</a></li>
+            <li><a href="/clojure-backtesting-website/posts/api/">Basic APIs</a></li>
+            <li><a href="/clojure-backtesting-website/posts/portfolio">Porfolio Mangement</a></li>
+            <li><a href="/clojure-backtesting-website/posts/evaluate">Evaluation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/indicators">Indicators</a></li>
+            <li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li>
+        </ul>
+    </div>
+
+    <div id="socialmedia" class="clearfix">
+        <ul>
+            <li>
+                <a title="GitHub" href="https://github.com/clojure-finance/clojure-backtesting" rel="external">
+                    <span class="fa fa-github"> 
+                        <span style="font-family: 'Montserrat';text-transform: uppercase;">&nbsp;Github</span>
+                    </span>
+                </a>
+            </li>
+            <!-- <li><a title="Stack Overflow" href="./" rel="external"><span class="fa fa-stack-overflow"></span></a></li>
+            <li><a title="Google+" href="./" rel="external"><span class="fa fa-google-plus"></span></a></li>
+            <li><a title="LinkedIn" href="./" rel="external"><span class="fa fa-linkedin"></span></a></li>
+            <li><a title="Last.fm" href="./" rel="external"><span class="fa fa-lastfm"></span></a></li> -->
+        </ul>
+    </div>
+
+</div>
+
+<div id="right" class="clearfix">
+    
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <!-- <strong>2022年10月16日</strong> -->
+        
+    </div>
+    <h1>Basic APIs</h1>
+</div>
+<div>
+    <ol class="toc"><li><a href="#import-datasets">Import Datasets</a></li><ol><li><a href="#load-dataset">load-dataset</a></li></ol><li><a href="#state-starting-postition">State Starting Postition</a></li><ol><li><a href="#init-portfolio">init-portfolio</a></li></ol><li><a href="#make-orders">Make Orders</a></li><ol><li><a href="#order">order</a></li></ol><li><a href="#move-time-pointer">Move Time Pointer</a></li><ol><li><a href="#get-date">get-date</a></li><li><a href="#next-date">next-date</a></li><li><a href="#get-prev-n-date">get-prev-n-date</a></li></ol><li><a href="#retrieve-information-from-datasets">Retrieve Information From Datasets</a></li><ol><li><a href="#get-info">get-info</a></li><li><a href="#get-info-map">get-info-map</a></li><li><a href="#available-permnos">available-permnos</a></li><li><a href="#get-permno-info">get-permno-info</a></li><li><a href="#get-permno-price">get-permno-price</a></li><li><a href="#get-permno-by-key">get-permno-by-key</a></li><li><a href="#get-prev-n-days">get-prev-n-days</a></li><li><a href="#get-permno-prev-n-days">get-permno-prev-n-days</a></li></ol></ol>
+    <style>
+/* table styles */
+table, th, td {
+  border: 1px solid black;
+  padding: 5px;
+}
+td {
+  padding: 10px;
+}
+</style><p>Below are the documentations for basic APIs of the backtester.</p><h2 id="import-datasets">Import Datasets</h2><h4 id="load-dataset">load-dataset</h4><p>Import the supported dataset that contains the stock market information.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>dataset directory</code></td><td>String</td><td>The path of the dataset directory</td><td>The creation of the supported dataset can be found in this tutorial.</td></tr><tr><td><code>role</code></td><td>"main" / "compustat"</td><td> </td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>"Date range: {start date} ~ {end data}"</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (load-dataset "/Volumes/T7/CRSP" "main")
+"Date range: 1972-01-03 ~ 2017-02-10"
+</code></pre><br /><h2 id="state-starting-postition">State Starting Postition</h2><h4 id="init-portfolio">init-portfolio</h4><p>Initialize the starting date and capital.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>date</code></td><td>String</td><td>Indicate the starting date</td><td>If this date is missing in the dataset (i.e. it is a weekend), will use the nearest earlier date instead. If it is also unavailable, will use the nearest later date.</td></tr><tr><td><code>capital</code></td><td>Number</td><td>Indicate the initial capital</td><td>Will be given in the form of cash</td></tr></tbody></table><p><strong>Return</strong></p><p>"Date: {actual starting data (may be different from <code>date</code>)} Cash: ${<code>capital</code>}"</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (init-portfolio "1980-04-07" 2000)
+"Date: 1980-04-07 Cash: $2000"
+</code></pre><p><strong>Remarks</strong></p><ul><li>More details about portfolio can be found <a href="/clojure-backtesting-website/posts/portfolio">here</a>.</li></ul><br /><h2 id="make-orders">Make Orders</h2><h4 id="order">order</h4><p>Buy or sell certain number of shares of a security.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>security</code></td><td>String</td><td>Indicate the target security</td><td>Should be an affordable security in the dataset</td></tr><tr><td><code>quantity</code></td><td>Number</td><td>Positive means buy &amp; Negative means sell</td><td>Indicates the trading amount or the remaining amount depending on <code>remaining</code>.</td></tr><tr><td>[<code>expiration</code>]</td><td>Integer</td><td>Number of days before this order request expires</td><td>By default, <em>ORDER-EXPIRATION</em></td></tr><tr><td>[<code>remaining</code>]</td><td>Boolean</td><td>If <code>quantity</code> is the trade amount or remaining amount</td><td>By default, false (i.e. quantity is the exact trade amount)</td></tr><tr><td>[<code>leverage</code>]</td><td>Boolean</td><td>If you can loan to make the purchase</td><td>By default, true. However, <em>INITAIL-MARGIN</em>, which is the minimum cash : order total ratio should be obeyed.</td></tr><tr><td>[<code>print</code>]</td><td>Boolean</td><td>If to print order record on the screen when the order is really made</td><td>By default, false.</td></tr><tr><td>[<code>log</code>]</td><td>Boolean</td><td>If to direct order record to the log file when the order is really made</td><td>By default, false.</td></tr></tbody></table><p><strong>Return</strong></p><p>All pending orders. Vector of maps.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (order "APL" 10)
+=&gt; (next-date) ;; will introduce later
+=&gt; (order "APL" 0 :remaining true)
+</code></pre><br /><h2 id="move-time-pointer">Move Time Pointer</h2><p>The backtester is used to simulate real-world trading situations. Therefore, there is a date pointer in the platform that times the global clock of the system. Users can move forward through time and cannot go back. Also, users have access to only market information till "today", not future. Below functions are used to interact with the date pointer.</p><h4 id="get-date">get-date</h4><p>Get today's date.</p><table><thead><tr><th>No Argument</th></tr></thead><tbody></tbody></table><p><strong>Return</strong></p><p>A string representing the current date.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (get-date)
+"1980-04-07"
+</code></pre><br /><h4 id="next-date">next-date</h4><p>Move the date pointer forward to the next valid date, skipping over weekends, holidays.</p><table><thead><tr><th>No Argument</th></tr></thead><tbody></tbody></table><p><strong>Return</strong></p><p>The new date, if succeed. Otherwise if it has reached the end date, <code>nil</code>.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (next-date)
+"1980-04-08"
+</code></pre><br /><h4 id="get-prev-n-date">get-prev-n-date</h4><p>Get the date n days before the current date (skipping over weekends, holidays).</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>n</code></td><td>Positive Integer</td><td>Number of days to look back</td><td>If the search reaches the starting date, return <code>nil</code>.</td></tr></tbody></table><p><strong>Return</strong></p><p>A date string if searching succeed. If the search passes the starting date, return <code>nil</code>.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (get-prev-n-date 3)
+"1980-04-01"
+</code></pre><br /><h2 id="retrieve-information-from-datasets">Retrieve Information From Datasets</h2><h4 id="get-info">get-info</h4><p>Get all the market information for today in the format of sequence of maps. Note that there is also <code>get-info-map</code> which gives another format better for get security specific information.</p><table><thead><tr><th>No Argument</th></tr></thead><tbody></tbody></table><p><strong>Return</strong></p><p>A sequence of map, each of which contains keys: <code>:PRC</code>, <code>:TICKER</code>, <code>:DATE</code>, <code>:APRC</code>, <code>:RET</code>.</p><p>For example,</p><pre><code class="clojure">({:ewretd "-0.01599", :HSICCD "5311.0", :CUM-RET -1.0845139034240396, :CFACSHR "1.1", :INIT-PRICE 5.5, :OPENPRC "", :SECSTAT "R", :SHROUT "3.48", :TICKER "NCL", :DATE "1980-04-07", :APRC 1.859363432980367, :COMNAM "NICHOLS S E INC", :PRIMEXCH "A", :TRDSTAT "A", :FACSHR "", :HEXCD "2", :RET -0.035713999999999996, :EXCHCD "2", :CFACPR "1.1", :DLRET "", :PRC 3.375, :vwretd "-0.019375", :FACPR "", :CUSIP "65380310", :NCUSIP "65380310.0", :PERMCO "21291", :DIVAMT "", :PERMNO "56549", :SHRCD "11", :sprtrn "-0.019187", :VOL "0.0", :SICCD "5311"} {:ewretd "-0.01599", :HSICCD "4923.0", :CUM-RET 0.13767620201494443, :CFACSHR "4.5", :INIT-PRICE 12.75, :OPENPRC "", :SECSTAT "R", :SHROUT "1.7", :TICKER "NCNG", :DATE "1980-04-07", :APRC 14.631949703037334, :COMNAM "NORTH CAROLINA NATURAL GAS CORP", :PRIMEXCH "Q", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.019802, :EXCHCD "3", :CFACPR "4.5", :DLRET "", :PRC 12.875, :vwretd "-0.019375", :FACPR "", :CUSIP "65822110", :NCUSIP "65822110.0", :PERMCO "3152", :DIVAMT "", :PERMNO "58043", :SHRCD "11", :sprtrn "-0.019187", :VOL "", :SICCD "4922"} ... )
+</code></pre><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (get-info)
+...
+</code></pre><br /><h4 id="get-info-map">get-info-map</h4><p>Get all the market information for today in the format of map, where security is the key and information of the security is the value.</p><table><thead><tr><th>No Argument</th></tr></thead><tbody></tbody></table><p><strong>Return</strong></p><p>A map whose keys are all the securitys available today.</p><p>For example,</p><pre><code class="clojure">{"PL" {:ewretd "-0.01599", :HSICCD "2426.0", :CUM-RET 3.3140493252614993, :CFACSHR "2.0", :INIT-PRICE 14.125, :OPENPRC "", :SECSTAT "R", :SHROUT "12.037", :TICKER "PL", :DATE "1980-04-07", :APRC 388.38441221936534, :COMNAM "PACIFIC LUMBER CO", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.005602, :EXCHCD "1", :CFACPR "2.0", :DLRET "", :PRC 44.875, :vwretd "-0.019375", :FACPR "", :CUSIP "69452910", :NCUSIP "69452910.0", :PERMCO "3604", :DIVAMT "", :PERMNO "58667", :SHRCD "10", :sprtrn "-0.019187", :VOL "28900.0", :SICCD "2426"}, "DPT" {:ewretd "-0.01599", :HSICCD "3573.0", :CUM-RET 1.0294626755074137, :CFACSHR "4.0", :INIT-PRICE 21.875, :OPENPRC "", :SECSTAT "R", :SHROUT "4.135", :TICKER "DPT", :DATE "1980-04-07", :APRC 61.240400324837374, :COMNAM "DATAPOINT CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET -0.035885, :EXCHCD "1", :CFACPR "10.3", :DLRET "", :PRC 100.75, :vwretd "-0.019375", :FACPR "", :CUSIP "23810020", :NCUSIP "23810020.0", :PERMCO "1249", :DIVAMT "", :PERMNO "59707", :SHRCD "11", :sprtrn "-0.019187", :VOL "29200.0", :SICCD "3573"} ... }
+</code></pre><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (get-info-map)
+...
+</code></pre><br /><h4 id="available-permnos">available-permnos</h4><p>Gets all available permnos today.</p><table><thead><tr><th>No Argument</th></tr></thead><tbody></tbody></table><p><strong>Return</strong></p><p>A a sequence permno strings.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (get-permno-info "APL")
+{:ewretd "-0.01599", :HSICCD "2649.0", :CUM-RET -1.0134462484096032, :CFACSHR "1.0", :INIT-PRICE 21.25, :OPENPRC "", :SECSTAT "R", :SHROUT "3.179", :TICKER "APL", :DATE "1980-04-07", :APRC 7.713026455704485, :COMNAM "A P L CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.0, :EXCHCD "1", :CFACPR "1.0", :DLRET "", :PRC 8.125, :vwretd "-0.019375", :FACPR "", :CUSIP "202410", :NCUSIP "202410.0", :PERMCO "23557", :DIVAMT "", :PERMNO "28636", :SHRCD "10", :sprtrn "-0.019187", :VOL "3200.0", :SICCD "2649"}
+
+=&gt; (get-permno-info "none")
+nil
+</code></pre><br /><h4 id="get-permno-info">get-permno-info</h4><p>Get information for the specified security.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>The certain security</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>A map of information if the security exists, otherwise <code>nil</code>.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (get-permno-info "APL")
+{:ewretd "-0.01599", :HSICCD "2649.0", :CUM-RET -1.0134462484096032, :CFACSHR "1.0", :INIT-PRICE 21.25, :OPENPRC "", :SECSTAT "R", :SHROUT "3.179", :TICKER "APL", :DATE "1980-04-07", :APRC 7.713026455704485, :COMNAM "A P L CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.0, :EXCHCD "1", :CFACPR "1.0", :DLRET "", :PRC 8.125, :vwretd "-0.019375", :FACPR "", :CUSIP "202410", :NCUSIP "202410.0", :PERMCO "23557", :DIVAMT "", :PERMNO "28636", :SHRCD "10", :sprtrn "-0.019187", :VOL "3200.0", :SICCD "2649"}
+
+=&gt; (get-permno-info "none")
+nil
+</code></pre><br /><h4 id="get-permno-price">get-permno-price</h4><p>Continuing from <code>get-permno-info</code>, get only the price for the specified security.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>The certain security</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>A double representing the closing price of the security, otherwise <code>nil</code>.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (get-permno-price "APL")
+8.125
+=&gt; (get-permno-price "none")
+nil
+</code></pre><br /><h4 id="get-permno-by-key">get-permno-by-key</h4><p>Continuing from <code>get-permno-info</code>, get the value of a key from the information of the specified security.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>The certain security</td><td> </td></tr><tr><td><code>key</code></td><td>Keyword</td><td>Specific the key</td><td>Should be according the available keys in the map</td></tr></tbody></table><p><strong>Return</strong></p><p>Value of arbitrary type depending on the key if the map contains the key, otherwise <code>nil</code>.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (get-permno-by-key "APL" :HSICCD)
+"2649.0"
+=&gt; (get-permno-by-key "APL" :None)
+nil
+</code></pre><br /><h4 id="get-prev-n-days">get-prev-n-days</h4><p>Get information of the past n days (not including today, skipping weekends).</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td>[<code>n</code>]</td><td>Positive Integer</td><td>The number of days to look back</td><td>If not give, return a lazy sequence of all prev days, in descending time order.<br />Note that the length of return might be smaller than <code>n</code>, if it reaches the starting date.</td></tr></tbody></table><p><strong>Return</strong></p><p>A sequence (length &lt;= n) of sequence (length = number of securitys) of maps that contains data of the previous n days (not including today), in descending time order, i.e. the most recent date first.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (get-prev-n-days 2)
+...
+
+;; one common way that can get all the information of past n days including today is:
+=&gt; (conj (get-prev-n-days (- n 1)) (get-info))
+...
+</code></pre><br /><h4 id="get-permno-prev-n-days">get-permno-prev-n-days</h4><p>Get information of a specific security of the past n days (not including today, skipping weekends).</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>The specified security</td><td> </td></tr><tr><td><code>n</code></td><td>Positive Integer</td><td>The number of days to look back</td><td>Note that if a security is absent in some dates, the length of the actual return might be smaller than <code>n</code>.</td></tr></tbody></table><p><strong>Return</strong></p><p>A vector (length &lt;= n) of maps that contains security data of the previous n days (not including today), in descending time order, i.e. the most recent date first.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (get-permno-prev-n-days "APL" 2)
+[{:ewretd "0.001023", :HSICCD "2649.0", :CUM-RET -1.0134462484096032, :CFACSHR "1.0", :INIT-PRICE 21.25, :OPENPRC "", :SECSTAT "R", :SHROUT "3.179", :TICKER "APL", :DATE "1980-04-03", :APRC 7.713026455704485, :COMNAM "A P L CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.0, :EXCHCD "1", :CFACPR "1.0", :DLRET "", :PRC 8.125, :vwretd "-0.0036850000000000003", :FACPR "", :CUSIP "202410", :NCUSIP "202410.0", :PERMCO "23557", :DIVAMT "", :PERMNO "28636", :SHRCD "10", :sprtrn "-0.005162", :VOL "1700.0", :SICCD "2649"} {:ewretd "0.011197", :HSICCD "2649.0", :CUM-RET -1.0134462484096032, :CFACSHR "1.0", :INIT-PRICE 21.25, :OPENPRC "", :SECSTAT "R", :SHROUT "3.179", :TICKER "APL", :DATE "1980-04-02", :APRC 7.713026455704485, :COMNAM "A P L CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.015625, :EXCHCD "1", :CFACPR "1.0", :DLRET "", :PRC 8.125, :vwretd "0.00857", :FACPR "", :CUSIP "202410", :NCUSIP "202410.0", :PERMCO "23557", :DIVAMT "", :PERMNO "28636", :SHRCD "10", :sprtrn "0.004893", :VOL "2600.0", :SICCD "2649"}]
+
+;; one common way that can get all the information of past n days including today is:
+=&gt; (conj (seq (get-permno-prev-n-days "permno" (- n 1))) (get-permno-info "permno"))
+...
+</code></pre>
+</div>
+
+<br/>
+
+    <div id="prev-next">
+        <!-- 
+        
+        <a class="right button" href="/clojure-backtesting-website/posts/get-started/">Get Started &raquo;</a>
+         -->
+    </div>
+
+    
+
+
+</div>
+
+<hr/>
+<div id="footercont" class="clearfix">Copyright &copy; 2022 clojure-backtesting
+    <span id="footerack">
+        <!-- <p>Powered by <a href="http://cryogenweb.org">Cryogen</a> | Free Website Template by <a title="free website templates" href="http://www.downloadwebsitetemplates.co.uk" rel="external">Download Website Templates</a></p> -->
+        <p>Powered by <a href="http://cryogenweb.org">Cryogen</a></p>
+    </span>
+</div>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="/clojure-backtesting-website/js/highlight.pack.js" type="application/javascript"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script src="/clojure-backtesting-website/js/scripts.js" type="application/javascript"></script>
+
+
+</body>
+</html>

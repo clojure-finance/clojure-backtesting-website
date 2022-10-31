@@ -15,7 +15,7 @@
 
 <meta property="og:description" content="Examples/Fundamental Analysis.ipynb">
 
-<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/example-fundamental-analysis/" />
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/examples/example-fundamental-analysis/" />
 <meta property="og:title" content="Example - Fundamental Analysis" />
 <meta property="og:type" content="article" />
 
@@ -51,19 +51,14 @@
             <p><span class="fa fa-reorder"></span><strong>Menu</strong></p>
         </div>
         <ul class="menu">
-            <li ><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
-            
-            
-            <li >
-                <a href="/clojure-backtesting-website/pages/about/">About</a>
-            </li>
-            
-            <li >
-                <a href="/clojure-backtesting-website/pages/examples/">Examples</a>
-            </li>
-            
-            <li ><a title="Archives" href="/clojure-backtesting-website/archives/">Archives</a></li>
-            <!-- <li><a title="RSS" href="/clojure-backtesting-website/feed.xml">RSS</a></li> -->
+            <li><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
+            <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+            <li><a href="/clojure-backtesting-website/posts/user-guide/">User Guide</a></li>
+            <li><a href="/clojure-backtesting-website/posts/api/">Basic APIs</a></li>
+            <li><a href="/clojure-backtesting-website/posts/portfolio">Porfolio Mangement</a></li>
+            <li><a href="/clojure-backtesting-website/posts/evaluate">Evaluation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/indicators">Indicators</a></li>
+            <li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li>
         </ul>
     </div>
 
@@ -90,7 +85,7 @@
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <!-- <strong>December 30, 2020</strong> -->
+        <!-- <strong>2020年12月30日</strong> -->
         
     </div>
     <h1>Example - Fundamental Analysis</h1>
@@ -123,10 +118,10 @@
 </code></pre><h2 id="compute-return-on-equity-roe">Compute Return on Equity (ROE)</h2><pre><code class="clojure">;; Use merged database CRSP + COMPUSTAT
 ;; Compute the latest quarter ROE by using: niq / (share price * cshoq) in the merged dataset
 ;; output (a list of maps, followed by a map with the list of ROEs)
-;; {:data {:tic "AAPL" :year "1980" :ROE 0.02}{...} :ROE [0.02 0.53 ...]}
+;; {:data {:permno "AAPL" :year "1980" :ROE 0.02}{...} :ROE [0.02 0.53 ...]}
 
 (defn get-set-roe
-    "return a set of maps of tickers and datadate" ;;{:tic "AAPL", :datadate "1981/3/31", :ROE x.x}
+    "return a set of maps of tickers and datadate" ;;{:permno "AAPL", :datadate "1981/3/31", :ROE x.x}
     [file date]
     (loop [remaining file
             result-set []
@@ -143,7 +138,7 @@
                 (if (= date (get first-line :datadate))
                     (let [[niq PRC cshoq] (map edn/read-string [(get first-line :niq)(get first-line :PRC)(get first-line :cshoq)])
                           ROE (/ niq (* PRC cshoq))]
-                        (recur next-remaining (conj result-set {:tic (get first-line :tic) :year year :ROE ROE}) (conj ROE-list ROE))
+                        (recur next-remaining (conj result-set {:permno (get first-line :permno) :year year :ROE ROE}) (conj ROE-list ROE))
                     )
                     (recur next-remaining result-set ROE-list)
                 )  
@@ -182,7 +177,7 @@
                 ;;conj the stock ticker whose ROE &gt;= roe-20
                 ;;(if (not= -1 (compare roe-20 (get first-line :ROE)))
                 (if (&gt;= (get first-line :ROE) roe-20)
-                    (recur next-remaining (conj result-set (get first-line :tic)))           
+                    (recur next-remaining (conj result-set (get first-line :permno)))           
                     (recur next-remaining result-set)            
                 )  
             )
@@ -279,7 +274,7 @@
 </code></pre><h2 id="check-records--performance">Check Records &amp; Performance</h2><pre><code class="clojure">(pprint/print-table (deref order-record))
 
 ;; output:
-|      :date | :tic | :price |   :aprc | :quantity |
+|      :date | :permno | :price |   :aprc | :quantity |
 |------------+------+--------+---------+-----------|
 | 1980-12-19 |  IBM | 64.625 |  736.07 |        10 |
 | 1981-12-22 |  IBM | 56.875 |  714.58 |       -10 |
@@ -323,12 +318,12 @@
 <br/>
 
     <div id="prev-next">
+        <!-- 
+        <a class="button" href="/clojure-backtesting-website/posts/deprecated/example-fundamental-analysis/">&laquo; Example - Fundamental Analysis</a>
         
-        <a class="button" href="/clojure-backtesting-website/posts/example-golden-cross/">&laquo; Example - Golden Cross</a>
         
-        
-        <a class="right button" href="/clojure-backtesting-website/posts/example-buying-on-margin/">Example - Buying on Margin &raquo;</a>
-        
+        <a class="right button" href="/clojure-backtesting-website/posts/deprecated/example-buying-on-margin/">Example - Buying on Margin &raquo;</a>
+         -->
     </div>
 
     
@@ -337,7 +332,7 @@
 </div>
 
 <hr/>
-<div id="footercont" class="clearfix">Copyright &copy; 2021 clojure-backtesting
+<div id="footercont" class="clearfix">Copyright &copy; 2022 clojure-backtesting
     <span id="footerack">
         <!-- <p>Powered by <a href="http://cryogenweb.org">Cryogen</a> | Free Website Template by <a title="free website templates" href="http://www.downloadwebsitetemplates.co.uk" rel="external">Download Website Templates</a></p> -->
         <p>Powered by <a href="http://cryogenweb.org">Cryogen</a></p>

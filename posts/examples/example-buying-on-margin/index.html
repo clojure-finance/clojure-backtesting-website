@@ -15,7 +15,7 @@
 
 <meta property="og:description" content="Examples/Buying on margin.ipynb">
 
-<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/example-buying-on-margin/" />
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/examples/example-buying-on-margin/" />
 <meta property="og:title" content="Example - Buying on Margin" />
 <meta property="og:type" content="article" />
 
@@ -51,19 +51,14 @@
             <p><span class="fa fa-reorder"></span><strong>Menu</strong></p>
         </div>
         <ul class="menu">
-            <li ><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
-            
-            
-            <li >
-                <a href="/clojure-backtesting-website/pages/about/">About</a>
-            </li>
-            
-            <li >
-                <a href="/clojure-backtesting-website/pages/examples/">Examples</a>
-            </li>
-            
-            <li ><a title="Archives" href="/clojure-backtesting-website/archives/">Archives</a></li>
-            <!-- <li><a title="RSS" href="/clojure-backtesting-website/feed.xml">RSS</a></li> -->
+            <li><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
+            <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+            <li><a href="/clojure-backtesting-website/posts/user-guide/">User Guide</a></li>
+            <li><a href="/clojure-backtesting-website/posts/api/">Basic APIs</a></li>
+            <li><a href="/clojure-backtesting-website/posts/portfolio">Porfolio Mangement</a></li>
+            <li><a href="/clojure-backtesting-website/posts/evaluate">Evaluation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/indicators">Indicators</a></li>
+            <li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li>
         </ul>
     </div>
 
@@ -90,7 +85,7 @@
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <!-- <strong>December 29, 2020</strong> -->
+        <!-- <strong>2020年12月29日</strong> -->
         
     </div>
     <h1>Example - Buying on Margin</h1>
@@ -136,7 +131,7 @@
 
 Order: 1980-12-16 | AAPL | 10.000000.
 
-|      :date | :tic |  :price | :aprc | :quantity |
+|      :date | :permno |  :price | :aprc | :quantity |
 |------------+------+---------+-------+-----------|
 | 1980-12-16 | AAPL | 25.3125 | 25.82 |        10 |
 
@@ -188,7 +183,7 @@ Failure reason: You do not have enough money to buy or have enough stock to sell
 
 Order: 1980-12-16 | AAPL | 1.000000.
 
-|      :date | :tic |  :price | :aprc | :quantity |
+|      :date | :permno |  :price | :aprc | :quantity |
 |------------+------+---------+-------+-----------|
 | 1980-12-16 | AAPL | 25.3125 | 25.82 |         1 |
 
@@ -245,7 +240,7 @@ Order request 1980-12-15 | AAPL | 10 fails due to initial margin exceeding.
 
 Order: 1980-12-16 | AAPL | 10.000000.
 
-|      :date | :tic |  :price | :aprc | :quantity |
+|      :date | :permno |  :price | :aprc | :quantity |
 |------------+------+---------+-------+-----------|
 | 1980-12-16 | AAPL | 25.3125 | 25.82 |        10 |
 
@@ -278,7 +273,7 @@ Order: 1980-12-16 | F | 20.000000.
 1980-12-15: You have lost all cash. Closing all positions.
 Please reset the dataset and call init-portfolio again.
 
-|      :date | :tic |  :price |  :aprc | :quantity |
+|      :date | :permno |  :price |  :aprc | :quantity |
 |------------+------+---------+--------+-----------|
 | 1980-12-16 | AAPL | 25.3125 |  25.82 |       -10 |
 | 1980-12-16 |    F |   18.75 | 100.64 |        20 |
@@ -300,10 +295,10 @@ Please reset the dataset and call init-portfolio again.
 <br/>
 
     <div id="prev-next">
+        <!-- 
+        <a class="button" href="/clojure-backtesting-website/posts/deprecated/example-buying-on-margin/">&laquo; Example - Buying on Margin</a>
         
-        <a class="button" href="/clojure-backtesting-website/posts/example-fundamental-analysis/">&laquo; Example - Fundamental Analysis</a>
-        
-        
+         -->
     </div>
 
     
@@ -312,7 +307,7 @@ Please reset the dataset and call init-portfolio again.
 </div>
 
 <hr/>
-<div id="footercont" class="clearfix">Copyright &copy; 2021 clojure-backtesting
+<div id="footercont" class="clearfix">Copyright &copy; 2022 clojure-backtesting
     <span id="footerack">
         <!-- <p>Powered by <a href="http://cryogenweb.org">Cryogen</a> | Free Website Template by <a title="free website templates" href="http://www.downloadwebsitetemplates.co.uk" rel="external">Download Website Templates</a></p> -->
         <p>Powered by <a href="http://cryogenweb.org">Cryogen</a></p>
