@@ -59,6 +59,7 @@
             <li><a href="/clojure-backtesting-website/posts/evaluate">Evaluation</a></li>
             <li><a href="/clojure-backtesting-website/posts/indicators">Indicators</a></li>
             <li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li>
+            <li><a href="/clojure-backtesting-website/posts/examples">Examples</a></li>
         </ul>
     </div>
 
@@ -177,7 +178,7 @@ Order: 1980-12-31 | 14593 | -10.000000.
 | 1980-12-24 | 14593 | 32.5625 | 27.98 |       -10 |
 | 1980-12-29 | 14593 | 36.0625 | 29.25 |       -10 |
 | 1980-12-31 | 14593 | 34.1875 | 28.58 |       -10 |
-</code></pre><br /><h3 id="view-portfolio--portfolio-record">View portfolio &amp; portfolio record</h3><p>You could view the portfolio and check the changes in portfolio value too. Note that the portfolio record could also be found in the <code>out_portfolio_value_record.csv</code> file.</p><pre><code class="clojure">(view-portfolio)
+</code></pre><br /><h3 id="view-portfolio--portfolio-record">View portfolio &amp; portfolio record</h3><p>You could view the portfolio and check the changes in portfolio value too. Note that the portfolio record could also be found in the <code>out_portfolio_value_record.csv</code> file.</p><pre><code class="clojure">(print-portfolio)
 </code></pre><pre><code class="clojure">;; output:
 | :asset | :price | :aprc | :quantity | :tot-val |
 |--------+--------+-------+-----------+----------|
