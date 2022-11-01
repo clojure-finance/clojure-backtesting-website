@@ -59,6 +59,7 @@
             <li><a href="/clojure-backtesting-website/posts/evaluate">Evaluation</a></li>
             <li><a href="/clojure-backtesting-website/posts/indicators">Indicators</a></li>
             <li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li>
+            <li><a href="/clojure-backtesting-website/posts/examples">Examples</a></li>
         </ul>
     </div>
 
@@ -125,8 +126,8 @@
 (next-date)
 
 (pprint/print-table (deref order-record))
-(view-portfolio)
-(view-portfolio-record -1)
+(print-portfolio)
+(print-portfolio-record -1)
 </code></pre><pre><code class="clojure">;; output:
 
 Order: 1980-12-16 | AAPL | 10.000000.
@@ -154,8 +155,8 @@ Order: 1980-12-16 | AAPL | 10.000000.
 (next-date)
 
 (pprint/print-table (deref order-record))
-(view-portfolio)
-(view-portfolio-record -1)
+(print-portfolio)
+(print-portfolio-record -1)
 </code></pre><pre><code class="clojure">;; output:
 
 Order request 1980-12-15 | AAPL | 10 fails.
@@ -177,8 +178,8 @@ Failure reason: You do not have enough money to buy or have enough stock to sell
 (next-date)
 
 (pprint/print-table (deref order-record))
-(view-portfolio)
-(view-portfolio-record -1)
+(print-portfolio)
+(print-portfolio-record -1)
 </code></pre><pre><code class="clojure">;; output:
 
 Order: 1980-12-16 | AAPL | 1.000000.
@@ -208,8 +209,8 @@ Order: 1980-12-16 | AAPL | 1.000000.
 (next-date)
 
 (pprint/print-table (deref order-record))
-(view-portfolio)
-(view-portfolio-record -1)
+(print-portfolio)
+(print-portfolio-record -1)
 </code></pre><pre><code>;; output:
 
 Order request 1980-12-15 | AAPL | 10 fails due to initial margin exceeding.
@@ -234,8 +235,8 @@ Order request 1980-12-15 | AAPL | 10 fails due to initial margin exceeding.
 (next-date)
 
 (pprint/print-table (deref order-record))
-(view-portfolio)
-(view-portfolio-record -1)
+(print-portfolio)
+(print-portfolio-record -1)
 </code></pre><pre><code class="clojure">;; output:
 
 Order: 1980-12-16 | AAPL | 10.000000.
@@ -264,8 +265,8 @@ Order: 1980-12-16 | AAPL | 10.000000.
 (next-date)
 
 (pprint/print-table (deref order-record))
-(view-portfolio)
-(view-portfolio-record -1)
+(print-portfolio)
+(print-portfolio-record -1)
 </code></pre><pre><code class="clojure">;; output:
 
 Order: 1980-12-16 | AAPL | -10.000000.
