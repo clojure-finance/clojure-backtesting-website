@@ -255,8 +255,8 @@ You could read the **Code Walkthrough** in the *"Get Started"* section if you ar
 ```
 
 ```clojure
-;; view final portfolio
-(view-portfolio)
+;; print final portfolio
+(print-portfolio)
 
 ;; output:
 | :asset | :price |   :aprc | :quantity | :tot-val |
@@ -266,8 +266,8 @@ You could read the **Code Walkthrough** in the *"Get Started"* section if you ar
 ```
 
 ```clojure
-;; view portfolio value and return
-(view-portfolio-record)
+;; print portfolio value and return
+(print-portfolio-record)
 
 ;; output:
 |      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage |

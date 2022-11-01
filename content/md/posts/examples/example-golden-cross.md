@@ -94,8 +94,8 @@ So in the codes, MA50 and MA200 are compared on a daily basis, if golden cross o
 ## Check Records & Performance
 
 ```clojure
-;; view final portfolio
-(view-portfolio)
+;; print final portfolio
+(print-portfolio)
 
 ;; output:
 | :asset | :price |  :aprc | :quantity | :tot-val |

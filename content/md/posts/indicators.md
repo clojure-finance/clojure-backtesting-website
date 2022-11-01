@@ -35,7 +35,7 @@ Double, if the security exists. `nil` otherwise.
 **Example**
 
 ```clojure
-=> (moving-avg "APL" 10)
+=> (moving-avg "28636" 10)
 ```
 
 #### moving-sd
@@ -54,7 +54,7 @@ Double, if the security exists. `nil` otherwise.
 **Example**
 
 ```clojure
-=> (moving-sd "APL" 10)
+=> (moving-sd "28636" 10)
 ```
 
 #### EMA
@@ -76,7 +76,7 @@ Double, if the security exists. `nil` otherwise.
 **Example**
 
 ```clojure
-=> (EMA "APL")
+=> (EMA "28636")
 ```
 
 <br>
@@ -97,10 +97,10 @@ EMA function having the same usage as above with a different cycle.
 
 ```clojure
 => (def EMA10 (EMA-generator 10))
-=> (EMA10 "APL")
+=> (EMA10 "28636")
 8.0375
 => (def EMA20 (EMA-generator 20))
-=> (= (EMA20 "APL") (EMA "APL"))
+=> (= (EMA20 "28636") (EMA "28636"))
 true
 ```
 
@@ -127,7 +127,7 @@ A sequence, [{MACD} {Signal EMA} {Short EMA} {Long EMA}], if the security exists
 **Example**
 
 ```clojure
-=> (MACD "APL")
+=> (MACD "28636")
 [-0.34999999999999787 11.182222222222222 11.185 11.534999999999998]
 ```
 
@@ -151,10 +151,10 @@ MACD function having the same usage as above with a different cycle.
 
 ```clojure
 => (def MACD102030 (MACD-generator 10 20 30))
-=> (MACD102030 "APL")
+=> (MACD102030 "28636")
 [-0.03958333333333286 8.0375 8.70625 8.745833333333334]
 => (def MACD91226 (MACD-generator 9 12 26))
-=> (= (MACD91226 "APL") (MACD "APL"))
+=> (= (MACD91226 "28636") (MACD "28636"))
 true
 ```
 
@@ -201,7 +201,7 @@ This function calculates the Rate of Change (ROC) indicator.
 **Possible usages:**
 
 ```clojure
-(println (ROC "AAPL" 20)
+(println (ROC "58043" 20)
 ```
 
 <br>
@@ -213,6 +213,30 @@ This function calculates the Relative Strength Index (RSI) indicator.
 **Parameters:**
 
 - `permno` - the name of the security
+
+**Output:**
+
+- `RSI`
+
+**Related Parameter:**
+
+- `RSI-CYCLE`: By default 14.
+
+
+**Possible usages:**
+
+```clojure
+(RSI "58043" 20)
+```
+
+<br>
+
+### `RSI-generator`
+
+This function generates user-defined Relative Strength Index (RSI) calculator.
+
+**Parameters:**
+
 - `n` - time window
 
 **Output:**
@@ -223,7 +247,12 @@ This function calculates the Relative Strength Index (RSI) indicator.
 **Possible usages:**
 
 ```clojure
-(RSI "AAPL" 20)
+=> (def RSI10 (RSI-generator 10))
+=> (RSI10 "28636")
+52.67
+=> (def RSI14 (RSI-generator 14))
+=> (= (RSI14 "28636") (RSI "28636"))
+true
 ```
 
 <br>
@@ -237,16 +266,12 @@ This function calculates standard deviation of a stock for the last n days.
 **Parameters:**
 
 - `permno` - the name of the security
-- `mode` - "lazy" or "non-lazy"
-- `prev-atr` - previous ATR value
 - `n` - average of the daily TR values for the last n days
 
 **Possible usages:**
 
 ```clojure
-(let [prev-atr (Double/parseDouble (get (first (get-prev-n-days :PRC 1 "OMFGA")) :PRC))]
-    (println (ATR "OMFGA" "non-lazy" prev-atr 10))
-    )
+=> (ATR "28637" 10)
 ```
 
 <br>
@@ -259,18 +284,12 @@ This function calculates the Keltner Channel value of a stock for the last n day
 **Parameters:**
 
 - `permno` - the name of the security
-- `mode` - "lazy" or "non-lazy"
 - `window` - time window
-- `prev-atr` - previous ATR value
 
 **Possible usages:**
 
 ```clojure
-(let [low-price (Double/parseDouble (get-by-key "OMFGA" :BIDLO "non-lazy"))
-      high-price (Double/parseDouble (get-by-key "OMFGA" :ASKHI "non-lazy"))
-      prev-atr (- high-price low-price)]
-  (println (keltner-channel "OMFGA" "non-lazy" 10 prev-atr))
-  )
+=> (keltner-channel "28637" 10)
 ```
 
 <br>

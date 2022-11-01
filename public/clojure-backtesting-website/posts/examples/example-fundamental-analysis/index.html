@@ -59,6 +59,7 @@
             <li><a href="/clojure-backtesting-website/posts/evaluate">Evaluation</a></li>
             <li><a href="/clojure-backtesting-website/posts/indicators">Indicators</a></li>
             <li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li>
+            <li><a href="/clojure-backtesting-website/posts/examples">Examples</a></li>
         </ul>
     </div>
 
@@ -282,16 +283,16 @@
 | 1982-12-21 |  IBM |  95.75 |  915.74 |       -10 |
 | 1982-12-21 |  IBM |  95.75 |  915.74 |        10 |
 | 1983-12-20 |  IBM | 121.75 | 1030.91 |       -10 |
-</code></pre><pre><code class="clojure">;; view final portfolio
-(view-portfolio)
+</code></pre><pre><code class="clojure">;; print final portfolio
+(print-portfolio)
 
 ;; output:
 | :asset | :price |   :aprc | :quantity | :tot-val |
 |--------+--------+---------+-----------+----------|
 |   cash |    N/A |     N/A |       N/A |   102948 |
 |    IBM | 121.75 | 1030.91 |         0 |        0 |
-</code></pre><pre><code class="clojure">;; view portfolio value and return
-(view-portfolio-record)
+</code></pre><pre><code class="clojure">;; print portfolio value and return
+(print-portfolio-record)
 
 ;; output:
 |      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage |

@@ -66,18 +66,18 @@ This function prints the portfolio in a table format.
 **Example**:
 
 ```clojure
-(view_portfolio)
+(print-portfolio)
 
 ;; output:
 | :asset |  :price | :aprc | :quantity | :tot_val |
 |--------+---------+-------+-----------+----------|
 |   cash |     N/A |   N/A |       N/A |    10295 |
-|   AAPL |   34.19 | 29.42 |         0 |        0 |
+|   58043 |   34.19 | 29.42 |         0 |        0 |
 ```
 
 <br>
 
-### `print_portfolio_record`
+### `print-portfolio-record`
 
 This function prints the historical values and daily returns of the portfolio in a table format.
 
@@ -102,7 +102,7 @@ This function prints the historical values and daily returns of the portfolio in
 **Example**:
 
 ```clojure
-(view_portfolio_record -1)
+(print-portfolio-record)
 
 ;; output:
 |      :date | :tot-value | :daily-ret | :tot-ret |  :loan | :leverage | :margin |
@@ -119,7 +119,7 @@ This function prints the historical values and daily returns of the portfolio in
 ```
 
 ```clojure
-(view_portfolio_record 3)
+(print-portfolio-record 3)
 
 ;; output:
 |      :date | :tot-value | :daily-ret | :tot-ret |  :loan | :leverage | :margin |

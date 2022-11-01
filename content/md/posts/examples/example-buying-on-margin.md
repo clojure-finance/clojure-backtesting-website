@@ -59,8 +59,8 @@ The trade would be allowed if you possess enough cash to pay.
 (next-date)
 
 (pprint/print-table (deref order-record))
-(view-portfolio)
-(view-portfolio-record -1)
+(print-portfolio)
+(print-portfolio-record -1)
 ```
 
 ```clojure
@@ -99,8 +99,8 @@ However, the trade would not be allowed if you do not have sufficient cash.
 (next-date)
 
 (pprint/print-table (deref order-record))
-(view-portfolio)
-(view-portfolio-record -1)
+(print-portfolio)
+(print-portfolio-record -1)
 ```
 ```clojure
 ;; output:
@@ -133,8 +133,8 @@ Failure reason: You do not have enough money to buy or have enough stock to sell
 (next-date)
 
 (pprint/print-table (deref order-record))
-(view-portfolio)
-(view-portfolio-record -1)
+(print-portfolio)
+(print-portfolio-record -1)
 ```
 ```clojure
 ;; output:
@@ -182,8 +182,8 @@ The purchase would not be allowed if the ratio of cash to total value of assets 
 (next-date)
 
 (pprint/print-table (deref order-record))
-(view-portfolio)
-(view-portfolio-record -1)
+(print-portfolio)
+(print-portfolio-record -1)
 ```
 ```
 ;; output:
@@ -224,8 +224,8 @@ Alternatively, you could manually **update the initial margin** to enable such a
 (next-date)
 
 (pprint/print-table (deref order-record))
-(view-portfolio)
-(view-portfolio-record -1)
+(print-portfolio)
+(print-portfolio-record -1)
 ```
 ```clojure
 ;; output:
@@ -271,8 +271,8 @@ All positions will be automatically closed if the portfolio margin goes below th
 (next-date)
 
 (pprint/print-table (deref order-record))
-(view-portfolio)
-(view-portfolio-record -1)
+(print-portfolio)
+(print-portfolio-record -1)
 ```
 ```clojure
 ;; output:

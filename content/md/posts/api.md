@@ -93,9 +93,9 @@ All pending orders. Vector of maps.
 **Example**
 
 ```clojure
-=> (order "APL" 10)
+=> (order "28636" 10)
 => (next-date) ;; will introduce later
-=> (order "APL" 0 :remaining true)
+=> (order "28636" 0 :remaining true)
 ```
 
 <br>
@@ -207,7 +207,7 @@ A map whose keys are all the securitys available today.
 For example,
 
 ```clojure
-{"PL" {:ewretd "-0.01599", :HSICCD "2426.0", :CUM-RET 3.3140493252614993, :CFACSHR "2.0", :INIT-PRICE 14.125, :OPENPRC "", :SECSTAT "R", :SHROUT "12.037", :TICKER "PL", :DATE "1980-04-07", :APRC 388.38441221936534, :COMNAM "PACIFIC LUMBER CO", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.005602, :EXCHCD "1", :CFACPR "2.0", :DLRET "", :PRC 44.875, :vwretd "-0.019375", :FACPR "", :CUSIP "69452910", :NCUSIP "69452910.0", :PERMCO "3604", :DIVAMT "", :PERMNO "58667", :SHRCD "10", :sprtrn "-0.019187", :VOL "28900.0", :SICCD "2426"}, "DPT" {:ewretd "-0.01599", :HSICCD "3573.0", :CUM-RET 1.0294626755074137, :CFACSHR "4.0", :INIT-PRICE 21.875, :OPENPRC "", :SECSTAT "R", :SHROUT "4.135", :TICKER "DPT", :DATE "1980-04-07", :APRC 61.240400324837374, :COMNAM "DATAPOINT CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET -0.035885, :EXCHCD "1", :CFACPR "10.3", :DLRET "", :PRC 100.75, :vwretd "-0.019375", :FACPR "", :CUSIP "23810020", :NCUSIP "23810020.0", :PERMCO "1249", :DIVAMT "", :PERMNO "59707", :SHRCD "11", :sprtrn "-0.019187", :VOL "29200.0", :SICCD "3573"} ... }
+{"58667" {:ewretd "-0.01599", :HSICCD "2426.0", :CUM-RET 3.3140493252614993, :CFACSHR "2.0", :INIT-PRICE 14.125, :OPENPRC "", :SECSTAT "R", :SHROUT "12.037", :TICKER "PL", :DATE "1980-04-07", :APRC 388.38441221936534, :COMNAM "PACIFIC LUMBER CO", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.005602, :EXCHCD "1", :CFACPR "2.0", :DLRET "", :PRC 44.875, :vwretd "-0.019375", :FACPR "", :CUSIP "69452910", :NCUSIP "69452910.0", :PERMCO "3604", :DIVAMT "", :PERMNO "58667", :SHRCD "10", :sprtrn "-0.019187", :VOL "28900.0", :SICCD "2426"}, "59707" {:ewretd "-0.01599", :HSICCD "3573.0", :CUM-RET 1.0294626755074137, :CFACSHR "4.0", :INIT-PRICE 21.875, :OPENPRC "", :SECSTAT "R", :SHROUT "4.135", :TICKER "DPT", :DATE "1980-04-07", :APRC 61.240400324837374, :COMNAM "DATAPOINT CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET -0.035885, :EXCHCD "1", :CFACPR "10.3", :DLRET "", :PRC 100.75, :vwretd "-0.019375", :FACPR "", :CUSIP "23810020", :NCUSIP "23810020.0", :PERMCO "1249", :DIVAMT "", :PERMNO "59707", :SHRCD "11", :sprtrn "-0.019187", :VOL "29200.0", :SICCD "3573"} ... }
 ```
 
 **Example**
@@ -233,7 +233,7 @@ A a sequence permno strings.
 **Example**
 
 ```clojure
-=> (get-permno-info "APL")
+=> (get-permno-info "28636")
 {:ewretd "-0.01599", :HSICCD "2649.0", :CUM-RET -1.0134462484096032, :CFACSHR "1.0", :INIT-PRICE 21.25, :OPENPRC "", :SECSTAT "R", :SHROUT "3.179", :TICKER "APL", :DATE "1980-04-07", :APRC 7.713026455704485, :COMNAM "A P L CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.0, :EXCHCD "1", :CFACPR "1.0", :DLRET "", :PRC 8.125, :vwretd "-0.019375", :FACPR "", :CUSIP "202410", :NCUSIP "202410.0", :PERMCO "23557", :DIVAMT "", :PERMNO "28636", :SHRCD "10", :sprtrn "-0.019187", :VOL "3200.0", :SICCD "2649"}
 
 => (get-permno-info "none")
@@ -248,7 +248,7 @@ Get information for the specified security.
 
 | Argument | Type   | Function             | Remarks |
 | -------- | ------ | -------------------- | ------- |
-| `permno` | String | The certain security |         |
+| `permno` | String | The security  specified to be retrieved |         |
 
 **Return**
 
@@ -257,7 +257,7 @@ A map of information if the security exists, otherwise `nil`.
 **Example**
 
 ```clojure
-=> (get-permno-info "APL")
+=> (get-permno-info "28636")
 {:ewretd "-0.01599", :HSICCD "2649.0", :CUM-RET -1.0134462484096032, :CFACSHR "1.0", :INIT-PRICE 21.25, :OPENPRC "", :SECSTAT "R", :SHROUT "3.179", :TICKER "APL", :DATE "1980-04-07", :APRC 7.713026455704485, :COMNAM "A P L CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.0, :EXCHCD "1", :CFACPR "1.0", :DLRET "", :PRC 8.125, :vwretd "-0.019375", :FACPR "", :CUSIP "202410", :NCUSIP "202410.0", :PERMCO "23557", :DIVAMT "", :PERMNO "28636", :SHRCD "10", :sprtrn "-0.019187", :VOL "3200.0", :SICCD "2649"}
 
 => (get-permno-info "none")
@@ -272,7 +272,7 @@ Continuing from `get-permno-info`, get only the price for the specified security
 
 | Argument | Type   | Function             | Remarks |
 | -------- | ------ | -------------------- | ------- |
-| `permno` | String | The certain security |         |
+| `permno` | String | The security  specified to be retrieved |         |
 
 **Return**
 
@@ -281,7 +281,7 @@ A double representing the closing price of the security, otherwise `nil`.
 **Example**
 
 ```clojure
-=> (get-permno-price "APL")
+=> (get-permno-price "28636")
 8.125
 => (get-permno-price "none")
 nil
@@ -295,7 +295,7 @@ Continuing from `get-permno-info`, get the value of a key from the information o
 
 | Argument | Type    | Function             | Remarks                                           |
 | -------- | ------- | -------------------- | ------------------------------------------------- |
-| `permno` | String  | The certain security |                                                   |
+| `permno` | String  | The security  specified to be retrieved |                                                   |
 | `key`    | Keyword | Specific the key     | Should be according the available keys in the map |
 
 **Return**
@@ -305,9 +305,9 @@ Value of arbitrary type depending on the key if the map contains the key, otherw
 **Example**
 
 ```clojure
-=> (get-permno-by-key "APL" :HSICCD)
+=> (get-permno-by-key "28636" :HSICCD)
 "2649.0"
-=> (get-permno-by-key "APL" :None)
+=> (get-permno-by-key "28636" :None)
 nil
 ```
 
@@ -354,11 +354,11 @@ A vector (length <= n) of maps that contains security data of the previous n day
 **Example**
 
 ```clojure
-=> (get-permno-prev-n-days "APL" 2)
+=> (get-permno-prev-n-days "28636" 2)
 [{:ewretd "0.001023", :HSICCD "2649.0", :CUM-RET -1.0134462484096032, :CFACSHR "1.0", :INIT-PRICE 21.25, :OPENPRC "", :SECSTAT "R", :SHROUT "3.179", :TICKER "APL", :DATE "1980-04-03", :APRC 7.713026455704485, :COMNAM "A P L CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.0, :EXCHCD "1", :CFACPR "1.0", :DLRET "", :PRC 8.125, :vwretd "-0.0036850000000000003", :FACPR "", :CUSIP "202410", :NCUSIP "202410.0", :PERMCO "23557", :DIVAMT "", :PERMNO "28636", :SHRCD "10", :sprtrn "-0.005162", :VOL "1700.0", :SICCD "2649"} {:ewretd "0.011197", :HSICCD "2649.0", :CUM-RET -1.0134462484096032, :CFACSHR "1.0", :INIT-PRICE 21.25, :OPENPRC "", :SECSTAT "R", :SHROUT "3.179", :TICKER "APL", :DATE "1980-04-02", :APRC 7.713026455704485, :COMNAM "A P L CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.015625, :EXCHCD "1", :CFACPR "1.0", :DLRET "", :PRC 8.125, :vwretd "0.00857", :FACPR "", :CUSIP "202410", :NCUSIP "202410.0", :PERMCO "23557", :DIVAMT "", :PERMNO "28636", :SHRCD "10", :sprtrn "0.004893", :VOL "2600.0", :SICCD "2649"}]
 
 ;; one common way that can get all the information of past n days including today is:
-=> (conj (seq (get-permno-prev-n-days "permno" (- n 1))) (get-permno-info "permno"))
-...
+=> (conj (seq (get-permno-prev-n-days "28636" (- n 1))) (get-permno-info "28636"))
+[{yesterday info} {day before yesterday info} ...]
 ```
 

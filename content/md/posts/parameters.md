@@ -1,4 +1,4 @@
-{:title "Parameters"
+{:title "Configurable Parameters"
  :date "2021-01-23"
  :layout :post
  :tags  []
@@ -15,10 +15,9 @@ td {
   padding: 10px;
 }
 </style>
-
 <br>
 
-# Configurable Parameters
+
 
 This namespace defines the parameters that are configurable in the backtester.
 

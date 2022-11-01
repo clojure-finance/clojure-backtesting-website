@@ -42,8 +42,6 @@ If you are new to language Clojure or backtesters in general, you are recommende
 - [Indicators](/posts/indicators)
 - [Parameters](/posts/parameters)
 
-### Part III: Examples (Not ready yet)
+### Part III: Examples
 
-- [Golden Cross](/posts/example-golden-cross)
-- [Fundamental Analysis](/posts/example-fundamental-analysis)
-- [Buying on Margin](/posts/example-buying-on-margin)
+- [Examples Archive](/posts/examples)

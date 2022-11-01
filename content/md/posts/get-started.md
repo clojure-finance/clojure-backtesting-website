@@ -259,7 +259,7 @@ Alternatively, you could also directly view the order record.
 You could view the portfolio and check the changes in portfolio value too. Note that the portfolio record could also be found in the `out_portfolio_value_record.csv` file.
 
 ```clojure
-(view-portfolio)
+(print-portfolio)
 ```
 
 ```clojure
