@@ -7,15 +7,25 @@
 
 ## Setting Up the Playground
 
+***Before installing in either way, first make sure to fulfill the [basic requirements](https://github.com/clojure-finance/clojure-backtesting#requirements).***
+
+### Leiningen REPL Platform
+
+1. Clone the repository and decompress.
+
+2. Under the project directory, run the below command in the terminal to start a Leiningen REPL.
+
+   `lein repl`
+
+3. Run the examples in the [`/examples`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples) folder line by line in the REPL.
+
+### Jupyter Notebook Platform
+
 <br>
 
 #### Requirement
 
-Make sure that you have **leiningen** and **jupyter notebook** installed on your local machine. (These two may require further environment dependencies, please refer to their official websites for details.)
-
-- Installation guide for leiningen can be found at:
-
-  <https://github.com/technomancy/leiningen/wiki/Packaging>
+Make sure that you have **jupyter notebook** installed on your local machine. (It may require further environment dependencies, please refer to their official websites for details.)
 
 - Jupyter notebook can be installed at:
 
@@ -64,7 +74,7 @@ lein clojupyter install --ident backtesting_clojure --jarfile target/uberjar/clo
 5. [Repeat this step every time you update the backtester. ]
 
 6. If the output of the above command is like:
-  ![373f2c4c235e05c728da361d1650cfaf的副本](https://user-images.githubusercontent.com/43634213/110751657-23eb1b00-827f-11eb-9232-fd02e80f35b4.png)
+    ![373f2c4c235e05c728da361d1650cfaf的副本](https://user-images.githubusercontent.com/43634213/110751657-23eb1b00-827f-11eb-9232-fd02e80f35b4.png)
 
   You should go to the installed location (Install directory in the above picture) and drag the whole kernel folder into the `\kernels\` folder of the same level.
   And then, you should open the moved folder and find the .json file. Update the location in .json file to this new location.
@@ -237,7 +247,7 @@ By printing these debugging messages, I could double-check whether the orders we
 Alternatively, you could also directly view the order record.
 
 ```clojure
-(pprint/print-table (deref order-record))
+(print-order-record)
 ```
 
 ```clojure
@@ -273,7 +283,7 @@ You could view the portfolio and check the changes in portfolio value too. Note 
 
 ```clojure
 ;; pass none so that the entire record is printed, else pass the no. of rows
-(view-portfolio-record)
+(print-portfolio-record)
 ```
 
 ```clojure
@@ -327,10 +337,6 @@ However, note that if you are traversing a large amount of dates, it would be be
 | 1980-12-30 |     $10119 | 0.0467% | 0.0467% | 11.0778% |  11.0778% |     $23 |      111.5205 |
 ```
 
-```clojure
-;; just print the first 3 rows
-(eval-report 3)
-```
 <br>
 
 ### Plot variables
