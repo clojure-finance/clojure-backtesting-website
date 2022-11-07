@@ -23,11 +23,15 @@ Welcome to the Clojure Backtesting Library! This is an open-source library for q
 - **Write your unique trading strategy**  
   Making use of the variety of APIs, you could customise your own strategy and enjoy the advantages of programming in a functional language at the same time. 
 
-<br>
+## Video
+
+Here is an introduction video to the backtester, which includes installation guide, example walkthrough and learning tips.
+
+<iframe width="640" height="400" src="https://www.youtube.com/embed/mkU0CR30bf8"> </iframe>
 
 ## Table of Contents
 
-If you are new to language Clojure or backtesters in general, you are recommended to go through the below documents one by one in order.
+If you are new to language Clojure or backtesters in general, you are recommended to go through the below documents one by one in order. This is to ensure that you have a flat learning curve.
 
 ### Part I: Installation & Pre-requisites
 

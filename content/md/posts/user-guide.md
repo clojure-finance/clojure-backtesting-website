@@ -10,7 +10,24 @@
 
 Of course, you can use your own dataset in the backtester. Follow this [guide]() on how to reform arbitrary dataset to be compatible with the backtester.
 
-**[Compustat](https://connecthkuhk-my.sharepoint.com/:u:/g/personal/u35lyc_connect_hku_hk/Eddh3mmToBxCh7OlGx0R0-kB9G5a6Dq6xXW9dXXfHrn7OA?e=FQYfSl)** is a quarterly supplementary file of CRSP. It is used to contain company related information.
+To load the CRSP dataset, simply run
+
+```clojure
+(load-dataset "/Volumes/T7/CRSP" "main" add-aprc) ;; change the first argument to your local path
+(load-dataset "/Volumes/T7/Compustat/" "compustat")
+```
+
+<br>
+
+**[Compustat](https://connecthkuhk-my.sharepoint.com/:u:/g/personal/u35lyc_connect_hku_hk/EbHsTj2Nrx5Or8PP_GkiCeIBlcrijdG_Bm6JElMaHTTFFA?e=fdECXp)** is a quarterly supplementary file of CRSP. It contains company related information that can be used for further analysis.
+
+To load the Compustat dataset, simply run
+
+```clojure
+(load-dataset "/Volumes/T7/Compustat/" "compustat") ;; change the first argument to your local path
+```
+
+The Compustat dataset will not overwrite the CRSP dataset. Instead, the rows of Compustat will be automatically merged with the corresponding CRSP rows. You can still use functions such as `get-info`, `get-info-map`, `get-tic-info` as normal, except that some (not all) rows may be longer, because of Compustat.
 
 Both datasets are available [here](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/u35lyc_connect_hku_hk/EuAAauw1fuNFoDRav2D0J_EB6T_bbfkyNZ5ShN8Xw0cqhw?e=RtOcFL).
 
@@ -40,7 +57,7 @@ As introduced in the [time pointer](/posts/api#move-time-pointer), there is a gl
 
 ![image](/img/trade-logic.jpg)
 
-The most tricky part is the logic of trading. Say you are at date 2022-10-24, and you buy 10 shares of xx security. This will result in a pending order which will be settle by the backtester on the next call of `next-date` (if there is indeed xx security in the market). What you will observe is that your portfolio will not change immediately after `order`, and `order-record` will not be updated either. They will only be updated on next day. The price of the traded ticker is by default the **closing price** of the next day (`:PRC` in CRSP). 
+The most tricky part is the logic of trading. Say you are on date 2022-10-24, and you buy 10 shares of xx security. This order will not be traded immediately. Instead, it will result in a pending order which will be settle by the backtester on the next call of `next-date` (if there is indeed xx security in the market). What you will observe is that your portfolio will not change immediately after `order`, and `order-record` will not be updated either. They will only be updated on the next day. The price of the traded ticker is by default the **closing price** of the next day. 
 
 ## Cache Mechanism
 
