@@ -2,6 +2,10 @@
  :date "2022-10-16"
  :layout :post
  :tags  []
+
+:navbar? true
+:page-index 3
+
  :toc true}
 
 

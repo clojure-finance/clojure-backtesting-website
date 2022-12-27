@@ -2,6 +2,10 @@
 :date "2021-01-20"
 :layout :post
 :tags []
+
+:navbar? true
+:page-index 5
+
 :toc true}
 
 <style>
