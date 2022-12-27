@@ -1,12 +1,14 @@
 {:title "User Guide"
 :date "2021-01-20"
 :layout :post
+:navbar? true
+:page-index 2
 :tags []
 :toc true}
 
 ## About the dataset
 
-**[CRSP](https://connecthkuhk-my.sharepoint.com/:u:/g/personal/u35lyc_connect_hku_hk/ESQNElD-vL1KliKmOf57D2ABLCLYLHoc9wkJWhXUSTzCNw?e=DNaVWm)** is the official dataset for the backtester. New users are recommended to directly use this dataset to try out the functionalities of the backtester. Definitions for each column in CRSP can be found [here](https://crsp.org/files/CCM_Database_SAS_ASCII_R_FileFormats.pdf).
+**[CRSP](https://connecthkuhk-my.sharepoint.com/:u:/g/personal/u35lyc_connect_hku_hk/ESQNElD-vL1KliKmOf57D2ABLCLYLHoc9wkJWhXUSTzCNw?e=DNaVWm)** is the official dataset for the backtester. New users are recommended to directly use this dataset to try out the functionalities of the backtester. Definitions for each column in CRSP can be found [here](/posts/docs/data_descriptions_guide_0.pdf).
 
 Of course, you can use your own dataset in the backtester. Follow this [guide]() on how to reform arbitrary dataset to be compatible with the backtester.
 
@@ -19,7 +21,7 @@ To load the CRSP dataset, simply run
 
 <br>
 
-**[Compustat](https://connecthkuhk-my.sharepoint.com/:u:/g/personal/u35lyc_connect_hku_hk/EbHsTj2Nrx5Or8PP_GkiCeIBlcrijdG_Bm6JElMaHTTFFA?e=fdECXp)** is a quarterly supplementary file of CRSP. It contains company related information that can be used for further analysis.
+**[Compustat](https://connecthkuhk-my.sharepoint.com/:u:/g/personal/u35lyc_connect_hku_hk/EbHsTj2Nrx5Or8PP_GkiCeIBlcrijdG_Bm6JElMaHTTFFA?e=fdECXp)** is a quarterly supplementary file of CRSP. It contains company related information that can be used for further analysis. Definitions for each column in Compustat can be found [here](/posts/docs/FundamentalsAnnual.pdf).
 
 To load the Compustat dataset, simply run
 
@@ -53,11 +55,11 @@ Both datasets are available [here](https://connecthkuhk-my.sharepoint.com/:f:/g/
 
 ## Trading Logic
 
-As introduced in the [time pointer](/posts/api#move-time-pointer), there is a global clock in the backtester. Your strategy will normally be run between two `next-date`s. 
+As introduced in the [time pointer](/posts/api#move-time-pointer), there is a global clock in the backtester. Your strategy will normally be run between two `next-date`s. Below is a figure illustrating the logic of trading with an example.
 
 ![image](/img/trade-logic.jpg)
 
-The most tricky part is the logic of trading. Say you are on date 2022-10-24, and you buy 10 shares of xx security. This order will not be traded immediately. Instead, it will result in a pending order which will be settle by the backtester on the next call of `next-date` (if there is indeed xx security in the market). What you will observe is that your portfolio will not change immediately after `order`, and `order-record` will not be updated either. They will only be updated on the next day. The price of the traded ticker is by default the **closing price** of the next day. 
+Say you are on date 2022-10-24, and you buy 10 shares of xx security. This order will not be traded immediately. Instead, it will result in a pending order which will be settle by the backtester on the next call of `next-date` (if there is indeed xx security in the market). What you will observe is that your portfolio will not change immediately after `order`, and `order-record` will not be updated either. They will only be updated on the next day. The price of the traded ticker is by default the **closing price** of the next day. The consequence of the settling the pending orders is always the change of cash (loan) and stock (cash ↑ stock ↓ or cash ↓ stock ↑ ). Loans will result in interest costs which will accumulate every day the loan exists.
 
 ## Cache Mechanism
 

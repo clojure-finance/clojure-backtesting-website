@@ -1,6 +1,8 @@
 {:title "Get Started"
 :date "2021-01-27"
 :layout :post
+:navbar? true
+:page-index 1
 :toc true}
 
 ---
