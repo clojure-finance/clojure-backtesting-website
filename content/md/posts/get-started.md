@@ -21,69 +21,38 @@
 
 3. Run the examples in the [`/examples`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples) folder line by line in the REPL.
 
-### Jupyter Notebook Platform
+### Gorilla REPL
+Gorilla REPL is similar to Jupyter Notebook and is used for running strategies code. 
 
-<br>
+1. Run the following command in the terminal to start the REPL.
 
-#### Requirement
-
-Make sure that you have **jupyter notebook** installed on your local machine. (It may require further environment dependencies, please refer to their official websites for details.)
-
-- Jupyter notebook can be installed at:
-
-  <https://jupyter.org/install>
-
-<br>
-
-#### Installation on Linux or Mac
-
-Clone the repository from GitHub or simply download it. And `cd` to this directory.
-
-Run the following command so that the project could be compiled as a .jar file and added as a new Jupyter kernel: (_Note that this operation may download a number of required packages, which may take up some time if you download them for the first time._)
-
-```
-make add_kernel
-```
-
-(If there is an error, make sure that you have **terminated** the Jupyter notebook running kernels before running this step.)
-
-<br>
-
-When the process is completed, you should see the following output:
-
-```
-Installed jar:      target/uberjar/clojure-backtesting-0.1.0-SNAPSHOT-standalone.jar
-Install directory:  ~/Library/Jupyter/kernels/backtesting_clojure
-Kernel identifier:  backtesting_clojure
-
-Installation successful.
-```
-
-<br>
-
-#### Installation on Windows
-
-The backtester is proven to be working on Windows if set up correctly.
-1. Install Java 8+, Jupyter notebook.
-2. Install lein. Verify by typing `lein --version` in terminal. (Restart the shell after installing it.)
-3. Clone the repository from GitHub or simply download it. And `cd` to this directory.
-4. Input this into the shell under its root directory:
-```
+```text
 lein uberjar;
-lein clojupyter remove-install backtesting_clojure;
-lein clojupyter install --ident backtesting_clojure --jarfile target/uberjar/clojure-backtesting-0.1.0-SNAPSHOT-standalone.jar
+lein gorilla;
 ```
-5. [Repeat this step every time you update the backtester. ]
 
-6. If the output of the above command is like:
-    ![373f2c4c235e05c728da361d1650cfaf的副本](https://user-images.githubusercontent.com/43634213/110751657-23eb1b00-827f-11eb-9232-fd02e80f35b4.png)
+2. When the process is completed, you should see the following output:
 
-  You should go to the installed location (Install directory in the above picture) and drag the whole kernel folder into the `\kernels\` folder of the same level.
-  And then, you should open the moved folder and find the .json file. Update the location in .json file to this new location.
+```text
+Gorilla-REPL: 0.6.0
+Unable to reach update server.
+Started nREPL server on port 50649
+Running at http://127.0.0.1:50651/worksheet.html .
+Ctrl+C to exit.
+```
 
-#### Verify installation
+3. Open the url in the output message with browser.
 
-Finally, when you restart the Jupyter Notebook application, you could select the kernel named `backtesting_clojure`. You can make use of the backtester by choosing this kernel.
+![image](/img/gorilla.png)
+
+Click the option button on top right and choose "Load a worksheet"
+
+Look for example worksheets in the example folder. Open the url in the output message with browser.
+![image](/img/load_worksheet.png)
+
+Then you can run each cell by pressing "Ctrl + Enter".
+
+For further detail of Gorilla REPL, please read their [`website`](http://gorilla-repl.org/index.html).
 
 ---
 
