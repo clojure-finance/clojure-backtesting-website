@@ -27,7 +27,6 @@ Gorilla REPL is similar to Jupyter Notebook and is used for running strategies c
 1. Run the following command in the terminal to start the REPL.
 
 ```text
-lein uberjar;
 lein gorilla;
 ```
 

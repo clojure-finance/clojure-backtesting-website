@@ -21,15 +21,13 @@ td {
 
 This page lists documented examples available.
 
-- [Simple trading strategy.ipynb](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Simple%20trading%20strategy.ipynb)
-- [Bad strategy.ipynb](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Bad%20strategy.ipynb)
-- [Bollinger Bands.ipynb](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Bollinger%20Bands.ipynb)
-- [Buying on margin.ipynb](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Buying%20on%20margin.ipynb)
-- [Golden cross.ipynb](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Golden%20cross.ipynb)
-- [Moving average.ipynb](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Moving%20average.ipynb)
-- [Plotting framework.ipynb](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Plotting%20framework.ipynb)
-- [Rate of change.ipynb](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Rate%20of%20change.ipynb)
-- [Relative Strength Index.ipynb](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Relative%20Strength%20Index.ipynb)
+- [simple_trading_strategy.clj](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/simple_trading_strategy.clj)
+- [bad_strategy.clj](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/bad_strategy.clj)
+- [bollinger_bands.clj](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/bollinger_bands.clj)
+- [buying_on_margin.clj](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/bollinger_bands.clj)
+- [golden_cross.clj](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/golden_cross.clj)
+- [rate_of_change.clj](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/rate_of_change.clj)
+- [relative_strength_index.clj](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/relative_strength_index.clj)
 
 Coming soon
 
