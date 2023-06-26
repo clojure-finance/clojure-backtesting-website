@@ -28,7 +28,5 @@ This page lists documented examples available.
 - [golden_cross.clj](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/golden_cross.clj)
 - [rate_of_change.clj](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/rate_of_change.clj)
 - [relative_strength_index.clj](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/relative_strength_index.clj)
-
-Coming soon
-
-- [Fundamental analysis.ipynb](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Fundamental%20analysis.ipynb)
+- [Fundamental analysis.clj](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Fundamental%20analysis.clj)
+- [Plotting_frame.clj](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Plotting_frame.clj)
