@@ -3,105 +3,173 @@
  :layout :post
  :tags  []
  :toc true}
- 
-<br>
 
-**`Examples/Golden cross.ipynb`**
+This walkthrough follows the worksheet [`golden_cross.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/golden_cross.clj). It runs on the bundled sample dataset and can be opened in Gorilla REPL with `make start` (see [Get Started](/posts/get-started) for setup).
 
-This file features the demo code for implementing the Golden Cross strategy.
+A golden cross is when a short-term moving average of a security's price crosses above a long-term one, read as a buy signal; a death cross is the opposite, the short-term average falling below the long-term one. The classic pair is the 50-day and 200-day averages. The sample data covers only January to March 1990, so the worksheet uses 15-day and 30-day averages instead, on securities `10001` ("AAA") and `10002` ("BBB").
 
 ---
 
 ## Initialisation
 
-```
-; import libraries from kernel
-(ns clojure-backtesting.demo
-  (:require [clojure.test :refer :all]
-            [clojure-backtesting.data :refer :all]
+```clojure
+(ns clojure-backtesting.examples.golden-cross
+  (:require [clojure-backtesting.data :refer :all]
             [clojure-backtesting.data-management :refer :all]
+            [clojure-backtesting.portfolio :refer :all]
             [clojure-backtesting.order :refer :all]
             [clojure-backtesting.evaluate :refer :all]
             [clojure-backtesting.plot :refer :all]
             [clojure-backtesting.counter :refer :all]
-            ;;[clojure-backtesting.parameters :refer :all]
-            [clojure.string :as str]
-            [clojure.pprint :as pprint]
-            [java-time :as t]
-            [clojupyter.kernel.version :as ver]
-            [clojure.edn :as edn]
-            [clojupyter.misc.helper :as helper]
-  ) ;; require all libriaries from core
-  (:use clojure.pprint)
-)
-
-; import dataset
-(reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
-
+            [clojure-backtesting.automation :refer :all]
+            [clojure-backtesting.parameters :refer :all]
+            [clojure-backtesting.indicators :refer :all]
+            [clojure-backtesting.direct :refer :all]))
 ```
 
-<br>
+### Import dataset
+
+```clojure
+(load-dataset "resources/sample-data/main" "main" add-aprc)
+
+;; output:
+;; The dataset is already furnished by add-aprc. No more modification is needed.
+;; => "Date range: 1990-01-02 ~ 1990-03-30"
+```
+
+### Initialise portfolio
+
+Go back to this cell every time you want to restart the backtest.
+
+```clojure
+(init-portfolio "1990-01-02" 10000)
+
+;; output:
+;; => "Date: 1990-01-02 Cash: $10000"
+```
 
 ## Writing the Strategy
 
-The following code implements a trading strategy called Golden Rule:
+Each trading day, `golden-cross` compares the 15-day and 30-day moving averages of a security's closing price ([`moving-avg`](/posts/indicators)):
 
-- MA 50 cross above the MA 200 (golden cross)
+- MA 15 above MA 30 (golden cross): buy `quantity` more shares, so the position grows every day the golden cross holds
+- MA 15 below MA 30 (death cross): sell the whole position (`:remaining true` with a target of 0)
 
-- MA 200 cross below the MA 50 (death cross)
-
-So in the codes, MA50 and MA200 are compared on a daily basis, if golden cross occurs, then you set a buy order; if death cross occurs, then you set a sell order first.
+`moving-avg` returns nil until 30 closes are available, so the strategy does nothing for the first 30 trading days. The loop trades AAA in lots of 10 and BBB in lots of 5, updates the evaluation report, and moves to the next day until 1990-03-29. `end-order` then closes any open positions and ends the run.
 
 ```clojure
-(time (do (def MA50-vec-aapl [])
-          (def MA200-vec-aapl [])
-          (def MA50-vec-f [])
-          (def MA200-vec-f [])
-          (while (not= (get-date) "2016-12-29")
-            (do
-    ;; write your trading strategy here
-              (def tics (deref available-tics)) ;20 ms
-              (def MA50-vec-aapl (get-prev-n-days :PRC 50 "AAPL" MA50-vec-aapl (get (get tics "AAPL"):reference)))
-              (def MA200-vec-aapl (get-prev-n-days :PRC 200 "AAPL" MA200-vec-aapl (get (get tics "AAPL") :reference)))
-              (def MA50-vec-f (get-prev-n-days :PRC 50 "F" MA50-vec-f (get (get tics "F"):reference)))
-              (def MA200-vec-f (get-prev-n-days :PRC 200 "F" MA200-vec-f (get (get tics "F") :reference)))
-              (let [[MA50 MA200] [(moving-average :PRC MA50-vec-aapl) (moving-average :PRC MA200-vec-aapl)]]
-                (if (> MA50 MA200)
-                  (order "AAPL" 1 :reference (get (get tics "AAPL") :reference) :print false) 
-                  (order "AAPL" 0 :remaining true :reference (get (get tics "AAPL") :reference))))
-              (let [[MA50 MA200] [(moving-average :PRC MA50-vec-f) (moving-average :PRC MA200-vec-f)]]
-                (if (> MA50 MA200)
-                  (order "F" 1 :reference (get (get tics "F") :reference) :print false) 
-                  (order "F" 0 :remaining true :reference (get (get tics "F") :reference))))
-              ;(update-eval-report (get-date))
-              (next-date)))))
-(.close wrtr)
-```
+(defn golden-cross [permno quantity]
+  (let [ma15 (moving-avg permno 15)
+        ma30 (moving-avg permno 30)]
+    (when (and ma15 ma30)
+      (if (> ma15 ma30)
+        (order permno quantity :print false)
+        (order permno 0 :remaining true)))))
 
-<br>
-
-## Check Number of Orders Made
-
-```
-(count (deref order-record))
+(while (< (compare (get-date) "1990-03-29") 0)
+  (golden-cross "10001" 10)
+  (golden-cross "10002" 5)
+  (update-eval-report)
+  (next-date))
+(end-order)
 
 ;; output:
-9502
+;; => true
 ```
 
-<br>
+## Check Records
 
-## Check Records & Performance
+The first 10 orders: BBB's averages cross first, and the strategy adds 5 shares a day from 1990-02-13.
 
 ```clojure
-;; print final portfolio
+(print-order-record 10)
+```
+
+```
+|      :date | :permno | :price |  :aprc | :quantity |
+|------------+---------+--------+--------+-----------|
+| 1990-02-13 |   10002 | 128.45 | 128.45 |       5.0 |
+| 1990-02-14 |   10002 | 129.49 | 129.49 |       5.0 |
+| 1990-02-15 |   10002 | 129.32 | 129.32 |       5.0 |
+| 1990-02-16 |   10002 |  131.6 | 131.60 |       5.0 |
+| 1990-02-19 |   10002 | 132.31 | 132.31 |       5.0 |
+| 1990-02-20 |   10002 |  134.2 | 134.20 |       5.0 |
+| 1990-02-21 |   10002 | 135.08 | 135.08 |       5.0 |
+| 1990-02-22 |   10002 | 133.11 | 133.11 |       5.0 |
+| 1990-02-23 |   10002 | 133.44 | 133.44 |       5.0 |
+| 1990-02-26 |   10002 | 131.03 | 131.03 |       5.0 |
+```
+
+By the end of the run every position has been sold again, so the final portfolio is all cash. `moving-avg` works on raw closing prices, so BBB's 2-for-1 split on 1990-03-01 halves its price in the averages and produces a death cross a day later.
+
+```clojure
 (print-portfolio)
-
-;; output:
-| :asset | :price |  :aprc | :quantity | :tot-val |
-|--------+--------+--------+-----------+----------|
-|   cash |    N/A |    N/A |       N/A |   135759 |
-|   AAPL | 116.73 | 312.11 |        81 |    25280 |
-|      F |  14.87 | 605.11 |         0 |        0 |
 ```
 
+```
+| :asset | :price | :aprc | :quantity | :tot-val |
+|--------+--------+-------+-----------+----------|
+|   cash |    N/A |   N/A |       N/A |  9960.90 |
+```
+
+The first 10 rows of the portfolio value record, from before the first trade:
+
+```clojure
+(print-portfolio-record 10)
+```
+
+```
+|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :short | :leverage | :margin |
+|------------+------------+------------+----------+-------+--------+-----------+---------|
+| 1990-01-02 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-03 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-04 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-05 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-08 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-09 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-10 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-11 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-12 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-15 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+```
+
+## Evaluation Report
+
+`update-eval-report` adds a row only once the order record is non-empty, so the report starts on the day of the first fill. The metrics are described in [Evaluate](/posts/evaluate).
+
+```clojure
+(print-eval-report 10)
+```
+
+```
+|      :date | :tot-value |    :vol |  :r-vol | :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
+|------------+------------+---------+---------+---------+-----------+---------+---------------|
+| 1990-02-13 |     $10000 | 0.0000% | 0.0000% |  0.0000 |    0.0000 |      $0 |        0.0000 |
+| 1990-02-14 |     $10005 | 0.0000% | 0.0000% | -2.8062 |   -2.8983 |      $2 |        0.0000 |
+| 1990-02-15 |     $10003 | 0.0000% | 0.0000% | -3.9706 |   -4.1713 |      $1 |        0.0170 |
+| 1990-02-16 |     $10037 | 0.0000% | 0.0000% | -3.9098 |   -4.1713 |      $9 |        0.0170 |
+| 1990-02-19 |     $10051 | 0.0000% | 0.0000% | -3.8518 |   -4.1713 |     $10 |        0.0170 |
+| 1990-02-20 |     $10099 | 0.0000% | 0.0000% | -3.7963 |   -4.1713 |     $16 |        0.0170 |
+| 1990-02-21 |     $10125 | 0.0000% | 0.0000% | -3.7431 |   -4.1713 |     $17 |        0.0170 |
+| 1990-02-22 |     $10056 | 0.0000% | 0.0000% | -3.6921 |   -4.1713 |      $7 |        0.6810 |
+| 1990-02-23 |     $10069 | 0.0000% | 0.0000% | -3.6431 |   -4.1713 |      $7 |        0.6810 |
+| 1990-02-26 |      $9961 | 0.0000% | 0.0000% | -3.5961 |   -4.1713 |     $-3 |        1.6216 |
+```
+
+## Plotting
+
+Tag each portfolio value record with a series name, then plot the daily return over time with `plot` (see [Evaluate](/posts/evaluate)).
+
+```clojure
+(def data-to-plot (map #(assoc % :plot "portfolio") (deref portfolio-value)))
+(first data-to-plot)
+
+;; output:
+;; => {:plot "portfolio", :date "1990-01-02", :leverage 0.0, :short 0.0, :tot-ret 0.0, :loan 0.0, :tot-value 10000, :daily-ret 0.0, :margin 1.0}
+```
+
+```clojure
+(plot data-to-plot :plot :date :daily-ret true)
+```
+
+The chart opens in the browser when this cell runs in the Gorilla REPL.

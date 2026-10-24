@@ -3,299 +3,217 @@
 :layout :post
 :tags  []
 :toc true}
- 
-<br>
 
-**`Examples/Buying on margin.ipynb`**
+This walkthrough follows the worksheet [`buying_on_margin.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/buying_on_margin.clj). It runs on the bundled sample dataset and can be opened in Gorilla REPL with `make start` (see [Get Started](/posts/get-started) for setup).
 
-This file features the demo code for enabling or disabling leverage in the backtester.
+It shows how the backtester handles trading with and without leverage, the initial and maintenance margin requirements, and short selling. All trades use security `10001` ("AAA"), which trades at about $50 in the sample data. Orders fill at the next trading day's close.
+
+The portfolio record reports two ratios:
+
+- **leverage** = (loan + value of shorted stock) / equity
+- **margin** = equity / gross position value (100% when there are no positions)
+
+The margin parameters are described in [Parameters](/posts/parameters), and the portfolio functions in [Portfolio](/posts/portfolio).
 
 ---
 
 ## Initialisation
 
 ```clojure
-; import libraries from kernel
-(ns clojure-backtesting.demo
-  (:require [clojure.test :refer :all]
-            [clojure-backtesting.data :refer :all]
+(ns clojure-backtesting.examples.buy-on-margin
+  (:require [clojure-backtesting.data :refer :all]
             [clojure-backtesting.data-management :refer :all]
             [clojure-backtesting.portfolio :refer :all]
             [clojure-backtesting.order :refer :all]
             [clojure-backtesting.evaluate :refer :all]
             [clojure-backtesting.plot :refer :all]
-            [clojure-backtesting.specs :refer :all]
             [clojure-backtesting.counter :refer :all]
-            [clojure-backtesting.large-data :refer :all]
+            [clojure-backtesting.automation :refer :all]
             [clojure-backtesting.parameters :refer :all]
-            [clojure.string :as str]
-            [clojure.pprint :as pprint]
-            [java-time :as t]
-            [clojupyter.kernel.version :as ver]
-            [clojupyter.misc.helper :as helper]
-  ) ;; require all libriaries from core
-  (:use clojure.pprint)
-)
-
-; import dataset
-(reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
-
+            [clojure-backtesting.indicators :refer :all]
+            [clojure-backtesting.direct :refer :all]))
 ```
 
-<br>
+### Import dataset
+
+```clojure
+(load-dataset "resources/sample-data/main" "main" add-aprc)
+
+;; output:
+;; The dataset is already furnished by add-aprc. No more modification is needed.
+;; => "Date range: 1990-01-02 ~ 1990-03-30"
+```
 
 ## Trade without Leverage
 
-The trade would be allowed if you possess enough cash to pay.
-
-**Example:**
+With `:leverage false` the order fills only if you have the cash to pay for it. Here $1000 is enough for 10 shares.
 
 ```clojure
-(init-portfolio "1980-12-15" 400)
-(order "AAPL" 10 :leverage false :remaining true :print true) ;without leverage, remaining value
-
+(init-portfolio "1990-01-02" 1000)
+(order "10001" 10 :leverage false :remaining true :print true)
 (next-date)
 (next-date)
-(next-date)
-
-(pprint/print-table (deref order-record))
+(print-order-record)
 (print-portfolio)
 (print-portfolio-record -1)
 ```
 
-```clojure
-;; output:
-
-Order: 1980-12-16 | AAPL | 10.000000.
-
-|      :date | :permno |  :price | :aprc | :quantity |
-|------------+------+---------+-------+-----------|
-| 1980-12-16 | AAPL | 25.3125 | 25.82 |        10 |
-
-| :asset |  :price |   :aprc | :quantity | :tot-val |
-|--------+---------+---------+-----------+----------|
-|   cash |     N/A |     N/A |       N/A |   141.81 |
-|   AAPL | 26.6875 | 26.4187 |        10 |   264.19 |
-
-|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage | :margin |
-|------------+------------+------------+----------+-------+-----------+---------|
-| 1980-12-15 |    $400.00 |      0.00% |    0.00% | $0.00 |      0.00 |   0.00% |
-| 1980-12-16 |    $400.00 |      0.00% |    0.00% | $0.00 |      0.00 |   0.00% |
-| 1980-12-17 |    $402.75 |      0.30% |    0.30% | $0.00 |      0.00 |   0.00% |
-| 1980-12-18 |    $406.00 |      0.35% |    0.65% | $0.00 |      0.00 |   0.00% |
 ```
-<br>
+Order: 1990-01-03 | 10001 | 10.000000.
 
-However, the trade would not be allowed if you do not have sufficient cash.
+|      :date | :permno | :price | :aprc | :quantity |
+|------------+---------+--------+-------+-----------|
+| 1990-01-03 |   10001 |  50.81 | 50.81 |      10.0 |
 
-**Example:**
+| :asset | :price |   :aprc | :quantity | :tot-val |
+|--------+--------+---------+-----------+----------|
+|   cash |    N/A |     N/A |       N/A |   491.90 |
+|  10001 |  50.22 | 50.2200 |      10.0 |   502.20 |
+
+|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :short | :leverage | :margin |
+|------------+------------+------------+----------+-------+--------+-----------+---------|
+| 1990-01-02 |   $1000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-03 |   $1000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 196.81% |
+| 1990-01-04 |    $994.10 |     -0.59% |   -0.59% | $0.00 |  $0.00 |      0.00 | 197.95% |
+```
+
+With insufficient cash, the order is rejected when it comes up for filling.
 
 ```clojure
-(init-portfolio "1980-12-15" 100)
-(order "AAPL" 10 :leverage false :remaining true :print true) ;without leverage, remaining value
-
+(init-portfolio "1990-01-02" 400)
+(order "10001" 10 :leverage false :remaining true :print true)
 (next-date)
 (next-date)
-(next-date)
-
-(pprint/print-table (deref order-record))
+(print-order-record)
 (print-portfolio)
-(print-portfolio-record -1)
 ```
-```clojure
-;; output:
 
-Order request 1980-12-15 | AAPL | 10 fails.
+```
+Order request 1990-01-03 | 10001 | 10 fails.
 Failure reason: You do not have enough money to buy or have enough stock to sell. Try to solve by enabling leverage.
 
 | :asset | :price | :aprc | :quantity | :tot-val |
 |--------+--------+-------+-----------+----------|
-|   cash |    N/A |   N/A |       N/A |   100.00 |
-
-|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage | :margin |
-|------------+------------+------------+----------+-------+-----------+---------|
-| 1980-12-15 |    $100.00 |      0.00% |    0.00% | $0.00 |      0.00 |   0.00% |
+|   cash |    N/A |   N/A |       N/A |   400.00 |
 ```
-
-<br>
 
 ## Trade with Leverage
 
-**Example:**
+Leverage is on by default (`LEVERAGE`). The shortfall is borrowed: cash goes negative by the amount of the loan, and the portfolio record shows the loan, the leverage and the margin.
 
 ```clojure
-(init-portfolio "1980-12-15" 20)
-
-(order "AAPL" 1 :print true) ;with leverage, exact value trade
-
+(init-portfolio "1990-01-02" 300)
+(order "10001" 10 :print true)
 (next-date)
 (next-date)
-(next-date)
-
-(pprint/print-table (deref order-record))
+(print-order-record)
 (print-portfolio)
 (print-portfolio-record -1)
 ```
-```clojure
-;; output:
 
-Order: 1980-12-16 | AAPL | 1.000000.
-
-|      :date | :permno |  :price | :aprc | :quantity |
-|------------+------+---------+-------+-----------|
-| 1980-12-16 | AAPL | 25.3125 | 25.82 |         1 |
-
-| :asset |  :price |   :aprc | :quantity | :tot-val |
-|--------+---------+---------+-----------+----------|
-|   cash |     N/A |     N/A |       N/A |    -5.82 |
-|   AAPL | 26.6875 | 26.4187 |         1 |    26.42 |
-
-|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage | :margin |
-|------------+------------+------------+----------+-------+-----------+---------|
-| 1980-12-15 |     $20.00 |      0.00% |    0.00% | $0.00 |      0.00 |   0.00% |
-| 1980-12-16 |     $20.00 |      0.00% |    0.00% | $5.82 |      0.29 |  77.46% |
-| 1980-12-17 |     $20.27 |      0.17% |    0.17% | $5.82 |      0.29 |  77.70% |
-| 1980-12-18 |     $20.60 |      0.20% |    0.37% | $5.82 |      0.28 |  77.98% |
 ```
+Order: 1990-01-03 | 10001 | 10.000000.
 
-<br>
+|      :date | :permno | :price | :aprc | :quantity |
+|------------+---------+--------+-------+-----------|
+| 1990-01-03 |   10001 |  50.81 | 50.81 |      10.0 |
+
+| :asset | :price |   :aprc | :quantity | :tot-val |
+|--------+--------+---------+-----------+----------|
+|   cash |    N/A |     N/A |       N/A |  -208.10 |
+|  10001 |  50.22 | 50.2200 |      10.0 |   502.20 |
+
+|      :date | :tot-value | :daily-ret | :tot-ret |   :loan | :short | :leverage | :margin |
+|------------+------------+------------+----------+---------+--------+-----------+---------|
+| 1990-01-02 |    $300.00 |      0.00% |    0.00% |   $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-03 |    $300.00 |      0.00% |    0.00% | $208.10 |  $0.00 |      0.69 |  59.04% |
+| 1990-01-04 |    $294.10 |     -1.99% |   -1.99% | $208.10 |  $0.00 |      0.71 |  58.56% |
+```
 
 ## Initial Margin
 
-The purchase would not be allowed if the ratio of cash to total value of assets bought on margin goes below the initial margin.
+A purchase on margin is allowed only if the cash on hand covers at least `INITIAL-MARGIN` of the order's value (the loan plus the cash). The default is 0.5, so the $300 order above (about 59% covered) went through. Raising the initial margin to 0.9 rejects the same order; the cell then restores the default.
 
 ```clojure
-; check variable
 (println INITIAL-MARGIN)
-```
-
-<br>
-
-**Example:** order failed, since cash is insufficient.
-
-```clojure
-(init-portfolio "1980-12-15" 100)
-(order "AAPL" 10 :remaining true :print true) ;with leverage, remaining value
-
+(update-initial-margin 0.9)
+(init-portfolio "1990-01-02" 300)
+(order "10001" 10 :print true)
 (next-date)
-(next-date)
-(next-date)
-
-(pprint/print-table (deref order-record))
-(print-portfolio)
-(print-portfolio-record -1)
-```
-```
-;; output:
-
-Order request 1980-12-15 | AAPL | 10 fails due to initial margin exceeding.
-
-| :asset | :price | :aprc | :quantity | :tot-val |
-|--------+--------+-------+-----------+----------|
-|   cash |    N/A |   N/A |       N/A |   100.00 |
-
-|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage | :margin |
-|------------+------------+------------+----------+-------+-----------+---------|
-| 1980-12-15 |    $100.00 |      0.00% |    0.00% | $0.00 |      0.00 |   0.00% |
+(print-order-record)
+(update-initial-margin 0.5)
 ```
 
-<br>
-
-Alternatively, you could manually **update the initial margin** to enable such a case. You could set it to nil in order to disable the initial margin requirement.
-
-```clojure
-(update-initial-margin 0.1)
-(println INITIAL-MARGIN)
-
-;; output:
-0.1
+```
+0.5
+Order request 1990-01-03 | 10001 | 10 fails due to initial margin requirement.
 ```
 
-<br>
-
-**Example:** with initial margin udpated to 0.1
-
-```clojure
-(init-portfolio "1980-12-15" 100)
-(order "AAPL" 10 :remaining true :print true) ;with leverage, remaining value
-
-(next-date)
-(next-date)
-(next-date)
-
-(pprint/print-table (deref order-record))
-(print-portfolio)
-(print-portfolio-record -1)
-```
-```clojure
-;; output:
-
-Order: 1980-12-16 | AAPL | 10.000000.
-
-|      :date | :permno |  :price | :aprc | :quantity |
-|------------+------+---------+-------+-----------|
-| 1980-12-16 | AAPL | 25.3125 | 25.82 |        10 |
-
-| :asset |  :price |   :aprc | :quantity | :tot-val |
-|--------+---------+---------+-----------+----------|
-|   cash |     N/A |     N/A |       N/A |  -158.19 |
-|   AAPL | 26.6875 | 26.4187 |        10 |   264.19 |
-
-|      :date | :tot-value | :daily-ret | :tot-ret |   :loan | :leverage | :margin |
-|------------+------------+------------+----------+---------+-----------+---------|
-| 1980-12-15 |    $100.00 |      0.00% |    0.00% |   $0.00 |      0.00 |   0.00% |
-| 1980-12-16 |    $100.00 |      0.00% |    0.00% | $158.19 |      1.58 |  38.73% |
-| 1980-12-17 |    $102.75 |      1.81% |    1.81% | $158.19 |      1.54 |  39.38% |
-| 1980-12-18 |    $106.00 |      2.02% |    3.83% | $158.19 |      1.49 |  40.12% |
-```
-
-<br>
-
-<br>
+Set it to `nil` to disable the initial margin requirement altogether.
 
 ## Maintenance Margin
 
-All positions will be automatically closed if the portfolio margin goes below the maintenace margin.
-
-<br>
-
-**Example:**
+All positions are closed automatically if the portfolio margin falls below `MAINTENANCE-MARGIN` (0.25 by default). Raising it above the current margin triggers the liquidation on the next day; the cell then restores the default.
 
 ```clojure
-(init-portfolio "1980-12-15" 100)
-(order "AAPL" -10 :remaining true :print true) ;with leverage, remaining value
-(order "F" 20 :remaining true :print true)
+(init-portfolio "1990-01-02" 300)
+(order "10001" 10 :print true)
+(next-date)
+(print-portfolio-record -1)
+(update-maintenance-margin 0.8)
+(next-date)
+(print-portfolio)
+(update-maintenance-margin 0.25)
+```
 
-(next-date)
-(next-date)
-(next-date)
+```
+Order: 1990-01-03 | 10001 | 10.000000.
 
-(pprint/print-table (deref order-record))
+|      :date | :tot-value | :daily-ret | :tot-ret |   :loan | :short | :leverage | :margin |
+|------------+------------+------------+----------+---------+--------+-----------+---------|
+| 1990-01-02 |    $300.00 |      0.00% |    0.00% |   $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-03 |    $300.00 |      0.00% |    0.00% | $208.10 |  $0.00 |      0.69 |  59.04% |
+1990-01-04: Portfolio margin 0.5856232576662683 (equity / gross position value) is below the maintenance margin 0.8. Closing all positions.
+To restart. Please call init-portfolio again.
+
+| :asset | :price | :aprc | :quantity | :tot-val |
+|--------+--------+-------+-----------+----------|
+|   cash |    N/A |   N/A |       N/A |   294.10 |
+```
+
+After a liquidation the run is over: call `init-portfolio` again to start a new one.
+
+## Short Selling
+
+Selling shares you do not hold borrows them. The proceeds arrive in cash, the position is negative, and the borrowed stock counts towards the gross position value in the margin. A short that would breach the initial margin is rejected: here the second order would take the short position to 60 shares (about $3000) against roughly $1000 of equity.
+
+```clojure
+(init-portfolio "1990-01-02" 1000)
+(order "10001" -10 :print true)
+(next-date)
+(order "10001" -50 :print true)
+(next-date)
+(print-order-record)
 (print-portfolio)
 (print-portfolio-record -1)
 ```
-```clojure
-;; output:
 
-Order: 1980-12-16 | AAPL | -10.000000.
-Order: 1980-12-16 | F | 20.000000.
-1980-12-15: You have lost all cash. Closing all positions.
-Please reset the dataset and call init-portfolio again.
+```
+Order: 1990-01-03 | 10001 | -10.000000.
+Order request 1990-01-04 | 10001 | -50 fails due to initial margin requirement on the short position.
 
-|      :date | :permno |  :price |  :aprc | :quantity |
-|------------+------+---------+--------+-----------|
-| 1980-12-16 | AAPL | 25.3125 |  25.82 |       -10 |
-| 1980-12-16 |    F |   18.75 | 100.64 |        20 |
-| 1980-12-16 |    F |   18.75 | 100.64 |       -20 |
+|      :date | :permno | :price | :aprc | :quantity |
+|------------+---------+--------+-------+-----------|
+| 1990-01-03 |   10001 |  50.81 | 50.81 |     -10.0 |
 
-| :asset |  :price |    :aprc | :quantity | :tot-val |
-|--------+---------+----------+-----------+----------|
-|   cash |     N/A |      N/A |       N/A | -1654.57 |
-|   AAPL | 25.3125 |  25.8187 |       -10 |  -258.19 |
-|      F |   18.75 | 100.6380 |        20 |  2012.76 |
+| :asset | :price |   :aprc | :quantity | :tot-val |
+|--------+--------+---------+-----------+----------|
+|   cash |    N/A |     N/A |       N/A |  1508.10 |
+|  10001 |  50.22 | 50.2200 |     -10.0 |  -502.20 |
 
-|      :date | :tot-value | :daily-ret | :tot-ret |    :loan | :leverage | :margin |
-|------------+------------+------------+----------+----------+-----------+---------|
-| 1980-12-15 |    $100.00 |      0.00% |    0.00% |    $0.00 |      0.00 |   0.00% |
-| 1980-12-16 |    $100.00 |      0.00% |    0.00% | $1654.57 |     16.55 |   5.70% |
+|      :date | :tot-value | :daily-ret | :tot-ret | :loan |  :short | :leverage | :margin |
+|------------+------------+------------+----------+-------+---------+-----------+---------|
+| 1990-01-02 |   $1000.00 |      0.00% |    0.00% | $0.00 |   $0.00 |      0.00 | 100.00% |
+| 1990-01-03 |   $1000.00 |     -0.00% |   -0.00% | $0.00 | $508.10 |      0.51 | 196.81% |
+| 1990-01-04 |   $1005.90 |      0.59% |    0.59% | $0.00 | $502.20 |      0.50 | 200.30% |
 ```

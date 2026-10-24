@@ -8,20 +8,26 @@ Welcome to the Clojure Backtesting Library! This is an open-source library for q
 
 ## Features
 
+- **Day-by-day simulation**  
+  Step through trading days, place orders, and track the portfolio. Orders fill at the next close, like in the real market.
+
 - **Support for large data files**  
-  The library has been tested with data up to 30 GB large.
-
-- **All native types**  
-  All the datatypes used to store data is native Clojure (or Java) types!  
-
-- **Lazy operations**  
-  Some operations will not be executed immediately. Dataframe will intelligently pipeline the operations altogether in computation.  
+  Data is read from disk day by day with a cache, so datasets larger than memory work. The library has been tested with data up to 30 GB.
 
 - **Built-in indicators**  
-  Common technial indicators such as Relative Strength Index (RSI) and Exponential Moving Average (EMA) are integrated within the library.
+  EMA, MACD, RSI, Rate of Change, parabolic SAR, ATR and Keltner Channels, plus moving averages and standard deviations for crossovers or Bollinger Bands.
 
-- **Write your unique trading strategy**  
-  Making use of the variety of APIs, you could customise your own strategy and enjoy the advantages of programming in a functional language at the same time. 
+- **Margin and short selling**  
+  Borrow to buy or sell short, with configurable initial and maintenance margins, transaction costs and loan interest.
+
+- **Dividends, splits and fundamentals**  
+  Dividends are reinvested or paid to cash, and Compustat-style fundamentals are joined by report date, so a strategy only sees what had been published.
+
+- **Evaluation, automation and plotting**  
+  Sharpe ratio, volatility and maximum drawdown; condition/action rules such as stop-loss orders; line charts in the browser.
+
+- **Sample data included**  
+  A small bundled dataset lets you try every function right after cloning.
 
 ## Video
 
@@ -45,6 +51,7 @@ If you are new to language Clojure or backtesters in general, you are recommende
 - [Evaluate](/posts/evaluate)
 - [Indicators](/posts/indicators)
 - [Parameters](/posts/parameters)
+- [Automation](/posts/automation)
 
 ### Part III: Examples
 

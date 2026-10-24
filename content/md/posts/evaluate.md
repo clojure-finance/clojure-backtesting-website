@@ -1,11 +1,9 @@
-{:title "Evaluatation"
+{:title "Evaluation"
 :date "2021-01-20"
 :layout :post
 :tags []
-
 :navbar? true
 :page-index 5
-
 :toc true}
 
 <style>
@@ -16,15 +14,15 @@ table, th, td {
 }
 </style>
 
-
-This page features functions for computing metrics to evaluate portfolio performance and printing the evaluation report.
+This page features functions for computing metrics that evaluate portfolio performance, printing the evaluation report, and plotting.
 
 ---
+
 ## Calculate Evaluation Metrics
 
 #### update-eval-report
 
-This function updates the evaluation metrics in the record. (see `print-eval-report` for the list of evaluation metrics computed)
+This function computes the evaluation metrics for today and adds them to the evaluation report (see `print-eval-report` for the list of metrics). It does nothing before the first order has filled or after the run has ended.
 
 | No Argument |
 | ----------- |
@@ -40,172 +38,140 @@ This function updates the evaluation metrics in the record. (see `print-eval-rep
 ;; update the evaluation metrics today
 ```
 
+Call it on the days you want in the report, typically once per day after `next-date`. Over many dates, updating every day takes a lot of memory and time.
+
+---
+
 ## Inspection of Evaluation Report
 
 ### `print-eval-report`
 
-This function prints the evaluation report that includes all summary statiscs in a table format.
+This function prints the evaluation report in a table.
 
 **Parameters:**
 
-- `n` - no. of rows to print, if n <= 0, print entire record
+- [`n`] - number of rows to print, from the start. Without it, or with zero or a negative number, the entire report is printed.
 
-**Ouput explanation:**
+**Output explanation:**
 
 | &nbsp;Column&emsp; | &nbsp;Format &emsp; | &nbsp;Meaning                                                                      |
 | ------------------ | :-----------------: | :--------------------------------------------------------------------------------- |
 | `date`             |  &nbsp;YYYY-MM-DD   | &nbsp;Date of record                                                               |
-| `tot-val`          |    &nbsp;int, %     | &nbsp;Total value of the portfolio, including cash and all purchased stocks &emsp; |
-| `vol`              |   &nbsp;float, %    | &nbsp;Volatility of the portfolio caculated with an expanding window &emsp;        |
-| `r-vol`            |   &nbsp;float, %    | &nbsp;Volatility of the portfolio caculated with a rolling window &emsp;           |
-| `sharpe`           |   &nbsp;float, %    | &nbsp;Sharpe ratio of the portfolio caculated with an expanding window &emsp;      |
-| `r-sharpe`         |   &nbsp;float, %    | &nbsp;Sharpe ratio of the portfolio caculated with a rolling window &emsp;         |
-| `pnl-pt`           |   &nbsp;float, $    | &nbsp;Profit and loss per trade &emsp;                                             |
-| `max-drawdown`     |   &nbsp;float, $    | &nbsp;Maximum drawdown of the portfolio &emsp;                                     |
+| `tot-value`        |    &nbsp;int, $     | &nbsp;Total value of the portfolio (cash plus long positions minus short positions) |
+| `vol`              |   &nbsp;float, %    | &nbsp;Volatility: sample standard deviation of the daily returns since the start |
+| `r-vol`            |   &nbsp;float, %    | &nbsp;Volatility over the rolling window (the last 30 days by default)           |
+| `sharpe`           |   &nbsp;float       | &nbsp;Annualised Sharpe ratio since the start: mean daily return / standard deviation × √252, with a zero risk-free rate |
+| `r-sharpe`         |   &nbsp;float       | &nbsp;Annualised Sharpe ratio over the rolling window                            |
+| `pnl-pt`           |   &nbsp;int, $      | &nbsp;Profit and loss per trade: (total value − initial capital) / number of filled orders |
+| `max-drawdown`     |   &nbsp;float, %    | &nbsp;Maximum drawdown: the largest decline of the total value from a previous peak, as a percentage of that peak |
 
-
-<br>
+The daily returns are the log returns in the `daily-ret` column of the [portfolio record](/posts/portfolio#print-portfolio-record).
 
 **Example**:
 
 ```clojure
-(eval-report -1)
-
-;; output:
-
-|      :date | :tot-value |    :vol |  :r-vol |  :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
-|------------+------------+---------+---------+----------+-----------+---------+---------------|
-| 1980-12-15 |     $10000 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $0 |        0.0000 |
-| 1980-12-16 |     $10000 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $0 |        0.0000 |
-| 1980-12-17 |     $10002 | 0.0069% | 0.0069% |  1.7321% |   1.7321% |      $2 |      100.0000 |
-| 1980-12-23 |     $10023 | 0.0116% | 0.0116% |  8.7665% |   8.7665% |     $23 |      100.0000 |
-| 1980-12-24 |     $10029 | 0.0117% | 0.0117% | 11.0696% |  11.0696% |     $29 |      100.0000 |
-| 1980-12-26 |     $10041 | 0.0154% | 0.0154% | 11.5742% |  11.5742% |     $41 |      100.0000 |
-| 1980-12-29 |     $10042 | 0.0150% | 0.0150% | 12.4075% |  12.4075% |     $42 |      100.0000 |
-| 1980-12-30 |     $10039 | 0.0173% | 0.0173% |  9.9769% |   9.9769% |     $39 |      128.4113 |
+(print-eval-report 5)
 ```
+
+```text
+|      :date | :tot-value |    :vol |  :r-vol | :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
+|------------+------------+---------+---------+---------+-----------+---------+---------------|
+| 1990-01-03 |     $10000 | 0.0000% | 0.0000% |  0.0000 |    0.0000 |      $0 |        0.0000 |
+| 1990-01-04 |      $9970 | 0.0000% | 0.0000% |  0.0000 |    0.0000 |    $-14 |        0.2950 |
+| 1990-01-05 |      $9976 | 0.0301% | 0.0301% |  7.9373 |    7.9373 |    $-11 |        0.2950 |
+| 1990-01-08 |      $9977 | 0.0269% | 0.0269% |  7.0993 |    7.0993 |     $-7 |        0.2950 |
+| 1990-01-09 |      $9963 | 0.0694% | 0.0694% | -3.3269 |   -3.3269 |    $-12 |        0.3700 |
+```
+
+The same rows are kept as numbers (not formatted) in the `eval-record` atom, which is handy for plotting.
 
 <br>
 
-### `portfolio-total`
+### Individual metrics
 
-This function returns the current total value of the portfolio.
+These functions compute a metric for the current state without touching the report. The examples were taken during a run on the sample dataset.
 
-**Parameters:**
-
-- none
+| Function | Return |
+| -------- | ------ |
+| `portfolio-total` | Current total value of the portfolio |
+| `portfolio-daily-ret` | Today's daily (log) return |
+| `portfolio-total-ret` | Total (log) return since the start |
+| `get-daily-returns` | All daily returns so far |
+| `volatility` / `rolling-volatility` | Volatility since the start / over the rolling window, as a fraction |
+| `sharpe-ratio` / `rolling-sharpe-ratio` | Annualised Sharpe ratio since the start / over the rolling window |
+| `pnl-per-trade` | Profit and loss per filled order, in dollars |
+| `max-drawdown` | Maximum drawdown, as a fraction of the peak |
 
 **Example**:
 
 ```clojure
 (portfolio-total)
+;; => 9924.099999999999
 
-;; output:
-10039.706976028898
-```
-
-<br>
-
-### `portfolio-daily-ret`
-
-This function returns the current daily return of the portfolio.
-
-**Parameters:**
-
-- none
-
-**Example**:
-
-```clojure
-(portfolio-daily-ret)
-
-;; output:
--1.381737451156456E-4
-```
-
-<br>
-
-### `portfolio-total-ret`
-
-This function returns the total daily return of the portfolio.
-
-**Parameters:**
-
-- none
-
-**Example**:
-
-```clojure
 (portfolio-total-ret)
+;; => -0.007618950633236242
 
-;; output:
-0.0017210374553336212
+(pnl-per-trade)
+;; => -25.300000000000484
+
+(max-drawdown)
+;; => 0.007590000000000145
 ```
 
 ---
 
 ## Update Configuration
+
 ### `update-rolling-window`
 
-This function updates the time window for computing the rolling functions (i.e. `r-vol` and `r-sharpe`). By default, the time window is set as `30`.
+This function sets the time window, in trading days, for the rolling metrics (`r-vol` and `r-sharpe`). By default, the window is `30`.
 
 **Parameters:**
 
-- `n` - new time window for computing the rolling functions in the evaluation report
+- `n` - the new time window
 
 **Example**:
 
 ```clojure
-(update-rolling-window 3)
-
+(update-rolling-window 10)
 ;; output:
-Time window is updated as 3. ; success message
+Time window is updated as 10.
 ```
 
 ---
 
 ## Plot Graphs
 
-Functions for generating line plots on chosen variables.
-
 ### `plot`
 
-This function allows users to plot line charts. This plotting function works the best with the Jupyter Notebook.
+This function draws a line chart with [Oz](https://github.com/metasoarous/oz) (Vega-Lite), which opens in the browser. It works from a plain REPL as well as from Gorilla REPL.
 
 **Parameters:**
 
-- dataset - contains a map of data to be plotted. Each map should be in the following format: `{:permno "AAPL" :date "1980-12-15" :price "27.00" :return "-0.5 }`
-- `series` - series name of the lines to appear in the legend
-- `x` - key that contains that x-axis data in the dataset, e.g. `:date`
-- `y` - key that contains that y-axis data in the datset, e.g. `:portfolio-value`
-- `full-date` - boolean, set to true if you want to have full date (i.e. month, day, year) as labels in the x-axis; if set as false the function would automatically choose the appropariate labels
-
-**Note**: pass full-date as `true` when plotting variables in the **evaluation report**.
-
-<br>
+- `dataset` - a sequence of maps, e.g. `(deref portfolio-value)`, `(deref eval-record)` or `(deref order-record)`
+- `series` - the key whose value names the line each row belongs to, shown in the legend
+- `x` - the key of the x-axis (time) values, e.g. `:date`
+- `y` - the key of the y-axis values, e.g. `:tot-value`. Pass two keys, `y1 y2`, to draw both on independent y-axes.
+- `full-date` - `true` to label the x-axis with full dates (year, month, day); `false` lets the chart choose the labels
 
 **Example**:
 
 ```clojure
-;; data to print: an atom of maps
-
-(first data) ;; print first row
-;; output
-;; {:date "1980-12-16", :pnl-pt 7.806415917975755, :sharpe 1.4142135623730954, :tot-val 10007.806415917976, :vol 0.05517816194058409}
-
-;; Add legend name to series
+;; tag every row with the series name
 (def data-to-plot
- (map #(assoc % :plot "sharpe")
-  data))
+  (map #(assoc % :plot "sharpe ratio") (deref eval-record)))
 
-;; Call plotting function
-(plot data-to-plot :plot :date :vol true)
+(plot data-to-plot :plot :date :sharpe true)
 ```
 
-<br>
+To compare securities, give each row the security as its series:
 
-Output:
+```clojure
+(def prices
+  (for [day (reverse (get-prev-n-days 20)) row day]
+    (select-keys row [:PERMNO :date :PRC])))
 
-<br>
+(plot prices :PERMNO :date :PRC true)
+```
 
-![image](/img/plot-sharpe.png)
+The [`Plotting_frame.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Plotting_frame.clj) worksheet has more examples.

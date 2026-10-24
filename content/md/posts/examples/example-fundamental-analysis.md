@@ -3,292 +3,162 @@
 :layout :post
 :tags  []
 :toc true}
- 
-<br>
 
-**`Examples/Fundamental Analysis.ipynb`**
+This walkthrough follows the worksheet [`Fundamental analysis.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Fundamental%20analysis.clj). It runs on the bundled sample dataset and can be opened in Gorilla REPL with `make start` (see [Get Started](/posts/get-started) for setup).
 
-This file features the demo code for implementing a simple fundamental analysis strategy.
+It implements a simple fundamental analysis strategy: rank securities by return on equity (ROE) from their quarterly filings and buy the best one.
+
+A supplementary dataset (Compustat-style quarterly fundamentals) is joined onto each day's rows. For every security the latest filing that was public on that day is used: the filing's period-end date (`datadate`) must be on or before the day, and so must its report date (`rdq`) when the dataset has one. Without a report date the period end alone decides, which lets the strategy see the numbers before they were announced. See [API](/posts/api) for loading datasets.
 
 ---
 
 ## Initialisation
 
-```
-; import libraries from kernel
-(ns clojure-backtesting.demo
-  (:require [clojure.test :refer :all]
-            [clojure-backtesting.data :refer :all]
+```clojure
+(ns clojure-backtesting.examples.fundamental-analysis
+  (:require [clojure-backtesting.data :refer :all]
             [clojure-backtesting.data-management :refer :all]
+            [clojure-backtesting.portfolio :refer :all]
             [clojure-backtesting.order :refer :all]
             [clojure-backtesting.evaluate :refer :all]
             [clojure-backtesting.plot :refer :all]
             [clojure-backtesting.counter :refer :all]
-            ;;[clojure-backtesting.parameters :refer :all]
-            [clojure.string :as str]
-            [clojure.pprint :as pprint]
-            [java-time :as t]
-            [clojupyter.kernel.version :as ver]
-            [clojure.edn :as edn]
-            [clojupyter.misc.helper :as helper]
-  ) ;; require all libriaries from core
-  (:use clojure.pprint)
-)
-
-; import dataset
-(reset! data-set (add-aprc (read-csv-row "../resources/CRSP-extract.csv")));
-
+            [clojure-backtesting.automation :refer :all]
+            [clojure-backtesting.parameters :refer :all]
+            [clojure-backtesting.indicators :refer :all]
+            [clojure-backtesting.direct :refer :all]))
 ```
 
-## Compute Return on Equity (ROE)
+Load the daily price data and the fundamentals, and start a portfolio with $10000:
 
 ```clojure
-;; Use merged database CRSP + COMPUSTAT
-;; Compute the latest quarter ROE by using: niq / (share price * cshoq) in the merged dataset
-;; output (a list of maps, followed by a map with the list of ROEs)
-;; {:data {:permno "AAPL" :year "1980" :ROE 0.02}{...} :ROE [0.02 0.53 ...]}
-
-(defn get-set-roe
-    "return a set of maps of tickers and datadate" ;;{:permno "AAPL", :datadate "1981/3/31", :ROE x.x}
-    [file date]
-    (loop [remaining file
-            result-set []
-            ROE-list [] ]
-        (if (empty? remaining)
-            ;; how to change the output here?
-            ;;(into #{} (conj result-set {:ROE-set ROE-list}))
-            {:data result-set :ROE-set ROE-list}
-            (let [first-line (first remaining)
-                next-remaining (rest remaining)
-                ;;next-result-set (conj result-set (get first-line :datadate)
-                [year month day] (map parse-int (str/split date #"-"))]
-                ;;merged file use :datadate as key
-                (if (= date (get first-line :datadate))
-                    (let [[niq PRC cshoq] (map edn/read-string [(get first-line :niq)(get first-line :PRC)(get first-line :cshoq)])
-                          ROE (/ niq (* PRC cshoq))]
-                        (recur next-remaining (conj result-set {:permno (get first-line :permno) :year year :ROE ROE}) (conj ROE-list ROE))
-                    )
-                    (recur next-remaining result-set ROE-list)
-                )  
-            )
-        )
-    )
-)
-```
-<br>
-
-Making use of the above function, we write another function to only retrieve the set of ROE from the output of `get-set-roe`.
-
-```clojure
-(defn get-ROE
-            "return a set of ROE"  ;;{10.2 1.8 x.x ...}
-        [dataset]
-        (into #{} (get dataset :ROE-set))
-        )
-```
-
-## Get List of Tickers to Buy
-
-Suppose that we want to get the list of tickers with ROE >= 20th percentile. It could be done with the following steps.
-
-```clojure
-;; load data
-(def data (get-set-roe (read-csv-row "../resources/data-testing-merged.csv") "1980-12-18"))
-
-;; get the set of ROE
-(def roe-list (get-ROE data))
-
-;; get a sorted set of ROE, using the bulit-in "sorted-set" function
-(def roe-sorted-set (apply sorted-set roe-list))
-
-;; cast the sorted set into a vector
-(def roe-sorted-vec (into '[] roe-sorted-set))
-
-;; find the 20th percentile ROE
-(def roe-20 (nth roe-sorted-vec (int (* 0.8 (count roe-sorted-vec)))))
-```
-
-With the 20th percentile ROE obtained, we can write a function to get only tickers with ROE >= this value (i.e. `roe-20`).
-
-```clojure
-(defn get-roe-20
-    "return a set tickers" ;;{"AAPL" "GM"}
-    [data roe-20]
-    (loop [remaining (get data :data)
-            result-set []]
-        (if (empty? remaining)
-            (into #{} result-set)
-            (let [first-line (first remaining)
-                next-remaining (rest remaining)]
-                ;;conj the stock ticker whose ROE >= roe-20
-                ;;(if (not= -1 (compare roe-20 (get first-line :ROE)))
-                (if (>= (get first-line :ROE) roe-20)
-                    (recur next-remaining (conj result-set (get first-line :permno)))           
-                    (recur next-remaining result-set)            
-                )  
-            )
-        )
-    )
-)
-```
-
-Eventually, we get the list of tickers that we want:
-
-```clojure
-;; get the list of tickers to buy
-(def stock-to-buy-test (get-roe-20 data roe-20)
-)
-(println stock-to-buy-test)
-;; output: #{IBM}
-```
-
-<br>
-
-## Writing the Strategy
-
-Given all the essential functions, we could write the loop for making orders based on the ROE of companies on a certain date.
-
-You could read the **Code Walkthrough** in the *"Get Started"* section if you are unfamiliar with the date configuration or update logic in the backtester.
-
-<br>
-
-
-```clojure
-(init-portfolio "1980-12-18" 100000)
-
-(def year-count 3) ;; hold the stock for 3 years
-(def start-year 1980)
-(def rebalance-md (subs (get-date) 4)) ; = -12-18
-
-(def rebalance-years (into [] (range (+ start-year 1) (+ (+ start-year 1) year-count) 1))) ; rebalance every year
-
-(def rebalance-dates []) ; [1981-12-18, 1982-12-18, 1983-12-18]
-(doseq [year rebalance-years]
-  (def rebalance-dates (conj rebalance-dates (str year rebalance-md)))
-)
-
-(def end-date (last rebalance-dates)) ; 1983-12-18
-
-;; get stock tickers and ROE data
-(def stock-data (get-set-roe (read-csv-row "../resources/data-testing-merged.csv") "1980-12-18"))
-
-;; get a set of ROE
-(def roe-list (get-ROE stock-data))
-
-;; sort the set
-(def roe-sorted (into '[] (apply sorted-set roe-list)))
-
-;; find the 20% cut-off ROE value
-(let [roe-20 (nth roe-sorted (int (* 0.8 (count roe-sorted))))]    
-    ;;get the tickers of the top 20 with function get-roe-20
-    (def stocks-to-buy (get-roe-20 stock-data roe-20))
-)
-
-;; buy only the top 20% stocks    
-(def stocks-to-buy-list (into [] stocks-to-buy))
-
-;; buy stocks 
-(doseq [stock stocks-to-buy-list]        
-  (order stock 10)
-)
-
-(update-eval-report (get-date)) ; update evaluation metrics
-(next-date)
-
-(while (not= (empty? rebalance-dates) true)
-  ;(println (get-date)) ; debug
-  (if (t/after? (t/local-date (get-date)) (t/local-date (first rebalance-dates))) ; check if (get-date) has passed first date in rebalance-dates
-    (do
-      (def rebalance-dates (rest rebalance-dates)) ; pop the first date in rebalance-dates
-      ;(println (rest rebalance-dates)) ; debug
-      (while (empty? (get-set-roe (read-csv-row "../resources/data-testing-merged.csv") (get-date)))
-          (next-date) ;; move on to next date til data is not empty
-      )
-      (def stock-data (get-set-roe (read-csv-row "../resources/data-testing-merged.csv") (get-date)))
-      (def roe-list (get-ROE stock-data))
-      (def roe-sorted (into '[] (apply sorted-set roe-list)))
-      (let [roe-20 (nth roe-sorted (int (* 0.8 (count roe-sorted))))]    
-          (def stocks-to-buy (get-roe-20 stock-data roe-20))
-      )
-      (def stocks-to-buy-list (into [] stocks-to-buy))
-
-      ;; sell stocks held in portfolio
-      (doseq [[ticker row] (deref portfolio)]
-        (if (not= ticker :cash)      
-          (order ticker -10)
-        )
-      )
-
-      ;; buy stocks
-      (doseq [stock stocks-to-buy-list]       
-        (order stock 10)
-      )
-
-      (update-eval-report (get-date)) ; update evaluation metrics
-    )
-  )
-  (next-date) ; move on to the next trading day
-)
-
-;; sell stocks held in portfolio (if ticker != "cash" && quantity > 0)
-(doseq [[ticker row] (deref portfolio)]
-  (if (and (not= ticker :cash) (= (compare (get row :quantity) 0) 1))
-      (order ticker -10)
-  )
-)
-```
-
-## Check Records & Performance
-
-```clojure
-(pprint/print-table (deref order-record))
+(load-dataset "resources/sample-data/main" "main" add-aprc)
+(load-dataset "resources/sample-data/compustat" "compustat")
+(init-portfolio "1990-01-02" 10000)
 
 ;; output:
-|      :date | :permno | :price |   :aprc | :quantity |
-|------------+------+--------+---------+-----------|
-| 1980-12-19 |  IBM | 64.625 |  736.07 |        10 |
-| 1981-12-22 |  IBM | 56.875 |  714.58 |       -10 |
-| 1981-12-22 |  IBM | 56.875 |  714.58 |        10 |
-| 1982-12-21 |  IBM |  95.75 |  915.74 |       -10 |
-| 1982-12-21 |  IBM |  95.75 |  915.74 |        10 |
-| 1983-12-20 |  IBM | 121.75 | 1030.91 |       -10 |
+;; The dataset is already furnished by add-aprc. No more modification is needed.
+;; => "Date: 1990-01-02 Cash: $10000"
 ```
 
+## Which Filing Is Visible When
+
+The sample has filings for the quarters ending 1989-09-30 and 1989-12-31. AAA (`10001`) reports the fourth quarter on 1990-01-24, so until then the September numbers are the latest public ones. `fundamentals` picks a few columns from a security's row for today: total assets (`atq`), common equity (`ceqq`) and net income (`niq`).
+
 ```clojure
-;; print final portfolio
-(print-portfolio)
+(defn fundamentals [permno]
+  (select-keys (get-permno-info permno) [:date :datadate :rdq :atq :ceqq :niq]))
+
+(fundamentals "10001")
 
 ;; output:
-| :asset | :price |   :aprc | :quantity | :tot-val |
-|--------+--------+---------+-----------+----------|
-|   cash |    N/A |     N/A |       N/A |   102948 |
-|    IBM | 121.75 | 1030.91 |         0 |        0 |
+;; => {:date "1990-01-02", :datadate "1989-09-30", :rdq "1989-10-25", :atq "1500.0", :ceqq "900.0", :niq "40.0"}
 ```
 
+Step forward to 1990-01-24, the report date, and the December filing appears:
+
 ```clojure
-;; print portfolio value and return
-(print-portfolio-record)
+(while (< (compare (get-date) "1990-01-24") 0)
+  (next-date))
+(fundamentals "10001")
 
 ;; output:
-|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage |
-|------------+------------+------------+----------+-------+-----------|
-| 1980-12-18 |    $100000 |      0.00% |    0.00% | $0.00 |     0.00% |
-| 1980-12-19 |    $100000 |      0.00% |    0.00% | $0.00 |     0.00% |
-| 1980-12-22 |    $100122 |      0.12% |    0.12% | $0.00 |     0.00% |
-| 1980-12-23 |    $100128 |      0.01% |    0.13% | $0.00 |     0.00% |
-| 1980-12-24 |    $100188 |      0.06% |    0.19% | $0.00 |     0.00% |
-| 1980-12-26 |    $100212 |      0.02% |    0.21% | $0.00 |     0.00% |
-...(to be continued)
+;; => {:date "1990-01-24", :datadate "1989-12-31", :rdq "1990-01-24", :atq "1550.0", :ceqq "925.0", :niq "45.0"}
 ```
 
+CCC (`10003`) has no filings in the sample, so its row carries no fundamental columns:
+
 ```clojure
-(eval-report)
+(fundamentals "10003")
 
 ;; output:
-|      :date | :pnl-pt | :sharpe | :tot-val |  :vol |
-|------------+---------+---------+----------+-------|
-| 1980-12-18 |      $0 |   0.00% |  $100000 | 0.00% |
-| 1981-12-21 |    $-71 |  -5.04% |   $99785 | 0.04% |
-| 1982-12-20 |    $359 |  36.79% |  $101796 | 0.05% |
-| 1983-12-19 |    $491 |  57.40% |  $102948 | 0.05% |
+;; => {:date "1990-01-24"}
+```
+
+## A Return-on-Equity Screen
+
+On 1990-02-01, once both securities with fundamentals have reported, rank them by return on equity (quarterly net income over common equity) and buy the better one. Fundamental columns arrive as strings; `->double` converts them. Securities without the data (here CCC) are dropped from the ranking.
+
+```clojure
+(while (< (compare (get-date) "1990-02-01") 0)
+  (next-date))
+
+(defn roe [permno]
+  (let [row (get-permno-info permno)
+        niq (->double (:niq row))
+        ceqq (->double (:ceqq row))]
+    (when (and niq ceqq (pos? ceqq))
+      (/ niq ceqq))))
+
+(def ranked (->> ["10001" "10002" "10003"]
+                 (keep (fn [permno] (when-let [r (roe permno)] [permno r])))
+                 (sort-by second >)))
+ranked
+
+;; output:
+;; => (["10002" 0.07441860465116279] ["10001" 0.04864864864864865])
+```
+
+BBB (`10002`) has the higher ROE. Buy 50 shares of it, then step through the rest of the sample, updating the evaluation report each day. The order fills at the next trading day's close, and `end-order` closes the position at the end.
+
+```clojure
+(let [[best] (first ranked)]
+  (order best 50 :print true))
+
+(while (< (compare (get-date) "1990-03-29") 0)
+  (update-eval-report)
+  (next-date))
+(end-order)
+
+;; output:
+;; Order: 1990-02-02 | 10002 | 50.000000.
+;; => true
+```
+
+## Check Records and Performance
+
+The first 10 rows of the portfolio value record cover January, before the trade:
+
+```clojure
+(print-portfolio-record 10)
+```
+
+```
+|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :short | :leverage | :margin |
+|------------+------------+------------+----------+-------+--------+-----------+---------|
+| 1990-01-02 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-03 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-04 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-05 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-08 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-09 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-10 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-11 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-12 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-15 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+```
+
+The evaluation report starts on the day the order fills. The metrics are described in [Evaluate](/posts/evaluate).
+
+```clojure
+(print-eval-report 5)
+```
+
+```
+|      :date | :tot-value |    :vol |  :r-vol | :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
+|------------+------------+---------+---------+---------+-----------+---------+---------------|
+| 1990-02-02 |     $10000 | 0.0000% | 0.0000% |  0.0000 |    0.0000 |      $0 |        0.0000 |
+| 1990-02-05 |     $10073 | 0.1455% | 0.1455% |  3.1749 |    3.1749 |     $73 |        0.0000 |
+| 1990-02-06 |     $10140 | 0.1891% | 0.1891% |  4.4884 |    4.4884 |    $140 |        0.0000 |
+| 1990-02-07 |     $10040 | 0.2728% | 0.2728% |  0.8711 |    0.8711 |     $40 |        0.9813 |
+| 1990-02-08 |     $10009 | 0.2746% | 0.2746% |  0.1960 |    0.1960 |      $9 |        1.2870 |
+```
+
+## Plotting
+
+Tag each portfolio value record with a series name and plot the total portfolio value over time. The chart opens in the browser when this cell runs in the Gorilla REPL.
+
+```clojure
+(def data-to-plot (map #(assoc % :plot "portfolio") (deref portfolio-value)))
+(plot data-to-plot :plot :date :tot-value true)
 ```

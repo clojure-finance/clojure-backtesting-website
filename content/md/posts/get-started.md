@@ -7,30 +7,51 @@
 
 ---
 
-## Setting Up the Playground
+## Requirements
 
-***Before installing in either way, first make sure to fulfill the [basic requirements](https://github.com/clojure-finance/clojure-backtesting#requirements).***
+- Java 11 or later
+- [Leiningen](https://leiningen.org/)
 
-### Leiningen REPL Platform
+## Setting Up
 
-1. Clone the repository and decompress.
-
-2. Under the project directory, run the below command in the terminal to start a Leiningen REPL.
-
-   `lein repl`
-
-3. Run the examples in the [`/examples`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples) folder line by line in the REPL.
-
-### Gorilla REPL
-Gorilla REPL is similar to Jupyter Notebook and is used for running strategies code. 
-
-1. Run the following command in the terminal to start the REPL.
+Clone the [repository](https://github.com/clojure-finance/clojure-backtesting) and `cd` into it:
 
 ```text
-lein gorilla;
+git clone https://github.com/clojure-finance/clojure-backtesting.git
+cd clojure-backtesting
 ```
 
-2. When the process is completed, you should see the following output:
+The repository ships with a small sample dataset in `resources/sample-data`, so every example below runs without downloading anything else. It holds three securities over January to March 1990:
+
+| Security | Ticker | Notes |
+| -------- | ------ | ----- |
+| `10001`  | AAA    | Pays a dividend on 1990-02-15 |
+| `10002`  | BBB    | Splits 2-for-1 on 1990-03-01 |
+| `10003`  | CCC    | Has no prices from 1990-02-05 to 1990-02-09 |
+
+It also has a matching Compustat-style dataset in `resources/sample-data/compustat`. See the [User Guide](/posts/user-guide) for using the full CRSP and Compustat data or your own data.
+
+### Leiningen REPL
+
+Start a REPL in the project directory:
+
+```text
+lein repl
+```
+
+The REPL starts in the `clojure-backtesting.user` namespace, which already refers every public function of the library. For a quick demo run without a REPL, use `lein run`.
+
+### Gorilla REPL
+
+[Gorilla REPL](http://gorilla-repl.org/) is a notebook in the browser, similar to Jupyter Notebook. The example strategies in the [`examples`](https://github.com/clojure-finance/clojure-backtesting/tree/master/examples) folder are Gorilla worksheets.
+
+1. Start it in the project directory:
+
+```text
+make start
+```
+
+2. When it is ready, it prints something like:
 
 ```text
 Gorilla-REPL: 0.6.0
@@ -40,54 +61,48 @@ Running at http://127.0.0.1:50651/worksheet.html .
 Ctrl+C to exit.
 ```
 
-3. Open the url in the output message with browser.
+3. Open the URL from the output in your browser.
 
 ![image](/img/gorilla.png)
 
-Click the option button on top right and choose "Load a worksheet"
+4. Click the menu button at the top right and choose "Load a worksheet", then pick one of the worksheets in the `examples` folder.
 
-Look for example worksheets in the example folder. Open the url in the output message with browser.
 ![image](/img/load_worksheet.png)
 
-Then you can run each cell by pressing "Ctrl + Enter".
+5. Run a cell with Ctrl + Enter.
 
-For further detail of Gorilla REPL, please read their [`website`](http://gorilla-repl.org/index.html).
+For more about Gorilla REPL, see its [website](http://gorilla-repl.org/index.html).
 
 ---
 
 ## Clojure Beginner Tutorials
 
-<br>
+If you are new to Clojure, we recommend a quick read of these tutorials first:
 
-If you are new to clojure, we recommend having a quick read of the following tutorials first:
+- [Clojure by Example](http://kimh.github.io/clojure-by-example/#about) - pick up the syntax quickly
 
-- [Clojure by Example](http://kimh.github.io/clojure-by-example/#about) - useful for beginners pick up the syntax quickly
+- [ClojureDocs](https://clojuredocs.org/) - documentation and examples for the core functions
 
-- [Clojure Docs](https://clojuredocs.org/) - a more thorough documentation that explains the built-in functions in Clojure
-
-- [Clojure for the Brave and True](https://www.braveclojure.com/clojure-for-the-brave-and-true/) - a book that helps you learn Clojure in an in-depth manner
+- [Clojure for the Brave and True](https://www.braveclojure.com/clojure-for-the-brave-and-true/) - a book that teaches Clojure in depth
 
 ---
 
 ## Help & Support
 
-<br>
-
-In case you would encounter difficulties in using the API within the backtester or have any suggestions for additional examples, feel free to post it [here](https://github.com/clojure-finance/clojure-backtesting/issues).
+If you have difficulties using the backtester, find a bug, or have ideas for more examples, please open an [issue](https://github.com/clojure-finance/clojure-backtesting/issues).
 
 ---
 
 ## Code Walkthrough
 
-We'll go through the code in `./examples/Simple trading strategy.ipynb` notebook to have a glimpse of how to write code that could be run with the backtester.
+This section goes through the [`simple_trading_strategy.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/simple_trading_strategy.clj) worksheet, which runs on the sample dataset.
 
 ### Import libraries
 
-To make use of the functions in the backtester library, it is necessary to import them whenever you create a new jupyter notebook file. Also make sure that you've compiled the **most up-to-date** clojure-backteser kernel, and have selected it in the Jupyter Notebook application.
+In a namespace of your own, require the library's namespaces. (In `lein repl` you can skip this: the starting namespace already has them.)
 
 ```clojure
-; import libraries from kernel
-(ns clojure-backtesting.demo
+(ns my-strategy
   (:require [clojure-backtesting.data :refer :all]
             [clojure-backtesting.data-management :refer :all]
             [clojure-backtesting.portfolio :refer :all]
@@ -98,270 +113,182 @@ To make use of the functions in the backtester library, it is necessary to impor
             [clojure-backtesting.automation :refer :all]
             [clojure-backtesting.parameters :refer :all]
             [clojure-backtesting.indicators :refer :all]
-            [clojure-backtesting.direct :refer :all]
-            [clojure.string :as str]
-            [clojure.java.io :as io]
-            [clojure.pprint :as pprint]
-  ) ;; require all libriaries from core
-)
+            [clojure-backtesting.direct :refer :all]))
 ```
-
-<br>
 
 ### Import dataset
 
-Load the CRSP dataset to the program by providing its path. 
+Load the dataset by giving its directory. `add-aprc` adds the adjusted price columns the backtester needs; the sample dataset already has them.
 
 ```clojure
-(load-dataset "/Volumes/T7/CRSP" "main" add-aprc)
+(load-dataset "resources/sample-data/main" "main" add-aprc)
 ```
 
-<br>
+```text
+The dataset is already furnished by add-aprc. No more modification is needed.
+"Date range: 1990-01-02 ~ 1990-03-30"
+```
 
 ### Initialise portfolio
 
-Pass the date ("YYYY-MM-DD") and initial capital (non-negative integer) to the `init-portfolio` function.
+Pass the starting date ("YYYY-MM-DD") and the initial capital to `init-portfolio`.
 
 ```clojure
-(init-portfolio "1980-12-16" 10000);
+(init-portfolio "1990-01-02" 10000)
+;; => "Date: 1990-01-02 Cash: $10000"
 ```
-
-<br>
 
 ### Check available securities
 
-You could check what securities you could trade on the current date (i.e. 1980-12-16).
+You can check which securities trade on the current date:
 
 ```clojure
 (available-permnos)
+;; => ("10001" "10002" "10003")
 ```
-
-<br>
 
 ### Write your strategy
 
-With all these set-up, you are ready to write your strategy.
+The strategy below follows a simple logic. Over 10 trading days:
 
-<br>
-
-The below demo is a trading strategy that follows a simple logic.
-
-<u>**Simple strategy**</u>
-
-In a timespan of 10 days (inclusive of today),
-
-- Buy 50 stocks of permno 14593 on the first day
-- Sell 10 stocks of permno 14593 on every other day
+- buy 50 shares of AAA (`10001`) on the first day
+- sell 10 shares of AAA on every other day
 
 ```clojure
-;; define the "time span", i.e. to trade in the coming 10 days 
-(def num-of-days (atom 10))                              
+(def num-of-days (atom 10))
 
-(while (pos? @num-of-days) ;; check if num-of-days is > 0
-    (do 
-        ;; write your trading strategy here
-        (if (= 10 @num-of-days) ;; check if num-of-days == 10
-            (do
-                (order "14593" 50 :print true) ; buy 50 stocks
-            )
-        )
-        (if (odd? @num-of-days) ;; check if num-of-days is odd
-            (do
-                (order "14593" -10 :print true) ; sell 10 stocks
-            )
-        )
-        
-        (update-eval-report) ;; update the evaluation metrics every day
-        (println (get-date))
-        ; move on to the next trading day
-        (next-date)
-        
-        ; decrement counter
-        (swap! num-of-days dec)
-    )
-)
+(while (pos? @num-of-days)
+  (when (= 10 @num-of-days)
+    (order "10001" 50 :print true)) ; buy 50 shares
+  (when (odd? @num-of-days)
+    (order "10001" -10 :print true)) ; sell 10 shares
+  (update-eval-report) ; update the evaluation metrics every day
+  (println (get-date))
+  (next-date) ; move on to the next trading day
+  (swap! num-of-days dec))
 ```
 
-<br>
+The loop calls `next-date` every time so that the backtester moves on to the next trading day (see [moving the time pointer](/posts/api#move-time-pointer)). An order fills at the close of the next trading day, which is why each `Order:` line carries the following day's date:
 
-Note that in the above snippets, it is necessary to iteratively call `next-date` so that the system could "move on to the next trading day". (check details [here](/posts/api#move-time-pointer))
-
-<br>
-
-```clojure
-;; output:
-1980-12-16
-Order: 1980-12-17 | 14593 | 50.000000.
-1980-12-17
-Order: 1980-12-18 | 14593 | -10.000000.
-1980-12-18
-1980-12-19
-Order: 1980-12-22 | 14593 | -10.000000.
-1980-12-22
-1980-12-23
-Order: 1980-12-24 | 14593 | -10.000000.
-1980-12-24
-1980-12-26
-Order: 1980-12-29 | 14593 | -10.000000.
-1980-12-29
-1980-12-30
-Order: 1980-12-31 | 14593 | -10.000000.
+```text
+1990-01-02
+Order: 1990-01-03 | 10001 | 50.000000.
+1990-01-03
+Order: 1990-01-04 | 10001 | -10.000000.
+1990-01-04
+1990-01-05
+Order: 1990-01-08 | 10001 | -10.000000.
+1990-01-08
+1990-01-09
+Order: 1990-01-10 | 10001 | -10.000000.
+1990-01-10
+1990-01-11
+Order: 1990-01-12 | 10001 | -10.000000.
+1990-01-12
+1990-01-15
+Order: 1990-01-16 | 10001 | -10.000000.
 ```
-
-By printing these debugging messages, I could double-check whether the orders were accurate.
-
-<br>
 
 ### Check order record
-
-Alternatively, you could also directly view the order record.
 
 ```clojure
 (print-order-record)
 ```
 
-```clojure
-;; output
-|      :date |  :tic |  :price | :aprc | :quantity |
-|------------+-------+---------+-------+-----------|
-| 1980-12-17 | 14593 | 25.9375 | 25.35 |        50 |
-| 1980-12-18 | 14593 | 26.6875 | 25.67 |       -10 |
-| 1980-12-22 | 14593 | 29.6875 | 26.88 |       -10 |
-| 1980-12-24 | 14593 | 32.5625 | 27.98 |       -10 |
-| 1980-12-29 | 14593 | 36.0625 | 29.25 |       -10 |
-| 1980-12-31 | 14593 | 34.1875 | 28.58 |       -10 |
+```text
+|      :date | :permno | :price | :aprc | :quantity |
+|------------+---------+--------+-------+-----------|
+| 1990-01-03 |   10001 |  50.81 | 50.81 |      50.0 |
+| 1990-01-04 |   10001 |  50.22 | 50.22 |     -10.0 |
+| 1990-01-08 |   10001 |   50.4 | 50.40 |     -10.0 |
+| 1990-01-10 |   10001 |  49.28 | 49.28 |     -10.0 |
+| 1990-01-12 |   10001 |  49.29 | 49.29 |     -10.0 |
+| 1990-01-16 |   10001 |  51.04 | 51.04 |     -10.0 |
 ```
 
-<br>
+### View portfolio and portfolio record
 
-### View portfolio & portfolio record
-
-You could view the portfolio and check the changes in portfolio value too. Note that the portfolio record could also be found in the `out_portfolio_value_record.csv` file.
+All 50 shares have been sold, so only cash is left:
 
 ```clojure
 (print-portfolio)
 ```
 
-```clojure
-;; output:
+```text
 | :asset | :price | :aprc | :quantity | :tot-val |
 |--------+--------+-------+-----------+----------|
-|   cash |    N/A |   N/A |       N/A | 10116.11 |
+|   cash |    N/A |   N/A |       N/A |  9961.80 |
 ```
 
-<br>
+The portfolio record has one row per trading day. Pass a number to print only that many rows, or a negative number to print all of them. The columns are explained on the [Portfolio](/posts/portfolio) page.
 
 ```clojure
-;; pass none so that the entire record is printed, else pass the no. of rows
-(print-portfolio-record)
+(print-portfolio-record -1)
 ```
 
-```clojure
-;; output:
-|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :leverage |
-|------------+------------+------------+----------+-------+-----------|
-| 1980-12-16 |  $10000.00 |      0.00% |    0.00% | $0.00 |      0.00 |
-| 1980-12-17 |  $10000.00 |      0.00% |    0.00% | $0.00 |      0.00 |
-| 1980-12-18 |  $10016.25 |      0.00% |    0.07% | $0.00 |      0.00 |
-| 1980-12-19 |  $10043.73 |      0.12% |    0.19% | $0.00 |      0.00 |
-| 1980-12-22 |  $10066.29 |      0.00% |    0.29% | $0.00 |      0.00 |
-| 1980-12-23 |  $10081.29 |      0.06% |    0.35% | $0.00 |      0.00 |
-| 1980-12-24 |  $10100.29 |      0.00% |    0.43% | $0.00 |      0.00 |
-| 1980-12-26 |  $10122.77 |      0.10% |    0.53% | $0.00 |      0.00 |
-| 1980-12-29 |  $10126.41 |      0.00% |    0.55% | $0.00 |      0.00 |
-| 1980-12-30 |  $10123.21 |     -0.01% |    0.53% | $0.00 |      0.00 |
-| 1980-12-31 |  $10119.51 |     -0.02% |    0.52% | $0.00 |      0.00 |
+```text
+|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :short | :leverage |  :margin |
+|------------+------------+------------+----------+-------+--------+-----------+----------|
+| 1990-01-02 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 |  100.00% |
+| 1990-01-03 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 |  393.62% |
+| 1990-01-04 |   $9970.50 |      0.00% |   -0.30% | $0.00 |  $0.00 |      0.00 |  496.34% |
+| 1990-01-05 |   $9976.50 |      0.06% |   -0.24% | $0.00 |  $0.00 |      0.00 |  495.16% |
+| 1990-01-08 |   $9977.70 |      0.00% |   -0.22% | $0.00 |  $0.00 |      0.00 |  659.90% |
+| 1990-01-09 |   $9963.00 |     -0.15% |   -0.37% | $0.00 |  $0.00 |      0.00 |  665.40% |
+| 1990-01-10 |   $9944.10 |      0.00% |   -0.56% | $0.00 |  $0.00 |      0.00 | 1008.94% |
+| 1990-01-11 |   $9951.70 |      0.08% |   -0.48% | $0.00 |  $0.00 |      0.00 | 1001.98% |
+| 1990-01-12 |   $9944.30 |      0.00% |   -0.56% | $0.00 |  $0.00 |      0.00 | 2017.51% |
+| 1990-01-15 |   $9960.40 |      0.16% |   -0.40% | $0.00 |  $0.00 |      0.00 | 1956.86% |
+| 1990-01-16 |   $9961.80 |      0.00% |   -0.38% | $0.00 |  $0.00 |      0.00 |  100.00% |
 ```
-
-<br>
 
 ### Generate evaluation report
 
-If you update the evaluation report every day (as `update-eval-report` is called for 10 times in the loop), you'll obtain a evluation report with daily records.
+Because `update-eval-report` was called every day in the loop, the evaluation report has a row for each day since the first order. The metrics are explained on the [Evaluation](/posts/evaluate) page.
 
-Detailed explanation of the evaluation metrics could be found in the _"Evaluate"_ section.
-
-However, note that if you are traversing a large amount of dates, it would be better **not** to update the evaluation metrics every day as it would require a large amount of memory and computation time. Alternatively, you could print a small number of rows of the evaluation report.
-
- Note that the evaluation report could also be found in the `out_evaluation_report.csv` file.
-
-<br>
+If you step through many dates, updating the report every day takes a lot of memory and time; update it less often, or print only a few rows.
 
 ```clojure
-;; pass none so that the entire record is printed, else pass the no. of rows
 (print-eval-report)
 ```
 
-```Clojure
-;; output
-|      :date | :tot-value |    :vol |  :r-vol |  :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
-|------------+------------+---------+---------+----------+-----------+---------+---------------|
-| 1980-12-17 |     $10000 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $0 |        0.0000 |
-| 1980-12-18 |     $10015 | 0.0000% | 0.0000% |  0.0000% |   0.0000% |      $7 |        0.0000 |
-| 1980-12-19 |     $10042 | 0.0578% | 0.0578% |  3.1854% |   3.1854% |     $21 |      100.0000 |
-| 1980-12-22 |     $10064 | 0.0517% | 0.0517% |  5.3929% |   5.3929% |     $21 |      100.0000 |
-| 1980-12-23 |     $10078 | 0.0490% | 0.0490% |  6.9722% |   6.9722% |     $26 |      100.0000 |
-| 1980-12-24 |     $10097 | 0.0461% | 0.0461% |  9.1301% |   9.1301% |     $24 |      100.0000 |
-| 1980-12-26 |     $10119 | 0.0491% | 0.0491% | 10.4957% |  10.4957% |     $29 |      100.0000 |
-| 1980-12-29 |     $10122 | 0.0473% | 0.0473% | 11.2136% |  11.2136% |     $24 |      100.0000 |
-| 1980-12-30 |     $10119 | 0.0467% | 0.0467% | 11.0778% |  11.0778% |     $23 |      111.5205 |
+```text
+|      :date | :tot-value |    :vol |  :r-vol | :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
+|------------+------------+---------+---------+---------+-----------+---------+---------------|
+| 1990-01-03 |     $10000 | 0.0000% | 0.0000% |  0.0000 |    0.0000 |      $0 |        0.0000 |
+| 1990-01-04 |      $9970 | 0.0000% | 0.0000% |  0.0000 |    0.0000 |    $-14 |        0.2950 |
+| 1990-01-05 |      $9976 | 0.0301% | 0.0301% |  7.9373 |    7.9373 |    $-11 |        0.2950 |
+| 1990-01-08 |      $9977 | 0.0269% | 0.0269% |  7.0993 |    7.0993 |     $-7 |        0.2950 |
+| 1990-01-09 |      $9963 | 0.0694% | 0.0694% | -3.3269 |   -3.3269 |    $-12 |        0.3700 |
+| 1990-01-10 |      $9944 | 0.0636% | 0.0636% | -3.1121 |   -3.1121 |    $-13 |        0.5590 |
+| 1990-01-11 |      $9951 | 0.0667% | 0.0667% | -0.3235 |   -0.3235 |    $-12 |        0.5590 |
+| 1990-01-12 |      $9944 | 0.0624% | 0.0624% | -0.3074 |   -0.3074 |    $-11 |        0.5590 |
+| 1990-01-15 |      $9960 | 0.0782% | 0.0782% |  3.0617 |    3.0617 |     $-7 |        0.5590 |
 ```
 
-<br>
+### Save the records as CSV files
+
+The records stay in memory by default. To also write them as CSV files, set an output directory before `init-portfolio`:
+
+```clojure
+(update-output-dir "out")
+(init-portfolio "1990-01-02" 10000)
+```
+
+The run then writes `out_order_record.csv`, `out_portfolio_value_record.csv` and `out_evaluation_report.csv` into `out/`. The files are complete once the run ends, through `end-order` or by reaching the end of the dataset.
 
 ### Plot variables
 
-You could try plotting some variables shown in the portfolio record / evaluation report tables.
-
-<br>
-
-#### Plotting values in portfolio record
-
-<br>
+`plot` draws a line chart in the browser. Tag each row with a series name, then pass the series key, the x key and the y key:
 
 ```clojure
-;; 1) Define the data to be the record that features the column
-(def data (deref portfolio-value))
+;; portfolio daily return
+(def data-to-plot (map #(assoc % :plot "portfolio") (deref portfolio-value)))
+(plot data-to-plot :plot :date :daily-ret true)
 
-;; 2) Assign it to a new variable 'data-to-plot`, so that
-;; we could have the legend name added (here = "port-value")
-(def data-to-plot
- (map #(assoc % :plot "port-value")
-  data))
-
-;; 3) Pass the data and its keys to the plotting function
-;; last arg "false" means we do not need full date to be shown on the x-axis
-(plot data-to-plot :plot :date :daily-ret false)
-```
-
-<br>
-
-Output:
-
-<br>
-
-![image](/img/plot-portfolio-value.png)
-
-<br>
-
-#### Plotting values in evaluation report
-
-<br>
-
-```clojure
-(def data (deref eval-record))
-(def data-to-plot
- (map #(assoc % :plot "volatility")
-  data))
-
-;; Note that we need to set it as "true" for plotting values in eval-report
+;; volatility from the evaluation report
+(def data-to-plot (map #(assoc % :plot "volatility") (deref eval-record)))
 (plot data-to-plot :plot :date :vol true)
 ```
 
-<br>
-
-Output:
-
-<br>
-
-![image](/img/plot-volatility.png)
+See [`plot`](/posts/evaluate#plot-graphs) for details, and the [`Plotting_frame.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Plotting_frame.clj) worksheet for more examples.

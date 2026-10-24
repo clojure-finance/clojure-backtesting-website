@@ -20,57 +20,62 @@ td {
 }
 </style>
 
-Below are the documentations for basic APIs of the backtester.
+Below is the documentation for the basic APIs of the backtester. The examples run on the bundled sample dataset (see [Get Started](/posts/get-started#setting-up)).
 
 ## Import Datasets
 
 #### load-dataset
 
-Import the supported dataset that contains the stock market information.
+Load a dataset that has been converted into the backtester's layout (see the [User Guide](/posts/user-guide#using-your-own-data)).
 
 | Argument            | Type                 | Function                          | Remarks                                                      |
 | ------------------- | -------------------- | --------------------------------- | ------------------------------------------------------------ |
-| `dataset directory` | String               | The path of the dataset directory | The creation of the supported dataset can be found in this tutorial. |
-| `role`              | "main" / "compustat" |                                   |                                                              |
+| `dir`               | String               | The path of the dataset directory |                                                              |
+| `role`              | "main" / "compustat" | Whether this is the main (CRSP-style) dataset or the supplementary Compustat-style dataset | Load at most one of each. |
+| [`func`]            | Function             | A function that augments the dataset when it is loaded | Pass `add-aprc` for the main dataset: it adds the adjusted price columns that `init-portfolio` requires. It rewrites the files in place the first time and does nothing afterwards. |
 
 **Return**
 
-"Date range: {start date} ~ {end data}"
+"Date range: {start date} ~ {end date}"
 
 **Example**
 
 ```clojure
-=> (load-dataset "/Volumes/T7/CRSP" "main")
-"Date range: 1972-01-03 ~ 2017-02-10"
+=> (load-dataset "resources/sample-data/main" "main" add-aprc)
+The dataset is already furnished by add-aprc. No more modification is needed.
+"Date range: 1990-01-02 ~ 1990-03-30"
+=> (load-dataset "resources/sample-data/compustat" "compustat")
+"Date range: 1989-09-30 ~ 1989-12-31"
 ```
 
 <br>
 
-## State Starting Postition
+## State Starting Position
 
 #### init-portfolio
 
-Initialize the starting date and capital.
+Set the starting date and capital. Calling it again restarts the backtester: the portfolio, all records, indicators and automations are reset.
 
 | Argument  | Type   | Function                     | Remarks                                                      |
 | --------- | ------ | ---------------------------- | ------------------------------------------------------------ |
-| `date`    | String | Indicate the starting date   | If this date is missing in the dataset (i.e. it is a weekend), will use the nearest earlier date instead. If it is also unavailable, will use the nearest later date. |
-| `capital` | Number | Indicate the initial capital | Will be given in the form of cash                            |
+| `date`    | String | The starting date            | If this date is missing in the dataset (e.g. it is a weekend), the nearest earlier date is used instead. If there is none, the nearest later date. It cannot be the last date of the dataset. |
+| `capital` | Number | The initial capital          | Given in the form of cash                                    |
 
 **Return**
 
-"Date: {actual starting data (may be different from `date`)} Cash: ${`capital`}"
+"Date: {actual starting date (may be different from `date`)} Cash: ${`capital`}"
 
 **Example**
 
 ```clojure
-=> (init-portfolio "1980-04-07" 2000)
-"Date: 1980-04-07 Cash: $2000"
+=> (init-portfolio "1990-01-06" 10000) ;; a Saturday
+"Date: 1990-01-05 Cash: $10000"
 ```
 
 **Remarks**
 
-- More details about portfolio can be found [here](/posts/portfolio).
+- Set parameters such as `update-output-dir` or `update-reinvest-dividends` before calling `init-portfolio` (see [Parameters](/posts/parameters)).
+- More details about the portfolio can be found [here](/posts/portfolio).
 
 <br>
 
@@ -78,35 +83,57 @@ Initialize the starting date and capital.
 
 #### order
 
-Buy or sell certain number of shares of a security.
+Buy or sell a number of shares of a security. The order fills at the closing price of the next trading day on which the security has a price (see [Trading Logic](/posts/user-guide#trading-logic)).
 
-| Argument       | Type    | Function                                                     | Remarks                                                      |
-| -------------- | ------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `security`     | String  | Indicate the target security                                 | Should be an affordable security in the dataset              |
-| `quantity`     | Number  | Positive means buy & Negative means sell                     | Indicates the trading amount or the remaining amount depending on `remaining`. |
-| [`expiration`] | Integer | Number of days before this order request expires             | By default, *ORDER-EXPIRATION*                               |
-| [`remaining`]  | Boolean | If `quantity` is the trade amount or remaining amount        | By default, false (i.e. quantity is the exact trade amount)  |
-| [`leverage`]   | Boolean | If you can loan to make the purchase                         | By default, true. However, *INITAIL-MARGIN*, which is the minimum cash : order total ratio should be obeyed. |
-| [`print`]      | Boolean | If to print order record on the screen when the order is really made | By default, false.                                           |
-| [`log`]        | Boolean | If to direct order record to the log file when the order is really made | By default, false.                                           |
+| Argument        | Type    | Function                                                     | Remarks                                                      |
+| --------------- | ------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `security`      | String  | The target security                                          |                                                              |
+| `quantity`      | Number  | Positive means buy, negative means sell                      | The trading amount, or the target holding when `:remaining` is true. |
+| [`:expiration`] | Integer | Number of trading days the order stays pending               | By default, `ORDER-EXPIRATION` (3).                          |
+| [`:remaining`]  | Boolean | Whether `quantity` is the holding to end up with, rather than the amount to trade | By default, false. `(order "10001" 0 :remaining true)` closes the position. |
+| [`:leverage`]   | Boolean | Whether the order may borrow cash (buying beyond your cash) or shares (short selling) | By default, `LEVERAGE` (true). Borrowing must respect `INITIAL-MARGIN`. |
+| [`:print`]      | Boolean | Whether to print the order when it fills                     | By default, `PRINT` (false).                                 |
+| [`:direct`]     | Boolean | Whether to write the order to `out_order_record.csv` when it fills | By default, `DIRECT` (true). Files are written only when an output directory is set with `update-output-dir`. |
 
 **Return**
 
-All pending orders. Vector of maps.
+All pending orders, as a map keyed by [expiry date, security].
 
 **Example**
 
 ```clojure
-=> (order "28636" 10)
-=> (next-date) ;; will introduce later
-=> (order "28636" 0 :remaining true)
+=> (order "10001" 10)
+{["1990-01-11" "10001"] {:place "1990-01-08", :expire "1990-01-11", :permno "10001", :quantity 10, :remaining false, :leverage true, :print false, :direct true}}
+
+=> (order "10002" 5 :remaining true :expiration 5) ;; hold 5 shares of 10002
+{["1990-01-11" "10001"] {...}, ["1990-01-15" "10002"] {:place "1990-01-08", :expire "1990-01-15", :permno "10002", :quantity 5, :remaining true, :leverage true, :print false, :direct true}}
+```
+
+<br>
+
+#### end-order
+
+Call this at the end of your strategy. It closes every position at today's closing price, updates the evaluation report once more, closes the CSV files and ends the run; after it, `order` and `next-date` do nothing until `init-portfolio` is called again. A security with no price today is booked as cash at its last value.
+
+The run also ends by itself on the last date of the dataset, when the total value drops below zero, or on a margin call (see [Parameters](/posts/parameters#margin-requirements)).
+
+| No Argument |
+| ----------- |
+
+**Example**
+
+```clojure
+=> (end-order)
+true
+=> (next-date)
+nil
 ```
 
 <br>
 
 ## Move Time Pointer
 
-The backtester is used to simulate real-world trading situations. Therefore, there is a date pointer in the platform that times the global clock of the system. Users can move forward through time and cannot go back. Also, users have access to only market information till "today", not future. Below functions are used to interact with the date pointer.
+The backtester simulates real-world trading. So there is a date pointer that acts as the global clock of the system. Users can move forward through time but not back, and have access to market information only up to "today", not the future. The functions below interact with the date pointer.
 
 #### get-date
 
@@ -123,148 +150,182 @@ A string representing the current date.
 
 ```clojure
 => (get-date)
-"1980-04-07"
+"1990-01-05"
 ```
 
 <br>
 
 #### next-date
 
-Move the date pointer forward to the next valid date, skipping over weekends, holidays.
+Move the date pointer forward to the next trading day in the dataset, skipping weekends and holidays. On the new day it revalues the holdings, charges loan interest, checks the margin, fills pending orders and runs automations.
 
 | No Argument |
 | ----------- |
 
 **Return**
 
-The new date, if succeed. Otherwise if it has reached the end date, `nil`.
+The new date. `nil` once the run has ended (through `end-order`, a margin call, or reaching the last date of the dataset).
 
 **Example**
 
 ```clojure
 => (next-date)
-"1980-04-08"
+"1990-01-08"
+```
+
+<br>
+
+#### get-next-date
+
+Get the next trading day without moving the date pointer.
+
+| No Argument |
+| ----------- |
+
+**Return**
+
+A date string, or `nil` on the last date of the dataset.
+
+**Example**
+
+```clojure
+=> (get-date)
+"1990-01-05"
+=> (get-next-date)
+"1990-01-08"
 ```
 
 <br>
 
 #### get-prev-n-date
 
-Get the date n days before the current date (skipping over weekends, holidays).
+Get the date n trading days before the current date (skipping weekends and holidays).
 
 | Argument | Type             | Function                    | Remarks                                                |
 | -------- | ---------------- | --------------------------- | ------------------------------------------------------ |
-| `n`      | Positive Integer | Number of days to look back | If the search reaches the starting date, return `nil`. |
+| `n`      | Positive Integer | Number of days to look back |                                                        |
 
 **Return**
 
-A date string if searching succeed. If the search passes the starting date, return `nil`.
+A date string, or `nil` if the search passes the first date of the dataset.
 
 **Example**
 
 ```clojure
+=> (get-date)
+"1990-01-08"
 => (get-prev-n-date 3)
-"1980-04-01"
+"1990-01-03"
+```
+
+<br>
+
+#### date-after-n-trading-days
+
+Get the date n trading days after a given date.
+
+| Argument | Type             | Function                     | Remarks |
+| -------- | ---------------- | ---------------------------- | ------- |
+| `date`   | String           | The date to count from       |         |
+| `n`      | Positive Integer | Number of days to look ahead |         |
+
+**Return**
+
+A date string, or the last date of the dataset if fewer than n trading days remain.
+
+**Example**
+
+```clojure
+=> (date-after-n-trading-days "1990-01-08" 3)
+"1990-01-11"
 ```
 
 <br>
 
 ## Retrieve Information From Datasets
 
+Each row is a map keyed by the dataset's column names (see [Essential column names](/posts/user-guide#essential-column-names)). When a Compustat dataset is loaded, the rows also contain the Compustat columns of the matching filing.
+
 #### get-info
 
-Get all the market information for today in the format of sequence of maps. Note that there is also `get-info-map` which gives another format better for get security specific information.
+Get all the market information for today, as a sequence of maps. There is also `get-info-map`, a format better suited to looking up a specific security.
 
 | No Argument |
 | ----------- |
 
 **Return**
 
-A sequence of map, each of which contains keys: `:PRC`, `:TICKER`, `:DATE`, `:APRC`, `:RET`.
-
-For example,
-
-```clojure
-({:ewretd "-0.01599", :HSICCD "5311.0", :CUM-RET -1.0845139034240396, :CFACSHR "1.1", :INIT-PRICE 5.5, :OPENPRC "", :SECSTAT "R", :SHROUT "3.48", :TICKER "NCL", :DATE "1980-04-07", :APRC 1.859363432980367, :COMNAM "NICHOLS S E INC", :PRIMEXCH "A", :TRDSTAT "A", :FACSHR "", :HEXCD "2", :RET -0.035713999999999996, :EXCHCD "2", :CFACPR "1.1", :DLRET "", :PRC 3.375, :vwretd "-0.019375", :FACPR "", :CUSIP "65380310", :NCUSIP "65380310.0", :PERMCO "21291", :DIVAMT "", :PERMNO "56549", :SHRCD "11", :sprtrn "-0.019187", :VOL "0.0", :SICCD "5311"} {:ewretd "-0.01599", :HSICCD "4923.0", :CUM-RET 0.13767620201494443, :CFACSHR "4.5", :INIT-PRICE 12.75, :OPENPRC "", :SECSTAT "R", :SHROUT "1.7", :TICKER "NCNG", :DATE "1980-04-07", :APRC 14.631949703037334, :COMNAM "NORTH CAROLINA NATURAL GAS CORP", :PRIMEXCH "Q", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.019802, :EXCHCD "3", :CFACPR "4.5", :DLRET "", :PRC 12.875, :vwretd "-0.019375", :FACPR "", :CUSIP "65822110", :NCUSIP "65822110.0", :PERMCO "3152", :DIVAMT "", :PERMNO "58043", :SHRCD "11", :sprtrn "-0.019187", :VOL "", :SICCD "4922"} ... )
-```
+A sequence of maps, one per security that trades today.
 
 **Example**
 
 ```clojure
 => (get-info)
-...
+[{:ASKHI 50.58, :CUM-RET -0.005342844410495502, :date "1990-01-08", :INIT-PRICE 50.67, :OPENPRC 50.49, :TICKER "AAA", :APRC 50.4, :BIDLO 50.28, :RET 5.955926146516966E-4, :CFACPR 1.0, :PRC 50.4, :PERMNO "10001"} {:ASKHI 116.79, :CUM-RET -0.02671833211289444, :date "1990-01-08", :INIT-PRICE 118.72, :OPENPRC 116.37, :TICKER "BBB", :APRC 115.58999999999999, :BIDLO 114.99, :RET -0.011544381734222675, :CFACPR 2.0, :PRC 115.59, :PERMNO "10002"} {:ASKHI 20.11, :CUM-RET -0.013965314248641295, :date "1990-01-08", :INIT-PRICE 20.19, :OPENPRC 20.03, :TICKER "CCC", :APRC 19.91, :BIDLO 19.9, :RET -0.00945273631840804, :CFACPR 1.0, :PRC 19.91, :PERMNO "10003"}]
 ```
 
 <br>
 
 #### get-info-map
 
-Get all the market information for today in the format of map, where security is the key and information of the security is the value.
+Get all the market information for today, as a map from security to its information.
 
 | No Argument |
 | ----------- |
 
 **Return**
 
-A map whose keys are all the securitys available today.
-
-For example,
-
-```clojure
-{"58667" {:ewretd "-0.01599", :HSICCD "2426.0", :CUM-RET 3.3140493252614993, :CFACSHR "2.0", :INIT-PRICE 14.125, :OPENPRC "", :SECSTAT "R", :SHROUT "12.037", :TICKER "PL", :DATE "1980-04-07", :APRC 388.38441221936534, :COMNAM "PACIFIC LUMBER CO", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.005602, :EXCHCD "1", :CFACPR "2.0", :DLRET "", :PRC 44.875, :vwretd "-0.019375", :FACPR "", :CUSIP "69452910", :NCUSIP "69452910.0", :PERMCO "3604", :DIVAMT "", :PERMNO "58667", :SHRCD "10", :sprtrn "-0.019187", :VOL "28900.0", :SICCD "2426"}, "59707" {:ewretd "-0.01599", :HSICCD "3573.0", :CUM-RET 1.0294626755074137, :CFACSHR "4.0", :INIT-PRICE 21.875, :OPENPRC "", :SECSTAT "R", :SHROUT "4.135", :TICKER "DPT", :DATE "1980-04-07", :APRC 61.240400324837374, :COMNAM "DATAPOINT CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET -0.035885, :EXCHCD "1", :CFACPR "10.3", :DLRET "", :PRC 100.75, :vwretd "-0.019375", :FACPR "", :CUSIP "23810020", :NCUSIP "23810020.0", :PERMCO "1249", :DIVAMT "", :PERMNO "59707", :SHRCD "11", :sprtrn "-0.019187", :VOL "29200.0", :SICCD "3573"} ... }
-```
+A map whose keys are all the securities available today.
 
 **Example**
 
 ```clojure
 => (get-info-map)
-...
+{"10001" {:ASKHI 50.58, :CUM-RET -0.005342844410495502, :date "1990-01-08", :INIT-PRICE 50.67, :OPENPRC 50.49, :TICKER "AAA", :APRC 50.4, :BIDLO 50.28, :RET 5.955926146516966E-4, :CFACPR 1.0, :PRC 50.4, :PERMNO "10001"}, "10002" {...}, "10003" {...}}
 ```
 
 <br>
 
 #### available-permnos
 
-Gets all available permnos today.
+Get all securities available today.
 
 | No Argument |
 | ----------- |
 
 **Return**
 
-A a sequence permno strings.
+A sequence of permno strings.
 
 **Example**
 
 ```clojure
-=> (get-permno-info "28636")
-{:ewretd "-0.01599", :HSICCD "2649.0", :CUM-RET -1.0134462484096032, :CFACSHR "1.0", :INIT-PRICE 21.25, :OPENPRC "", :SECSTAT "R", :SHROUT "3.179", :TICKER "APL", :DATE "1980-04-07", :APRC 7.713026455704485, :COMNAM "A P L CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.0, :EXCHCD "1", :CFACPR "1.0", :DLRET "", :PRC 8.125, :vwretd "-0.019375", :FACPR "", :CUSIP "202410", :NCUSIP "202410.0", :PERMCO "23557", :DIVAMT "", :PERMNO "28636", :SHRCD "10", :sprtrn "-0.019187", :VOL "3200.0", :SICCD "2649"}
-
-=> (get-permno-info "none")
-nil
+=> (available-permnos)
+("10001" "10002" "10003")
 ```
 
 <br>
 
 #### get-permno-info
 
-Get information for the specified security.
+Get the information for a security.
 
 | Argument | Type   | Function             | Remarks |
 | -------- | ------ | -------------------- | ------- |
-| `permno` | String | The security  specified to be retrieved |         |
+| [`date`] | String | The date to look up  | By default, today. |
+| `permno` | String | The security         |         |
 
 **Return**
 
-A map of information if the security exists, otherwise `nil`.
+A map of information if the security has data on that date, otherwise `nil`.
 
 **Example**
 
 ```clojure
-=> (get-permno-info "28636")
-{:ewretd "-0.01599", :HSICCD "2649.0", :CUM-RET -1.0134462484096032, :CFACSHR "1.0", :INIT-PRICE 21.25, :OPENPRC "", :SECSTAT "R", :SHROUT "3.179", :TICKER "APL", :DATE "1980-04-07", :APRC 7.713026455704485, :COMNAM "A P L CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.0, :EXCHCD "1", :CFACPR "1.0", :DLRET "", :PRC 8.125, :vwretd "-0.019375", :FACPR "", :CUSIP "202410", :NCUSIP "202410.0", :PERMCO "23557", :DIVAMT "", :PERMNO "28636", :SHRCD "10", :sprtrn "-0.019187", :VOL "3200.0", :SICCD "2649"}
+=> (get-permno-info "10001")
+{:ASKHI 50.58, :CUM-RET -0.005342844410495502, :date "1990-01-08", :INIT-PRICE 50.67, :OPENPRC 50.49, :TICKER "AAA", :APRC 50.4, :BIDLO 50.28, :RET 5.955926146516966E-4, :CFACPR 1.0, :PRC 50.4, :PERMNO "10001"}
 
-=> (get-permno-info "none")
+=> (get-permno-info "99999")
 nil
 ```
 
@@ -272,97 +333,125 @@ nil
 
 #### get-permno-price
 
-Continuing from `get-permno-info`, get only the price for the specified security.
+Like `get-permno-info`, but get only the price of the security (the closing price, or the opening price if `PRICE-KEY` is changed).
 
 | Argument | Type   | Function             | Remarks |
 | -------- | ------ | -------------------- | ------- |
-| `permno` | String | The security  specified to be retrieved |         |
+| [`date`] | String | The date to look up  | By default, today. |
+| `permno` | String | The security         |         |
 
 **Return**
 
-A double representing the closing price of the security, otherwise `nil`.
+A number, or `nil` if the security has no data on that date.
 
 **Example**
 
 ```clojure
-=> (get-permno-price "28636")
-8.125
-=> (get-permno-price "none")
-nil
+=> (get-permno-price "10001")
+50.4
+=> (get-permno-price "1990-01-03" "10001")
+50.81
 ```
 
 <br>
 
 #### get-permno-by-key
 
-Continuing from `get-permno-info`, get the value of a key from the information of the specified security.
+Like `get-permno-info`, but get the value of one key.
 
 | Argument | Type    | Function             | Remarks                                           |
 | -------- | ------- | -------------------- | ------------------------------------------------- |
-| `permno` | String  | The security  specified to be retrieved |                                                   |
-| `key`    | Keyword | Specific the key     | Should be according the available keys in the map |
+| [`date`] | String  | The date to look up  | By default, today.                                |
+| `permno` | String  | The security         |                                                   |
+| `key`    | Keyword | The key              | One of the dataset's columns                      |
 
 **Return**
 
-Value of arbitrary type depending on the key if the map contains the key, otherwise `nil`.
+The value, of a type depending on the key, if the map contains the key, otherwise `nil`.
 
 **Example**
 
 ```clojure
-=> (get-permno-by-key "28636" :HSICCD)
-"2649.0"
-=> (get-permno-by-key "28636" :None)
+=> (get-permno-by-key "10001" :TICKER)
+"AAA"
+=> (get-permno-by-key "10001" :None)
 nil
+```
+
+<br>
+
+#### permno-tic and tic-permno
+
+Translate between security identifiers and ticker symbols, using today's data (needs a `:TICKER` column).
+
+**Example**
+
+```clojure
+=> (permno-tic "10001")
+["AAA"]
+=> (tic-permno "AAA")
+["10001"]
 ```
 
 <br>
 
 #### get-prev-n-days
 
-Get information of the past n days (not including today, skipping weekends).
+Get the information of the past n trading days (not including today).
 
 | Argument | Type             | Function                        | Remarks                                                      |
 | -------- | ---------------- | ------------------------------- | ------------------------------------------------------------ |
-| [`n`]    | Positive Integer | The number of days to look back | If not give, return a lazy sequence of all prev days, in descending time order.<br>Note that the length of return might be smaller than `n`, if it reaches the starting date. |
+| [`n`]    | Positive Integer | The number of days to look back | If not given, return a lazy sequence of all previous days.<br>The result may be shorter than `n` if it reaches the first date of the dataset. |
 
 **Return**
 
-A sequence (length <= n) of sequence (length = number of securitys) of maps that contains data of the previous n days (not including today), in descending time order, i.e. the most recent date first.
+A sequence (length <= n) of sequences of maps (one per security), in descending time order, i.e. the most recent date first.
 
 **Example**
 
 ```clojure
-=> (get-prev-n-days 2)
-...
+=> (map #(map :PERMNO %) (get-prev-n-days 2))
+(("10001" "10002" "10003") ("10002" "10001" "10003"))
 
-;; one common way that can get all the information of past n days including today is:
+;; a common way to get the information of the past n days including today:
 => (conj (get-prev-n-days (- n 1)) (get-info))
-...
+```
+
+<br>
+
+#### get-prev-n-days-map
+
+Like `get-prev-n-days`, but each day is a map from security to its information, as in `get-info-map`.
+
+**Example**
+
+```clojure
+=> (map keys (get-prev-n-days-map 2))
+(("10001" "10002" "10003") ("10002" "10001" "10003"))
 ```
 
 <br>
 
 #### get-permno-prev-n-days
 
-Get information of a specific security of the past n days (not including today, skipping weekends).
+Get the information of a security for the past n trading days (not including today).
 
 | Argument | Type             | Function                        | Remarks                                                      |
 | -------- | ---------------- | ------------------------------- | ------------------------------------------------------------ |
-| `permno` | String           | The specified security          |                                                              |
-| `n`      | Positive Integer | The number of days to look back | Note that if a security is absent in some dates, the length of the actual return might be smaller than `n`. |
+| `permno` | String           | The security                    |                                                              |
+| `n`      | Positive Integer | The number of days to look back | If the security is absent on some of these days, the result is shorter than `n`. |
 
 **Return**
 
-A vector (length <= n) of maps that contains security data of the previous n days (not including today), in descending time order, i.e. the most recent date first.
+A sequence (length <= n) of maps, in descending time order, i.e. the most recent date first.
 
 **Example**
 
 ```clojure
-=> (get-permno-prev-n-days "28636" 2)
-[{:ewretd "0.001023", :HSICCD "2649.0", :CUM-RET -1.0134462484096032, :CFACSHR "1.0", :INIT-PRICE 21.25, :OPENPRC "", :SECSTAT "R", :SHROUT "3.179", :TICKER "APL", :DATE "1980-04-03", :APRC 7.713026455704485, :COMNAM "A P L CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.0, :EXCHCD "1", :CFACPR "1.0", :DLRET "", :PRC 8.125, :vwretd "-0.0036850000000000003", :FACPR "", :CUSIP "202410", :NCUSIP "202410.0", :PERMCO "23557", :DIVAMT "", :PERMNO "28636", :SHRCD "10", :sprtrn "-0.005162", :VOL "1700.0", :SICCD "2649"} {:ewretd "0.011197", :HSICCD "2649.0", :CUM-RET -1.0134462484096032, :CFACSHR "1.0", :INIT-PRICE 21.25, :OPENPRC "", :SECSTAT "R", :SHROUT "3.179", :TICKER "APL", :DATE "1980-04-02", :APRC 7.713026455704485, :COMNAM "A P L CORP", :PRIMEXCH "N", :TRDSTAT "A", :FACSHR "", :HEXCD "1", :RET 0.015625, :EXCHCD "1", :CFACPR "1.0", :DLRET "", :PRC 8.125, :vwretd "0.00857", :FACPR "", :CUSIP "202410", :NCUSIP "202410.0", :PERMCO "23557", :DIVAMT "", :PERMNO "28636", :SHRCD "10", :sprtrn "0.004893", :VOL "2600.0", :SICCD "2649"}]
+=> (get-permno-prev-n-days "10001" 2)
+({:ASKHI 50.55, :CUM-RET -0.00593825973025941, :date "1990-01-05", :INIT-PRICE 50.67, :OPENPRC 50.06, :TICKER "AAA", :APRC 50.36999999999999, :BIDLO 49.91, :RET 0.0029868578255674016, :CFACPR 1.0, :PRC 50.37, :PERMNO "10001"} {:ASKHI 50.89, :CUM-RET -0.0089206657583795, :date "1990-01-04", :INIT-PRICE 50.67, :OPENPRC 50.83, :TICKER "AAA", :APRC 50.22, :BIDLO 50.05, :RET -0.011611887423735534, :CFACPR 1.0, :PRC 50.22, :PERMNO "10001"})
 
-;; one common way that can get all the information of past n days including today is:
-=> (conj (seq (get-permno-prev-n-days "28636" (- n 1))) (get-permno-info "28636"))
-[{yesterday info} {day before yesterday info} ...]
+;; a common way to get the information of the past n days including today:
+=> (conj (get-permno-prev-n-days "10001" (- n 1)) (get-permno-info "10001"))
+({today's info} {yesterday's info} ...)
 ```
-

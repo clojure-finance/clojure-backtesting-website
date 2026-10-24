@@ -18,7 +18,7 @@
  :sass-src                     []
  :sass-path                    "sass"
  :theme                        "nucleus"
- :resources                    ["img"]
+ :resources                    ["img" "posts/docs"]
  :keep-files                   [".git"]
  :disqus?                      false
  :disqus-shortname             ""
