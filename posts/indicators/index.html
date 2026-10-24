@@ -11,9 +11,9 @@
     
 <meta name="keywords" content="">
 
-<meta name="description" content="This page introduces the API related to calculating stock market indicators. All the functions here without extra specified, will calculate indicator for the current date, according to the global date pointer.">
+<meta name="description" content="This page introduces the functions that calculate technical indicators. Unless stated otherwise, they calculate the indicator for the current date of the global date pointer, from the trading price (the closing price by default).">
 
-<meta property="og:description" content="This page introduces the API related to calculating stock market indicators. All the functions here without extra specified, will calculate indicator for the current date, according to the global date pointer.">
+<meta property="og:description" content="This page introduces the functions that calculate technical indicators. Unless stated otherwise, they calculate the indicator for the current date of the global date pointer, from the trading price (the closing price by default).">
 
 <meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/indicators/" />
 <meta property="og:title" content="Indicators" />
@@ -55,11 +55,12 @@
             <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
             <li><a href="/clojure-backtesting-website/posts/user-guide/">User Guide</a></li>
             <li><a href="/clojure-backtesting-website/posts/api/">Basic APIs</a></li>
-            <li><a href="/clojure-backtesting-website/posts/portfolio">Porfolio Mangement</a></li>
-            <li><a href="/clojure-backtesting-website/posts/evaluate">Evaluation</a></li>
-            <li><a href="/clojure-backtesting-website/posts/indicators">Indicators</a></li>
-            <li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li>
-            <li><a href="/clojure-backtesting-website/posts/examples">Examples</a></li>
+            <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio Management</a></li>
+            <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+            <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
+            <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/examples/">Examples</a></li>
         </ul>
     </div>
 
@@ -86,13 +87,13 @@
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <!-- <strong>2021年1月18日</strong> -->
+        <!-- <strong>18 January 2021</strong> -->
         
     </div>
     <h1>Indicators</h1>
 </div>
 <div>
-    <ol class="toc"><li><a href="#trend-indicators">Trend Indicators</a></li><ol><li><a href="#moving-avg">moving-avg</a></li><li><a href="#moving-sd">moving-sd</a></li><li><a href="#ema">EMA</a></li><li><a href="#ema-generator">EMA-generator</a></li><li><a href="#macd">MACD</a></li><li><a href="#macd-generator">MACD-generator</a></li><li><a href="#parabolic-sar"><code>parabolic-SAR</code></a></li></ol><li><a href="#momentum-indicators">Momentum Indicators</a></li><ol><li><a href="#roc"><code>ROC</code></a></li><li><a href="#rsi"><code>RSI</code></a></li><li><a href="#rsi-generator"><code>RSI-generator</code></a></li></ol><li><a href="#volatility-indicators">Volatility indicators</a></li><ol><li><a href="#atr"><code>ATR</code></a></li><li><a href="#keltner-channel"><code>keltner-channel</code></a></li></ol></ol>
+    <ol class="toc"><li><a href="#trend-indicators">Trend Indicators</a></li><ol><li><a href="#moving-avg">moving-avg</a></li><li><a href="#moving-sd">moving-sd</a></li><li><a href="#ema">EMA</a></li><li><a href="#ema-generator">EMA-generator</a></li><li><a href="#macd">MACD</a></li><li><a href="#macd-generator">MACD-generator</a></li><li><a href="#parabolic-sar">parabolic-SAR</a></li></ol><li><a href="#momentum-indicators">Momentum Indicators</a></li><ol><li><a href="#roc">ROC</a></li><li><a href="#rsi">RSI</a></li><li><a href="#rsi-generator">RSI-generator</a></li></ol><li><a href="#volatility-indicators">Volatility Indicators</a></li><ol><li><a href="#atr">ATR</a></li><li><a href="#keltner-channel">keltner-channel</a></li></ol></ol>
     <style>
 /* table styles */
 table, th, td {
@@ -102,49 +103,69 @@ table, th, td {
 td {
   padding: 10px;
 }
-</style><p>This page introduces the API related to calculating stock market indicators. All the functions here without extra specified, will calculate indicator for the current date, according to the global date pointer.</p><h2 id="trend-indicators">Trend Indicators</h2><h4 id="moving-avg">moving-avg</h4><p>Calculate the n days' moving average of a security.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>Indicate the target security</td><td> </td></tr><tr><td><code>n</code></td><td>Positive Integer &gt; 1</td><td>Indicate length of the moving window including today</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>Double, if the security exists. <code>nil</code> otherwise.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (moving-avg "28636" 10)
-</code></pre><h4 id="moving-sd">moving-sd</h4><p>Calculate the n days' moving standard deviation of a security.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>Indicate the target security</td><td> </td></tr><tr><td><code>n</code></td><td>Positive Integer &gt; 1</td><td>Indicate length of the moving window including today</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>Double, if the security exists. <code>nil</code> otherwise.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (moving-sd "28636" 10)
-</code></pre><h4 id="ema">EMA</h4><p>Calculate the EMA of a security. If called the first time, will return the <code>EMA-CYCLE</code>-day moving average. After this, EMA will be updated based on its <a href="https://corporatefinanceinstitute.com/resources/knowledge/trading-investing/exponential-moving-average-ema/">definition</a>. <em>This update process is automatic.</em></p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>Indicate the target security</td><td> </td></tr></tbody></table><p><strong>Relevant Parameter</strong></p><p><code>EMA-CYCLE</code>: the length of moving average when EMA first called.</p><p><strong>Return</strong></p><p>Double, if the security exists. <code>nil</code> otherwise.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (EMA "28636")
-</code></pre><br /><h4 id="ema-generator">EMA-generator</h4><p>Generator of the EMA function for the specified cycle.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>cycle</code></td><td>Positive Int</td><td>Indicate the size of cycle</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>EMA function having the same usage as above with a different cycle.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (def EMA10 (EMA-generator 10))
-=&gt; (EMA10 "28636")
-8.0375
+</style><p>This page introduces the functions that calculate technical indicators. Unless stated otherwise, they calculate the indicator for the current date of the global date pointer, from the trading price (the closing price by default).</p><p>The examples ran on the bundled sample dataset with the date pointer at 1990-02-19, except the second <code>parabolic-SAR</code> call and the <code>ATR</code> and <code>keltner-channel</code> examples, which ran on 1990-02-20, and the <code>MACD</code> examples, which show their own steps.</p><h2 id="trend-indicators">Trend Indicators</h2><h4 id="moving-avg">moving-avg</h4><p>Calculate the simple moving average of a security over the last n trading days, including today.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>The target security</td><td> </td></tr><tr><td><code>n</code></td><td>Positive Integer &gt; 1</td><td>Length of the moving window including today</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>A number, or <code>nil</code> unless the security has a price on all n days.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (moving-avg "10001" 10)
+48.217
+</code></pre><br /><h4 id="moving-sd">moving-sd</h4><p>Calculate the moving (sample) standard deviation of a security's price over the last n trading days, including today. Together with <code>moving-avg</code> it gives Bollinger Bands; see the <a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/bollinger_bands.clj"><code>bollinger_bands.clj</code></a> worksheet.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>The target security</td><td> </td></tr><tr><td><code>n</code></td><td>Positive Integer &gt; 1</td><td>Length of the moving window including today</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>A number, or <code>nil</code> unless the security has a price on all n days.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (moving-sd "10001" 10)
+0.5631666420045367
+</code></pre><br /><h4 id="ema">EMA</h4><p>Calculate the exponential moving average of a security. The first call returns the <code>EMA-CYCLE</code>-day moving average. After that, the backtester updates the EMA every trading day according to its <a href="https://corporatefinanceinstitute.com/resources/knowledge/trading-investing/exponential-moving-average-ema/">definition</a>, as long as the run continues. <em>This update is automatic.</em> On a day without a price, it keeps its last value.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>The target security</td><td> </td></tr></tbody></table><p><strong>Relevant Parameter</strong></p><p><code>EMA-CYCLE</code>: the cycle of the EMA (20 by default).</p><p><strong>Return</strong></p><p>A number, or <code>nil</code> if the first moving average cannot be computed yet.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (EMA "10001")
+48.4835
+</code></pre><br /><h4 id="ema-generator">EMA-generator</h4><p>Create an EMA function for another cycle.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>cycle</code></td><td>Positive Int</td><td>The cycle of the EMA</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>An EMA function with the same usage as <code>EMA</code>, using the given cycle.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (def EMA10 (EMA-generator 10))
+=&gt; (EMA10 "10001")
+48.217
 =&gt; (def EMA20 (EMA-generator 20))
-=&gt; (= (EMA20 "28636") (EMA "28636"))
+=&gt; (= (EMA20 "10001") (EMA "10001"))
 true
-</code></pre><br /><h4 id="macd">MACD</h4><p>Calculate the <a href="https://www.investopedia.com/terms/m/macd.asp">Moving average convergence / divergence</a> of a security.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>Indicate the target security</td><td> </td></tr></tbody></table><p><strong>Relevant Parameter</strong></p><p><code>MACD-SIGNAL</code>:  the cycle of the signal EMA
-<code>MACD-SHORT</code>: the cycle of the short EMA
-<code>MACD-LONG</code>: the cycle of the long EMA</p><p><strong>Return</strong></p><p>A sequence, [{MACD} {Signal EMA} {Short EMA} {Long EMA}], if the security exists. <code>nil</code> otherwise.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (MACD "28636")
-[-0.34999999999999787 11.182222222222222 11.185 11.534999999999998]
-</code></pre><br /><h4 id="macd-generator">MACD-generator</h4><p>Generator of the MACD function for the specified cycle.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>signal-cycle</code></td><td>Positive Int</td><td>Indicate the size of EMA cycle of the signal line</td><td> </td></tr><tr><td><code>short-cycle</code></td><td>Positive Int</td><td>Indicate the size of EMA cycle of the short line</td><td> </td></tr><tr><td><code>long-cycle</code></td><td>Positive Int</td><td>Indicate the size of EMA cycle of the long line</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>MACD function having the same usage as above with a different cycle.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (def MACD102030 (MACD-generator 10 20 30))
-=&gt; (MACD102030 "28636")
-[-0.03958333333333286 8.0375 8.70625 8.745833333333334]
-=&gt; (def MACD91226 (MACD-generator 9 12 26))
-=&gt; (= (MACD91226 "28636") (MACD "28636"))
-true
-</code></pre><br /><h3 id="parabolic-sar"><code>parabolic-SAR</code></h3><p>This function calculates the Parabolic Stop and Reverse (SAR).</p><p><strong>Parameters:</strong></p><ul><li><code>permno</code> - the symbol of a security</li><li><code>mode</code> - "lazy" or "non-lazy</li><li><code>af</code> - acceleration factor</li><li><code>prev-psar</code> - SAR value of the previous period</li></ul><p><strong>Output:</strong></p><ul><li><code>parabolic-SAR</code></li></ul><p><strong>Possible usages:</strong></p><pre><code class="clojure">(let [prev-close (Double/parseDouble (get (first (get-prev-n-days :PRC 1 "OMFGA")) :PRC))]
-    (println (parabolic-SAR "OMFGA" "non-lazy" 0.2 prev-close))
-)
-</code></pre><h2 id="momentum-indicators">Momentum Indicators</h2><h3 id="roc"><code>ROC</code></h3><p>This function calculates the Rate of Change (ROC) indicator.</p><p><strong>Parameters:</strong></p><ul><li><code>permno</code> - the name of the security</li><li><code>n</code> - time window</li></ul><p><strong>Output:</strong></p><ul><li><code>ROC</code></li></ul><p><strong>Possible usages:</strong></p><pre><code class="clojure">(println (ROC "58043" 20)
-</code></pre><br /><h3 id="rsi"><code>RSI</code></h3><p>This function calculates the Relative Strength Index (RSI) indicator.</p><p><strong>Parameters:</strong></p><ul><li><code>permno</code> - the name of the security</li></ul><p><strong>Output:</strong></p><ul><li><code>RSI</code></li></ul><p><strong>Related Parameter:</strong></p><ul><li><code>RSI-CYCLE</code>: By default 14.</li></ul><p><strong>Possible usages:</strong></p><pre><code class="clojure">(RSI "58043" 20)
-</code></pre><br /><h3 id="rsi-generator"><code>RSI-generator</code></h3><p>This function generates user-defined Relative Strength Index (RSI) calculator.</p><p><strong>Parameters:</strong></p><ul><li><code>n</code> - time window</li></ul><p><strong>Output:</strong></p><ul><li><code>RSI</code></li></ul><p><strong>Possible usages:</strong></p><pre><code class="clojure">=&gt; (def RSI10 (RSI-generator 10))
-=&gt; (RSI10 "28636")
-52.67
+</code></pre><br /><h4 id="macd">MACD</h4><p>Calculate the <a href="https://www.investopedia.com/terms/m/macd.asp">moving average convergence / divergence</a> of a security. After the first call, it is updated automatically every trading day, even while it still returns <code>nil</code>.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>The target security</td><td> </td></tr></tbody></table><p><strong>Relevant Parameters</strong></p><p><code>MACD-SIGNAL</code>: the cycle of the signal line (9 by default)</p><p><code>MACD-SHORT</code>: the cycle of the short EMA (12 by default)</p><p><code>MACD-LONG</code>: the cycle of the long EMA (26 by default)</p><p><strong>Return</strong></p><p>A vector [MACD, signal, short EMA, long EMA]. The short and long EMAs are of the security's price, MACD = short EMA − long EMA, and the signal line is the <code>MACD-SIGNAL</code>-day EMA of MACD, seeded with the mean of its first <code>MACD-SIGNAL</code> values.</p><p><code>nil</code> until the signal line has been seeded. With the default cycles, that takes 26 closes for the long EMA and then 9 MACD values from the days it has been tracked; so call <code>MACD</code> once early in the run, as below, to get the first value on the 34th close.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (init-portfolio "1990-01-02" 10000)
+=&gt; (MACD "10001") ;; not enough prices yet, but now tracked every day
+nil
+=&gt; (while (&lt; (compare (get-date) "1990-02-28") 0) (next-date))
+=&gt; (MACD "10001")
+[-0.4655478988484276 -0.6167045545421674 48.08274496033748 48.548292859185906]
+</code></pre><br /><h4 id="macd-generator">MACD-generator</h4><p>Create a MACD function for other cycles.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>signal-cycle</code></td><td>Positive Int</td><td>The EMA cycle of the signal line</td><td> </td></tr><tr><td><code>short-cycle</code></td><td>Positive Int</td><td>The EMA cycle of the short line</td><td> </td></tr><tr><td><code>long-cycle</code></td><td>Positive Int</td><td>The EMA cycle of the long line</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>A MACD function with the same usage as <code>MACD</code>, using the given cycles. Generators with the same cycles return the same function.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (init-portfolio "1990-01-02" 10000)
+=&gt; (def MACD51020 (MACD-generator 5 10 20))
+=&gt; (MACD51020 "10001")
+nil
+=&gt; (while (&lt; (compare (get-date) "1990-02-28") 0) (next-date))
+=&gt; (MACD51020 "10001")
+[-0.23347193957126677 -0.31630965090941965 48.056297547397676 48.28976948696894]
+</code></pre><br /><h4 id="parabolic-sar">parabolic-SAR</h4><p>Calculate Wilder's parabolic stop and reverse (SAR), one trading day per call. Pass the result of the previous day's call back in on the next trading day.</p><p>Needs the daily low and high columns <code>:BIDLO</code> and <code>:ASKHI</code> in the dataset.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>The target security</td><td> </td></tr><tr><td><code>state</code></td><td>Map / <code>nil</code></td><td>The map returned by the previous day's call</td><td><code>nil</code> on the first day: the trend is then read from today's price against the previous one.</td></tr></tbody></table><p><strong>Relevant Parameters</strong></p><p><code>SAR-AF-STEP</code>: the starting acceleration factor and its increment (0.02 by default)</p><p><code>SAR-AF-MAX</code>: the cap of the acceleration factor (0.2 by default)</p><p><strong>Return</strong></p><p>A map <code>{:sar :trend :ep :af}</code>: the stop level, the trend (<code>:up</code> or <code>:down</code>), the extreme point of the current trend, and the acceleration factor, which grows by <code>SAR-AF-STEP</code> on every new extreme.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (def sar (parabolic-SAR "10001" nil))
+=&gt; sar
+{:sar 49.79, :trend :down, :ep 47.32, :af 0.02}
+
+=&gt; (next-date)
+=&gt; (parabolic-SAR "10001" sar)
+{:sar 49.7406, :trend :down, :ep 47.2, :af 0.04}
+</code></pre><br /><h2 id="momentum-indicators">Momentum Indicators</h2><h4 id="roc">ROC</h4><p>Calculate the rate of change of a security's price over the last n trading days.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>The target security</td><td> </td></tr><tr><td><code>n</code></td><td>Positive Integer</td><td>The time window</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>The rate of change as a decimal (today's price / the price n trading days ago − 1), or <code>nil</code> if there are fewer than n earlier days or either price is missing.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (ROC "10001" 10)
+-0.014546965918536903
+</code></pre><br /><h4 id="rsi">RSI</h4><p>Calculate the Relative Strength Index of a security over <code>RSI-CYCLE</code> days. The first call seeds it with the simple average gain and loss; after that it is updated every trading day with Wilder's smoothing. <em>This update is automatic.</em> Through days without a price it keeps its last value, and the change across the gap counts as one day's change.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>The target security</td><td> </td></tr></tbody></table><p><strong>Relevant Parameter</strong></p><p><code>RSI-CYCLE</code>: 14 by default.</p><p><strong>Return</strong></p><p>A number between 0 and 100, or <code>nil</code> unless the security has a price on all of the first <code>RSI-CYCLE</code> days.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (RSI "10001")
+45.56962025316458
+</code></pre><br /><h4 id="rsi-generator">RSI-generator</h4><p>Create an RSI function for another cycle.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>cycle</code></td><td>Positive Int</td><td>The time window</td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p>An RSI function with the same usage as <code>RSI</code>, using the given cycle.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (def RSI10 (RSI-generator 10))
+=&gt; (RSI10 "10001")
+36.27992633517498
 =&gt; (def RSI14 (RSI-generator 14))
-=&gt; (= (RSI14 "28636") (RSI "28636"))
+=&gt; (= (RSI14 "10001") (RSI "10001"))
 true
-</code></pre><br /><h2 id="volatility-indicators">Volatility indicators</h2><h3 id="atr"><code>ATR</code></h3><p>This function calculates standard deviation of a stock for the last n days.</p><p><strong>Parameters:</strong></p><ul><li><code>permno</code> - the name of the security</li><li><code>n</code> - average of the daily TR values for the last n days</li></ul><p><strong>Possible usages:</strong></p><pre><code class="clojure">=&gt; (ATR "28637" 10)
-</code></pre><br /><h3 id="keltner-channel"><code>keltner-channel</code></h3><p>This function calculates the Keltner Channel value of a stock for the last n days.</p><p><strong>Parameters:</strong></p><ul><li><code>permno</code> - the name of the security</li><li><code>window</code> - time window</li></ul><p><strong>Possible usages:</strong></p><pre><code class="clojure">=&gt; (keltner-channel "28637" 10)
-</code></pre><br />
+</code></pre><br /><h2 id="volatility-indicators">Volatility Indicators</h2><h4 id="atr">ATR</h4><p>Calculate the average true range of a security, Wilder-smoothed from the previous value: (previous ATR × (n − 1) + today's true range) / n. The true range is the largest of high − low, |high − previous close| and |low − previous close|.</p><p>Needs the daily low and high columns <code>:BIDLO</code> and <code>:ASKHI</code> in the dataset.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>The target security</td><td> </td></tr><tr><td><code>n</code></td><td>Positive Integer</td><td>The smoothing window</td><td> </td></tr><tr><td><code>prev-atr</code></td><td>Number</td><td>The previous day's ATR</td><td>On the first day, seed it with, e.g., today's high − low.</td></tr></tbody></table><p><strong>Return</strong></p><p>A number.</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (ATR "10001" 14 0.5)
+0.5114285714285712
+
+;; carry the ATR from day to day
+(def atr (atom (- (get-permno-by-key "10001" :ASKHI)
+                  (get-permno-by-key "10001" :BIDLO))))
+;; then, on each trading day:
+(swap! atr #(ATR "10001" 14 %))
+</code></pre><br /><h4 id="keltner-channel">keltner-channel</h4><p>Calculate the Keltner Channel of a security: the <code>EMA</code> as the middle line, with bands two ATRs above and below it.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>permno</code></td><td>String</td><td>The target security</td><td> </td></tr><tr><td><code>window</code></td><td>Positive Integer</td><td>The ATR smoothing window</td><td> </td></tr><tr><td><code>prev-atr</code></td><td>Number</td><td>The previous day's ATR</td><td>As for <code>ATR</code></td></tr></tbody></table><p><strong>Return</strong></p><p>A vector [middle upper lower].</p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (keltner-channel "10001" 14 0.5114285714285712)
+[48.38030952380952 49.42439115646258 47.33622789115646]
+</code></pre>
 </div>
 
 <br/>
 
     <div id="prev-next">
         <!-- 
-        <a class="button" href="/clojure-backtesting-website/posts/deprecated/large-data/">&laquo; Large Data</a>
+        <a class="button" href="/clojure-backtesting-website/posts/deprecated/indicators2/">&laquo; Indicators2</a>
         
         
-        <a class="right button" href="/clojure-backtesting-website/posts/deprecated/indicators2/">Indicators2 &raquo;</a>
+        <a class="right button" href="/clojure-backtesting-website/posts/deprecated/example-golden-cross/">Example - Golden Cross &raquo;</a>
          -->
     </div>
 
@@ -154,7 +175,7 @@ true
 </div>
 
 <hr/>
-<div id="footercont" class="clearfix">Copyright &copy; 2023 clojure-backtesting
+<div id="footercont" class="clearfix">Copyright &copy; 2026 clojure-backtesting
     <span id="footerack">
         <!-- <p>Powered by <a href="http://cryogenweb.org">Cryogen</a> | Free Website Template by <a title="free website templates" href="http://www.downloadwebsitetemplates.co.uk" rel="external">Download Website Templates</a></p> -->
         <p>Powered by <a href="http://cryogenweb.org">Cryogen</a></p>

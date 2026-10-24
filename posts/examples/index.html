@@ -11,9 +11,9 @@
     
 <meta name="keywords" content="">
 
-<meta name="description" content="This page lists documented examples available.">
+<meta name="description" content="The examples folder of the library has these strategies as Gorilla REPL worksheets. They all run on the bundled sample dataset; open them with make start (see Get Started) or read them as plain Clojure files. Three of them are walked through step by step on this site.">
 
-<meta property="og:description" content="This page lists documented examples available.">
+<meta property="og:description" content="The examples folder of the library has these strategies as Gorilla REPL worksheets. They all run on the bundled sample dataset; open them with make start (see Get Started) or read them as plain Clojure files. Three of them are walked through step by step on this site.">
 
 <meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/examples/" />
 <meta property="og:title" content="Examples" />
@@ -55,11 +55,12 @@
             <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
             <li><a href="/clojure-backtesting-website/posts/user-guide/">User Guide</a></li>
             <li><a href="/clojure-backtesting-website/posts/api/">Basic APIs</a></li>
-            <li><a href="/clojure-backtesting-website/posts/portfolio">Porfolio Mangement</a></li>
-            <li><a href="/clojure-backtesting-website/posts/evaluate">Evaluation</a></li>
-            <li><a href="/clojure-backtesting-website/posts/indicators">Indicators</a></li>
-            <li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li>
-            <li><a href="/clojure-backtesting-website/posts/examples">Examples</a></li>
+            <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio Management</a></li>
+            <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+            <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
+            <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/examples/">Examples</a></li>
         </ul>
     </div>
 
@@ -86,7 +87,7 @@
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <!-- <strong>2021年1月21日</strong> -->
+        <!-- <strong>21 January 2021</strong> -->
         
     </div>
     <h1>Examples</h1>
@@ -102,7 +103,7 @@ table, th, td {
 td {
   padding: 10px;
 }
-</style><p>This page lists documented examples available.</p><ul><li><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/simple_trading_strategy.clj">simple_trading_strategy.clj</a></li><li><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/bad_strategy.clj">bad_strategy.clj</a></li><li><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/bollinger_bands.clj">bollinger_bands.clj</a></li><li><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/bollinger_bands.clj">buying_on_margin.clj</a></li><li><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/golden_cross.clj">golden_cross.clj</a></li><li><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/rate_of_change.clj">rate_of_change.clj</a></li><li><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/relative_strength_index.clj">relative_strength_index.clj</a></li><li><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Fundamental%20analysis.clj">Fundamental analysis.clj</a></li><li><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Plotting_frame.clj">Plotting_frame.clj</a></li></ul>
+</style><p>The <a href="https://github.com/clojure-finance/clojure-backtesting/tree/master/examples"><code>examples</code></a> folder of the library has these strategies as Gorilla REPL worksheets. They all run on the bundled sample dataset; open them with <code>make start</code> (see <a href="/clojure-backtesting-website/posts/get-started#gorilla-repl">Get Started</a>) or read them as plain Clojure files. Three of them are walked through step by step on this site.</p><table><thead><tr><th>Example</th><th>Description</th></tr></thead><tbody><tr><td><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/simple_trading_strategy.clj">simple_trading_strategy.clj</a></td><td>Basic buy/sell loop with order and portfolio output (<a href="/clojure-backtesting-website/posts/get-started#code-walkthrough">walkthrough</a>)</td></tr><tr><td><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/golden_cross.clj">golden_cross.clj</a></td><td>15/30-day moving average crossover (<a href="/clojure-backtesting-website/posts/examples/example-golden-cross">walkthrough</a>)</td></tr><tr><td><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/bollinger_bands.clj">bollinger_bands.clj</a></td><td>Mean reversion using Bollinger Bands</td></tr><tr><td><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/relative_strength_index.clj">relative_strength_index.clj</a></td><td>RSI-based overbought/oversold signals</td></tr><tr><td><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/rate_of_change.clj">rate_of_change.clj</a></td><td>Momentum strategy using ROC</td></tr><tr><td><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/buying_on_margin.clj">buying_on_margin.clj</a></td><td>Leveraged positions, short selling and margin requirements (<a href="/clojure-backtesting-website/posts/examples/example-buying-on-margin">walkthrough</a>)</td></tr><tr><td><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/bad_strategy.clj">bad_strategy.clj</a></td><td>A losing short position through a dividend</td></tr><tr><td><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/automation.clj">automation.clj</a></td><td>Stop and limit orders as automations (<a href="/clojure-backtesting-website/posts/automation">walkthrough</a>)</td></tr><tr><td><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Plotting_frame.clj">Plotting_frame.clj</a></td><td>Line charts of security prices and returns</td></tr><tr><td><a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Fundamental%20analysis.clj">Fundamental analysis.clj</a></td><td>Filing visibility by report date and a return-on-equity screen (<a href="/clojure-backtesting-website/posts/examples/example-fundamental-analysis">walkthrough</a>)</td></tr></tbody></table>
 </div>
 
 <br/>
@@ -112,7 +113,7 @@ td {
         <a class="button" href="/clojure-backtesting-website/posts/portfolio/">&laquo; Portfolio Management</a>
         
         
-        <a class="right button" href="/clojure-backtesting-website/posts/user-guide/">User Guide &raquo;</a>
+        <a class="right button" href="/clojure-backtesting-website/posts/evaluate/">Evaluation &raquo;</a>
          -->
     </div>
 
@@ -122,7 +123,7 @@ td {
 </div>
 
 <hr/>
-<div id="footercont" class="clearfix">Copyright &copy; 2023 clojure-backtesting
+<div id="footercont" class="clearfix">Copyright &copy; 2026 clojure-backtesting
     <span id="footerack">
         <!-- <p>Powered by <a href="http://cryogenweb.org">Cryogen</a> | Free Website Template by <a title="free website templates" href="http://www.downloadwebsitetemplates.co.uk" rel="external">Download Website Templates</a></p> -->
         <p>Powered by <a href="http://cryogenweb.org">Cryogen</a></p>

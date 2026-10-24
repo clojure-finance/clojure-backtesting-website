@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"><![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"><![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"><![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
+<head>
+    <!-- Website Template designed by www.downloadwebsitetemplates.co.uk -->
+    <!-- Modified to fit Cryogen.-->
+    <meta charset="UTF-8">
+    <title>Clojure Backtesting Documentation: Automation</title>
+    
+<meta name="keywords" content="">
+
+<meta name="description" content="An automation is a condition paired with an action. The backtester checks every automation&#39;s condition on each trading day, at the end of next-date, and runs the action when the condition is true. Automations make stop-loss and take-profit orders, or any other rule, run by themselves while your strategy steps through time.">
+
+<meta property="og:description" content="An automation is a condition paired with an action. The backtester checks every automation&#39;s condition on each trading day, at the end of next-date, and runs the action when the condition is true. Automations make stop-loss and take-profit orders, or any other rule, run by themselves while your strategy steps through time.">
+
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/automation/" />
+<meta property="og:title" content="Automation" />
+<meta property="og:type" content="article" />
+
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57.png">
+    <link rel="shortcut icon" href="images/ico/favicon.png">
+    <!--[if IE]><![endif]-->
+    <link href="/clojure-backtesting-website/css/buttons.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/clojure-backtesting-website/css/typography.css" rel="stylesheet" type="text/css" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow-night-eighties.min.css">
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+<body>
+
+<div id="left">
+
+    <p id="logo">
+        <a title="Clojure Backtesting Documentation" href="/clojure-backtesting-website/">
+            <span class="fa fa-code"></span>
+            <span class="text">Clojure Backtesting</span>
+        </a>
+    </p>
+
+    <div id="menucont" class="bodycontainer clearfix">
+        <div class="menutitle">
+            <p><span class="fa fa-reorder"></span><strong>Menu</strong></p>
+        </div>
+        <ul class="menu">
+            <li><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
+            <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+            <li><a href="/clojure-backtesting-website/posts/user-guide/">User Guide</a></li>
+            <li><a href="/clojure-backtesting-website/posts/api/">Basic APIs</a></li>
+            <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio Management</a></li>
+            <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+            <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
+            <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/examples/">Examples</a></li>
+        </ul>
+    </div>
+
+    <div id="socialmedia" class="clearfix">
+        <ul>
+            <li>
+                <a title="GitHub" href="https://github.com/clojure-finance/clojure-backtesting" rel="external">
+                    <span class="fa fa-github"> 
+                        <span style="font-family: 'Montserrat';text-transform: uppercase;">&nbsp;Github</span>
+                    </span>
+                </a>
+            </li>
+            <!-- <li><a title="Stack Overflow" href="./" rel="external"><span class="fa fa-stack-overflow"></span></a></li>
+            <li><a title="Google+" href="./" rel="external"><span class="fa fa-google-plus"></span></a></li>
+            <li><a title="LinkedIn" href="./" rel="external"><span class="fa fa-linkedin"></span></a></li>
+            <li><a title="Last.fm" href="./" rel="external"><span class="fa fa-lastfm"></span></a></li> -->
+        </ul>
+    </div>
+
+</div>
+
+<div id="right" class="clearfix">
+    
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <!-- <strong>24 October 2026</strong> -->
+        
+    </div>
+    <h1>Automation</h1>
+</div>
+<div>
+    <ol class="toc"><li><a href="#set-and-cancel-automations">Set and Cancel Automations</a></li><ol><li><a href="#set-automation">set-automation</a></li><li><a href="#cancel-automation">cancel-automation</a></li></ol><li><a href="#inspect-automations">Inspect Automations</a></li><ol><li><a href="#print-automation-list">print-automation-list</a></li><li><a href="#print-automation-history">print-automation-history</a></li></ol><li><a href="#note-automations-are-independent">Note: Automations Are Independent</a></li></ol>
+    <style>
+/* table styles */
+table, th, td {
+  border: 1px solid black;
+  padding: 5px;
+}
+td {
+  padding: 10px;
+}
+</style><p>An automation is a condition paired with an action. The backtester checks every automation's condition on each trading day, at the end of <code>next-date</code>, and runs the action when the condition is true. Automations make stop-loss and take-profit orders, or any other rule, run by themselves while your strategy steps through time.</p><p>The example on this page is the <a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/automation.clj"><code>automation.clj</code></a> worksheet, which runs on the bundled sample dataset.</p><h2 id="set-and-cancel-automations">Set and Cancel Automations</h2><h4 id="set-automation">set-automation</h4><p>Register an automation.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>condition</code></td><td>Function</td><td>A function of no arguments, checked every trading day</td><td>Wrap it in <code>condition</code> so that <code>print-automation-list</code> can show its source.</td></tr><tr><td><code>action</code></td><td>Function</td><td>A function of no arguments, run when the condition returns true</td><td>Wrap it in <code>action</code>, likewise. Orders placed by the action fill on the next trading day, as usual.</td></tr><tr><td>[<code>:max-dispatch</code>]</td><td>Integer</td><td>How many times the action may run</td><td>By default, unlimited. The automation is removed once used up.</td></tr><tr><td>[<code>:expiration</code>]</td><td>Integer</td><td>Number of trading days after today the automation stays active</td><td>By default, it never expires.</td></tr></tbody></table><p><strong>Return</strong></p><p>The automation's id, an integer.</p><p><strong>Example</strong></p><p>Buy 100 shares of AAA, then protect the position: a stop-sell if the price falls under $49, and a limit-sell to take profit above $52. Each fires at most once.</p><pre><code class="clojure">(order "10001" 100 :print true)
+
+(defn stop-sell
+  "Sell qty shares once the price falls below prc."
+  [permno prc qty]
+  (set-automation
+   (condition #(when-let [price (get-permno-price permno)] (&lt; price prc)))
+   (action #(order permno (- qty) :print true))
+   :max-dispatch 1))
+
+(defn limit-sell
+  "Sell qty shares once the price rises above prc."
+  [permno prc qty]
+  (set-automation
+   (condition #(when-let [price (get-permno-price permno)] (&gt; price prc)))
+   (action #(order permno (- qty) :print true))
+   :max-dispatch 1))
+
+(stop-sell "10001" 49 100)
+(limit-sell "10001" 52 100)
+;; =&gt; 2
+</code></pre><br /><h4 id="cancel-automation">cancel-automation</h4><p>Remove an automation.</p><table><thead><tr><th>Argument</th><th>Type</th><th>Function</th><th>Remarks</th></tr></thead><tbody><tr><td><code>id</code></td><td>Integer</td><td>The id returned by <code>set-automation</code></td><td> </td></tr></tbody></table><p><strong>Return</strong></p><p><code>true</code></p><p><strong>Example</strong></p><pre><code class="clojure">(cancel-automation 1)
+;; =&gt; true
+</code></pre><p><code>init-portfolio</code> removes all automations.</p><br /><h2 id="inspect-automations">Inspect Automations</h2><h4 id="print-automation-list">print-automation-list</h4><p>Print the active automations in a table.</p><pre><code class="clojure">(print-automation-list)
+</code></pre><pre><code class="text">| :id |                                                          :condition |                                     :action | :max-dispatch | :expire-date |
+|-----+---------------------------------------------------------------------+---------------------------------------------+---------------+--------------|
+|   1 | (fn* [] (when-let [price (get-permno-price permno)] (&lt; price prc))) | (fn* [] (order permno (- qty) :print true)) |             1 |        Never |
+|   2 | (fn* [] (when-let [price (get-permno-price permno)] (&gt; price prc))) | (fn* [] (order permno (- qty) :print true)) |             1 |        Never |
+</code></pre><br /><h4 id="print-automation-history">print-automation-history</h4><p>Print the days on which automations ran. Takes an optional number of rows, like <code>print-order-record</code>.</p><p>Running the example for 30 trading days:</p><pre><code class="clojure">(dotimes [_ 30]
+  (next-date))
+</code></pre><pre><code class="text">Order: 1990-01-03 | 10001 | 100.000000.
+Automation 2 dispatched.
+Order: 1990-01-19 | 10001 | -100.000000.
+Automation 1 dispatched.
+Order: 1990-01-30 | 10001 | -100.000000.
+</code></pre><pre><code class="clojure">(print-automation-history)
+</code></pre><pre><code class="text">|      :date | :automation |
+|------------+-------------|
+| 1990-01-18 |           2 |
+| 1990-01-29 |           1 |
+</code></pre><br /><h2 id="note-automations-are-independent">Note: Automations Are Independent</h2><p>The price first rose above $52, so the limit-sell (automation 2) sold the 100 shares. Later it fell below $49, and the stop-sell (automation 1) sold 100 shares again. Since the portfolio no longer held any, that second sale opened a short position:</p><pre><code class="clojure">(print-order-record)
+</code></pre><pre><code class="text">|      :date | :permno | :price | :aprc | :quantity |
+|------------+---------+--------+-------+-----------|
+| 1990-01-03 |   10001 |  50.81 | 50.81 |     100.0 |
+| 1990-01-19 |   10001 |  51.85 | 51.85 |    -100.0 |
+| 1990-01-30 |   10001 |  47.77 | 47.77 |    -100.0 |
+</code></pre><pre><code class="clojure">(print-portfolio)
+</code></pre><pre><code class="text">| :asset | :price |   :aprc | :quantity | :tot-val |
+|--------+--------+---------+-----------+----------|
+|   cash |    N/A |     N/A |       N/A | 14881.00 |
+|  10001 |  48.01 | 48.0100 |    -100.0 | -4801.00 |
+</code></pre><p>Automations do not know about each other. To make a pair where one cancels the other, cancel it in the action, or sell with <code>(order permno 0 :remaining true)</code>, which only closes whatever position is left:</p><pre><code class="clojure">(action #(order "10001" 0 :remaining true :print true))
+</code></pre>
+</div>
+
+<br/>
+
+    <div id="prev-next">
+        <!-- 
+        
+        <a class="right button" href="/clojure-backtesting-website/posts/api/">Basic APIs &raquo;</a>
+         -->
+    </div>
+
+    
+
+
+</div>
+
+<hr/>
+<div id="footercont" class="clearfix">Copyright &copy; 2026 clojure-backtesting
+    <span id="footerack">
+        <!-- <p>Powered by <a href="http://cryogenweb.org">Cryogen</a> | Free Website Template by <a title="free website templates" href="http://www.downloadwebsitetemplates.co.uk" rel="external">Download Website Templates</a></p> -->
+        <p>Powered by <a href="http://cryogenweb.org">Cryogen</a></p>
+    </span>
+</div>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="/clojure-backtesting-website/js/highlight.pack.js" type="application/javascript"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script src="/clojure-backtesting-website/js/scripts.js" type="application/javascript"></script>
+
+
+</body>
+</html>

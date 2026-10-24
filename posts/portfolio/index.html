@@ -11,9 +11,9 @@
     
 <meta name="keywords" content="">
 
-<meta name="description" content="This page features functions associated with manipulating and viewing the portfolio.">
+<meta name="description" content="This page features functions for setting up and viewing the portfolio. The examples run on the bundled sample dataset.">
 
-<meta property="og:description" content="This page features functions associated with manipulating and viewing the portfolio.">
+<meta property="og:description" content="This page features functions for setting up and viewing the portfolio. The examples run on the bundled sample dataset.">
 
 <meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/portfolio/" />
 <meta property="og:title" content="Portfolio Management" />
@@ -55,11 +55,12 @@
             <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
             <li><a href="/clojure-backtesting-website/posts/user-guide/">User Guide</a></li>
             <li><a href="/clojure-backtesting-website/posts/api/">Basic APIs</a></li>
-            <li><a href="/clojure-backtesting-website/posts/portfolio">Porfolio Mangement</a></li>
-            <li><a href="/clojure-backtesting-website/posts/evaluate">Evaluation</a></li>
-            <li><a href="/clojure-backtesting-website/posts/indicators">Indicators</a></li>
-            <li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li>
-            <li><a href="/clojure-backtesting-website/posts/examples">Examples</a></li>
+            <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio Management</a></li>
+            <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+            <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
+            <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
+            <li><a href="/clojure-backtesting-website/posts/examples/">Examples</a></li>
         </ul>
     </div>
 
@@ -86,13 +87,13 @@
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <!-- <strong>2021年1月21日</strong> -->
+        <!-- <strong>21 January 2021</strong> -->
         
     </div>
     <h1>Portfolio Management</h1>
 </div>
 <div>
-    <ol class="toc"><li><a href="#portfolio-initialization">Portfolio Initialization</a></li><ol><li><a href="#init-portfolio"><code>init_portfolio</code></a></li></ol><li><a href="#portfolio-inspection">Portfolio Inspection</a></li><ol><li><a href="#print-portfolio"><code>print_portfolio</code></a></li><li><a href="#print-portfolio-record"><code>print-portfolio-record</code></a></li></ol></ol>
+    <ol class="toc"><li><a href="#portfolio-initialization">Portfolio Initialization</a></li><ol><li><a href="#init-portfolio"><code>init-portfolio</code></a></li></ol><li><a href="#portfolio-inspection">Portfolio Inspection</a></li><ol><li><a href="#print-portfolio"><code>print-portfolio</code></a></li><li><a href="#print-portfolio-record"><code>print-portfolio-record</code></a></li><li><a href="#print-order-record"><code>print-order-record</code></a></li><li><a href="#portfolio-exposure"><code>portfolio-exposure</code></a></li><li><a href="#raw-records">Raw records</a></li></ol></ol>
     <style>
 /* table styles */
 table, th, td {
@@ -102,39 +103,29 @@ table, th, td {
 td {
   padding: 10px;
 }
-</style><p>This page features functions associated with manipulating and viewing the portfolio.</p><hr /><h2 id="portfolio-initialization">Portfolio Initialization</h2><h3 id="init-portfolio"><code>init_portfolio</code></h3><p>This function initialises the portfolio with cash and a date. Note that is is a <strong>must</strong> to call the function before executing functions e.g. <code>available-tics</code> and those in the <code>counter</code> namespace.</p><p><strong>Parameters:</strong></p><ul><li><code>date</code> - the starting date of the portfolio, in format "YYYY-MM-DD"</li><li><code>init-capital</code> - the desired initial capital for the portfolio (non-negative integer)</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(init_portfolio "1980-12-1" 1000000)
-
-;; output:
-null
-</code></pre><hr /><h2 id="portfolio-inspection">Portfolio Inspection</h2><h3 id="print-portfolio"><code>print_portfolio</code></h3><p>This function prints the portfolio in a table format.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> <strong>Column</strong> </th><th align="center"> <strong>Format</strong>  </th><th align="left"> <strong>Meaning</strong></th></tr></thead><tbody><tr><td><code>asset</code></td><td align="center"> string</td><td align="left">Cash or ticker of the stock</td></tr><tr><td><code>price</code></td><td align="center"> float, $</td><td align="left">Price of the stock  </td></tr><tr><td><code>aprc</code></td><td align="center"> float, %</td><td align="left">Adjusted price of the stock  </td></tr><tr><td><code>quantity</code></td><td align="center"> int or float</td><td align="left">Quantity of the stock owned  </td></tr><tr><td><code>tot_val</code></td><td align="center"> int, $</td><td align="left">Total value of the stock  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code class="clojure">(print-portfolio)
-
-;; output:
-| :asset |  :price | :aprc | :quantity | :tot_val |
-|--------+---------+-------+-----------+----------|
-|   cash |     N/A |   N/A |       N/A |    10295 |
-|   58043 |   34.19 | 29.42 |         0 |        0 |
-</code></pre><br /><h3 id="print-portfolio-record"><code>print-portfolio-record</code></h3><p>This function prints the historical values and daily returns of the portfolio in a table format.</p><p><strong>Parameters:</strong></p><ul><li><code>n</code> - no. of rows to print, if n &lt;= 0, print entire record</li></ul><p><strong>Ouput explanation:</strong></p><table><thead><tr><th> <strong>Column</strong> </th><th align="center"> <strong>Format</strong>  </th><th align="left"> <strong>Meaning</strong></th></tr></thead><tbody><tr><td><code>date</code></td><td align="center"> YYYY-MM-DD</td><td align="left">Date of record</td></tr><tr><td><code>tot_value</code></td><td align="center"> int, $</td><td align="left">Total value of the portfolio  </td></tr><tr><td><code>daily_ret</code></td><td align="center"> float, %</td><td align="left">Daily return of the portfolio  </td></tr><tr><td><code>tot_ret</code></td><td align="center"> float, %</td><td align="left">Total return of the portfolio  </td></tr><tr><td><code>loan</code></td><td align="center"> int, $</td><td align="left">Amount of loan made (cumulative)  </td></tr><tr><td><code>leverage</code></td><td align="center"> float, %</td><td align="left">Leverage ratio given by (total debt / total equity)  </td></tr><tr><td><code>margin</code></td><td align="center"> float, %</td><td align="left">Portfolio margin given by (cash / total value of securities), &gt; 0 if there is leverage  </td></tr></tbody></table><br /><p><strong>Example</strong>:</p><pre><code class="clojure">(print-portfolio-record)
-
-;; output:
-|      :date | :tot-value | :daily-ret | :tot-ret |  :loan | :leverage | :margin |
-|------------+------------+------------+----------+--------+-----------+---------|
-| 1980-12-15 |    $210.00 |      0.00% |    0.00% |  $0.00 |      0.00 |   0.00% |
-| 1980-12-16 |    $210.00 |      0.00% |    0.00% | $48.19 |      0.23 |  81.34% |
-| 1980-12-17 |    $212.75 |      0.13% |    0.13% | $48.19 |      0.23 |  81.53% |
-| 1980-12-18 |    $216.00 |      0.15% |    0.27% | $48.19 |      0.22 |  81.76% |
-| 1980-12-19 |    $222.87 |      0.29% |    0.57% | $48.19 |      0.22 |  82.22% |
-| 1980-12-22 |    $228.51 |      0.23% |    0.80% | $48.19 |      0.21 |  82.58% |
-| 1980-12-23 |    $233.51 |      0.19% |    0.99% | $48.19 |      0.21 |  82.89% |
-| 1980-12-24 |    $239.84 |      0.23% |    1.23% | $48.19 |      0.20 |  83.27% |
-| 1980-12-26 |    $251.08 |      0.38% |    1.61% | $48.19 |      0.19 |  83.90% |
-</code></pre><pre><code class="clojure">(print-portfolio-record 3)
-
-;; output:
-|      :date | :tot-value | :daily-ret | :tot-ret |  :loan | :leverage | :margin |
-|------------+------------+------------+----------+--------+-----------+---------|
-| 1980-12-15 |    $210.00 |      0.00% |    0.00% |  $0.00 |      0.00 |   0.00% |
-| 1980-12-16 |    $210.00 |      0.00% |    0.00% | $48.19 |      0.23 |  81.34% |
-| 1980-12-17 |    $212.75 |      0.13% |    0.13% | $48.19 |      0.23 |  81.53% |
+</style><p>This page features functions for setting up and viewing the portfolio. The examples run on the bundled sample dataset.</p><hr /><h2 id="portfolio-initialization">Portfolio Initialization</h2><h3 id="init-portfolio"><code>init-portfolio</code></h3><p>This function sets the starting date and the initial capital, in cash. It is a <strong>must</strong> to call it before trading or using the functions that depend on the current date, e.g. <code>available-permnos</code> and <code>next-date</code>. Calling it again restarts the backtester. See <a href="/clojure-backtesting-website/posts/api#init-portfolio"><code>init-portfolio</code></a> for details.</p><p><strong>Parameters:</strong></p><ul><li><code>date</code> - the starting date of the portfolio, in the format "YYYY-MM-DD"</li><li><code>capital</code> - the initial capital</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(init-portfolio "1990-01-02" 10000)
+;; =&gt; "Date: 1990-01-02 Cash: $10000"
+</code></pre><hr /><h2 id="portfolio-inspection">Portfolio Inspection</h2><h3 id="print-portfolio"><code>print-portfolio</code></h3><p>This function prints the current holdings in a table.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Output explanation:</strong></p><table><thead><tr><th> <strong>Column</strong> </th><th align="center"> <strong>Format</strong>  </th><th align="left"> <strong>Meaning</strong></th></tr></thead><tbody><tr><td><code>asset</code></td><td align="center"> string</td><td align="left">Cash or the security</td></tr><tr><td><code>price</code></td><td align="center"> float, $</td><td align="left">Price of the security at the last revaluation</td></tr><tr><td><code>aprc</code></td><td align="center"> float, $</td><td align="left">Adjusted price of the security</td></tr><tr><td><code>quantity</code></td><td align="center"> float</td><td align="left">Number of shares held; negative for a short position. Grows on dividend days when dividends are reinvested, and on splits.</td></tr><tr><td><code>tot-val</code></td><td align="center"> float, $</td><td align="left">Value of the holding (negative for a short position) or the cash balance (negative when there is a loan)</td></tr></tbody></table><p><strong>Example</strong>:</p><pre><code class="clojure">(print-portfolio)
+</code></pre><pre><code class="text">| :asset | :price |    :aprc | :quantity | :tot-val |
+|--------+--------+----------+-----------+----------|
+|   cash |    N/A |      N/A |       N/A |  5930.80 |
+|  10002 | 133.11 | 133.1100 |      30.0 |  3993.30 |
+</code></pre><br /><h3 id="print-portfolio-record"><code>print-portfolio-record</code></h3><p>This function prints the daily history of the portfolio's value in a table.</p><p><strong>Parameters:</strong></p><ul><li>[<code>n</code>] - number of rows to print, from the start. Without it, or with zero or a negative number, the entire record is printed.</li></ul><p><strong>Output explanation:</strong></p><table><thead><tr><th> <strong>Column</strong> </th><th align="center"> <strong>Format</strong>  </th><th align="left"> <strong>Meaning</strong></th></tr></thead><tbody><tr><td><code>date</code></td><td align="center"> YYYY-MM-DD</td><td align="left">Date of record</td></tr><tr><td><code>tot-value</code></td><td align="center"> float, $</td><td align="left">Total value (equity) of the portfolio: cash plus long positions minus short positions</td></tr><tr><td><code>daily-ret</code></td><td align="center"> float, %</td><td align="left">Daily return of the portfolio (log return)</td></tr><tr><td><code>tot-ret</code></td><td align="center"> float, %</td><td align="left">Total return of the portfolio since the start (sum of log returns)</td></tr><tr><td><code>loan</code></td><td align="center"> float, $</td><td align="left">Cash borrowed, i.e. the negative part of the cash balance</td></tr><tr><td><code>short</code></td><td align="center"> float, $</td><td align="left">Market value of the borrowed (shorted) shares</td></tr><tr><td><code>leverage</code></td><td align="center"> float</td><td align="left">(loan + short) / total value</td></tr><tr><td><code>margin</code></td><td align="center"> float, %</td><td align="left">Portfolio margin: total value / gross value of all positions (long + short); 100% when there are no positions. A margin call closes all positions when it falls below <code>MAINTENANCE-MARGIN</code>.</td></tr></tbody></table><p><strong>Example</strong>:</p><pre><code class="clojure">(print-portfolio-record 3)
+</code></pre><pre><code class="text">|      :date | :tot-value | :daily-ret | :tot-ret | :loan | :short | :leverage | :margin |
+|------------+------------+------------+----------+-------+--------+-----------+---------|
+| 1990-01-05 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-08 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+| 1990-01-09 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
+</code></pre><p>The <a href="/clojure-backtesting-website/posts/examples/example-buying-on-margin">Buying on Margin</a> example shows the record with loans and short positions.</p><br /><h3 id="print-order-record"><code>print-order-record</code></h3><p>This function prints the filled orders in a table.</p><p><strong>Parameters:</strong></p><ul><li>[<code>n</code>] - number of rows to print, as for <code>print-portfolio-record</code></li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(print-order-record)
+</code></pre><pre><code class="text">|      :date | :permno | :price |  :aprc | :quantity |
+|------------+---------+--------+--------+-----------|
+| 1990-02-21 |   10001 |  48.82 |  49.32 |      20.0 |
+| 1990-02-21 |   10002 | 135.08 | 135.08 |      30.0 |
+| 1990-02-22 |   10001 |  47.98 |  48.47 |     -20.0 |
+</code></pre><br /><h3 id="portfolio-exposure"><code>portfolio-exposure</code></h3><p>This function summarises the current portfolio in dollars.</p><p><strong>Parameters:</strong></p><ul><li>none</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(portfolio-exposure)
+;; =&gt; {:cash 5930.799999999999, :long 3993.3, :short 0.0, :equity 9924.099999999999, :gross 3993.3, :loan 0.0}
+</code></pre><br /><h3 id="raw-records">Raw records</h3><p>The data behind these tables are atoms you can read directly, for example to plot them:</p><ul><li><code>portfolio</code> - the current holdings, a map from security to <code>{:price :aprc :quantity :tot-val ...}</code> plus <code>:cash</code></li><li><code>portfolio-value</code> - the portfolio record, one map per day</li><li><code>order-record</code> - the filled orders</li><li><code>pending-order</code> - orders that have not filled yet</li></ul><pre><code class="clojure">(deref portfolio)
+;; =&gt; {:cash {:tot-val 5930.799999999999}, "10002" {:price 133.11, :aprc 133.11000000000004, :cfacpr 2.0, :quantity 30.0, :tot-val 3993.3}}
 </code></pre>
 </div>
 
@@ -155,7 +146,7 @@ null
 </div>
 
 <hr/>
-<div id="footercont" class="clearfix">Copyright &copy; 2023 clojure-backtesting
+<div id="footercont" class="clearfix">Copyright &copy; 2026 clojure-backtesting
     <span id="footerack">
         <!-- <p>Powered by <a href="http://cryogenweb.org">Cryogen</a> | Free Website Template by <a title="free website templates" href="http://www.downloadwebsitetemplates.co.uk" rel="external">Download Website Templates</a></p> -->
         <p>Powered by <a href="http://cryogenweb.org">Cryogen</a></p>
