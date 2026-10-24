@@ -27,7 +27,7 @@ Welcome to the Clojure Backtesting Library! This is an open-source library for q
 
 Here is an introduction video to the backtester, which includes installation guide, example walkthrough and learning tips.
 
-<iframe width="640" height="400" src="https://www.youtube.com/embed/mkU0CR30bf8"> </iframe>
+<iframe width="672" height="378" src="https://www.youtube.com/embed/7F4gUWOhkB8?si=n3E9T370qlv3s0TU"> </iframe>
 
 ## Table of Contents
 
