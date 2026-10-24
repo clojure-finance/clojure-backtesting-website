@@ -62,7 +62,7 @@ This function prints the evaluation report in a table.
 | `r-vol`            |   &nbsp;float, %    | &nbsp;Volatility over the rolling window (the last 30 days by default)           |
 | `sharpe`           |   &nbsp;float       | &nbsp;Annualised Sharpe ratio since the start: mean daily return / standard deviation × √252, with a zero risk-free rate |
 | `r-sharpe`         |   &nbsp;float       | &nbsp;Annualised Sharpe ratio over the rolling window                            |
-| `pnl-pt`           |   &nbsp;int, $      | &nbsp;Profit and loss per trade: (total value − initial capital) / number of filled orders |
+| `pnl-pt`           |   &nbsp;int, $      | &nbsp;Profit and loss per trade: (total value − initial capital) / number of filled orders, not counting the orders `end-order` places to close positions |
 | `max-drawdown`     |   &nbsp;float, %    | &nbsp;Maximum drawdown: the largest decline of the total value from a previous peak, as a percentage of that peak |
 
 The daily returns are the log returns in the `daily-ret` column of the [portfolio record](/posts/portfolio#print-portfolio-record).
@@ -76,11 +76,11 @@ The daily returns are the log returns in the `daily-ret` column of the [portfoli
 ```text
 |      :date | :tot-value |    :vol |  :r-vol | :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
 |------------+------------+---------+---------+---------+-----------+---------+---------------|
-| 1990-01-03 |     $10000 | 0.0000% | 0.0000% |  0.0000 |    0.0000 |      $0 |        0.0000 |
-| 1990-01-04 |      $9970 | 0.0000% | 0.0000% |  0.0000 |    0.0000 |    $-14 |        0.2950 |
-| 1990-01-05 |      $9976 | 0.0301% | 0.0301% |  7.9373 |    7.9373 |    $-11 |        0.2950 |
-| 1990-01-08 |      $9977 | 0.0269% | 0.0269% |  7.0993 |    7.0993 |     $-7 |        0.2950 |
-| 1990-01-09 |      $9963 | 0.0694% | 0.0694% | -3.3269 |   -3.3269 |    $-12 |        0.3700 |
+| 1990-01-03 |     $10000 | 0.0000% | 0.0000% |  0.0000 |    0.0000 |      $0 |       0.0000% |
+| 1990-01-04 |      $9970 | 0.1706% | 0.1706% | -9.1652 |   -9.1652 |    $-14 |       0.2950% |
+| 1990-01-05 |      $9976 | 0.1603% | 0.1603% | -5.8258 |   -5.8258 |    $-11 |       0.2950% |
+| 1990-01-08 |      $9977 | 0.1424% | 0.1424% | -4.9785 |   -4.9785 |     $-7 |       0.2950% |
+| 1990-01-09 |      $9963 | 0.1341% | 0.1341% | -7.3148 |   -7.3148 |    $-12 |       0.3700% |
 ```
 
 The same rows are kept as numbers (not formatted) in the `eval-record` atom, which is handy for plotting.
@@ -99,7 +99,7 @@ These functions compute a metric for the current state without touching the repo
 | `get-daily-returns` | All daily returns so far |
 | `volatility` / `rolling-volatility` | Volatility since the start / over the rolling window, as a fraction |
 | `sharpe-ratio` / `rolling-sharpe-ratio` | Annualised Sharpe ratio since the start / over the rolling window |
-| `pnl-per-trade` | Profit and loss per filled order, in dollars |
+| `pnl-per-trade` | Profit and loss per filled order of the strategy, in dollars |
 | `max-drawdown` | Maximum drawdown, as a fraction of the peak |
 
 **Example**:

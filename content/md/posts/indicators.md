@@ -21,7 +21,7 @@ td {
 
 This page introduces the functions that calculate technical indicators. Unless stated otherwise, they calculate the indicator for the current date of the global date pointer, from the trading price (the closing price by default).
 
-The examples ran on the bundled sample dataset with the date pointer at 1990-02-19, except the second `parabolic-SAR` call and the `ATR` and `keltner-channel` examples, which ran on 1990-02-20.
+The examples ran on the bundled sample dataset with the date pointer at 1990-02-19, except the second `parabolic-SAR` call and the `ATR` and `keltner-channel` examples, which ran on 1990-02-20, and the `MACD` examples, which show their own steps.
 
 ## Trend Indicators
 
@@ -71,7 +71,7 @@ A number, or `nil` unless the security has a price on all n days.
 
 #### EMA
 
-Calculate the exponential moving average of a security. The first call returns the `EMA-CYCLE`-day moving average. After that, the backtester updates the EMA every trading day according to its [definition](https://corporatefinanceinstitute.com/resources/knowledge/trading-investing/exponential-moving-average-ema/), as long as the run continues. *This update is automatic.*
+Calculate the exponential moving average of a security. The first call returns the `EMA-CYCLE`-day moving average. After that, the backtester updates the EMA every trading day according to its [definition](https://corporatefinanceinstitute.com/resources/knowledge/trading-investing/exponential-moving-average-ema/), as long as the run continues. *This update is automatic.* On a day without a price, it keeps its last value.
 
 | Argument | Type   | Function                     | Remarks |
 | -------- | ------ | ---------------------------- | ------- |
@@ -121,7 +121,7 @@ true
 
 #### MACD
 
-Calculate the [moving average convergence / divergence](https://www.investopedia.com/terms/m/macd.asp) of a security. Like `EMA`, it is updated automatically every trading day after the first call.
+Calculate the [moving average convergence / divergence](https://www.investopedia.com/terms/m/macd.asp) of a security. After the first call, it is updated automatically every trading day, even while it still returns `nil`.
 
 | Argument | Type   | Function                     | Remarks |
 | -------- | ------ | ---------------------------- | ------- |
@@ -129,7 +129,7 @@ Calculate the [moving average convergence / divergence](https://www.investopedia
 
 **Relevant Parameters**
 
-`MACD-SIGNAL`: the cycle of the signal EMA (9 by default)
+`MACD-SIGNAL`: the cycle of the signal line (9 by default)
 
 `MACD-SHORT`: the cycle of the short EMA (12 by default)
 
@@ -137,13 +137,19 @@ Calculate the [moving average convergence / divergence](https://www.investopedia
 
 **Return**
 
-A vector [MACD, signal EMA, short EMA, long EMA], where MACD = short EMA − long EMA and each EMA is of the security's price. `nil` until there are enough prices for the long EMA.
+A vector [MACD, signal, short EMA, long EMA]. The short and long EMAs are of the security's price, MACD = short EMA − long EMA, and the signal line is the `MACD-SIGNAL`-day EMA of MACD, seeded with the mean of its first `MACD-SIGNAL` values.
+
+`nil` until the signal line has been seeded. With the default cycles, that takes 26 closes for the long EMA and then 9 MACD values from the days it has been tracked; so call `MACD` once early in the run, as below, to get the first value on the 34th close.
 
 **Example**
 
 ```clojure
+=> (init-portfolio "1990-01-02" 10000)
+=> (MACD "10001") ;; not enough prices yet, but now tracked every day
+nil
+=> (while (< (compare (get-date) "1990-02-28") 0) (next-date))
 => (MACD "10001")
-[-0.9610897435897385 48.14000000000001 48.16083333333333 49.12192307692307]
+[-0.4655478988484276 -0.6167045545421674 48.08274496033748 48.548292859185906]
 ```
 
 <br>
@@ -160,14 +166,18 @@ Create a MACD function for other cycles.
 
 **Return**
 
-A MACD function with the same usage as `MACD`, using the given cycles.
+A MACD function with the same usage as `MACD`, using the given cycles. Generators with the same cycles return the same function.
 
 **Example**
 
 ```clojure
+=> (init-portfolio "1990-01-02" 10000)
 => (def MACD51020 (MACD-generator 5 10 20))
 => (MACD51020 "10001")
-[-0.2665000000000006 48.30400000000001 48.217 48.4835]
+nil
+=> (while (< (compare (get-date) "1990-02-28") 0) (next-date))
+=> (MACD51020 "10001")
+[-0.23347193957126677 -0.31630965090941965 48.056297547397676 48.28976948696894]
 ```
 
 <br>
@@ -233,7 +243,7 @@ The rate of change as a decimal (today's price / the price n trading days ago �
 
 #### RSI
 
-Calculate the Relative Strength Index of a security over `RSI-CYCLE` days. The first call seeds it with the simple average gain and loss; after that it is updated every trading day with Wilder's smoothing. *This update is automatic.*
+Calculate the Relative Strength Index of a security over `RSI-CYCLE` days. The first call seeds it with the simple average gain and loss; after that it is updated every trading day with Wilder's smoothing. *This update is automatic.* Through days without a price it keeps its last value, and the change across the gap counts as one day's change.
 
 | Argument | Type   | Function             | Remarks |
 | -------- | ------ | -------------------- | ------- |
