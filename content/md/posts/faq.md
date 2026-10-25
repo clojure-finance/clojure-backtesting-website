@@ -83,10 +83,7 @@ Call `init-portfolio` to start a new run.
 
 ### How do I restart a backtest?
 
-Call `init-portfolio` again. It resets the portfolio, every record, the indicators and the automations. Two things carry over:
-
-- **Pending orders.** `init-portfolio` does not clear orders that have not filled yet, and they would fill in the new run. If you restart in the middle of a run, call `end-order` first, which clears them.
-- **Settings.** Changes made with the `update-...` functions and `alter-var-root` stay as they are; set them back yourself if a later run should use the defaults.
+Call `init-portfolio` again. It resets the portfolio, every record, the indicators and the automations, and drops any orders that have not filled yet. Settings changed with the `update-...` functions and `alter-var-root` stay as they are; set them back yourself if a later run should use the defaults.
 
 ### init-portfolio fails with an assertion error
 

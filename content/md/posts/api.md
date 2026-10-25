@@ -39,7 +39,7 @@ The dataset is already furnished by add-aprc. No more modification is needed.
 
 ### `init-portfolio`
 
-Set the starting date and capital. Calling it again restarts the backtester: the portfolio, all records, indicators and automations are reset.
+Set the starting date and capital. Calling it again restarts the backtester: the portfolio, all records, indicators and automations are reset, and orders that have not filled yet are dropped.
 
 | Argument  | Type   | Function                     | Remarks                                                      |
 | --------- | ------ | ---------------------------- | ------------------------------------------------------------ |
