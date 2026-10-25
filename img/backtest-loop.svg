@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 270" width="760" height="270" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">The shape of a backtest</title>
+  <desc id="d">Load the data with load-dataset, start the portfolio with init-portfolio, then repeat every trading day: look at the data, place orders, and call next-date. At the end, close positions with end-order and review the results.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="760" height="270" fill="#ffffff"/>
+  <g font-size="13">
+    <!-- Left column -->
+    <rect x="8" y="34" width="168" height="72" rx="10" fill="#f6f8fb" stroke="#d5dde8"/>
+    <text x="22" y="62" font-weight="600" fill="#0f172a">1  Load the data</text>
+    <text x="22" y="86" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="12" fill="#1d4fb8">load-dataset</text>
+    <rect x="8" y="160" width="168" height="72" rx="10" fill="#f6f8fb" stroke="#d5dde8"/>
+    <text x="22" y="188" font-weight="600" fill="#0f172a">2  Start a portfolio</text>
+    <text x="22" y="212" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="12" fill="#1d4fb8">init-portfolio</text>
+    <line x1="92" y1="108" x2="92" y2="156" stroke="#64748b" stroke-width="1.5" marker-end="url(#a)"/>
+    <line x1="178" y1="196" x2="216" y2="196" stroke="#64748b" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- Daily loop -->
+    <rect x="220" y="8" width="320" height="254" rx="14" fill="#eef4fe" stroke="#2f6fdb" stroke-dasharray="6 5"/>
+    <text x="238" y="34" font-weight="700" fill="#1d4fb8">3  Repeat for every trading day</text>
+    <rect x="238" y="50" width="250" height="56" rx="9" fill="#ffffff" stroke="#bcd0f2"/>
+    <text x="252" y="73" font-weight="600" fill="#0f172a">Look at today's data</text>
+    <text x="252" y="94" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11.5" fill="#1d4fb8">get-info · moving-avg · RSI</text>
+    <rect x="238" y="124" width="250" height="56" rx="9" fill="#ffffff" stroke="#bcd0f2"/>
+    <text x="252" y="147" font-weight="600" fill="#0f172a">Decide and place orders</text>
+    <text x="252" y="168" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11.5" fill="#1d4fb8">order</text>
+    <rect x="238" y="198" width="250" height="56" rx="9" fill="#ffffff" stroke="#bcd0f2"/>
+    <text x="252" y="221" font-weight="600" fill="#0f172a">Move to the next day</text>
+    <text x="252" y="242" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="11.5" fill="#1d4fb8">next-date</text>
+    <line x1="363" y1="107" x2="363" y2="121" stroke="#64748b" stroke-width="1.5" marker-end="url(#a)"/>
+    <line x1="363" y1="181" x2="363" y2="195" stroke="#64748b" stroke-width="1.5" marker-end="url(#a)"/>
+    <path d="M490 226 H516 V78 H494" fill="none" stroke="#2f6fdb" stroke-width="1.8" marker-end="url(#a)"/>
+
+    <!-- Right column -->
+    <line x1="542" y1="70" x2="580" y2="70" stroke="#64748b" stroke-width="1.5" marker-end="url(#a)"/>
+    <rect x="584" y="34" width="168" height="72" rx="10" fill="#f6f8fb" stroke="#d5dde8"/>
+    <text x="598" y="62" font-weight="600" fill="#0f172a">4  Close positions</text>
+    <text x="598" y="86" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="12" fill="#1d4fb8">end-order</text>
+    <line x1="668" y1="108" x2="668" y2="156" stroke="#64748b" stroke-width="1.5" marker-end="url(#a)"/>
+    <rect x="584" y="160" width="168" height="72" rx="10" fill="#f6f8fb" stroke="#d5dde8"/>
+    <text x="598" y="188" font-weight="600" fill="#0f172a">5  Review results</text>
+    <text x="598" y="212" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="12" fill="#1d4fb8">print-eval-report</text>
+  </g>
+</svg>

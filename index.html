@@ -1,121 +1,147 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"><![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"><![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"><![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
+<html lang="en">
 <head>
-    <!-- Website Template designed by www.downloadwebsitetemplates.co.uk -->
-    <!-- Modified to fit Cryogen.-->
     <meta charset="UTF-8">
-    <title>Clojure Backtesting Documentation: Welcome to the Clojure Backtesting Library</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clojure Backtesting</title>
     
+<meta name="description" content="Documentation for Clojure Backtesting, an open-source library for testing trading strategies on daily market data.">
+<meta property="og:title" content="Clojure Backtesting">
+<meta property="og:description" content="Documentation for Clojure Backtesting, an open-source library for testing trading strategies on daily market data.">
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website">
+<meta property="og:type" content="website">
 
-<meta name="description" content="Welcome to the Clojure Backtesting Library! This is an open-source library for quantitative finance and trading developed at the HKU Business School.Features">
-
-<meta property="og:description" content="Welcome to the Clojure Backtesting Library! This is an open-source library for quantitative finance and trading developed at the HKU Business School.Features">
-
-<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/" />
-<meta property="og:title" content="Welcome to the Clojure Backtesting Library" />
-<meta property="og:type" content="article" />
-
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72.png">
-    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57.png">
-    <link rel="shortcut icon" href="images/ico/favicon.png">
-    <!--[if IE]><![endif]-->
-    <link href="/clojure-backtesting-website/css/buttons.css" rel="stylesheet" type="text/css" />
-    <link href="/clojure-backtesting-website/css/menu.css" rel="stylesheet" type="text/css" />
-    <link href="/clojure-backtesting-website/css/reset.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" type="image/svg+xml" href="/clojure-backtesting-website/img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
-    <link href="/clojure-backtesting-website/css/typography.css" rel="stylesheet" type="text/css" />
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow-night-eighties.min.css">
-    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
-<body>
+<body class="home-page">
 
-<div id="left">
-
-    <p id="logo">
-        <a title="Clojure Backtesting Documentation" href="/clojure-backtesting-website/">
-            <span class="fa fa-code"></span>
-            <span class="text">Clojure Backtesting</span>
+<header class="site-header">
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <a class="brand" href="/clojure-backtesting-website/">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+            <defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f6fdb"/><stop offset="1" stop-color="#16a34a"/></linearGradient></defs>
+            <rect width="32" height="32" rx="8" fill="url(#bm)"/>
+            <path d="M6 22.5 L12 16 L16.5 19.5 L25.5 9.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="25.5" cy="9.5" r="2.2" fill="#fff"/>
+        </svg>
+        <span class="brand-name">Clojure Backtesting</span>
+    </a>
+    <span class="version" title="Library version these docs describe">v1.1.0</span>
+    <nav class="header-links" aria-label="External">
+        <a href="/clojure-backtesting-website/posts/examples/">Examples</a>
+        <a href="https://github.com/clojure-finance/clojure-backtesting" class="github" rel="external">
+            <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            <span>GitHub</span>
         </a>
-    </p>
+    </nav>
+</header>
 
-    <div id="menucont" class="bodycontainer clearfix">
-        <div class="menutitle">
-            <p><span class="fa fa-reorder"></span><strong>Menu</strong></p>
+<div class="layout">
+    <aside class="sidebar" id="sidebar">
+        <nav class="side-nav" aria-label="Documentation">
+            <p class="nav-group">Introduction</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/">Overview</a></li>
+                <li><a href="/clojure-backtesting-website/pages/about/">Why Clojure?</a></li>
+            </ul>
+            <p class="nav-group">Learn</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+                <li><a href="/clojure-backtesting-website/posts/concepts/">Key Concepts</a></li>
+                <li><a href="/clojure-backtesting-website/posts/user-guide/">Data and Trading Rules</a></li>
+            </ul>
+            <p class="nav-group">API Reference</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/cheat-sheet/">Cheat Sheet</a></li>
+                <li><a href="/clojure-backtesting-website/posts/api/">Core API</a></li>
+                <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio</a></li>
+                <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation and Plots</a></li>
+                <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+                <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
+                <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
+            </ul>
+            <p class="nav-group">Examples</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/examples/">All Examples</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-golden-cross/">Golden Cross</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-bollinger-bands/">Bollinger Bands</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-buying-on-margin/">Buying on Margin</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-fundamental-analysis/">Fundamental Analysis</a></li>
+            </ul>
+            <p class="nav-group">Help</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/faq/">FAQ and Troubleshooting</a></li>
+                <li><a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Report an Issue</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <div class="nav-backdrop" hidden></div>
+
+    <main class="main" id="main">
+        
+<section class="hero">
+    <div class="hero-text">
+        <p class="hero-kicker">Open-source backtesting library · v1.1.0</p>
+        <h1>Test trading ideas on history, one day at a time.</h1>
+        <p class="hero-lead">Clojure Backtesting replays daily market data, fills your orders the way a broker would, tracks cash, loans and short positions, and reports how the strategy performed.</p>
+        <div class="hero-actions">
+            <a class="button primary" href="/clojure-backtesting-website/posts/get-started/">Get started</a>
+            <a class="button ghost" href="/clojure-backtesting-website/posts/concepts/">How it works</a>
+            <a class="button ghost" href="https://github.com/clojure-finance/clojure-backtesting" rel="external">GitHub</a>
         </div>
-        <ul class="menu">
-            <li><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
-            <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
-            <li><a href="/clojure-backtesting-website/posts/user-guide/">User Guide</a></li>
-            <li><a href="/clojure-backtesting-website/posts/api/">Basic APIs</a></li>
-            <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio Management</a></li>
-            <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation</a></li>
-            <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
-            <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
-            <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
-            <li><a href="/clojure-backtesting-website/posts/examples/">Examples</a></li>
-        </ul>
     </div>
+    <div class="hero-code" aria-label="Example strategy">
+        <div class="window-bar"><span></span><span></span><span></span><em>strategy.clj</em></div>
+<pre><code class="clojure">(load-dataset "resources/sample-data/main" "main" add-aprc)
+(init-portfolio "1990-01-02" 10000)
 
-    <div id="socialmedia" class="clearfix">
-        <ul>
-            <li>
-                <a title="GitHub" href="https://github.com/clojure-finance/clojure-backtesting" rel="external">
-                    <span class="fa fa-github"> 
-                        <span style="font-family: 'Montserrat';text-transform: uppercase;">&nbsp;Github</span>
-                    </span>
-                </a>
-            </li>
-            <!-- <li><a title="Stack Overflow" href="./" rel="external"><span class="fa fa-stack-overflow"></span></a></li>
-            <li><a title="Google+" href="./" rel="external"><span class="fa fa-google-plus"></span></a></li>
-            <li><a title="LinkedIn" href="./" rel="external"><span class="fa fa-linkedin"></span></a></li>
-            <li><a title="Last.fm" href="./" rel="external"><span class="fa fa-lastfm"></span></a></li> -->
-        </ul>
+;; Hold 50 shares of AAA while its price
+;; is above its 10-day moving average
+(while (&lt; (compare (get-date) "1990-03-29") 0)
+  (let [price (get-permno-price "10001")
+        ma10  (moving-avg "10001" 10)]
+    (when (and price ma10)
+      (order "10001" (if (&gt; price ma10) 50 0)
+             :remaining true)))
+  (update-eval-report)
+  (next-date))
+(end-order)</code></pre>
     </div>
-
+</section>
+<div class="home-body">
+    <h2 id="what-you-can-do">What you can do</h2><p>A backtest replays history: your strategy sees the market one day at a time, places orders, and the library keeps the books. These are the parts it handles for you.</p><div class="card-grid"><div class="card"><span class="icon"><svg stroke="currentColor" aria-hidden="true" fill="none" stroke-linejoin="round" width="20" viewbox="0 0 24 24" stroke-linecap="round" stroke-width="2" height="20"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></span><h3>Day-by-day simulation</h3><p>A global clock moves through trading days. Your code only sees data up to "today", so it cannot peek at the future.</p></div><div class="card"><span class="icon green"><svg stroke="currentColor" aria-hidden="true" fill="none" stroke-linejoin="round" width="20" viewbox="0 0 24 24" stroke-linecap="round" stroke-width="2" height="20"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><path d="M22 4 12 14.01l-3-3"></path></svg></span><h3>Orders fill like a broker's</h3><p>An order fills at the next trading day's close. Orders wait while a security has no price, and expire after a few days.</p></div><div class="card"><span class="icon amber"><svg stroke="currentColor" aria-hidden="true" fill="none" stroke-linejoin="round" width="20" viewbox="0 0 24 24" stroke-linecap="round" stroke-width="2" height="20"><path d="M23 18 13.5 8.5l-5 5L1 6"></path><path d="M17 18h6v-6"></path></svg></span><h3>Margin and short selling</h3><p>Borrow cash or shares under initial and maintenance margins, with optional commissions and loan interest.</p></div><div class="card"><span class="icon"><svg stroke="currentColor" aria-hidden="true" fill="none" stroke-linejoin="round" width="20" viewbox="0 0 24 24" stroke-linecap="round" stroke-width="2" height="20"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></span><h3>Dividends, splits, fundamentals</h3><p>Dividends are reinvested or paid to cash. Company filings are joined by report date, so a strategy only sees published numbers.</p></div><div class="card"><span class="icon green"><svg stroke="currentColor" aria-hidden="true" fill="none" stroke-linejoin="round" width="20" viewbox="0 0 24 24" stroke-linecap="round" stroke-width="2" height="20"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></span><h3>Technical indicators</h3><p>Moving averages, EMA, MACD, RSI, rate of change, parabolic SAR, ATR and Keltner Channels.</p></div><div class="card"><span class="icon amber"><svg stroke="currentColor" aria-hidden="true" fill="none" stroke-linejoin="round" width="20" viewbox="0 0 24 24" stroke-linecap="round" stroke-width="2" height="20"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg></span><h3>Performance metrics</h3><p>Daily returns, volatility, Sharpe ratio, maximum drawdown and profit per trade, plus line charts in the browser.</p></div><div class="card"><span class="icon"><svg stroke="currentColor" aria-hidden="true" fill="none" stroke-linejoin="round" width="20" viewbox="0 0 24 24" stroke-linecap="round" stroke-width="2" height="20"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"></path></svg></span><h3>Automated rules</h3><p>Pair a condition with an action, such as a stop-loss, and the backtester checks it every trading day.</p></div><div class="card"><span class="icon green"><svg stroke="currentColor" aria-hidden="true" fill="none" stroke-linejoin="round" width="20" viewbox="0 0 24 24" stroke-linecap="round" stroke-width="2" height="20"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg></span><h3>Data larger than memory</h3><p>Data is read from disk one day at a time, with a cache. It has been tested with datasets of up to 30 GB.</p></div></div><h2 id="how-a-backtest-works">How a backtest works</h2><p>Every backtest follows the same four steps. The <a href="/clojure-backtesting-website/posts/concepts/">Key Concepts</a> page explains each step in more detail.</p><div class="card-grid"><div class="card"><span class="step">1</span><h3>Load the data</h3><p><code>load-dataset</code> points the library at daily prices, and optionally at company fundamentals.</p></div><div class="card"><span class="step">2</span><h3>Start a portfolio</h3><p><code>init-portfolio</code> sets the start date and the cash you begin with.</p></div><div class="card"><span class="step">3</span><h3>Step through the days</h3><p>Each day, read prices or indicators, call <code>order</code>, then <code>next-date</code> to move on.</p></div><div class="card"><span class="step">4</span><h3>Review the results</h3><p><code>end-order</code> closes the positions. The records and the evaluation report show what happened.</p></div></div><h2 id="what-the-example-above-produced">What the example above produced</h2><p>The strategy at the top of this page runs on the sample dataset that ships with the library. It holds 50 shares of the security AAA (<code>10001</code>) whenever the price closes above its 10-day average, and none otherwise.</p><div class="stats"><div class="stat"><span class="label">Starting cash</span><span class="value">$10,000</span></div><div class="stat"><span class="label">Final value</span><span class="value down">$9,652</span></div><div class="stat"><span class="label">Orders filled</span><span class="value">14</span></div><div class="stat"><span class="label">Sharpe ratio</span><span class="value down">−4.72</span></div><div class="stat"><span class="label">Max drawdown</span><span class="value">4.09%</span></div></div><figure><img src="/clojure-backtesting-website/img/example-backtest.svg" alt="Chart of AAA's closing price and 10-day average from January to March 1990, with seven buys and seven sells, and the portfolio value falling from $10,000 to $9,652." /><figcaption>AAA drifted down from about $51 to $44. Most moves above the average reversed within days, so six of the seven round trips lost money.</figcaption></figure><p>The rule lost $348 (3.5%). That is the point of backtesting: you find out on historical data, not with real money. The first fills in the order record:</p><pre><code class="text">|      :date | :permno | :price | :aprc | :quantity |
+|------------+---------+--------+-------+-----------|
+| 1990-01-16 |   10001 |  51.04 | 51.04 |      50.0 |
+| 1990-01-23 |   10001 |  50.12 | 50.12 |     -50.0 |
+| 1990-02-07 |   10001 |  48.06 | 48.06 |      50.0 |
+| 1990-02-08 |   10001 |   47.5 | 47.50 |     -50.0 |
+</code></pre><h2 id="start-learning">Start learning</h2><p>New to Clojure or to backtesting? Read these pages in order.</p><div class="card-grid"><a class="card" href="/clojure-backtesting-website/posts/get-started/"><span class="step">1</span><span class="card-title">Get Started</span><span class="card-text">Install, open a REPL and run your first backtest on the sample data.</span><span class="more">Install and run →</span></a><a class="card" href="/clojure-backtesting-website/posts/concepts/"><span class="step">2</span><span class="card-title">Key Concepts</span><span class="card-text">The daily loop, when orders fill, prices, margin and the performance metrics.</span><span class="more">Learn the ideas →</span></a><a class="card" href="/clojure-backtesting-website/posts/user-guide/"><span class="step">3</span><span class="card-title">Data and Trading Rules</span><span class="card-text">The datasets and their columns, the exact trading rules, and the cache.</span><span class="more">Read the rules →</span></a><a class="card" href="/clojure-backtesting-website/posts/cheat-sheet/"><span class="step">4</span><span class="card-title">Cheat Sheet</span><span class="card-text">Every function on one page, grouped by task, with links to the details.</span><span class="more">Browse functions →</span></a><a class="card" href="/clojure-backtesting-website/posts/examples/"><span class="step">5</span><span class="card-title">Examples</span><span class="card-text">Complete strategies: moving-average crossovers, Bollinger Bands, margin trading and fundamentals.</span><span class="more">See strategies →</span></a><a class="card" href="/clojure-backtesting-website/posts/faq/"><span class="step">?</span><span class="card-title">FAQ and Troubleshooting</span><span class="card-text">Why an order did not fill, why an indicator returns <code>nil</code>, and other common questions.</span><span class="more">Get unstuck →</span></a></div><h2 id="video-introduction">Video introduction</h2><p>A walkthrough of the installation, an example strategy and tips for learning the library. It was recorded with an earlier version of the library, so some details differ from these pages.</p><div class="video"><iframe src="https://www.youtube.com/embed/7F4gUWOhkB8" title="Introduction to the Clojure backtester" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen"></iframe></div>
 </div>
 
-<div id="right" class="clearfix">
-    
-<div id="custom-page">
-    <div id="page-header">
-        <h1>Welcome to the Clojure Backtesting Library</h1>
-    </div>
-    
-    <p>Welcome to the Clojure Backtesting Library! This is an open-source library for quantitative finance and trading developed at the HKU Business School.</p><h2 id="features">Features</h2><ul><li><p><strong>Day-by-day simulation</strong><br />
-Step through trading days, place orders, and track the portfolio. Orders fill at the next close, like in the real market.</p></li><li><p><strong>Support for large data files</strong><br />
-Data is read from disk day by day with a cache, so datasets larger than memory work. The library has been tested with data up to 30 GB.</p></li><li><p><strong>Built-in indicators</strong><br />
-EMA, MACD, RSI, Rate of Change, parabolic SAR, ATR and Keltner Channels, plus moving averages and standard deviations for crossovers or Bollinger Bands.</p></li><li><p><strong>Margin and short selling</strong><br />
-Borrow to buy or sell short, with configurable initial and maintenance margins, transaction costs and loan interest.</p></li><li><p><strong>Dividends, splits and fundamentals</strong><br />
-Dividends are reinvested or paid to cash, and Compustat-style fundamentals are joined by report date, so a strategy only sees what had been published.</p></li><li><p><strong>Evaluation, automation and plotting</strong><br />
-Sharpe ratio, volatility and maximum drawdown; condition/action rules such as stop-loss orders; line charts in the browser.</p></li><li><p><strong>Sample data included</strong><br />
-A small bundled dataset lets you try every function right after cloning.</p></li></ul><h2 id="video">Video</h2><p>Here is an introduction video to the backtester, which includes installation guide, example walkthrough and learning tips.</p><iframe width="672" height="378" src="https://www.youtube.com/embed/7F4gUWOhkB8?si=n3E9T370qlv3s0TU"> </iframe><h2 id="table-of-contents">Table of Contents</h2><p>If you are new to language Clojure or backtesters in general, you are recommended to go through the below documents one by one in order. This is to ensure that you have a flat learning curve.</p><h3 id="part-i-installation--pre-requisites">Part I: Installation &amp; Pre-requisites</h3><ul><li><a href="/clojure-backtesting-website/posts/get-started">Get Started</a></li><li><a href="/clojure-backtesting-website/posts/user-guide">User Guide</a></li></ul><h3 id="part-ii-api-documentation">Part II: API documentation</h3><ul><li><a href="/clojure-backtesting-website/posts/api">Basic APIs</a></li><li><a href="/clojure-backtesting-website/posts/portfolio">Portfolio</a></li><li><a href="/clojure-backtesting-website/posts/evaluate">Evaluate</a></li><li><a href="/clojure-backtesting-website/posts/indicators">Indicators</a></li><li><a href="/clojure-backtesting-website/posts/parameters">Parameters</a></li><li><a href="/clojure-backtesting-website/posts/automation">Automation</a></li></ul><h3 id="part-iii-examples">Part III: Examples</h3><ul><li><a href="/clojure-backtesting-website/posts/examples">Examples Archive</a></li></ul>
 
-    <div id="prev-next">
-        <!-- 
-         -->
-    </div>
+        <footer class="site-footer">
+            <p>Clojure Backtesting is open source under the MIT License and developed at HKU Business School.</p>
+            <p>
+                <a href="https://github.com/clojure-finance/clojure-backtesting" rel="external">Source code</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Issues</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting-website" rel="external">Edit this site</a>
+                <span aria-hidden="true">·</span>
+                Built with <a href="http://cryogenweb.org" rel="external">Cryogen</a>
+            </p>
+        </footer>
+    </main>
 </div>
 
-<hr/>
-<div id="footercont" class="clearfix">Copyright &copy; 2026 clojure-backtesting
-    <span id="footerack">
-        <!-- <p>Powered by <a href="http://cryogenweb.org">Cryogen</a> | Free Website Template by <a title="free website templates" href="http://www.downloadwebsitetemplates.co.uk" rel="external">Download Website Templates</a></p> -->
-        <p>Powered by <a href="http://cryogenweb.org">Cryogen</a></p>
-    </span>
-</div>
-</div>
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="/clojure-backtesting-website/js/highlight.pack.js" type="application/javascript"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-<script src="/clojure-backtesting-website/js/scripts.js" type="application/javascript"></script>
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js"></script>
+<script src="/clojure-backtesting-website/js/site.js" type="application/javascript"></script>
 </body>
 </html>

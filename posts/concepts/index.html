@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Key Concepts · Clojure Backtesting</title>
+    
+<meta name="description" content="The ideas behind the library in plain words: the daily loop, when orders fill, which prices are used, how borrowing works and what the performance numbers mean.">
+<meta property="og:title" content="Key Concepts">
+<meta property="og:description" content="The ideas behind the library in plain words: the daily loop, when orders fill, which prices are used, how borrowing works and what the performance numbers mean.">
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/concepts/">
+<meta property="og:type" content="article">
+
+    <link rel="icon" type="image/svg+xml" href="/clojure-backtesting-website/img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="doc-page">
+
+<header class="site-header">
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <a class="brand" href="/clojure-backtesting-website/">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+            <defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f6fdb"/><stop offset="1" stop-color="#16a34a"/></linearGradient></defs>
+            <rect width="32" height="32" rx="8" fill="url(#bm)"/>
+            <path d="M6 22.5 L12 16 L16.5 19.5 L25.5 9.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="25.5" cy="9.5" r="2.2" fill="#fff"/>
+        </svg>
+        <span class="brand-name">Clojure Backtesting</span>
+    </a>
+    <span class="version" title="Library version these docs describe">v1.1.0</span>
+    <nav class="header-links" aria-label="External">
+        <a href="/clojure-backtesting-website/posts/examples/">Examples</a>
+        <a href="https://github.com/clojure-finance/clojure-backtesting" class="github" rel="external">
+            <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            <span>GitHub</span>
+        </a>
+    </nav>
+</header>
+
+<div class="layout">
+    <aside class="sidebar" id="sidebar">
+        <nav class="side-nav" aria-label="Documentation">
+            <p class="nav-group">Introduction</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/">Overview</a></li>
+                <li><a href="/clojure-backtesting-website/pages/about/">Why Clojure?</a></li>
+            </ul>
+            <p class="nav-group">Learn</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+                <li><a href="/clojure-backtesting-website/posts/concepts/">Key Concepts</a></li>
+                <li><a href="/clojure-backtesting-website/posts/user-guide/">Data and Trading Rules</a></li>
+            </ul>
+            <p class="nav-group">API Reference</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/cheat-sheet/">Cheat Sheet</a></li>
+                <li><a href="/clojure-backtesting-website/posts/api/">Core API</a></li>
+                <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio</a></li>
+                <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation and Plots</a></li>
+                <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+                <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
+                <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
+            </ul>
+            <p class="nav-group">Examples</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/examples/">All Examples</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-golden-cross/">Golden Cross</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-bollinger-bands/">Bollinger Bands</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-buying-on-margin/">Buying on Margin</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-fundamental-analysis/">Fundamental Analysis</a></li>
+            </ul>
+            <p class="nav-group">Help</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/faq/">FAQ and Troubleshooting</a></li>
+                <li><a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Report an Issue</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <div class="nav-backdrop" hidden></div>
+
+    <main class="main" id="main">
+        
+<article class="doc has-toc">
+    <header class="doc-header">
+        <p class="eyebrow">Learn</p>
+        <h1>Key Concepts</h1>
+        <p class="lead">The ideas behind the library in plain words: the daily loop, when orders fill, which prices are used, how borrowing works and what the performance numbers mean.</p>
+    </header>
+    
+    <details class="page-toc" open>
+        <summary>On this page</summary>
+        <ol class="toc"><li><a href="#what-a-backtest-is">What a backtest is</a></li><li><a href="#the-shape-of-every-backtest">The shape of every backtest</a></li><li><a href="#the-clock-today-and-the-date-pointer">The clock: "today" and the date pointer</a></li><li><a href="#when-an-order-fills">When an order fills</a></li><li><a href="#securities-and-the-sample-dataset">Securities and the sample dataset</a></li><li><a href="#prices-raw-and-adjusted">Prices: raw and adjusted</a></li><li><a href="#long-short-and-borrowed-money">Long, short and borrowed money</a></li><li><a href="#measuring-performance">Measuring performance</a></li><li><a href="#glossary">Glossary</a></li></ol>
+    </details>
+    
+    <div class="doc-body">
+        <p>You do not need a finance background to use the backtester, but a few ideas come up on every page of this documentation. This page explains them once, with examples from the bundled sample dataset.</p><h2 id="what-a-backtest-is">What a backtest is</h2><p>A <strong>backtest</strong> runs a trading strategy on historical data as if it were happening live. On each day the strategy may only use information that was available on that day. It places orders, the backtester fills them at realistic prices, and at the end you see how much the strategy would have made or lost, and how risky the ride was.</p><p>A backtest is a cheap way to find out that an idea does not work. It cannot prove that one will: markets change, and a strategy tuned to fit the past often fails on new data. Treat good results as a reason to test further, on other periods and other securities.</p><h2 id="the-shape-of-every-backtest">The shape of every backtest</h2><p><img src="/clojure-backtesting-website/img/backtest-loop.svg" alt="The five steps of a backtest: load the data, start a portfolio, repeat the daily loop, close positions, review results." /></p><ol><li><strong>Load the data.</strong> <a href="/clojure-backtesting-website/posts/api/#load-dataset"><code>load-dataset</code></a> points the library at a directory of daily prices (the <em>main</em> dataset) and, optionally, company fundamentals (the <em>Compustat</em> dataset).</li><li><strong>Start a portfolio.</strong> <a href="/clojure-backtesting-website/posts/api/#init-portfolio"><code>init-portfolio</code></a> sets the start date and your starting cash. Calling it again starts over.</li><li><strong>Repeat for every trading day.</strong> Your code looks at today's data, decides, places orders with <a href="/clojure-backtesting-website/posts/api/#order"><code>order</code></a>, and calls <a href="/clojure-backtesting-website/posts/api/#next-date"><code>next-date</code></a> to move to the next trading day. The library has no built-in loop: you write it, usually with <code>while</code> or <code>dotimes</code>.</li><li><strong>Close positions.</strong> <a href="/clojure-backtesting-website/posts/api/#end-order"><code>end-order</code></a> sells everything at today's close and ends the run.</li><li><strong>Review results.</strong> Print the <a href="/clojure-backtesting-website/posts/portfolio/">order record, portfolio and evaluation report</a>, or <a href="/clojure-backtesting-website/posts/evaluate/#plot">plot</a> them.</li></ol><p>Here is the smallest useful version:</p><pre><code class="clojure">(load-dataset "resources/sample-data/main" "main" add-aprc)
+(init-portfolio "1990-01-02" 10000)
+
+(order "10001" 50)          ; buy 50 shares
+(dotimes [_ 10]             ; let 10 trading days pass
+  (next-date)
+  (update-eval-report))
+(end-order)                 ; sell everything
+
+(print-portfolio-record -1)
+</code></pre><h2 id="the-clock-today-and-the-date-pointer">The clock: "today" and the date pointer</h2><p>The backtester has a single global clock, the <strong>date pointer</strong>. <a href="/clojure-backtesting-website/posts/api/#get-date"><code>get-date</code></a> tells you where it is. Every data function answers relative to it: <a href="/clojure-backtesting-website/posts/api/#get-info"><code>get-info</code></a> returns today's rows, <a href="/clojure-backtesting-website/posts/api/#get-prev-n-days"><code>get-prev-n-days</code></a> returns earlier ones, and indicators such as <a href="/clojure-backtesting-website/posts/indicators/#moving-avg"><code>moving-avg</code></a> are computed from today backwards.</p><p>The clock only moves forward, one trading day per call to <code>next-date</code>, skipping weekends and holidays (any date not in the dataset). No function returns data from after "today", so your strategy cannot accidentally use tomorrow's prices. This mistake is called <strong>look-ahead bias</strong>, and it is the most common way backtests produce results that are too good to be true.</p><h2 id="when-an-order-fills">When an order fills</h2><p>An order does not fill when you place it. You place orders after seeing today's closing price, and you can no longer trade at a price that is already in the past. So the order becomes <strong>pending</strong>, and fills at the <strong>close of the next trading day</strong>:</p><p><img src="/clojure-backtesting-website/img/order-timeline.svg" alt="On 1990-01-02 the strategy orders 50 shares, which stays pending. next-date moves to 1990-01-03, where the order fills at the close of $50.81." /></p><p>This is why the order record of the <a href="/clojure-backtesting-website/posts/get-started/#your-first-backtest">first backtest</a> shows each order a day after it was placed. A few more rules:</p><ul><li>If the security has no price on the next day, the order waits, and expires after 3 trading days by default.</li><li>An order is a number of shares. Positive buys, negative sells. With <code>:remaining true</code> the number is the holding you want to end up with, so <code>(order "10001" 0 :remaining true)</code> closes the position.</li><li>On the same day, sales fill before purchases, so the cash from a sale can pay for a purchase.</li></ul><p>The <a href="/clojure-backtesting-website/posts/user-guide/#trading-logic">Data and Trading Rules</a> page lists every rule.</p><h2 id="securities-and-the-sample-dataset">Securities and the sample dataset</h2><p>Each security is identified by its <strong>PERMNO</strong>, a permanent number assigned by <a href="https://www.crsp.org/">CRSP</a>, the data provider the library is designed for. Permnos are strings in the API, such as <code>"10001"</code>. The documentation uses <em>permno</em> and <em>security</em> for the same thing; <a href="/clojure-backtesting-website/posts/api/#permno-tic-and-tic-permno"><code>permno-tic</code> and <code>tic-permno</code></a> translate to and from ticker symbols.</p><p>The sample dataset in <code>resources/sample-data</code> has three made-up securities over January to March 1990, each with a quirk that exercises part of the library:</p><table><thead><tr><th>Permno</th><th>Ticker</th><th>Price range</th><th>Quirk</th></tr></thead><tbody><tr><td><code>10001</code></td><td>AAA</td><td>about $44 to $52</td><td>Pays a dividend on 1990-02-15</td></tr><tr><td><code>10002</code></td><td>BBB</td><td>about $115 to $135, then $62 to $68 after the split</td><td>Splits 2-for-1 on 1990-03-01</td></tr><tr><td><code>10003</code></td><td>CCC</td><td>about $18 to $21</td><td>No prices from 1990-02-05 to 1990-02-09</td></tr></tbody></table><h2 id="prices-raw-and-adjusted">Prices: raw and adjusted</h2><p>Every row has two prices that matter:</p><ul><li><strong><code>:PRC</code></strong>, the raw closing price. Orders trade at this price, and the indicators are computed from it.</li><li><strong><code>:APRC</code></strong>, the <em>adjusted</em> price, added by <code>add-aprc</code>. It follows the security's total return, so dividends and splits do not make it jump.</li></ul><p>The difference shows on BBB's split. After 1990-03-01 one old share became two new ones, so the raw price halved while the adjusted price carried on. Two fills from the <a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/relative_strength_index.clj">RSI example</a>, before and after the split:</p><pre><code class="text">|      :date | :permno | :price |  :aprc | :quantity |
+|------------+---------+--------+--------+-----------|
+| 1990-02-22 |   10002 | 133.11 | 133.11 |      -5.0 |
+| 1990-03-02 |   10002 |  66.92 | 133.84 |       5.0 |
+</code></pre><p>The portfolio adjusts the share count on a split (5 shares become 10), and with reinvested dividends it also buys extra shares on dividend days, so neither event changes what your holding is worth. Indicators use the raw price, so a split looks like a crash to them. The <a href="/clojure-backtesting-website/posts/examples/example-golden-cross/">Golden Cross</a> example shows the effect.</p><h2 id="long-short-and-borrowed-money">Long, short and borrowed money</h2><p>A <strong>long</strong> position is shares you own: you profit if the price rises. A <strong>short</strong> position is shares you borrowed and sold: you profit if the price falls, because you can buy them back cheaper. In the portfolio a short position has a negative quantity.</p><p>You can also buy more than your cash pays for. The shortfall is a <strong>loan</strong>, shown as negative cash. Borrowed cash and borrowed shares both magnify gains and losses, so the backtester limits them:</p><table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody><tr><td>Equity, total value</td><td>Cash plus long positions minus short positions: what you would have after closing everything</td></tr><tr><td>Gross position value</td><td>Long positions plus short positions, both counted as positive</td></tr><tr><td>Leverage</td><td>(loan + short positions) / equity</td></tr><tr><td>Margin</td><td>equity / gross position value. 100% means no borrowing; lower means more borrowed</td></tr><tr><td>Initial margin</td><td>The margin a new borrowing order must keep, 50% by default. Orders that would go below it fail</td></tr><tr><td>Maintenance margin</td><td>The floor for the margin while you have borrowed, 25% by default. Below it, every position is closed (a <em>margin call</em>) and the run ends</td></tr></tbody></table><p><strong>Example.</strong> With $300 of cash, buying 10 AAA shares at $50.81 costs $508.10. The portfolio borrows $208.10, so leverage is 208.10 / 300 = 0.69 and margin is 300 / 508.10 = 59%. That is above the initial margin of 50%, so the order goes through. The <a href="/clojure-backtesting-website/posts/examples/example-buying-on-margin/">Buying on Margin</a> example follows this portfolio further.</p><h2 id="measuring-performance">Measuring performance</h2><p><a href="/clojure-backtesting-website/posts/evaluate/#update-eval-report"><code>update-eval-report</code></a> adds today's metrics to the evaluation report. The metrics are:</p><table><thead><tr><th>Metric</th><th>What it tells you</th></tr></thead><tbody><tr><td>Daily return</td><td>How much the total value changed from yesterday, as a log return: ln(today / yesterday). Log returns add up over days</td></tr><tr><td>Total return</td><td>The sum of the daily log returns since the start</td></tr><tr><td>Volatility</td><td>How much the daily returns vary (their standard deviation). Higher means a bumpier ride</td></tr><tr><td>Sharpe ratio</td><td>Average daily return divided by volatility, scaled to a year (× √252). Return per unit of risk; above 1 is usually considered good</td></tr><tr><td>Maximum drawdown</td><td>The largest fall from a peak in total value, as a percentage of that peak. The worst loss you would have sat through</td></tr><tr><td>Profit per trade</td><td>(total value − starting cash) / number of filled orders, not counting the orders <code>end-order</code> places</td></tr></tbody></table><p>The rolling versions (<code>r-vol</code>, <code>r-sharpe</code>) use only the last 30 trading days, to show how risk changes over time. The <a href="/clojure-backtesting-website/posts/evaluate/">Evaluation</a> page has the exact definitions.</p><h2 id="glossary">Glossary</h2><table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody><tr><td>Adjusted price (<code>:APRC</code>)</td><td>A price series that includes dividends and splits, so it moves with the total return</td></tr><tr><td>Automation</td><td>A condition and an action that the backtester checks every trading day; see <a href="/clojure-backtesting-website/posts/automation/">Automation</a></td></tr><tr><td>Compustat</td><td>A database of company financial statements. The library joins it to the daily data by report date</td></tr><tr><td>CRSP</td><td>The Center for Research in Security Prices, the source of the daily data the library is designed for</td></tr><tr><td>Date pointer</td><td>The backtester's clock, the current "today"</td></tr><tr><td>Delisting</td><td>A security that stops trading. After 10 trading days without a price, a holding is turned into cash at its last value</td></tr><tr><td>Dividend</td><td>Cash a company pays to shareholders. Reinvested in more shares by default</td></tr><tr><td>Expiration</td><td>How many trading days a pending order waits for a price, 3 by default</td></tr><tr><td>Fill</td><td>The moment an order is executed, at the next trading day's close</td></tr><tr><td>Look-ahead bias</td><td>Using information in a backtest that was not available at the time; the date pointer prevents it</td></tr><tr><td>Pending order</td><td>An order placed but not yet filled</td></tr><tr><td>Permno</td><td>CRSP's permanent identifier for a security, such as <code>"10001"</code></td></tr><tr><td>Split</td><td>A company dividing each share into several. The raw price falls, the adjusted price does not</td></tr></tbody></table>
+    </div>
+    <nav class="pager" aria-label="Previous and next page"></nav>
+</article>
+
+
+
+        <footer class="site-footer">
+            <p>Clojure Backtesting is open source under the MIT License and developed at HKU Business School.</p>
+            <p>
+                <a href="https://github.com/clojure-finance/clojure-backtesting" rel="external">Source code</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Issues</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting-website" rel="external">Edit this site</a>
+                <span aria-hidden="true">·</span>
+                Built with <a href="http://cryogenweb.org" rel="external">Cryogen</a>
+            </p>
+        </footer>
+    </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js"></script>
+<script src="/clojure-backtesting-website/js/site.js" type="application/javascript"></script>
+</body>
+</html>

@@ -1,116 +1,120 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"><![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"><![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"><![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
+<html lang="en">
 <head>
-    <!-- Website Template designed by www.downloadwebsitetemplates.co.uk -->
-    <!-- Modified to fit Cryogen.-->
     <meta charset="UTF-8">
-    <title>Clojure Backtesting Documentation: About</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Why Clojure? · Clojure Backtesting</title>
     
+<meta name="description" content="Why a backtester in Clojure, who builds it, and how to get involved.">
+<meta property="og:title" content="Why Clojure?">
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/pages/about/">
+<meta property="og:type" content="article">
 
-<meta name="description" content="This is the documentation for the backtesting library written in Clojure. The source code could be found at https://github.com/clojure-finance/clojure-backtesting.Why Clojure">
-
-<meta property="og:description" content="This is the documentation for the backtesting library written in Clojure. The source code could be found at https://github.com/clojure-finance/clojure-backtesting.Why Clojure">
-
-<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/pages/about/" />
-<meta property="og:title" content="About" />
-<meta property="og:type" content="article" />
-
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72.png">
-    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57.png">
-    <link rel="shortcut icon" href="images/ico/favicon.png">
-    <!--[if IE]><![endif]-->
-    <link href="/clojure-backtesting-website/css/buttons.css" rel="stylesheet" type="text/css" />
-    <link href="/clojure-backtesting-website/css/menu.css" rel="stylesheet" type="text/css" />
-    <link href="/clojure-backtesting-website/css/reset.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" type="image/svg+xml" href="/clojure-backtesting-website/img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
-    <link href="/clojure-backtesting-website/css/typography.css" rel="stylesheet" type="text/css" />
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/tomorrow-night-eighties.min.css">
-    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
-<body>
+<body class="doc-page">
 
-<div id="left">
-
-    <p id="logo">
-        <a title="Clojure Backtesting Documentation" href="/clojure-backtesting-website/">
-            <span class="fa fa-code"></span>
-            <span class="text">Clojure Backtesting</span>
+<header class="site-header">
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <a class="brand" href="/clojure-backtesting-website/">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+            <defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f6fdb"/><stop offset="1" stop-color="#16a34a"/></linearGradient></defs>
+            <rect width="32" height="32" rx="8" fill="url(#bm)"/>
+            <path d="M6 22.5 L12 16 L16.5 19.5 L25.5 9.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="25.5" cy="9.5" r="2.2" fill="#fff"/>
+        </svg>
+        <span class="brand-name">Clojure Backtesting</span>
+    </a>
+    <span class="version" title="Library version these docs describe">v1.1.0</span>
+    <nav class="header-links" aria-label="External">
+        <a href="/clojure-backtesting-website/posts/examples/">Examples</a>
+        <a href="https://github.com/clojure-finance/clojure-backtesting" class="github" rel="external">
+            <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            <span>GitHub</span>
         </a>
-    </p>
+    </nav>
+</header>
 
-    <div id="menucont" class="bodycontainer clearfix">
-        <div class="menutitle">
-            <p><span class="fa fa-reorder"></span><strong>Menu</strong></p>
-        </div>
-        <ul class="menu">
-            <li><a title="Home" href="/clojure-backtesting-website/">Home</a></li>
-            <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
-            <li><a href="/clojure-backtesting-website/posts/user-guide/">User Guide</a></li>
-            <li><a href="/clojure-backtesting-website/posts/api/">Basic APIs</a></li>
-            <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio Management</a></li>
-            <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation</a></li>
-            <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
-            <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
-            <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
-            <li><a href="/clojure-backtesting-website/posts/examples/">Examples</a></li>
-        </ul>
-    </div>
+<div class="layout">
+    <aside class="sidebar" id="sidebar">
+        <nav class="side-nav" aria-label="Documentation">
+            <p class="nav-group">Introduction</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/">Overview</a></li>
+                <li><a href="/clojure-backtesting-website/pages/about/">Why Clojure?</a></li>
+            </ul>
+            <p class="nav-group">Learn</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+                <li><a href="/clojure-backtesting-website/posts/concepts/">Key Concepts</a></li>
+                <li><a href="/clojure-backtesting-website/posts/user-guide/">Data and Trading Rules</a></li>
+            </ul>
+            <p class="nav-group">API Reference</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/cheat-sheet/">Cheat Sheet</a></li>
+                <li><a href="/clojure-backtesting-website/posts/api/">Core API</a></li>
+                <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio</a></li>
+                <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation and Plots</a></li>
+                <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+                <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
+                <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
+            </ul>
+            <p class="nav-group">Examples</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/examples/">All Examples</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-golden-cross/">Golden Cross</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-bollinger-bands/">Bollinger Bands</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-buying-on-margin/">Buying on Margin</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-fundamental-analysis/">Fundamental Analysis</a></li>
+            </ul>
+            <p class="nav-group">Help</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/faq/">FAQ and Troubleshooting</a></li>
+                <li><a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Report an Issue</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <div class="nav-backdrop" hidden></div>
 
-    <div id="socialmedia" class="clearfix">
-        <ul>
-            <li>
-                <a title="GitHub" href="https://github.com/clojure-finance/clojure-backtesting" rel="external">
-                    <span class="fa fa-github"> 
-                        <span style="font-family: 'Montserrat';text-transform: uppercase;">&nbsp;Github</span>
-                    </span>
-                </a>
-            </li>
-            <!-- <li><a title="Stack Overflow" href="./" rel="external"><span class="fa fa-stack-overflow"></span></a></li>
-            <li><a title="Google+" href="./" rel="external"><span class="fa fa-google-plus"></span></a></li>
-            <li><a title="LinkedIn" href="./" rel="external"><span class="fa fa-linkedin"></span></a></li>
-            <li><a title="Last.fm" href="./" rel="external"><span class="fa fa-lastfm"></span></a></li> -->
-        </ul>
-    </div>
-
-</div>
-
-<div id="right" class="clearfix">
-    
-<div id="custom-page">
-    <div id="page-header">
-        <h1>About</h1>
-    </div>
-    
-    <p>This is the documentation for the backtesting library written in Clojure. The source code could be found at <a href="https://github.com/clojure-finance/clojure-backtesting">https://github.com/clojure-finance/clojure-backtesting</a>.</p><h2 id="why-clojure">Why Clojure</h2><p>Clojure is a functional programming language that allows developers to work with high-level mathematical abstractions. Its fundamental features of immutability and laziness renders it the ideal candidate tool for financial modeling as well as distributed computation.</p><p>Here are some of the best things about Clojure:</p><ul><li><p>Clojure is a <strong>JVM-based language</strong>. This means that you're granted full access to Java's myriad of libraries.</p></li><li><p>Clojure is designed for <strong>concurrency</strong>. You can save your efforts spent on performance tuning and efficiency, and focus on writing the core functionalities.</p></li><li><p><strong>Lazy data structures</strong> are built-in in Clojure. It enables you to easily load datasets that larger than the memory size of your computer.</p></li></ul><p>Functional programming languages have a long history in the financial industry: for example, Jane Street uses <a href="https://blog.janestreet.com/why-ocaml/">OCaml</a> as its primary development language, and many investment banks make heavy use of Scala.</p><p>We believe that there are plenty of underlying potentialities in Clojure. Thus, we would like to make an effort in developing resources for this community. This backtesting library serves to be a resource that assists users to write trading strategies and evaluate the strategy performance.</p><br /><h2 id="report-bugs">Report bugs</h2><p>Clojure Backtesting Library is currently under active development. If you find any bugs or mistakes, we would appreciate if you could help <a href="https://github.com/clojure-finance/clojure-backtesting/issues">report</a> these issues so that we could repair them accordingly.</p>
-
-    <div id="prev-next">
-        <!-- 
+    <main class="main" id="main">
         
-        <a class="right button" href="/clojure-backtesting-website/pages/examples/">Examples &raquo;</a>
-         -->
+<article class="doc">
+    <header class="doc-header">
+        <p class="eyebrow">Introduction</p>
+        <h1>Why Clojure?</h1>
+        <p class="lead">Why a backtester in Clojure, who builds it, and how to get involved.</p>
+    </header>
+    
+    <div class="doc-body">
+        <p>Clojure Backtesting is an open-source library for testing trading strategies on historical daily data, developed at HKU Business School as part of the <a href="https://github.com/clojure-finance">clojure-finance</a> projects. The source code is on <a href="https://github.com/clojure-finance/clojure-backtesting">GitHub</a> under the MIT License.</p><h2 id="why-clojure">Why Clojure</h2><p>Clojure is a functional programming language that runs on the Java Virtual Machine. Several of its features suit financial modelling and data-heavy research:</p><ul><li><strong>Immutable data.</strong> Values do not change under you, which makes a long simulation easier to reason about and to test.</li><li><strong>The REPL.</strong> You build a strategy interactively, one expression at a time, and inspect the portfolio after every step.</li><li><strong>The JVM.</strong> Clojure code can call any Java library, and runs at the speed of compiled Java.</li><li><strong>Built for concurrency.</strong> Immutable data and Clojure's reference types make parallel work safer and simpler.</li><li><strong>Lazy sequences.</strong> Data can be processed as it is read, which is how the backtester handles datasets larger than memory.</li></ul><p>Functional languages have a long history in finance: Jane Street, for example, uses <a href="https://blog.janestreet.com/why-ocaml/">OCaml</a> as its primary language, and many banks use Scala. We believe Clojure has a lot to offer here too, and this library is one of the resources we are building for the community.</p><h2 id="report-bugs-and-contribute">Report bugs and contribute</h2><p>The library is under active development. If you find a bug or a mistake in these pages, please <a href="https://github.com/clojure-finance/clojure-backtesting/issues">open an issue</a>. Ideas for new examples are welcome too.</p>
     </div>
-</div>
-
-<hr/>
-<div id="footercont" class="clearfix">Copyright &copy; 2026 clojure-backtesting
-    <span id="footerack">
-        <!-- <p>Powered by <a href="http://cryogenweb.org">Cryogen</a> | Free Website Template by <a title="free website templates" href="http://www.downloadwebsitetemplates.co.uk" rel="external">Download Website Templates</a></p> -->
-        <p>Powered by <a href="http://cryogenweb.org">Cryogen</a></p>
-    </span>
-</div>
-</div>
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="/clojure-backtesting-website/js/highlight.pack.js" type="application/javascript"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-<script src="/clojure-backtesting-website/js/scripts.js" type="application/javascript"></script>
+    <nav class="pager" aria-label="Previous and next page"></nav>
+</article>
 
 
+        <footer class="site-footer">
+            <p>Clojure Backtesting is open source under the MIT License and developed at HKU Business School.</p>
+            <p>
+                <a href="https://github.com/clojure-finance/clojure-backtesting" rel="external">Source code</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Issues</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting-website" rel="external">Edit this site</a>
+                <span aria-hidden="true">·</span>
+                Built with <a href="http://cryogenweb.org" rel="external">Cryogen</a>
+            </p>
+        </footer>
+    </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js"></script>
+<script src="/clojure-backtesting-website/js/site.js" type="application/javascript"></script>
 </body>
 </html>
