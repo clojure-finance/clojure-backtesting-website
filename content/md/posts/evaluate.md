@@ -1,31 +1,19 @@
-{:title "Evaluation"
-:date "2021-01-20"
-:layout :post
-:tags []
-:navbar? true
-:page-index 5
-:toc true}
-
-<style>
-/* table styles */
-table, th, td {
-  border: 1px solid black;
-  padding: 5px;
-}
-</style>
+{:title "Evaluation and Plots"
+ :date "2021-01-20"
+ :layout :post
+ :section "API Reference"
+ :lead "Compute performance metrics, print the evaluation report and draw charts."
+ :toc true}
 
 This page features functions for computing metrics that evaluate portfolio performance, printing the evaluation report, and plotting.
 
----
+## Record the Metrics
 
-## Calculate Evaluation Metrics
-
-#### update-eval-report
+### `update-eval-report`
 
 This function computes the evaluation metrics for today and adds them to the evaluation report (see `print-eval-report` for the list of metrics). It does nothing before the first order has filled or after the run has ended.
 
-| No Argument |
-| ----------- |
+**Arguments:** none
 
 **Return**
 
@@ -40,9 +28,7 @@ This function computes the evaluation metrics for today and adds them to the eva
 
 Call it on the days you want in the report, typically once per day after `next-date`. Over many dates, updating every day takes a lot of memory and time.
 
----
-
-## Inspection of Evaluation Report
+## Read the Report
 
 ### `print-eval-report`
 
@@ -65,7 +51,7 @@ This function prints the evaluation report in a table.
 | `pnl-pt`           |   &nbsp;int, $      | &nbsp;Profit and loss per trade: (total value − initial capital) / number of filled orders, not counting the orders `end-order` places to close positions |
 | `max-drawdown`     |   &nbsp;float, %    | &nbsp;Maximum drawdown: the largest decline of the total value from a previous peak, as a percentage of that peak |
 
-The daily returns are the log returns in the `daily-ret` column of the [portfolio record](/posts/portfolio#print-portfolio-record).
+The daily returns are the log returns in the `daily-ret` column of the [portfolio record](/posts/portfolio/#print-portfolio-record).
 
 **Example**:
 
@@ -84,8 +70,6 @@ The daily returns are the log returns in the `daily-ret` column of the [portfoli
 ```
 
 The same rows are kept as numbers (not formatted) in the `eval-record` atom, which is handy for plotting.
-
-<br>
 
 ### Individual metrics
 
@@ -118,9 +102,7 @@ These functions compute a metric for the current state without touching the repo
 ;; => 0.007590000000000145
 ```
 
----
-
-## Update Configuration
+## Rolling Window
 
 ### `update-rolling-window`
 
@@ -138,9 +120,7 @@ This function sets the time window, in trading days, for the rolling metrics (`r
 Time window is updated as 10.
 ```
 
----
-
-## Plot Graphs
+## Plotting
 
 ### `plot`
 

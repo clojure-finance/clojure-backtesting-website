@@ -1,31 +1,33 @@
 {:title "Indicators"
  :date "2021-01-18"
  :layout :post
- :tags  []
-
-:navbar? true
-:page-index 6
-
+ :section "API Reference"
+ :lead "Trend, momentum and volatility indicators, computed from the trading price up to today."
  :toc true}
-
-<style>
-/* table styles */
-table, th, td {
-  border: 1px solid black;
-  padding: 5px;
-}
-td {
-  padding: 10px;
-}
-</style>
 
 This page introduces the functions that calculate technical indicators. Unless stated otherwise, they calculate the indicator for the current date of the global date pointer, from the trading price (the closing price by default).
 
 The examples ran on the bundled sample dataset with the date pointer at 1990-02-19, except the second `parabolic-SAR` call and the `ATR` and `keltner-channel` examples, which ran on 1990-02-20, and the `MACD` examples, which show their own steps.
 
+## Which Indicator Does What
+
+| Indicator | Kind | What it tells you | Typical use |
+| --------- | ---- | ----------------- | ----------- |
+| [`moving-avg`](#moving-avg) | Trend | The average price over the last n days | Crossovers such as the [Golden Cross](/posts/examples/example-golden-cross/) |
+| [`moving-sd`](#moving-sd) | Volatility | How much the price varied over the last n days | [Bollinger Bands](/posts/examples/example-bollinger-bands/) |
+| [`EMA`](#ema) | Trend | An average that weights recent days more | Faster trend signals |
+| [`MACD`](#macd) | Trend | The gap between a short and a long EMA, and its signal line | Buy when MACD crosses above its signal line |
+| [`parabolic-SAR`](#parabolic-sar) | Trend | A stop level that trails the price and flips with the trend | Trailing stops |
+| [`ROC`](#roc) | Momentum | The percentage change over n days | Buy strength, sell weakness |
+| [`RSI`](#rsi) | Momentum | Recent gains against recent losses, from 0 to 100 | Below 30 oversold, above 70 overbought |
+| [`ATR`](#atr) | Volatility | The average daily trading range | Sizing positions and stops |
+| [`keltner-channel`](#keltner-channel) | Volatility | Bands two ATRs around the EMA | Breakouts |
+
+> **Good to know:** every indicator returns `nil` until there is enough history, and works on the raw trading price, so a stock split looks like a sudden drop. `EMA`, `MACD` and `RSI` keep their own state and update it every trading day once you have called them; `parabolic-SAR` and `ATR` instead take yesterday's value as an argument.
+
 ## Trend Indicators
 
-#### moving-avg
+### `moving-avg`
 
 Calculate the simple moving average of a security over the last n trading days, including today.
 
@@ -45,9 +47,7 @@ A number, or `nil` unless the security has a price on all n days.
 48.217
 ```
 
-<br>
-
-#### moving-sd
+### `moving-sd`
 
 Calculate the moving (sample) standard deviation of a security's price over the last n trading days, including today. Together with `moving-avg` it gives Bollinger Bands; see the [`bollinger_bands.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/bollinger_bands.clj) worksheet.
 
@@ -67,9 +67,7 @@ A number, or `nil` unless the security has a price on all n days.
 0.5631666420045367
 ```
 
-<br>
-
-#### EMA
+### `EMA`
 
 Calculate the exponential moving average of a security. The first call returns the `EMA-CYCLE`-day moving average. After that, the backtester updates the EMA every trading day according to its [definition](https://corporatefinanceinstitute.com/resources/knowledge/trading-investing/exponential-moving-average-ema/), as long as the run continues. *This update is automatic.* On a day without a price, it keeps its last value.
 
@@ -92,9 +90,7 @@ A number, or `nil` if the first moving average cannot be computed yet.
 48.4835
 ```
 
-<br>
-
-#### EMA-generator
+### `EMA-generator`
 
 Create an EMA function for another cycle.
 
@@ -117,9 +113,7 @@ An EMA function with the same usage as `EMA`, using the given cycle.
 true
 ```
 
-<br>
-
-#### MACD
+### `MACD`
 
 Calculate the [moving average convergence / divergence](https://www.investopedia.com/terms/m/macd.asp) of a security. After the first call, it is updated automatically every trading day, even while it still returns `nil`.
 
@@ -152,9 +146,7 @@ nil
 [-0.4655478988484276 -0.6167045545421674 48.08274496033748 48.548292859185906]
 ```
 
-<br>
-
-#### MACD-generator
+### `MACD-generator`
 
 Create a MACD function for other cycles.
 
@@ -180,9 +172,7 @@ nil
 [-0.23347193957126677 -0.31630965090941965 48.056297547397676 48.28976948696894]
 ```
 
-<br>
-
-#### parabolic-SAR
+### `parabolic-SAR`
 
 Calculate Wilder's parabolic stop and reverse (SAR), one trading day per call. Pass the result of the previous day's call back in on the next trading day.
 
@@ -215,11 +205,9 @@ A map `{:sar :trend :ep :af}`: the stop level, the trend (`:up` or `:down`), the
 {:sar 49.7406, :trend :down, :ep 47.2, :af 0.04}
 ```
 
-<br>
-
 ## Momentum Indicators
 
-#### ROC
+### `ROC`
 
 Calculate the rate of change of a security's price over the last n trading days.
 
@@ -239,9 +227,7 @@ The rate of change as a decimal (today's price / the price n trading days ago �
 -0.014546965918536903
 ```
 
-<br>
-
-#### RSI
+### `RSI`
 
 Calculate the Relative Strength Index of a security over `RSI-CYCLE` days. The first call seeds it with the simple average gain and loss; after that it is updated every trading day with Wilder's smoothing. *This update is automatic.* Through days without a price it keeps its last value, and the change across the gap counts as one day's change.
 
@@ -264,9 +250,7 @@ A number between 0 and 100, or `nil` unless the security has a price on all of t
 45.56962025316458
 ```
 
-<br>
-
-#### RSI-generator
+### `RSI-generator`
 
 Create an RSI function for another cycle.
 
@@ -289,11 +273,9 @@ An RSI function with the same usage as `RSI`, using the given cycle.
 true
 ```
 
-<br>
-
 ## Volatility Indicators
 
-#### ATR
+### `ATR`
 
 Calculate the average true range of a security, Wilder-smoothed from the previous value: (previous ATR × (n − 1) + today's true range) / n. The true range is the largest of high − low, |high − previous close| and |low − previous close|.
 
@@ -322,9 +304,7 @@ A number.
 (swap! atr #(ATR "10001" 14 %))
 ```
 
-<br>
-
-#### keltner-channel
+### `keltner-channel`
 
 Calculate the Keltner Channel of a security: the `EMA` as the middle line, with bands two ATRs above and below it.
 

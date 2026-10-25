@@ -1,23 +1,9 @@
 {:title "Automation"
  :date "2026-10-24"
  :layout :post
- :tags  []
-
-:navbar? true
-:page-index 9
-
+ :section "API Reference"
+ :lead "Rules that run by themselves: a condition checked every trading day, and an action when it is true."
  :toc true}
-
-<style>
-/* table styles */
-table, th, td {
-  border: 1px solid black;
-  padding: 5px;
-}
-td {
-  padding: 10px;
-}
-</style>
 
 An automation is a condition paired with an action. The backtester checks every automation's condition on each trading day, at the end of `next-date`, and runs the action when the condition is true. Automations make stop-loss and take-profit orders, or any other rule, run by themselves while your strategy steps through time.
 
@@ -25,7 +11,7 @@ The example on this page is the [`automation.clj`](https://github.com/clojure-fi
 
 ## Set and Cancel Automations
 
-#### set-automation
+### `set-automation`
 
 Register an automation.
 
@@ -68,9 +54,7 @@ Buy 100 shares of AAA, then protect the position: a stop-sell if the price falls
 ;; => 2
 ```
 
-<br>
-
-#### cancel-automation
+### `cancel-automation`
 
 Remove an automation.
 
@@ -91,11 +75,9 @@ Remove an automation.
 
 `init-portfolio` removes all automations.
 
-<br>
-
 ## Inspect Automations
 
-#### print-automation-list
+### `print-automation-list`
 
 Print the active automations in a table.
 
@@ -110,9 +92,7 @@ Print the active automations in a table.
 |   2 | (fn* [] (when-let [price (get-permno-price permno)] (> price prc))) | (fn* [] (order permno (- qty) :print true)) |             1 |        Never |
 ```
 
-<br>
-
-#### print-automation-history
+### `print-automation-history`
 
 Print the days on which automations ran. Takes an optional number of rows, like `print-order-record`.
 
@@ -141,8 +121,6 @@ Order: 1990-01-30 | 10001 | -100.000000.
 | 1990-01-18 |           2 |
 | 1990-01-29 |           1 |
 ```
-
-<br>
 
 ## Note: Automations Are Independent
 

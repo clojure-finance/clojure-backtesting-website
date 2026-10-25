@@ -1,0 +1,43 @@
+{% extends "/html/base.html" %}
+{% block body-class %}home-page{% endblock %}
+{% block meta %}
+<meta name="description" content="{{description}}">
+<meta property="og:title" content="{{title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:url" content="{{site-url}}">
+<meta property="og:type" content="website">
+{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-text">
+        <p class="hero-kicker">Open-source backtesting library · v{{library-version}}</p>
+        <h1>Test trading ideas on history, one day at a time.</h1>
+        <p class="hero-lead">Clojure Backtesting replays daily market data, fills your orders the way a broker would, tracks cash, loans and short positions, and reports how the strategy performed.</p>
+        <div class="hero-actions">
+            <a class="button primary" href="{{blog-prefix}}/posts/get-started/">Get started</a>
+            <a class="button ghost" href="{{blog-prefix}}/posts/concepts/">How it works</a>
+            <a class="button ghost" href="https://github.com/clojure-finance/clojure-backtesting" rel="external">GitHub</a>
+        </div>
+    </div>
+    <div class="hero-code" aria-label="Example strategy">
+        <div class="window-bar"><span></span><span></span><span></span><em>strategy.clj</em></div>
+<pre><code class="clojure">(load-dataset "resources/sample-data/main" "main" add-aprc)
+(init-portfolio "1990-01-02" 10000)
+
+;; Hold 50 shares of AAA while its price
+;; is above its 10-day moving average
+(while (&lt; (compare (get-date) "1990-03-29") 0)
+  (let [price (get-permno-price "10001")
+        ma10  (moving-avg "10001" 10)]
+    (when (and price ma10)
+      (order "10001" (if (&gt; price ma10) 50 0)
+             :remaining true)))
+  (update-eval-report)
+  (next-date))
+(end-order)</code></pre>
+    </div>
+</section>
+<div class="home-body">
+    {{page.content|safe}}
+</div>
+{% endblock %}

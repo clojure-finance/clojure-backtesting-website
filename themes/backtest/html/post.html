@@ -1,0 +1,12 @@
+{% extends "/html/base.html" %}
+{% block title %}{{post.title}} · {{title}}{% endblock %}
+{% block meta %}
+<meta name="description" content="{% if post.lead %}{{post.lead}}{% else %}{{post.description}}{% endif %}">
+<meta property="og:title" content="{{post.title}}">
+<meta property="og:description" content="{% if post.lead %}{{post.lead}}{% else %}{{post.description}}{% endif %}">
+<meta property="og:url" content="{{site-url}}{{uri}}">
+<meta property="og:type" content="article">
+{% endblock %}
+{% block content %}
+{% include "/html/post-content.html" %}
+{% endblock %}

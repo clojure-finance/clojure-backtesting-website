@@ -1,31 +1,17 @@
-{:title "Portfolio Management"
-:date "2021-01-21"
-:layout :post
-:tags []
-:navbar? true
-:page-index 4
-:toc true}
-
-<style>
-/* table styles */
-table, th, td {
-  border: 1px solid black;
-  padding: 5px;
-}
-td {
-  padding: 10px;
-}
-</style>
+{:title "Portfolio"
+ :date "2021-01-21"
+ :layout :post
+ :section "API Reference"
+ :lead "Inspect holdings, the daily portfolio record and the filled orders."
+ :toc true}
 
 This page features functions for setting up and viewing the portfolio. The examples run on the bundled sample dataset.
 
----
-
-## Portfolio Initialization
+## Start a Portfolio
 
 ### `init-portfolio`
 
-This function sets the starting date and the initial capital, in cash. It is a **must** to call it before trading or using the functions that depend on the current date, e.g. `available-permnos` and `next-date`. Calling it again restarts the backtester. See [`init-portfolio`](/posts/api#init-portfolio) for details.
+This function sets the starting date and the initial capital, in cash. It is a **must** to call it before trading or using the functions that depend on the current date, e.g. `available-permnos` and `next-date`. Calling it again restarts the backtester. See [`init-portfolio`](/posts/api/#init-portfolio) for details.
 
 **Parameters:**
 
@@ -39,9 +25,7 @@ This function sets the starting date and the initial capital, in cash. It is a *
 ;; => "Date: 1990-01-02 Cash: $10000"
 ```
 
----
-
-## Portfolio Inspection
+## Inspect the Portfolio
 
 ### `print-portfolio`
 
@@ -73,8 +57,6 @@ This function prints the current holdings in a table.
 |   cash |    N/A |      N/A |       N/A |  5930.80 |
 |  10002 | 133.11 | 133.1100 |      30.0 |  3993.30 |
 ```
-
-<br>
 
 ### `print-portfolio-record`
 
@@ -111,9 +93,7 @@ This function prints the daily history of the portfolio's value in a table.
 | 1990-01-09 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
 ```
 
-The [Buying on Margin](/posts/examples/example-buying-on-margin) example shows the record with loans and short positions.
-
-<br>
+The [Buying on Margin](/posts/examples/example-buying-on-margin/) example shows the record with loans and short positions.
 
 ### `print-order-record`
 
@@ -137,8 +117,6 @@ This function prints the filled orders in a table.
 | 1990-02-22 |   10001 |  47.98 |  48.47 |     -20.0 |
 ```
 
-<br>
-
 ### `portfolio-exposure`
 
 This function summarises the current portfolio in dollars.
@@ -153,8 +131,6 @@ This function summarises the current portfolio in dollars.
 (portfolio-exposure)
 ;; => {:cash 5930.799999999999, :long 3993.3, :short 0.0, :equity 9924.099999999999, :gross 3993.3, :loan 0.0}
 ```
-
-<br>
 
 ### Raw records
 

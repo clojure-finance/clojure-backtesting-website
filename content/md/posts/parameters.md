@@ -1,23 +1,9 @@
-{:title "Configurable Parameters"
+{:title "Parameters"
  :date "2021-01-23"
  :layout :post
- :tags  []
-
-:navbar? true
-:page-index 7
-
+ :section "API Reference"
+ :lead "Settings for margins, costs, dividends, output files and indicator periods."
  :toc true}
-
-<style>
-/* table styles */
-table, th, td {
-  border: 1px solid black;
-  padding: 5px;
-}
-td {
-  padding: 10px;
-}
-</style>
 
 The namespace `clojure-backtesting.parameters` defines the parameters that are configurable in the backtester. Most have an update function; call it before `init-portfolio`, so that the whole run uses the same settings.
 
@@ -44,11 +30,9 @@ The parameters without an update function can be changed for a session with `alt
 | `OUTPUT-DIR` | `nil` | `update-output-dir` | See [Output Files](#output-files) |
 | `MISSING-DAYS-LIMIT` | `10` | `alter-var-root` | Trading days without a price after which a holding counts as delisted |
 | `MERGE-MAX-AGE-MONTHS` | `6` | `alter-var-root` | Months after which a Compustat filing is no longer joined |
-| `CACHE-SIZE` | `60` | `CHANGE-CACHE-SIZE` | Days of data kept in memory; see the [User Guide](/posts/user-guide#cache-mechanism) |
+| `CACHE-SIZE` | `60` | `CHANGE-CACHE-SIZE` | Days of data kept in memory; see [Data and Trading Rules](/posts/user-guide/#cache-mechanism) |
 | `EMA-CYCLE`, `MACD-SIGNAL`, `MACD-SHORT`, `MACD-LONG`, `RSI-CYCLE` | `20`, `9`, `12`, `26`, `14` | `CHANGE-{name}` | See [Indicator Parameters](#indicator-parameters) |
 | `SAR-AF-STEP`, `SAR-AF-MAX` | `0.02`, `0.2` | `alter-var-root` | Acceleration factor of `parabolic-SAR` |
-
----
 
 ## Trading Price
 
@@ -57,8 +41,6 @@ Orders trade at the closing price by default. To trade at the opening price inst
 ```clojure
 (alter-var-root #'PRICE-KEY (constantly :OPENPRC))
 ```
-
------------------
 
 ## Margin Requirements
 
@@ -122,8 +104,6 @@ This function updates the maintenance margin.
 0.2
 ```
 
----
-
 ## Transaction Cost & Loan Interest
 
 ### `TRANSACTION-COST`
@@ -186,8 +166,6 @@ This function updates the interest rate.
 Failed: The interest rate needs to be within the range of [0,1).
 ```
 
----
-
 ## Dividends
 
 ### `REINVEST-DIVIDENDS`
@@ -204,8 +182,6 @@ This function switches dividend reinvestment on or off.
 (update-reinvest-dividends false) ;; pay dividends to cash
 ```
 
----
-
 ## Output Files
 
 ### `OUTPUT-DIR`
@@ -221,11 +197,9 @@ This function sets the output directory, or `nil` for none. Call it before `init
 (init-portfolio "1990-01-02" 10000)
 ```
 
----
-
 ## Indicator Parameters
 
-These parameters are used by the corresponding [indicator](/posts/indicators) functions. They can all be changed with `CHANGE-{parameter name}`; for example, `(CHANGE-EMA-CYCLE 15)` changes `EMA-CYCLE`.
+These parameters are used by the corresponding [indicator](/posts/indicators/) functions. They can all be changed with `CHANGE-{parameter name}`; for example, `(CHANGE-EMA-CYCLE 15)` changes `EMA-CYCLE`.
 
 ### `EMA-CYCLE`
 

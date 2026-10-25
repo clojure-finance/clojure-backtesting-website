@@ -1,16 +1,15 @@
-{:title "User Guide"
-:date "2021-01-20"
-:layout :post
-:navbar? true
-:page-index 2
-:tags []
-:toc true}
+{:title "Data and Trading Rules"
+ :date "2021-01-20"
+ :layout :post
+ :section "Learn"
+ :lead "The datasets and their columns, the exact rules for filling orders, and how the data cache works."
+ :toc true}
 
 ## About the Datasets
 
 ### Sample dataset
 
-The library includes a small sample dataset in `resources/sample-data`, with three securities over January to March 1990 and a matching Compustat-style dataset (see [Get Started](/posts/get-started#setting-up)). It is the quickest way to try every function:
+The library includes a small sample dataset in `resources/sample-data`, with three securities over January to March 1990 and a matching Compustat-style dataset (see [Get Started](/posts/get-started/#install)). It is the quickest way to try every function:
 
 ```clojure
 (load-dataset "resources/sample-data/main" "main" add-aprc)
@@ -59,7 +58,7 @@ Each row of the main dataset is a map keyed by the column names as keywords. The
 
 Optional columns:
 
-- `:OPENPRC` : opening price, if you trade at the open (see [Parameters](/posts/parameters#trading-price))
+- `:OPENPRC` : opening price, if you trade at the open (see [Parameters](/posts/parameters/#trading-price))
 - `:TICKER` : ticker symbol, used by `permno-tic` and `tic-permno`
 - `:CFACPR` : CRSP's cumulative price adjustment factor, used to recognise splits when dividends are not reinvested
 - `:BIDLO`, `:ASKHI` : daily low and high, needed by `parabolic-SAR`, `ATR` and `keltner-channel`
@@ -68,17 +67,17 @@ Optional columns:
 
 ## Trading Logic
 
-As introduced in [moving the time pointer](/posts/api#move-time-pointer), the backtester has a global clock. Your strategy normally runs between two calls of `next-date`. The figure below illustrates the logic of trading with an example.
+As introduced in [moving the time pointer](/posts/api/#move-through-time), the backtester has a global clock. Your strategy normally runs between two calls of `next-date`. The figure below illustrates the logic of trading with an example.
 
-![image](/img/trade-logic.jpg)
+![On 1990-01-02 the strategy orders 50 shares, which stays pending. next-date moves to 1990-01-03, where the order fills at the close of $50.81.](/img/order-timeline.svg)
 
 Say today is 2022-10-24 and you order 10 shares of security xx. The order is not filled immediately. Instead, it becomes a pending order, which the backtester fills on the next call of `next-date`, at that day's **closing price**. So your portfolio and the order record do not change right after `order`; they change on the next trading day.
 
 - If the security has no price on the next day, the order stays pending and fills on the first day it does have a price, until it expires after `ORDER-EXPIRATION` (3) trading days. Pass `:expiration n` to `order` to change this for one order.
 - On a given day, orders that reduce a position fill before orders that add to one, so sale proceeds can pay for purchases.
-- Buying for more than your cash borrows the difference (a loan). Selling shares you do not hold borrows the shares (a short position). Both must respect the margin requirements on the [Parameters](/posts/parameters#margin-requirements) page; if the portfolio margin falls below the maintenance margin, every position is closed.
+- Buying for more than your cash borrows the difference (a loan). Selling shares you do not hold borrows the shares (a short position). Both must respect the margin requirements on the [Parameters](/posts/parameters/#margin-requirements) page; if the portfolio margin falls below the maintenance margin, every position is closed.
 - Loans are charged interest every trading day, at the annual `INTEREST-RATE` (0 by default).
-- Dividends are reinvested in the same security by default; they can be paid into cash instead (see [Parameters](/posts/parameters#dividends)).
+- Dividends are reinvested in the same security by default; they can be paid into cash instead (see [Parameters](/posts/parameters/#dividends)).
 - A holding whose security has had no price for `MISSING-DAYS-LIMIT` (10) trading days in a row is treated as delisted, and its last value is booked as cash.
 
 When your strategy is done, call `end-order` to close every position at today's close.

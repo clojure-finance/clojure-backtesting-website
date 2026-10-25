@@ -1,0 +1,13 @@
+{% extends "/html/base.html" %}
+{% block content %}
+<article class="doc">
+    <header class="doc-header"><h1>All pages</h1></header>
+    <div class="doc-body">
+        <ul>
+        {% for post in posts %}
+            <li><a href="{{post.uri}}">{{post.title}}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+</article>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "/html/base.html" %}
+{% block title %}All pages · {{title}}{% endblock %}
+{% block content %}
+<article class="doc">
+    <header class="doc-header"><h1>All pages</h1></header>
+    <div class="doc-body">
+        {% for group in groups %}
+        <ul>
+            {% for post in group.posts %}
+            <li><a href="{{post.uri}}">{{post.title}}</a></li>
+            {% endfor %}
+        </ul>
+        {% endfor %}
+    </div>
+</article>
+{% endblock %}

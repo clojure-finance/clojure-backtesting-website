@@ -1,10 +1,11 @@
-{:title "Example - Buying on Margin"
-:date "2020-12-29"
-:layout :post
-:tags  []
-:toc true}
+{:title "Example: Buying on Margin"
+ :date "2020-12-29"
+ :layout :post
+ :section "Examples"
+ :lead "Borrowing cash and shares: leverage, initial and maintenance margins, and short selling."
+ :toc true}
 
-This walkthrough follows the worksheet [`buying_on_margin.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/buying_on_margin.clj). It runs on the bundled sample dataset and can be opened in Gorilla REPL with `make start` (see [Get Started](/posts/get-started) for setup).
+This walkthrough follows the worksheet [`buying_on_margin.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/buying_on_margin.clj). It runs on the bundled sample dataset and can be opened in Gorilla REPL with `make start` (see [Get Started](/posts/get-started/) for setup).
 
 It shows how the backtester handles trading with and without leverage, the initial and maintenance margin requirements, and short selling. All trades use security `10001` ("AAA"), which trades at about $50 in the sample data. Orders fill at the next trading day's close.
 
@@ -13,9 +14,7 @@ The portfolio record reports two ratios:
 - **leverage** = (loan + value of shorted stock) / equity
 - **margin** = equity / gross position value (100% when there are no positions)
 
-The margin parameters are described in [Parameters](/posts/parameters), and the portfolio functions in [Portfolio](/posts/portfolio).
-
----
+The margin parameters are described in [Parameters](/posts/parameters/), and the portfolio functions in [Portfolio](/posts/portfolio/).
 
 ## Initialisation
 

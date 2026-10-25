@@ -1,32 +1,19 @@
-{:title "Basic APIs"
+{:title "Core API"
  :date "2022-10-16"
  :layout :post
- :tags  []
-
-:navbar? true
-:page-index 3
-
+ :section "API Reference"
+ :lead "Load data, start a portfolio, place orders, move the clock and read market data."
  :toc true}
 
+These are the functions every strategy uses. The examples run on the bundled sample dataset (see [Get Started](/posts/get-started/#install)), mostly with the clock at 1990-01-08.
 
-<style>
-/* table styles */
-table, th, td {
-  border: 1px solid black;
-  padding: 5px;
-}
-td {
-  padding: 10px;
-}
-</style>
+**How to read this page:** each function has a table of its arguments, then what it returns and an example. Arguments in [square brackets] are optional. Lines starting with `=>` are what you type at the REPL; the lines below them are what it prints or returns.
 
-Below is the documentation for the basic APIs of the backtester. The examples run on the bundled sample dataset (see [Get Started](/posts/get-started#setting-up)).
+## Load Data
 
-## Import Datasets
+### `load-dataset`
 
-#### load-dataset
-
-Load a dataset that has been converted into the backtester's layout (see the [User Guide](/posts/user-guide#using-your-own-data)).
+Load a dataset that has been converted into the backtester's layout (see [Data and Trading Rules](/posts/user-guide/#using-your-own-data)).
 
 | Argument            | Type                 | Function                          | Remarks                                                      |
 | ------------------- | -------------------- | --------------------------------- | ------------------------------------------------------------ |
@@ -48,11 +35,9 @@ The dataset is already furnished by add-aprc. No more modification is needed.
 "Date range: 1989-09-30 ~ 1989-12-31"
 ```
 
-<br>
+## Start a Portfolio
 
-## State Starting Position
-
-#### init-portfolio
+### `init-portfolio`
 
 Set the starting date and capital. Calling it again restarts the backtester: the portfolio, all records, indicators and automations are reset.
 
@@ -74,16 +59,14 @@ Set the starting date and capital. Calling it again restarts the backtester: the
 
 **Remarks**
 
-- Set parameters such as `update-output-dir` or `update-reinvest-dividends` before calling `init-portfolio` (see [Parameters](/posts/parameters)).
-- More details about the portfolio can be found [here](/posts/portfolio).
+- Set parameters such as `update-output-dir` or `update-reinvest-dividends` before calling `init-portfolio` (see [Parameters](/posts/parameters/)).
+- More details about the portfolio can be found [here](/posts/portfolio/).
 
-<br>
+## Place Orders
 
-## Make Orders
+### `order`
 
-#### order
-
-Buy or sell a number of shares of a security. The order fills at the closing price of the next trading day on which the security has a price (see [Trading Logic](/posts/user-guide#trading-logic)).
+Buy or sell a number of shares of a security. The order fills at the closing price of the next trading day on which the security has a price (see [Trading Logic](/posts/user-guide/#trading-logic)).
 
 | Argument        | Type    | Function                                                     | Remarks                                                      |
 | --------------- | ------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -109,16 +92,13 @@ All pending orders, as a map keyed by [expiry date, security].
 {["1990-01-11" "10001"] {...}, ["1990-01-15" "10002"] {:place "1990-01-08", :expire "1990-01-15", :permno "10002", :quantity 5, :remaining true, :leverage true, :print false, :direct true}}
 ```
 
-<br>
-
-#### end-order
+### `end-order`
 
 Call this at the end of your strategy. It closes every position at today's closing price, updates the evaluation report once more, closes the CSV files and ends the run; after it, `order` and `next-date` do nothing until `init-portfolio` is called again. A security with no price today is booked as cash at its last value.
 
-The run also ends by itself on the last date of the dataset, when the total value drops below zero, or on a margin call (see [Parameters](/posts/parameters#margin-requirements)).
+The run also ends by itself on the last date of the dataset, when the total value drops below zero, or on a margin call (see [Parameters](/posts/parameters/#margin-requirements)).
 
-| No Argument |
-| ----------- |
+**Arguments:** none
 
 **Example**
 
@@ -129,18 +109,15 @@ true
 nil
 ```
 
-<br>
+## Move Through Time
 
-## Move Time Pointer
+The backtester has a date pointer that acts as its global clock. You can move it forward but not back, and you only see market information up to "today", never the future (see [Key Concepts](/posts/concepts/#the-clock-today-and-the-date-pointer)). The functions below read or move the date pointer.
 
-The backtester simulates real-world trading. So there is a date pointer that acts as the global clock of the system. Users can move forward through time but not back, and have access to market information only up to "today", not the future. The functions below interact with the date pointer.
-
-#### get-date
+### `get-date`
 
 Get today's date.
 
-| No Argument |
-| ----------- |
+**Arguments:** none
 
 **Return**
 
@@ -153,14 +130,11 @@ A string representing the current date.
 "1990-01-05"
 ```
 
-<br>
-
-#### next-date
+### `next-date`
 
 Move the date pointer forward to the next trading day in the dataset, skipping weekends and holidays. On the new day it revalues the holdings, charges loan interest, checks the margin, fills pending orders and runs automations.
 
-| No Argument |
-| ----------- |
+**Arguments:** none
 
 **Return**
 
@@ -173,14 +147,11 @@ The new date. `nil` once the run has ended (through `end-order`, a margin call, 
 "1990-01-08"
 ```
 
-<br>
-
-#### get-next-date
+### `get-next-date`
 
 Get the next trading day without moving the date pointer.
 
-| No Argument |
-| ----------- |
+**Arguments:** none
 
 **Return**
 
@@ -195,9 +166,7 @@ A date string, or `nil` on the last date of the dataset.
 "1990-01-08"
 ```
 
-<br>
-
-#### get-prev-n-date
+### `get-prev-n-date`
 
 Get the date n trading days before the current date (skipping weekends and holidays).
 
@@ -218,9 +187,7 @@ A date string, or `nil` if the search passes the first date of the dataset.
 "1990-01-03"
 ```
 
-<br>
-
-#### date-after-n-trading-days
+### `date-after-n-trading-days`
 
 Get the date n trading days after a given date.
 
@@ -240,18 +207,15 @@ A date string, or the last date of the dataset if fewer than n trading days rema
 "1990-01-11"
 ```
 
-<br>
+## Read Market Data
 
-## Retrieve Information From Datasets
+Each row is a map keyed by the dataset's column names (see [Essential column names](/posts/user-guide/#essential-column-names)). When a Compustat dataset is loaded, the rows also contain the Compustat columns of the matching filing.
 
-Each row is a map keyed by the dataset's column names (see [Essential column names](/posts/user-guide#essential-column-names)). When a Compustat dataset is loaded, the rows also contain the Compustat columns of the matching filing.
-
-#### get-info
+### `get-info`
 
 Get all the market information for today, as a sequence of maps. There is also `get-info-map`, a format better suited to looking up a specific security.
 
-| No Argument |
-| ----------- |
+**Arguments:** none
 
 **Return**
 
@@ -264,14 +228,11 @@ A sequence of maps, one per security that trades today.
 [{:ASKHI 50.58, :CUM-RET -0.005342844410495502, :date "1990-01-08", :INIT-PRICE 50.67, :OPENPRC 50.49, :TICKER "AAA", :APRC 50.4, :BIDLO 50.28, :RET 5.955926146516966E-4, :CFACPR 1.0, :PRC 50.4, :PERMNO "10001"} {:ASKHI 116.79, :CUM-RET -0.02671833211289444, :date "1990-01-08", :INIT-PRICE 118.72, :OPENPRC 116.37, :TICKER "BBB", :APRC 115.58999999999999, :BIDLO 114.99, :RET -0.011544381734222675, :CFACPR 2.0, :PRC 115.59, :PERMNO "10002"} {:ASKHI 20.11, :CUM-RET -0.013965314248641295, :date "1990-01-08", :INIT-PRICE 20.19, :OPENPRC 20.03, :TICKER "CCC", :APRC 19.91, :BIDLO 19.9, :RET -0.00945273631840804, :CFACPR 1.0, :PRC 19.91, :PERMNO "10003"}]
 ```
 
-<br>
-
-#### get-info-map
+### `get-info-map`
 
 Get all the market information for today, as a map from security to its information.
 
-| No Argument |
-| ----------- |
+**Arguments:** none
 
 **Return**
 
@@ -284,14 +245,11 @@ A map whose keys are all the securities available today.
 {"10001" {:ASKHI 50.58, :CUM-RET -0.005342844410495502, :date "1990-01-08", :INIT-PRICE 50.67, :OPENPRC 50.49, :TICKER "AAA", :APRC 50.4, :BIDLO 50.28, :RET 5.955926146516966E-4, :CFACPR 1.0, :PRC 50.4, :PERMNO "10001"}, "10002" {...}, "10003" {...}}
 ```
 
-<br>
-
-#### available-permnos
+### `available-permnos`
 
 Get all securities available today.
 
-| No Argument |
-| ----------- |
+**Arguments:** none
 
 **Return**
 
@@ -304,9 +262,7 @@ A sequence of permno strings.
 ("10001" "10002" "10003")
 ```
 
-<br>
-
-#### get-permno-info
+### `get-permno-info`
 
 Get the information for a security.
 
@@ -329,9 +285,7 @@ A map of information if the security has data on that date, otherwise `nil`.
 nil
 ```
 
-<br>
-
-#### get-permno-price
+### `get-permno-price`
 
 Like `get-permno-info`, but get only the price of the security (the closing price, or the opening price if `PRICE-KEY` is changed).
 
@@ -353,9 +307,7 @@ A number, or `nil` if the security has no data on that date.
 50.81
 ```
 
-<br>
-
-#### get-permno-by-key
+### `get-permno-by-key`
 
 Like `get-permno-info`, but get the value of one key.
 
@@ -378,9 +330,7 @@ The value, of a type depending on the key, if the map contains the key, otherwis
 nil
 ```
 
-<br>
-
-#### permno-tic and tic-permno
+### `permno-tic` and `tic-permno`
 
 Translate between security identifiers and ticker symbols, using today's data (needs a `:TICKER` column).
 
@@ -393,9 +343,7 @@ Translate between security identifiers and ticker symbols, using today's data (n
 ["10001"]
 ```
 
-<br>
-
-#### get-prev-n-days
+### `get-prev-n-days`
 
 Get the information of the past n trading days (not including today).
 
@@ -417,9 +365,7 @@ A sequence (length <= n) of sequences of maps (one per security), in descending 
 => (conj (get-prev-n-days (- n 1)) (get-info))
 ```
 
-<br>
-
-#### get-prev-n-days-map
+### `get-prev-n-days-map`
 
 Like `get-prev-n-days`, but each day is a map from security to its information, as in `get-info-map`.
 
@@ -430,9 +376,7 @@ Like `get-prev-n-days`, but each day is a map from security to its information, 
 (("10001" "10002" "10003") ("10002" "10001" "10003"))
 ```
 
-<br>
-
-#### get-permno-prev-n-days
+### `get-permno-prev-n-days`
 
 Get the information of a security for the past n trading days (not including today).
 

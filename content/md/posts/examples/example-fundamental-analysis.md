@@ -1,16 +1,15 @@
-{:title "Example - Fundamental Analysis"
-:date "2020-12-30"
-:layout :post
-:tags  []
-:toc true}
+{:title "Example: Fundamental Analysis"
+ :date "2020-12-30"
+ :layout :post
+ :section "Examples"
+ :lead "Rank securities by return on equity from their quarterly filings, using only filings that were already public."
+ :toc true}
 
-This walkthrough follows the worksheet [`Fundamental analysis.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Fundamental%20analysis.clj). It runs on the bundled sample dataset and can be opened in Gorilla REPL with `make start` (see [Get Started](/posts/get-started) for setup).
+This walkthrough follows the worksheet [`Fundamental analysis.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Fundamental%20analysis.clj). It runs on the bundled sample dataset and can be opened in Gorilla REPL with `make start` (see [Get Started](/posts/get-started/) for setup).
 
 It implements a simple fundamental analysis strategy: rank securities by return on equity (ROE) from their quarterly filings and buy the best one.
 
-A supplementary dataset (Compustat-style quarterly fundamentals) is joined onto each day's rows. For every security the latest filing that was public on that day is used: the filing's period-end date (`datadate`) must be on or before the day, and so must its report date (`rdq`) when the dataset has one. Without a report date the period end alone decides, which lets the strategy see the numbers before they were announced. See [API](/posts/api) for loading datasets.
-
----
+A supplementary dataset (Compustat-style quarterly fundamentals) is joined onto each day's rows. For every security the latest filing that was public on that day is used: the filing's period-end date (`datadate`) must be on or before the day, and so must its report date (`rdq`) when the dataset has one. Without a report date the period end alone decides, which lets the strategy see the numbers before they were announced. See [API](/posts/api/) for loading datasets.
 
 ## Initialisation
 
@@ -138,7 +137,7 @@ The first 10 rows of the portfolio value record cover January, before the trade:
 | 1990-01-15 |  $10000.00 |      0.00% |    0.00% | $0.00 |  $0.00 |      0.00 | 100.00% |
 ```
 
-The evaluation report starts on the day the order fills. The metrics are described in [Evaluate](/posts/evaluate).
+The evaluation report starts on the day the order fills. The metrics are described in [Evaluate](/posts/evaluate/).
 
 ```clojure
 (print-eval-report 5)

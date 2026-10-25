@@ -1,27 +1,27 @@
 {:title "Get Started"
-:date "2021-01-27"
-:layout :post
-:navbar? true
-:page-index 1
-:toc true}
-
----
+ :date "2021-01-27"
+ :layout :post
+ :section "Learn"
+ :lead "Install the library, run your first backtest on the bundled sample data, and read the results. It takes about ten minutes."
+ :toc true}
 
 ## Requirements
 
 - Java 11 or later
-- [Leiningen](https://leiningen.org/)
+- [Leiningen](https://leiningen.org/), the Clojure build tool
 
-## Setting Up
+> **Tip:** New to Clojure? You can follow this page without knowing much of it. When you want to learn more, [Clojure by Example](http://kimh.github.io/clojure-by-example/#about) teaches the syntax quickly, [ClojureDocs](https://clojuredocs.org/) documents the core functions with examples, and [Clojure for the Brave and True](https://www.braveclojure.com/clojure-for-the-brave-and-true/) is a free book that goes deeper.
+
+## Install
 
 Clone the [repository](https://github.com/clojure-finance/clojure-backtesting) and `cd` into it:
 
-```text
+```bash
 git clone https://github.com/clojure-finance/clojure-backtesting.git
 cd clojure-backtesting
 ```
 
-The repository ships with a small sample dataset in `resources/sample-data`, so every example below runs without downloading anything else. It holds three securities over January to March 1990:
+The repository ships with a small sample dataset in `resources/sample-data`, so everything on this site runs without downloading anything else. It holds three securities over January to March 1990, each with a quirk that exercises part of the library:
 
 | Security | Ticker | Notes |
 | -------- | ------ | ----- |
@@ -29,96 +29,61 @@ The repository ships with a small sample dataset in `resources/sample-data`, so 
 | `10002`  | BBB    | Splits 2-for-1 on 1990-03-01 |
 | `10003`  | CCC    | Has no prices from 1990-02-05 to 1990-02-09 |
 
-It also has a matching Compustat-style dataset in `resources/sample-data/compustat`. See the [User Guide](/posts/user-guide) for using the full CRSP and Compustat data or your own data.
+It also has a matching Compustat-style dataset of company fundamentals in `resources/sample-data/compustat`. To use the full CRSP and Compustat data or your own data, see [Data and Trading Rules](/posts/user-guide/).
 
-### Leiningen REPL
+## Choose a REPL
+
+You run strategies interactively, in a REPL. There are two options.
+
+### Option 1: Leiningen REPL
 
 Start a REPL in the project directory:
 
-```text
+```bash
 lein repl
 ```
 
-The REPL starts in the `clojure-backtesting.user` namespace, which already refers every public function of the library. For a quick demo run without a REPL, use `lein run`.
+The REPL starts in the `clojure-backtesting.user` namespace, where every function of the library is already available, so you can type the code below directly. For a quick demo run without a REPL, use `lein run`.
 
-### Gorilla REPL
+### Option 2: Gorilla REPL
 
 [Gorilla REPL](http://gorilla-repl.org/) is a notebook in the browser, similar to Jupyter Notebook. The example strategies in the [`examples`](https://github.com/clojure-finance/clojure-backtesting/tree/master/examples) folder are Gorilla worksheets.
 
 1. Start it in the project directory:
 
-```text
-make start
-```
+   ```bash
+   make start
+   ```
 
 2. When it is ready, it prints something like:
 
-```text
-Gorilla-REPL: 0.6.0
-Unable to reach update server.
-Started nREPL server on port 50649
-Running at http://127.0.0.1:50651/worksheet.html .
-Ctrl+C to exit.
-```
+   ```text
+   Gorilla-REPL: 0.6.0
+   Unable to reach update server.
+   Started nREPL server on port 50649
+   Running at http://127.0.0.1:50651/worksheet.html .
+   Ctrl+C to exit.
+   ```
 
 3. Open the URL from the output in your browser.
 
-![image](/img/gorilla.png)
+   ![The Gorilla REPL start page in a browser](/img/gorilla.png)
 
 4. Click the menu button at the top right and choose "Load a worksheet", then pick one of the worksheets in the `examples` folder.
 
-![image](/img/load_worksheet.png)
+   ![The Load a worksheet dialog listing the example worksheets](/img/load_worksheet.png)
 
 5. Run a cell with Ctrl + Enter.
 
 For more about Gorilla REPL, see its [website](http://gorilla-repl.org/index.html).
 
----
+## Your First Backtest
 
-## Clojure Beginner Tutorials
+This section goes through the [`simple_trading_strategy.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/simple_trading_strategy.clj) worksheet step by step. Type or paste each block into the REPL.
 
-If you are new to Clojure, we recommend a quick read of these tutorials first:
+### Step 1: Load the dataset
 
-- [Clojure by Example](http://kimh.github.io/clojure-by-example/#about) - pick up the syntax quickly
-
-- [ClojureDocs](https://clojuredocs.org/) - documentation and examples for the core functions
-
-- [Clojure for the Brave and True](https://www.braveclojure.com/clojure-for-the-brave-and-true/) - a book that teaches Clojure in depth
-
----
-
-## Help & Support
-
-If you have difficulties using the backtester, find a bug, or have ideas for more examples, please open an [issue](https://github.com/clojure-finance/clojure-backtesting/issues).
-
----
-
-## Code Walkthrough
-
-This section goes through the [`simple_trading_strategy.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/simple_trading_strategy.clj) worksheet, which runs on the sample dataset.
-
-### Import libraries
-
-In a namespace of your own, require the library's namespaces. (In `lein repl` you can skip this: the starting namespace already has them.)
-
-```clojure
-(ns my-strategy
-  (:require [clojure-backtesting.data :refer :all]
-            [clojure-backtesting.data-management :refer :all]
-            [clojure-backtesting.portfolio :refer :all]
-            [clojure-backtesting.order :refer :all]
-            [clojure-backtesting.evaluate :refer :all]
-            [clojure-backtesting.plot :refer :all]
-            [clojure-backtesting.counter :refer :all]
-            [clojure-backtesting.automation :refer :all]
-            [clojure-backtesting.parameters :refer :all]
-            [clojure-backtesting.indicators :refer :all]
-            [clojure-backtesting.direct :refer :all]))
-```
-
-### Import dataset
-
-Load the dataset by giving its directory. `add-aprc` adds the adjusted price columns the backtester needs; the sample dataset already has them.
+Load the dataset by giving its directory. `add-aprc` adds the adjusted price columns the backtester needs; the sample dataset already has them, so it only prints a note.
 
 ```clojure
 (load-dataset "resources/sample-data/main" "main" add-aprc)
@@ -129,16 +94,14 @@ The dataset is already furnished by add-aprc. No more modification is needed.
 "Date range: 1990-01-02 ~ 1990-03-30"
 ```
 
-### Initialise portfolio
+### Step 2: Start the portfolio
 
-Pass the starting date ("YYYY-MM-DD") and the initial capital to `init-portfolio`.
+Pass the starting date ("YYYY-MM-DD") and the initial capital to `init-portfolio`. This sets the backtester's clock to that date.
 
 ```clojure
 (init-portfolio "1990-01-02" 10000)
 ;; => "Date: 1990-01-02 Cash: $10000"
 ```
-
-### Check available securities
 
 You can check which securities trade on the current date:
 
@@ -147,9 +110,9 @@ You can check which securities trade on the current date:
 ;; => ("10001" "10002" "10003")
 ```
 
-### Write your strategy
+### Step 3: Write the strategy
 
-The strategy below follows a simple logic. Over 10 trading days:
+This strategy is deliberately simple, to show the mechanics. Over 10 trading days it will:
 
 - buy 50 shares of AAA (`10001`) on the first day
 - sell 10 shares of AAA on every other day
@@ -168,7 +131,7 @@ The strategy below follows a simple logic. Over 10 trading days:
   (swap! num-of-days dec))
 ```
 
-The loop calls `next-date` every time so that the backtester moves on to the next trading day (see [moving the time pointer](/posts/api#move-time-pointer)). An order fills at the close of the next trading day, which is why each `Order:` line carries the following day's date:
+The loop calls `next-date` every time so that the backtester moves on to the next trading day. An order fills at the close of the next trading day, which is why each `Order:` line carries the following day's date:
 
 ```text
 1990-01-02
@@ -189,7 +152,9 @@ Order: 1990-01-12 | 10001 | -10.000000.
 Order: 1990-01-16 | 10001 | -10.000000.
 ```
 
-### Check order record
+> **Why the next day?** You decide after seeing today's closing price, and nobody can trade at a price that is already in the past. Filling at the next close keeps the backtest honest. [Key Concepts](/posts/concepts/#when-an-order-fills) has a diagram.
+
+### Step 4: Check the orders
 
 ```clojure
 (print-order-record)
@@ -206,7 +171,7 @@ Order: 1990-01-16 | 10001 | -10.000000.
 | 1990-01-16 |   10001 |  51.04 | 51.04 |     -10.0 |
 ```
 
-### View portfolio and portfolio record
+### Step 5: View the portfolio
 
 All 50 shares have been sold, so only cash is left:
 
@@ -220,7 +185,7 @@ All 50 shares have been sold, so only cash is left:
 |   cash |    N/A |   N/A |       N/A |  9961.80 |
 ```
 
-The portfolio record has one row per trading day. Pass a number to print only that many rows, or a negative number to print all of them. The columns are explained on the [Portfolio](/posts/portfolio) page.
+The portfolio record has one row per trading day. Pass a number to print only that many rows, or a negative number to print all of them. The columns are explained on the [Portfolio](/posts/portfolio/#print-portfolio-record) page.
 
 ```clojure
 (print-portfolio-record -1)
@@ -242,11 +207,11 @@ The portfolio record has one row per trading day. Pass a number to print only th
 | 1990-01-16 |   $9961.80 |      0.01% |   -0.38% | $0.00 |  $0.00 |      0.00 |  100.00% |
 ```
 
-### Generate evaluation report
+The margin is above 100% because part of the portfolio is cash, so its equity is larger than its stock position. It only matters once you borrow (see [Long, short and borrowed money](/posts/concepts/#long-short-and-borrowed-money)).
 
-Because `update-eval-report` was called every day in the loop, the evaluation report has a row for each day since the first order. The metrics are explained on the [Evaluation](/posts/evaluate) page.
+### Step 6: Read the evaluation report
 
-If you step through many dates, updating the report every day takes a lot of memory and time; update it less often, or print only a few rows.
+Because `update-eval-report` was called every day in the loop, the evaluation report has a row for each day since the first order filled. The metrics are explained on the [Evaluation](/posts/evaluate/#print-eval-report) page.
 
 ```clojure
 (print-eval-report)
@@ -266,7 +231,9 @@ If you step through many dates, updating the report every day takes a lot of mem
 | 1990-01-15 |      $9960 | 0.1377% | 0.1377% | -4.5745 |   -4.5745 |     $-7 |       0.5590% |
 ```
 
-### Save the records as CSV files
+> **Watch out:** updating the report every day takes memory and time over long runs. Over many years, update it less often, or print only a few rows.
+
+### Step 7: Save and plot the results
 
 The records stay in memory by default. To also write them as CSV files, set an output directory before `init-portfolio`:
 
@@ -276,8 +243,6 @@ The records stay in memory by default. To also write them as CSV files, set an o
 ```
 
 The run then writes `out_order_record.csv`, `out_portfolio_value_record.csv` and `out_evaluation_report.csv` into `out/`. The files are complete once the run ends, through `end-order` or by reaching the end of the dataset.
-
-### Plot variables
 
 `plot` draws a line chart in the browser. Tag each row with a series name, then pass the series key, the x key and the y key:
 
@@ -291,4 +256,30 @@ The run then writes `out_order_record.csv`, `out_portfolio_value_record.csv` and
 (plot data-to-plot :plot :date :vol true)
 ```
 
-See [`plot`](/posts/evaluate#plot-graphs) for details, and the [`Plotting_frame.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Plotting_frame.clj) worksheet for more examples.
+See [`plot`](/posts/evaluate/#plot) for details, and the [`Plotting_frame.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/Plotting_frame.clj) worksheet for more examples.
+
+## Use the library in your own namespace
+
+`lein repl` already has every function loaded. In a file or namespace of your own, require the library's namespaces:
+
+```clojure
+(ns my-strategy
+  (:require [clojure-backtesting.data :refer :all]
+            [clojure-backtesting.data-management :refer :all]
+            [clojure-backtesting.portfolio :refer :all]
+            [clojure-backtesting.order :refer :all]
+            [clojure-backtesting.evaluate :refer :all]
+            [clojure-backtesting.plot :refer :all]
+            [clojure-backtesting.counter :refer :all]
+            [clojure-backtesting.automation :refer :all]
+            [clojure-backtesting.parameters :refer :all]
+            [clojure-backtesting.indicators :refer :all]
+            [clojure-backtesting.direct :refer :all]))
+```
+
+## Next steps
+
+- [Key Concepts](/posts/concepts/) explains the ideas behind what you just ran: the clock, order fills, prices, margin and the metrics.
+- The [Cheat Sheet](/posts/cheat-sheet/) lists every function on one page.
+- The [examples](/posts/examples/) are complete strategies to read and modify.
+- Stuck? Try the [FAQ](/posts/faq/), or open an [issue](https://github.com/clojure-finance/clojure-backtesting/issues) if you find a bug or have an idea for an example.

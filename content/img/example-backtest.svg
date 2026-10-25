@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" width="760" height="420" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+<title id="t">Example backtest on the sample dataset</title>
+<desc id="d">AAA closing price and its 10-day moving average from January to March 1990, with the seven buy and seven sell fills of the strategy, and the portfolio value, which ends at $9,652.</desc>
+<rect width="760" height="420" fill="#ffffff"/>
+<g transform="translate(58,20)"><line x1="0" y1="0" x2="16" y2="0" stroke="#0f172a" stroke-width="2"/><text x="22" y="4" font-size="12" fill="#334155">AAA close</text></g>
+<g transform="translate(161.4,20)"><line x1="0" y1="0" x2="16" y2="0" stroke="#2f6fdb" stroke-width="2" stroke-dasharray="4 3"/><text x="22" y="4" font-size="12" fill="#334155">10-day average</text></g>
+<g transform="translate(297.79999999999995,20)"><path d="M8 -6 L14 4 L2 4 Z" fill="#16a34a"/><text x="22" y="4" font-size="12" fill="#334155">Buy fill</text></g>
+<g transform="translate(394.59999999999997,20)"><path d="M2 -4 L14 -4 L8 6 Z" fill="#dc2626"/><text x="22" y="4" font-size="12" fill="#334155">Sell fill</text></g>
+<g transform="translate(498.0,20)"><rect x="0" y="-6" width="16" height="12" fill="#16a34a" fill-opacity="0.12"/><text x="22" y="4" font-size="12" fill="#334155">Holding 50 shares</text></g>
+<rect x="168.6" y="62" width="55.3" height="196" fill="#16a34a" fill-opacity="0.10"/>
+<rect x="345.7" y="62" width="11.1" height="196" fill="#16a34a" fill-opacity="0.10"/>
+<rect x="378.9" y="62" width="11.1" height="196" fill="#16a34a" fill-opacity="0.10"/>
+<rect x="412.1" y="62" width="22.1" height="196" fill="#16a34a" fill-opacity="0.10"/>
+<rect x="467.4" y="62" width="11.1" height="196" fill="#16a34a" fill-opacity="0.10"/>
+<rect x="522.7" y="62" width="33.2" height="196" fill="#16a34a" fill-opacity="0.10"/>
+<rect x="589.1" y="62" width="55.3" height="196" fill="#16a34a" fill-opacity="0.10"/>
+<line x1="58" y1="243.2" x2="744" y2="243.2" stroke="#e5e9f0"/>
+<text x="50" y="247.2" font-size="11" fill="#64748b" text-anchor="end">$44</text>
+<line x1="58" y1="222.8" x2="744" y2="222.8" stroke="#e5e9f0"/>
+<text x="50" y="226.8" font-size="11" fill="#64748b" text-anchor="end">$45</text>
+<line x1="58" y1="202.5" x2="744" y2="202.5" stroke="#e5e9f0"/>
+<text x="50" y="206.5" font-size="11" fill="#64748b" text-anchor="end">$46</text>
+<line x1="58" y1="182.2" x2="744" y2="182.2" stroke="#e5e9f0"/>
+<text x="50" y="186.2" font-size="11" fill="#64748b" text-anchor="end">$47</text>
+<line x1="58" y1="161.8" x2="744" y2="161.8" stroke="#e5e9f0"/>
+<text x="50" y="165.8" font-size="11" fill="#64748b" text-anchor="end">$48</text>
+<line x1="58" y1="141.5" x2="744" y2="141.5" stroke="#e5e9f0"/>
+<text x="50" y="145.5" font-size="11" fill="#64748b" text-anchor="end">$49</text>
+<line x1="58" y1="121.2" x2="744" y2="121.2" stroke="#e5e9f0"/>
+<text x="50" y="125.2" font-size="11" fill="#64748b" text-anchor="end">$50</text>
+<line x1="58" y1="100.8" x2="744" y2="100.8" stroke="#e5e9f0"/>
+<text x="50" y="104.8" font-size="11" fill="#64748b" text-anchor="end">$51</text>
+<line x1="58" y1="80.5" x2="744" y2="80.5" stroke="#e5e9f0"/>
+<text x="50" y="84.5" font-size="11" fill="#64748b" text-anchor="end">$52</text>
+<line x1="58" y1="369.0" x2="744" y2="369.0" stroke="#e5e9f0"/>
+<text x="50" y="373.0" font-size="11" fill="#64748b" text-anchor="end">9.7k</text>
+<line x1="58" y1="351.9" x2="744" y2="351.9" stroke="#e5e9f0"/>
+<text x="50" y="355.9" font-size="11" fill="#64748b" text-anchor="end">9.8k</text>
+<line x1="58" y1="334.8" x2="744" y2="334.8" stroke="#e5e9f0"/>
+<text x="50" y="338.8" font-size="11" fill="#64748b" text-anchor="end">9.9k</text>
+<line x1="58" y1="317.7" x2="744" y2="317.7" stroke="#cbd5e1" stroke-dasharray="3 3"/>
+<text x="50" y="321.7" font-size="11" fill="#64748b" text-anchor="end">10.0k</text>
+<line x1="58" y1="300.6" x2="744" y2="300.6" stroke="#e5e9f0"/>
+<text x="50" y="304.6" font-size="11" fill="#64748b" text-anchor="end">10.1k</text>
+<text x="58" y="54" font-size="12" font-weight="600" fill="#334155">Price</text>
+<text x="58" y="292" font-size="12" font-weight="600" fill="#334155">Portfolio value</text>
+<line x1="58.0" y1="384" x2="58.0" y2="389" stroke="#64748b"/>
+<text x="58.0" y="403" font-size="11" fill="#64748b">Jan 1990</text>
+<line x1="301.4" y1="384" x2="301.4" y2="389" stroke="#64748b"/>
+<text x="301.4" y="403" font-size="11" fill="#64748b">Feb</text>
+<line x1="522.7" y1="384" x2="522.7" y2="389" stroke="#64748b"/>
+<text x="522.7" y="403" font-size="11" fill="#64748b">Mar</text>
+<line x1="58" y1="384" x2="744" y2="384" stroke="#94a3b8"/>
+<path d="M157.6 118.1 L168.6 117.3 L179.7 116.0 L190.8 111.7 L201.8 108.7 L212.9 109.7 L224.0 109.3 L235.0 107.9 L246.1 107.5 L257.2 106.8 L268.2 111.3 L279.3 117.9 L290.4 124.9 L301.4 134.4 L312.5 142.9 L323.5 146.6 L334.6 149.0 L345.7 152.9 L356.7 157.7 L367.8 160.4 L378.9 162.1 L389.9 161.6 L401.0 159.5 L412.1 157.2 L423.1 156.0 L434.2 157.4 L445.3 160.5 L456.3 158.9 L467.4 158.0 L478.5 159.6 L489.5 160.3 L500.6 161.7 L511.6 161.8 L522.7 161.5 L533.8 161.8 L544.8 161.6 L555.9 162.5 L567.0 165.1 L578.0 165.0 L589.1 163.0 L600.2 160.7 L611.2 157.7 L622.3 159.3 L633.4 161.9 L644.4 164.8 L655.5 168.5 L666.5 173.2 L677.6 178.6 L688.7 185.0 L699.7 190.6 L710.8 198.8 L721.9 207.9 L732.9 216.0 L744.0 223.7" fill="none" stroke="#2f6fdb" stroke-width="2" stroke-dasharray="5 4"/>
+<path d="M58.0 107.5 L69.1 104.7 L80.1 116.7 L91.2 113.6 L102.3 113.0 L113.3 123.0 L124.4 135.8 L135.5 128.1 L146.5 135.6 L157.6 102.9 L168.6 100.0 L179.7 90.9 L190.8 74.2 L201.8 83.6 L212.9 123.0 L224.0 118.7 L235.0 122.0 L246.1 123.8 L257.2 128.7 L268.2 147.8 L279.3 166.5 L290.4 160.8 L301.4 168.9 L312.5 169.1 L323.5 159.4 L334.6 143.3 L345.7 160.6 L356.7 172.0 L367.8 155.9 L378.9 164.1 L389.9 161.6 L401.0 140.1 L412.1 146.0 L423.1 157.0 L434.2 173.6 L445.3 174.0 L456.3 145.2 L467.4 162.2 L478.5 172.4 L489.5 171.2 L500.6 175.7 L511.6 140.9 L522.7 143.1 L533.8 159.8 L544.8 171.8 L555.9 182.8 L567.0 171.4 L578.0 160.6 L589.1 152.9 L600.2 148.0 L611.2 145.8 L622.3 157.0 L633.4 168.5 L644.4 189.3 L655.5 209.2 L666.5 229.1 L677.6 225.9 L688.7 224.7 L699.7 208.8 L710.8 229.5 L721.9 236.7 L732.9 237.9 L744.0 245.8" fill="none" stroke="#0f172a" stroke-width="1.8" stroke-linejoin="round"/>
+<path d="M168.6 104.0 l6 10 l-12 0 Z" fill="#16a34a"/>
+<path d="M224.0 114.7 l6 -10 l-12 0 Z" fill="#dc2626"/>
+<path d="M345.7 164.6 l6 10 l-12 0 Z" fill="#16a34a"/>
+<path d="M356.7 168.0 l6 -10 l-12 0 Z" fill="#dc2626"/>
+<path d="M378.9 168.1 l6 10 l-12 0 Z" fill="#16a34a"/>
+<path d="M389.9 157.6 l6 -10 l-12 0 Z" fill="#dc2626"/>
+<path d="M412.1 150.0 l6 10 l-12 0 Z" fill="#16a34a"/>
+<path d="M434.2 169.6 l6 -10 l-12 0 Z" fill="#dc2626"/>
+<path d="M467.4 166.2 l6 10 l-12 0 Z" fill="#16a34a"/>
+<path d="M478.5 168.4 l6 -10 l-12 0 Z" fill="#dc2626"/>
+<path d="M522.7 147.1 l6 10 l-12 0 Z" fill="#16a34a"/>
+<path d="M555.9 178.8 l6 -10 l-12 0 Z" fill="#dc2626"/>
+<path d="M589.1 156.9 l6 10 l-12 0 Z" fill="#16a34a"/>
+<path d="M644.4 185.3 l6 -10 l-12 0 Z" fill="#dc2626"/>
+<path d="M58.0 317.7 L69.1 317.7 L80.1 317.7 L91.2 317.7 L102.3 317.7 L113.3 317.7 L124.4 317.7 L135.5 317.7 L146.5 317.7 L157.6 317.7 L168.6 317.7 L179.7 313.8 L190.8 306.8 L201.8 310.8 L212.9 327.3 L224.0 325.6 L235.0 325.6 L246.1 325.6 L257.2 325.6 L268.2 325.6 L279.3 325.6 L290.4 325.6 L301.4 325.6 L312.5 325.6 L323.5 325.6 L334.6 325.6 L345.7 325.6 L356.7 330.3 L367.8 330.3 L378.9 330.3 L389.9 329.3 L401.0 329.3 L412.1 329.3 L423.1 333.9 L434.2 340.9 L445.3 340.9 L456.3 340.9 L467.4 340.9 L478.5 345.2 L489.5 345.2 L500.6 345.2 L511.6 345.2 L522.7 345.2 L533.8 352.2 L544.8 357.3 L555.9 361.9 L567.0 361.9 L578.0 361.9 L589.1 361.9 L600.2 359.8 L611.2 358.9 L622.3 363.6 L633.4 368.4 L644.4 377.2 L655.5 377.2 L666.5 377.2 L677.6 377.2 L688.7 377.2 L699.7 377.2 L710.8 377.2 L721.9 377.2 L732.9 377.2 L744.0 377.2 L744.0 384 L58.0 384 Z" fill="#0d9488" fill-opacity="0.08"/>
+<path d="M58.0 317.7 L69.1 317.7 L80.1 317.7 L91.2 317.7 L102.3 317.7 L113.3 317.7 L124.4 317.7 L135.5 317.7 L146.5 317.7 L157.6 317.7 L168.6 317.7 L179.7 313.8 L190.8 306.8 L201.8 310.8 L212.9 327.3 L224.0 325.6 L235.0 325.6 L246.1 325.6 L257.2 325.6 L268.2 325.6 L279.3 325.6 L290.4 325.6 L301.4 325.6 L312.5 325.6 L323.5 325.6 L334.6 325.6 L345.7 325.6 L356.7 330.3 L367.8 330.3 L378.9 330.3 L389.9 329.3 L401.0 329.3 L412.1 329.3 L423.1 333.9 L434.2 340.9 L445.3 340.9 L456.3 340.9 L467.4 340.9 L478.5 345.2 L489.5 345.2 L500.6 345.2 L511.6 345.2 L522.7 345.2 L533.8 352.2 L544.8 357.3 L555.9 361.9 L567.0 361.9 L578.0 361.9 L589.1 361.9 L600.2 359.8 L611.2 358.9 L622.3 363.6 L633.4 368.4 L644.4 377.2 L655.5 377.2 L666.5 377.2 L677.6 377.2 L688.7 377.2 L699.7 377.2 L710.8 377.2 L721.9 377.2 L732.9 377.2 L744.0 377.2" fill="none" stroke="#0d9488" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="744.0" cy="377.2" r="3.5" fill="#0d9488"/>
+<text x="736.0" y="368.2" font-size="11.5" font-weight="600" fill="#0d9488" text-anchor="end">$9,652</text>
+</svg>

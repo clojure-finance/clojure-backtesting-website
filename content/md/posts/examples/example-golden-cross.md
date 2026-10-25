@@ -1,14 +1,13 @@
-{:title "Example - Golden Cross"
+{:title "Example: Golden Cross"
  :date "2020-12-31"
  :layout :post
- :tags  []
+ :section "Examples"
+ :lead "Buy while a short moving average is above a long one, sell when it crosses below."
  :toc true}
 
-This walkthrough follows the worksheet [`golden_cross.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/golden_cross.clj). It runs on the bundled sample dataset and can be opened in Gorilla REPL with `make start` (see [Get Started](/posts/get-started) for setup).
+This walkthrough follows the worksheet [`golden_cross.clj`](https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/golden_cross.clj). It runs on the bundled sample dataset and can be opened in Gorilla REPL with `make start` (see [Get Started](/posts/get-started/) for setup).
 
 A golden cross is when a short-term moving average of a security's price crosses above a long-term one, read as a buy signal; a death cross is the opposite, the short-term average falling below the long-term one. The classic pair is the 50-day and 200-day averages. The sample data covers only January to March 1990, so the worksheet uses 15-day and 30-day averages instead, on securities `10001` ("AAA") and `10002` ("BBB").
-
----
 
 ## Initialisation
 
@@ -50,7 +49,7 @@ Go back to this cell every time you want to restart the backtest.
 
 ## Writing the Strategy
 
-Each trading day, `golden-cross` compares the 15-day and 30-day moving averages of a security's closing price ([`moving-avg`](/posts/indicators)):
+Each trading day, `golden-cross` compares the 15-day and 30-day moving averages of a security's closing price ([`moving-avg`](/posts/indicators/)):
 
 - MA 15 above MA 30 (golden cross): buy `quantity` more shares, so the position grows every day the golden cross holds
 - MA 15 below MA 30 (death cross): sell the whole position (`:remaining true` with a target of 0)
@@ -135,7 +134,7 @@ The first 10 rows of the portfolio value record, from before the first trade:
 
 ## Evaluation Report
 
-`update-eval-report` adds a row only once the order record is non-empty, so the report starts on the day of the first fill. The metrics are described in [Evaluate](/posts/evaluate).
+`update-eval-report` adds a row only once the order record is non-empty, so the report starts on the day of the first fill. The metrics are described in [Evaluate](/posts/evaluate/).
 
 ```clojure
 (print-eval-report 10)
@@ -158,7 +157,7 @@ The first 10 rows of the portfolio value record, from before the first trade:
 
 ## Plotting
 
-Tag each portfolio value record with a series name, then plot the daily return over time with `plot` (see [Evaluate](/posts/evaluate)).
+Tag each portfolio value record with a series name, then plot the daily return over time with `plot` (see [Evaluate](/posts/evaluate/)).
 
 ```clojure
 (def data-to-plot (map #(assoc % :plot "portfolio") (deref portfolio-value)))

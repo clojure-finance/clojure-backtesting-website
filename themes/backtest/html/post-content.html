@@ -1,0 +1,17 @@
+<article class="doc{% if post.toc %} has-toc{% endif %}">
+    <header class="doc-header">
+        {% if post.section %}<p class="eyebrow">{{post.section}}</p>{% endif %}
+        <h1>{{post.title}}</h1>
+        {% if post.lead %}<p class="lead">{{post.lead}}</p>{% endif %}
+    </header>
+    {% if post.toc %}
+    <details class="page-toc" open>
+        <summary>On this page</summary>
+        {{post.toc|safe}}
+    </details>
+    {% endif %}
+    <div class="doc-body">
+        {{post.content|safe}}
+    </div>
+    <nav class="pager" aria-label="Previous and next page"></nav>
+</article>

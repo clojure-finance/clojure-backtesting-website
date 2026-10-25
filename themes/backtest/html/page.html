@@ -1,0 +1,27 @@
+{% extends "/html/base.html" %}
+{% block title %}{{page.title}} · {{title}}{% endblock %}
+{% block meta %}
+<meta name="description" content="{% if page.lead %}{{page.lead}}{% else %}{{page.description}}{% endif %}">
+<meta property="og:title" content="{{page.title}}">
+<meta property="og:url" content="{{site-url}}{{uri}}">
+<meta property="og:type" content="article">
+{% endblock %}
+{% block content %}
+<article class="doc{% if page.toc %} has-toc{% endif %}">
+    <header class="doc-header">
+        {% if page.section %}<p class="eyebrow">{{page.section}}</p>{% endif %}
+        <h1>{{page.title}}</h1>
+        {% if page.lead %}<p class="lead">{{page.lead}}</p>{% endif %}
+    </header>
+    {% if page.toc %}
+    <details class="page-toc" open>
+        <summary>On this page</summary>
+        {{page.toc|safe}}
+    </details>
+    {% endif %}
+    <div class="doc-body">
+        {{page.content|safe}}
+    </div>
+    <nav class="pager" aria-label="Previous and next page"></nav>
+</article>
+{% endblock %}

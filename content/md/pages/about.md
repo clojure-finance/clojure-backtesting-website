@@ -1,29 +1,24 @@
-{:title "About"
+{:title "Why Clojure?"
  :layout :page
  :page-index 1
- :navbar? true}
+ :navbar? true
+ :section "Introduction"
+ :lead "Why a backtester in Clojure, who builds it, and how to get involved."}
 
-This is the documentation for the backtesting library written in Clojure. The source code could be found at <https://github.com/clojure-finance/clojure-backtesting>.
-
+Clojure Backtesting is an open-source library for testing trading strategies on historical daily data, developed at HKU Business School as part of the [clojure-finance](https://github.com/clojure-finance) projects. The source code is on [GitHub](https://github.com/clojure-finance/clojure-backtesting) under the MIT License.
 
 ## Why Clojure
 
-Clojure is a functional programming language that allows developers to work with high-level mathematical abstractions. Its fundamental features of immutability and laziness renders it the ideal candidate tool for financial modeling as well as distributed computation. 
+Clojure is a functional programming language that runs on the Java Virtual Machine. Several of its features suit financial modelling and data-heavy research:
 
-Here are some of the best things about Clojure:
+- **Immutable data.** Values do not change under you, which makes a long simulation easier to reason about and to test.
+- **The REPL.** You build a strategy interactively, one expression at a time, and inspect the portfolio after every step.
+- **The JVM.** Clojure code can call any Java library, and runs at the speed of compiled Java.
+- **Built for concurrency.** Immutable data and Clojure's reference types make parallel work safer and simpler.
+- **Lazy sequences.** Data can be processed as it is read, which is how the backtester handles datasets larger than memory.
 
-- Clojure is a **JVM-based language**. This means that you're granted full access to Java's myriad of libraries.
+Functional languages have a long history in finance: Jane Street, for example, uses [OCaml](https://blog.janestreet.com/why-ocaml/) as its primary language, and many banks use Scala. We believe Clojure has a lot to offer here too, and this library is one of the resources we are building for the community.
 
-- Clojure is designed for **concurrency**. You can save your efforts spent on performance tuning and efficiency, and focus on writing the core functionalities.
+## Report bugs and contribute
 
-- **Lazy data structures** are built-in in Clojure. It enables you to easily load datasets that larger than the memory size of your computer.
-
-Functional programming languages have a long history in the financial industry: for example, Jane Street uses [OCaml](https://blog.janestreet.com/why-ocaml/) as its primary development language, and many investment banks make heavy use of Scala.
-
-We believe that there are plenty of underlying potentialities in Clojure. Thus, we would like to make an effort in developing resources for this community. This backtesting library serves to be a resource that assists users to write trading strategies and evaluate the strategy performance.
-
-<br>
-
-## Report bugs
-
-Clojure Backtesting Library is currently under active development. If you find any bugs or mistakes, we would appreciate if you could help [report](https://github.com/clojure-finance/clojure-backtesting/issues) these issues so that we could repair them accordingly.
+The library is under active development. If you find a bug or a mistake in these pages, please [open an issue](https://github.com/clojure-finance/clojure-backtesting/issues). Ideas for new examples are welcome too.
