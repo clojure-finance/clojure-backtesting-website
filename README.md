@@ -49,6 +49,7 @@ cd - && git worktree remove /tmp/gh-pages
 | `content/md/pages/` | The home page (`index.md`) and the About page |
 | `content/md/posts/` | The documentation pages; `examples/` holds the example walkthroughs |
 | `content/img/` | Images and diagrams |
+| `dev/` | The generator of the home page's value-strategy chart |
 | `content/posts/docs/` | CRSP and Compustat column definitions (PDF) |
 | `themes/backtest/` | The theme: templates in `html/`, all styles in `css/style.css`, behaviour in `js/site.js` |
 
@@ -79,8 +80,28 @@ Conventions the theme styles:
   `<span class="card-title">` and `<span class="card-text">` instead.
 
 The example outputs on the site come from real runs on the library's bundled
-sample dataset. Rerun them when the library changes, and update
-`:library-version`. The home page's numbers and its chart
-(`content/img/example-backtest.svg`) come from running the strategy shown in
-its hero, in `themes/backtest/html/home.html`; the order record excerpt and
-stats are in `content/md/pages/index.md`.
+sample data: `resources/sample-data` (1990, three securities) for most pages,
+and the synthetic Yahoo snapshots in `resources/sample-yahoo` (2022 to 2024)
+for Yahoo Finance Data, Fundamentals, Strategy Helpers, Strategy Recipes and
+the Value Strategy and Quality and Earnings examples. Rerun them when the
+library changes, and update `:library-version`. The pages that follow a
+worksheet in the library's `examples/` match its output cells, which
+`lein run -m clojure-backtesting.worksheet examples/*.clj` regenerates.
+
+The home page has two results:
+
+- The first chart (`content/img/example-backtest.svg`) and stats come from the
+  strategy in the hero, in `themes/backtest/html/home.html`; the order record
+  excerpt and stats are in `content/md/pages/index.md`.
+- The second, "Strategies on fundamentals", is the `value_strategy` worksheet.
+  `dev/value_strategy_chart.clj` reruns it, prints the figures quoted in
+  `index.md` and writes `content/img/value-strategy.svg`. Run it from a clone
+  of the library next to this repository:
+
+  ```bash
+  cd ../clojure-backtesting
+  lein run -m clojure.main ../clojure-backtesting-website/dev/value_strategy_chart.clj
+  ```
+
+`content/img/report-timeline.svg` (Key Concepts) is drawn by hand from the
+`yahoo_finance_data` worksheet's ALFA dates and values.

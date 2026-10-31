@@ -9,6 +9,8 @@ This walkthrough follows the worksheet [`Fundamental analysis.clj`](https://gith
 
 It implements a simple fundamental analysis strategy: rank securities by return on equity (ROE) from their quarterly filings and buy the best one.
 
+> **Tip:** this example uses Compustat-style data, whose columns are joined onto the daily rows as strings. With data from Yahoo Finance, the [Fundamentals](/posts/fundamentals/) functions return the values directly, with ready-made ratios such as `return-on-equity`; see the [Value Strategy](/posts/examples/example-value-strategy/) example.
+
 A supplementary dataset (Compustat-style quarterly fundamentals) is joined onto each day's rows. For every security the latest filing that was public on that day is used: the filing's period-end date (`datadate`) must be on or before the day, and so must its report date (`rdq`) when the dataset has one. Without a report date the period end alone decides, which lets the strategy see the numbers before they were announced. See [API](/posts/api/) for loading datasets.
 
 ## Initialisation

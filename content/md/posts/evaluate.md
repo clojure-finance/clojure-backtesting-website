@@ -2,10 +2,10 @@
  :date "2021-01-20"
  :layout :post
  :section "API Reference"
- :lead "Compute performance metrics, print the evaluation report and draw charts."
+ :lead "Compute performance metrics, print the evaluation report, compare with a benchmark and draw charts."
  :toc true}
 
-This page features functions for computing metrics that evaluate portfolio performance, printing the evaluation report, and plotting.
+This page features functions for computing metrics that evaluate portfolio performance, printing the evaluation report, comparing with a benchmark, and plotting.
 
 ## Record the Metrics
 
@@ -101,6 +101,40 @@ These functions compute a metric for the current state without touching the repo
 (max-drawdown)
 ;; => 0.007590000000000145
 ```
+
+## Compare with a Benchmark
+
+### `benchmark-stats`
+
+`(benchmark-stats permno)`
+
+Compares the portfolio with security `permno` of the main dataset, typically an index or an ETF, over the run so far. It uses the days on which both have a value, and needs no evaluation report.
+
+| Key | Meaning |
+| --- | ------- |
+| `:days` | The number of daily returns compared |
+| `:portfolio-return` | The portfolio's total return over those days, as a fraction |
+| `:benchmark-return` | The benchmark's total return, from its adjusted price, so dividends are included |
+| `:excess-return` | `:portfolio-return` minus `:benchmark-return` |
+| `:beta` | Covariance of the daily returns over the benchmark's variance: how strongly the portfolio moved with it |
+| `:alpha` | 252 × (mean daily return − beta × the benchmark's mean daily return): the yearly return beyond what beta explains, with a zero risk-free rate |
+| `:correlation` | Correlation of the daily returns |
+| `:tracking-error` | Standard deviation of the daily return differences, × √252 |
+| `:information-ratio` | Mean daily return difference over its standard deviation, × √252 |
+
+Daily returns are log returns, as in the portfolio record. The result is `nil` with fewer than two common days. `:beta` and `:alpha` are `nil` when the benchmark's returns do not vary, `:correlation` when either series does not, and `:information-ratio` when the return differences do not. A portfolio that stays in cash has a beta of 0.
+
+**Example**: the [Value Strategy](/posts/examples/example-value-strategy/#against-the-index) against the IDX index of the Yahoo sample, after `end-order`:
+
+```clojure
+(into (sorted-map) (benchmark-stats "IDX"))
+```
+
+```text
+{:alpha 0.14832626714576205, :benchmark-return 0.1937698633503946, :beta 1.025831533487977, :correlation 0.6612759265648038, :days 520, :excess-return 0.43489652224687814, :information-ratio 0.9698313526498363, :portfolio-return 0.6286663855972727, :tracking-error 0.15522644373296574}
+```
+
+The portfolio returned 62.9% against the index's 19.4%, with a beta of about 1. The benchmark has to be in the main dataset: with Yahoo data, download an index or ETF along with the stocks, such as `"SPY"` or `"^GSPC"`.
 
 ## Rolling Window
 

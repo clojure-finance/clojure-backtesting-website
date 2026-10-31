@@ -5,7 +5,9 @@
  :section "Introduction"
  :lead "Why a backtester in Clojure, who builds it, and how to get involved."}
 
-Clojure Backtesting is an open-source library for testing trading strategies on historical daily data, developed at HKU Business School as part of the [clojure-finance](https://github.com/clojure-finance) projects. The source code is on [GitHub](https://github.com/clojure-finance/clojure-backtesting) under the MIT License.
+Clojure Backtesting is an open-source library for testing trading strategies on historical daily data, developed at HKU Business School as part of the [clojure-finance](https://github.com/clojure-finance) projects. The source code is on [GitHub](https://github.com/clojure-finance/clojure-backtesting) under the MIT License, and releases are on [Clojars](https://clojars.org/com.github.clojure-finance/clojure-backtesting).
+
+It builds on two other clojure-finance libraries: [clj-yfinance](https://github.com/clojure-finance/clj-yfinance) downloads the Yahoo Finance data, and [Clojask](https://clojure-finance.github.io/clojask-website/) powers `clojask-script`, which converts large CSV files such as CRSP's into the backtester's layout.
 
 ## Why Clojure
 

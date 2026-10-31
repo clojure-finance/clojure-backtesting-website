@@ -5,7 +5,7 @@
  :lead "Load data, start a portfolio, place orders, move the clock and read market data."
  :toc true}
 
-These are the functions every strategy uses. The examples run on the bundled sample dataset (see [Get Started](/posts/get-started/#install)), mostly with the clock at 1990-01-08.
+These are the functions every strategy uses. The examples run on the bundled sample dataset (see [Get Started](/posts/get-started/#the-sample-data)), mostly with the clock at 1990-01-08. Functions for Yahoo Finance data, fundamentals and portfolio strategies have their own pages: [Yahoo Finance Data](/posts/yahoo-data/), [Fundamentals](/posts/fundamentals/) and [Strategy Helpers](/posts/strategy/).
 
 **How to read this page:** each function has a table of its arguments, then what it returns and an example. Arguments in [square brackets] are optional. Lines starting with `=>` are what you type at the REPL; the lines below them are what it prints or returns.
 
@@ -34,6 +34,8 @@ The dataset is already furnished by add-aprc. No more modification is needed.
 => (load-dataset "resources/sample-data/compustat" "compustat")
 "Date range: 1989-09-30 ~ 1989-12-31"
 ```
+
+To load a dataset built from Yahoo Finance, use [`load-yahoo-dataset`](/posts/yahoo-data/#load-yahoo-dataset) instead: it loads the prices as the main dataset, already furnished with the adjusted prices, together with the fundamentals.
 
 ## Start a Portfolio
 

@@ -11,9 +11,12 @@ A backtest replays history: your strategy sees the market one day at a time, pla
 <div class="card"><span class="icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span><h3>Day-by-day simulation</h3><p>A global clock moves through trading days. Your code only sees data up to "today", so it cannot peek at the future.</p></div>
 <div class="card"><span class="icon green"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg></span><h3>Orders fill like a broker's</h3><p>An order fills at the next trading day's close. Orders wait while a security has no price, and expire after a few days.</p></div>
 <div class="card"><span class="icon amber"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 18 13.5 8.5l-5 5L1 6"/><path d="M17 18h6v-6"/></svg></span><h3>Margin and short selling</h3><p>Borrow cash or shares under initial and maintenance margins, with optional commissions and loan interest.</p></div>
-<div class="card"><span class="icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><h3>Dividends, splits, fundamentals</h3><p>Dividends are reinvested or paid to cash. Company filings are joined by report date, so a strategy only sees published numbers.</p></div>
+<div class="card"><span class="icon green"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg></span><h3>Free data from Yahoo Finance</h3><p>Download prices, dividends, splits, financial statements and earnings dates for any ticker, with no API key. Or use CRSP and Compustat.</p></div>
+<div class="card"><span class="icon amber"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></span><h3>Point-in-time fundamentals</h3><p>Earnings, balance sheets, 15 ratios, growth rates and the Piotroski F-score, exactly as they were known on each day.</p></div>
+<div class="card"><span class="icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M7 12h10M10 18h4"/></svg></span><h3>Rank and rebalance</h3><p>Rank a universe by any measure, hold the top picks at target weights, and rebalance every week, month or quarter.</p></div>
+<div class="card"><span class="icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><h3>Dividends and splits</h3><p>Dividends are reinvested or paid to cash, splits adjust the share count, and holdings of delisted securities become cash.</p></div>
 <div class="card"><span class="icon green"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><h3>Technical indicators</h3><p>Moving averages, EMA, MACD, RSI, rate of change, parabolic SAR, ATR and Keltner Channels.</p></div>
-<div class="card"><span class="icon amber"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></span><h3>Performance metrics</h3><p>Daily returns, volatility, Sharpe ratio, maximum drawdown and profit per trade, plus line charts in the browser.</p></div>
+<div class="card"><span class="icon amber"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></span><h3>Performance and benchmarks</h3><p>Returns, volatility, Sharpe ratio and drawdown, plus beta, alpha and information ratio against an index, and charts in the browser.</p></div>
 <div class="card"><span class="icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><h3>Automated rules</h3><p>Pair a condition with an action, such as a stop-loss, and the backtester checks it every trading day.</p></div>
 <div class="card"><span class="icon green"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></span><h3>Data larger than memory</h3><p>Data is read from disk one day at a time, with a cache. It has been tested with datasets of up to 30 GB.</p></div>
 </div>
@@ -23,7 +26,7 @@ A backtest replays history: your strategy sees the market one day at a time, pla
 Every backtest follows the same four steps. The [Key Concepts](/posts/concepts/) page explains each step in more detail.
 
 <div class="card-grid">
-<div class="card"><span class="step">1</span><h3>Load the data</h3><p><code>load-dataset</code> points the library at daily prices, and optionally at company fundamentals.</p></div>
+<div class="card"><span class="step">1</span><h3>Load the data</h3><p><code>load-dataset</code> points the library at daily prices; <code>load-yahoo-dataset</code> loads prices and fundamentals from Yahoo Finance.</p></div>
 <div class="card"><span class="step">2</span><h3>Start a portfolio</h3><p><code>init-portfolio</code> sets the start date and the cash you begin with.</p></div>
 <div class="card"><span class="step">3</span><h3>Step through the days</h3><p>Each day, read prices or indicators, call <code>order</code>, then <code>next-date</code> to move on.</p></div>
 <div class="card"><span class="step">4</span><h3>Review the results</h3><p><code>end-order</code> closes the positions. The records and the evaluation report show what happened.</p></div>
@@ -57,6 +60,42 @@ The rule lost $348 (3.5%). That is the point of backtesting: you find out on his
 | 1990-02-08 |   10001 |   47.5 | 47.50 |     -50.0 |
 ```
 
+## Strategies on fundamentals
+
+Since version 1.1.2 the library also downloads data from Yahoo Finance, knows which company reports were public on each day, and has helpers for strategies that rank and rebalance. This value strategy holds, every month, the two companies with the highest earnings yield:
+
+```clojure
+(build-yahoo-dataset! "resources/sample-yahoo" :out-dir "target/sample-yahoo")
+(load-yahoo-dataset "target/sample-yahoo")
+(update-transaction-cost 0.001)
+(init-portfolio "2023-01-03" 100000)
+
+(while (neg? (compare (get-date) "2024-12-31"))
+  (when (new-period? :month)
+    (rebalance (equal-weights (top-n earnings-yield 2 :universe ["ALFA" "BETA" "GAMA" "DLTA"]))))
+  (next-date)
+  (update-eval-report))
+(end-order)
+(benchmark-stats "IDX")
+```
+
+It runs on the synthetic Yahoo snapshots bundled with the library, two years of made-up companies, against their index:
+
+<div class="stats">
+<div class="stat"><span class="label">Final value</span><span class="value">$162,866</span></div>
+<div class="stat"><span class="label">Index, same start</span><span class="value">$119,376</span></div>
+<div class="stat"><span class="label">Beta</span><span class="value">1.03</span></div>
+<div class="stat"><span class="label">Alpha, a year</span><span class="value">14.8%</span></div>
+<div class="stat"><span class="label">Max drawdown</span><span class="value">16.75%</span></div>
+</div>
+
+<figure>
+<img src="/img/value-strategy.svg" alt="The value strategy's portfolio value from January 2023 to December 2024, ending at $162,866, against the IDX index scaled to the same start, ending at $119,376. A strip below shows the holdings: ALFA and GAMA until March 2024, then mostly ALFA and BETA.">
+<figcaption>The picks change only when a new report becomes public. With three companies and synthetic prices, the result shows the mechanics, not that value investing works.</figcaption>
+</figure>
+
+The [Value Strategy](/posts/examples/example-value-strategy/) example explains every step, and [Yahoo Finance Data](/posts/yahoo-data/) shows how to download real data.
+
 ## Start learning
 
 New to Clojure or to backtesting? Read these pages in order.
@@ -65,8 +104,9 @@ New to Clojure or to backtesting? Read these pages in order.
 <a class="card" href="/posts/get-started/"><span class="step">1</span><span class="card-title">Get Started</span><span class="card-text">Install, open a REPL and run your first backtest on the sample data.</span><span class="more">Install and run →</span></a>
 <a class="card" href="/posts/concepts/"><span class="step">2</span><span class="card-title">Key Concepts</span><span class="card-text">The daily loop, when orders fill, prices, margin and the performance metrics.</span><span class="more">Learn the ideas →</span></a>
 <a class="card" href="/posts/user-guide/"><span class="step">3</span><span class="card-title">Data and Trading Rules</span><span class="card-text">The datasets and their columns, the exact trading rules, and the cache.</span><span class="more">Read the rules →</span></a>
-<a class="card" href="/posts/cheat-sheet/"><span class="step">4</span><span class="card-title">Cheat Sheet</span><span class="card-text">Every function on one page, grouped by task, with links to the details.</span><span class="more">Browse functions →</span></a>
-<a class="card" href="/posts/examples/"><span class="step">5</span><span class="card-title">Examples</span><span class="card-text">Complete strategies: moving-average crossovers, Bollinger Bands, margin trading and fundamentals.</span><span class="more">See strategies →</span></a>
+<a class="card" href="/posts/yahoo-data/"><span class="step">4</span><span class="card-title">Yahoo Finance Data</span><span class="card-text">Download real prices and fundamentals, build a dataset, and know the data's limits.</span><span class="more">Get real data →</span></a>
+<a class="card" href="/posts/cheat-sheet/"><span class="step">5</span><span class="card-title">Cheat Sheet</span><span class="card-text">Every function on one page, grouped by task, with links to the details.</span><span class="more">Browse functions →</span></a>
+<a class="card" href="/posts/examples/"><span class="step">6</span><span class="card-title">Examples</span><span class="card-text">Complete strategies: moving-average crossovers, Bollinger Bands, margin trading, value and quality investing.</span><span class="more">See strategies →</span></a>
 <a class="card" href="/posts/faq/"><span class="step">?</span><span class="card-title">FAQ and Troubleshooting</span><span class="card-text">Why an order did not fill, why an indicator returns <code>nil</code>, and other common questions.</span><span class="more">Get unstuck →</span></a>
 </div>
 

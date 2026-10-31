@@ -26,11 +26,28 @@ In `lein repl` all of these are available right away. In your own namespace, req
 (print-eval-report)                                          ; 5. review
 ```
 
+## A typical rebalancing backtest
+
+```clojure
+(load-yahoo-dataset "target/sample-yahoo")                  ; 1. prices and fundamentals
+(init-portfolio "2023-01-03" 100000)                        ; 2. start a portfolio
+
+(while (neg? (compare (get-date) "2024-12-31"))            ; 3. every trading day:
+  (when (new-period? :month)                                ;    on the first of the month,
+    (rebalance (equal-weights (top-n earnings-yield 2))))   ;    hold the two cheapest
+  (next-date)
+  (update-eval-report))
+
+(end-order)                                                 ; 4. close positions
+(benchmark-stats "IDX")                                     ; 5. compare with the index
+```
+
 ## Set up a run
 
 | Function | What it does |
 | -------- | ------------ |
 | [`(load-dataset dir role [add-aprc])`](/posts/api/#load-dataset) | Load the `"main"` price dataset or a `"compustat"` fundamentals dataset |
+| [`(load-yahoo-dataset dir)`](/posts/yahoo-data/#load-yahoo-dataset) | Load a dataset built from Yahoo Finance: prices and fundamentals |
 | [`(init-portfolio date capital)`](/posts/api/#init-portfolio) | Start (or restart) with `capital` in cash on `date` |
 | [`(update-output-dir dir)`](/posts/parameters/#update-output-dir) | Also write the records as CSV files; call before `init-portfolio` |
 | [`(CHANGE-CACHE-SIZE n)`](/posts/user-guide/#cache-mechanism) | Keep `n` days of data in memory (60 by default) |
@@ -73,6 +90,18 @@ In `lein repl` all of these are available right away. In your own namespace, req
 | [`(end-order)`](/posts/api/#end-order) | Close every position at today's close and end the run |
 | `@pending-order` | Orders that have not filled yet |
 
+## Rank and rebalance
+
+| Function | What it does |
+| -------- | ------------ |
+| [`(new-period? unit)`](/posts/strategy/#new-period) | True on the first trading day of a `:week`, `:month`, `:quarter` or `:year`, and on the first day of the run |
+| [`(rank-by f & options)`](/posts/strategy/#rank-by) | `[[permno value] ...]`, highest `(f permno)` first; `:universe`, `:ascending` |
+| [`(top-n f n & options)`](/posts/strategy/#top-n) | The `n` permnos with the highest `(f permno)` |
+| [`(equal-weights permnos)`](/posts/strategy/#equal-weights) | `{permno 1/n}` |
+| [`(order-target-percent permno weight)`](/posts/strategy/#order-target-percent) | Order so the holding becomes `weight` of equity; `:whole-shares? true` |
+| [`(rebalance weights)`](/posts/strategy/#rebalance) | Target `{permno weight}` for the whole portfolio, closing everything else |
+| [`(portfolio-equity)`](/posts/strategy/#portfolio-equity-and-target-quantity) | Equity as last valued |
+
 ## Inspect the portfolio
 
 | Function | What it does |
@@ -94,6 +123,7 @@ In `lein repl` all of these are available right away. In your own namespace, req
 | [`(volatility)`, `(sharpe-ratio)`, `(max-drawdown)`, `(pnl-per-trade)`](/posts/evaluate/#individual-metrics) | One metric for the run so far |
 | [`(rolling-volatility)`, `(rolling-sharpe-ratio)`](/posts/evaluate/#individual-metrics) | The same over the rolling window |
 | [`(update-rolling-window n)`](/posts/evaluate/#update-rolling-window) | Set the rolling window (30 trading days by default) |
+| [`(benchmark-stats permno)`](/posts/evaluate/#benchmark-stats) | Returns, beta, alpha, correlation, tracking error and information ratio against a security |
 | [`(plot data series x y full-date)`](/posts/evaluate/#plot) | Line chart in the browser |
 
 ## Technical indicators
@@ -111,6 +141,34 @@ In `lein repl` all of these are available right away. In your own namespace, req
 | [`(keltner-channel permno n prev-atr)`](/posts/indicators/#keltner-channel) | `[middle upper lower]` |
 
 Indicators return `nil` until they have enough history.
+
+## Yahoo Finance data
+
+| Function | What it does |
+| -------- | ------------ |
+| [`(download-yahoo! dir tickers & options)`](/posts/yahoo-data/#download-yahoo) | Download prices, statements and earnings dates into `<dir>/raw`; `:start`, `:fundamentals?`, `:force?` |
+| [`(build-yahoo-dataset! dir & options)`](/posts/yahoo-data/#build-yahoo-dataset) | Build the dataset from the downloads, offline; `:out-dir`, `:start`, `:end`, `:report-lag-days` |
+| [`(load-yahoo-dataset dir)`](/posts/yahoo-data/#load-yahoo-dataset) | Load the built prices and fundamentals |
+| [`(yahoo-dataset! dir tickers & options)`](/posts/yahoo-data/#yahoo-dataset) | All three in one call |
+| [`(dataset-info dir)`](/posts/yahoo-data/#dataset-info) | Coverage, options and warnings of a built dataset |
+
+## Fundamentals
+
+Values as they were known on the backtest date, per share of the day and in the trading currency. `nil` when not known yet.
+
+| Function | What it does |
+| -------- | ------------ |
+| [`(fundamental permno field [frequency])`](/posts/fundamentals/#fundamental) | A value, such as `:net-income`; frequency `:quarterly`, `:annual`, `:trailing`, `:ttm` or `:latest` |
+| [`(fundamental-info permno field [frequency])`](/posts/fundamentals/#fundamental-info) | The value with its period end, public date and source |
+| [`(fundamental-history permno field frequency n)`](/posts/fundamentals/#fundamental-history) | The last `n` public values, newest first |
+| [`(fundamental-as-of date permno field)`](/posts/fundamentals/#fundamental-as-of) | A value on another date |
+| [`(available-fields permno)`](/posts/fundamentals/#available-fields) | The fields a security has |
+| [`(pe-ratio p)`, `(earnings-yield p)`, `(book-to-market p)`, ...](/posts/fundamentals/#ratios) | Valuation ratios on today's price |
+| [`(return-on-equity p)`, `(gross-margin p)`, `(debt-to-equity p)`, ...](/posts/fundamentals/#ratios) | Quality ratios |
+| [`(market-cap p)`, `(enterprise-value p)`, `(shares-outstanding p)`](/posts/fundamentals/#ratios) | Size |
+| [`(growth p field [frequency])`](/posts/fundamentals/#growth) | Year-on-year growth |
+| [`(piotroski-f-score p)`, `(piotroski-signals p)`](/posts/fundamentals/#piotroski-f-score) | Piotroski's 0-to-9 health score and its nine signals |
+| [`(latest-earnings p)`, `(days-since-earnings p)`](/posts/fundamentals/#latest-earnings) | The latest earnings announcement and its surprise |
 
 ## Automate rules
 
@@ -133,5 +191,6 @@ Call these before `init-portfolio`. See [Parameters](/posts/parameters/) for all
 | [`(update-transaction-cost x)`](/posts/parameters/#update-transaction-cost) | `0.0` | Commission, as a fraction of the trade value |
 | [`(update-interest-rate x)`](/posts/parameters/#update-interest-rate) | `0.0` | Annual interest on loans |
 | [`(update-reinvest-dividends flag)`](/posts/parameters/#update-reinvest-dividends) | `true` | Reinvest dividends, or pay them into cash |
+| [`(update-fundamentals-max-age months)`](/posts/parameters/#update-fundamentals-max-age) | `18` | Months after its period end a fundamental stays usable |
 | [`(CHANGE-EMA-CYCLE n)`, `(CHANGE-RSI-CYCLE n)`, ...](/posts/parameters/#indicator-parameters) | `20`, `14` | Indicator periods |
 | [`(alter-var-root #'PRICE-KEY (constantly :OPENPRC))`](/posts/parameters/#trading-price) | `:PRC` | Trade at the open instead of the close |

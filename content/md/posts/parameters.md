@@ -2,7 +2,7 @@
  :date "2021-01-23"
  :layout :post
  :section "API Reference"
- :lead "Settings for margins, costs, dividends, output files and indicator periods."
+ :lead "Settings for margins, costs, dividends, output files, fundamentals and indicator periods."
  :toc true}
 
 The namespace `clojure-backtesting.parameters` defines the parameters that are configurable in the backtester. Most have an update function; call it before `init-portfolio`, so that the whole run uses the same settings.
@@ -30,6 +30,7 @@ The parameters without an update function can be changed for a session with `alt
 | `OUTPUT-DIR` | `nil` | `update-output-dir` | See [Output Files](#output-files) |
 | `MISSING-DAYS-LIMIT` | `10` | `alter-var-root` | Trading days without a price after which a holding counts as delisted |
 | `MERGE-MAX-AGE-MONTHS` | `6` | `alter-var-root` | Months after which a Compustat filing is no longer joined |
+| `FUNDAMENTALS-MAX-AGE-MONTHS` | `18` | `update-fundamentals-max-age` | See [Fundamentals](#fundamentals) |
 | `CACHE-SIZE` | `60` | `CHANGE-CACHE-SIZE` | Days of data kept in memory; see [Data and Trading Rules](/posts/user-guide/#cache-mechanism) |
 | `EMA-CYCLE`, `MACD-SIGNAL`, `MACD-SHORT`, `MACD-LONG`, `RSI-CYCLE` | `20`, `9`, `12`, `26`, `14` | `CHANGE-{name}` | See [Indicator Parameters](#indicator-parameters) |
 | `SAR-AF-STEP`, `SAR-AF-MAX` | `0.02`, `0.2` | `alter-var-root` | Acceleration factor of `parabolic-SAR` |
@@ -195,6 +196,29 @@ This function sets the output directory, or `nil` for none. Call it before `init
 ```clojure
 (update-output-dir "out")
 (init-portfolio "1990-01-02" 10000)
+```
+
+## Fundamentals
+
+### `FUNDAMENTALS-MAX-AGE-MONTHS`
+
+How many months after its period end a [fundamental](/posts/fundamentals/) value stays usable. An older value is treated as missing, because the company has stopped reporting or the data has no newer period. The default value is `18`: long enough to bridge the wait for an annual report, which can come three months after a fiscal year that itself covers twelve.
+
+It applies to the Yahoo fundamentals. Compustat-style data has its own limit, `MERGE-MAX-AGE-MONTHS` (6).
+
+### `update-fundamentals-max-age`
+
+This function sets the maximum age, in months, greater than zero.
+
+```clojure
+(update-fundamentals-max-age 12)
+(println FUNDAMENTALS-MAX-AGE-MONTHS)
+;; output:
+12
+
+(update-fundamentals-max-age 0)
+;; output:
+Failed: The maximum age needs to be greater than zero.
 ```
 
 ## Indicator Parameters

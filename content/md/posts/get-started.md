@@ -14,12 +14,34 @@
 
 ## Install
 
+There are two ways to get the library. To follow this page and run the examples, **clone the repository**: it has the sample data and the example worksheets. To use the library in a project of your own, **add it as a dependency**.
+
+### Clone the repository
+
 Clone the [repository](https://github.com/clojure-finance/clojure-backtesting) and `cd` into it:
 
 ```bash
 git clone https://github.com/clojure-finance/clojure-backtesting.git
 cd clojure-backtesting
 ```
+
+### Add it to your project
+
+The library is on [Clojars](https://clojars.org/com.github.clojure-finance/clojure-backtesting). With Leiningen, add it to the `:dependencies` in `project.clj`:
+
+```clojure
+[com.github.clojure-finance/clojure-backtesting "1.1.3"]
+```
+
+With the Clojure CLI, add it to the `:deps` in `deps.edn`:
+
+```clojure
+com.github.clojure-finance/clojure-backtesting {:mvn/version "1.1.3"}
+```
+
+Then require the namespaces you need, as shown [below](#use-the-library-in-your-own-namespace). The paths on this site, such as `"resources/sample-data/main"`, are relative to a clone of the repository; in your own project, point `load-dataset` at your data, or [download data from Yahoo Finance](/posts/yahoo-data/).
+
+### The sample data
 
 The repository ships with a small sample dataset in `resources/sample-data`, so everything on this site runs without downloading anything else. It holds three securities over January to March 1990, each with a quirk that exercises part of the library:
 
@@ -29,7 +51,7 @@ The repository ships with a small sample dataset in `resources/sample-data`, so 
 | `10002`  | BBB    | Splits 2-for-1 on 1990-03-01 |
 | `10003`  | CCC    | Has no prices from 1990-02-05 to 1990-02-09 |
 
-It also has a matching Compustat-style dataset of company fundamentals in `resources/sample-data/compustat`. To use the full CRSP and Compustat data or your own data, see [Data and Trading Rules](/posts/user-guide/).
+It also has a matching Compustat-style dataset of company fundamentals in `resources/sample-data/compustat`. A second sample, in `resources/sample-yahoo`, holds synthetic Yahoo Finance downloads for 2022 to 2024, with financial statements and earnings dates; the [Yahoo Finance Data](/posts/yahoo-data/#try-it-offline) page describes it. To use the full CRSP and Compustat data or your own data, see [Data and Trading Rules](/posts/user-guide/).
 
 ## Choose a REPL
 
@@ -274,12 +296,33 @@ See [`plot`](/posts/evaluate/#plot) for details, and the [`Plotting_frame.clj`](
             [clojure-backtesting.automation :refer :all]
             [clojure-backtesting.parameters :refer :all]
             [clojure-backtesting.indicators :refer :all]
-            [clojure-backtesting.direct :refer :all]))
+            [clojure-backtesting.direct :refer :all]
+            [clojure-backtesting.fundamentals :refer :all]   ; point-in-time fundamentals and ratios
+            [clojure-backtesting.strategy :refer :all]       ; ranking and rebalancing
+            [clojure-backtesting.yahoo :refer :all]))        ; Yahoo Finance data
 ```
+
+Leave out the namespaces you don't use. `plot` needs a browser, and `automation` is only for [automations](/posts/automation/).
+
+## Try fundamentals
+
+The sample above has three securities and only a few Compustat-style filings. The Yahoo sample has full company reports and earnings dates, so you can try the fundamentals functions in a few lines. Build it, load it, and ask on a given day what each company was worth and earned:
+
+```clojure
+(build-yahoo-dataset! "resources/sample-yahoo" :out-dir "target/sample-yahoo")
+(load-yahoo-dataset "target/sample-yahoo")
+(init-portfolio "2024-11-15" 100000)
+
+(pe-ratio "ALFA")            ;; => 18.632838423003843
+(rank-by earnings-yield)     ;; => [["ALFA" 0.05366868843586461] ["BETA" 0.03332584981650266] ["GAMA" 0.027329231371534268]]
+```
+
+The answers use only the reports that were public on 2024-11-15. With a network connection, `download-yahoo!` fetches the same kind of data for real tickers; [Yahoo Finance Data](/posts/yahoo-data/) explains how, and the [Value Strategy](/posts/examples/example-value-strategy/) example builds a complete strategy on it.
 
 ## Next steps
 
 - [Key Concepts](/posts/concepts/) explains the ideas behind what you just ran: the clock, order fills, prices, margin and the metrics.
 - The [Cheat Sheet](/posts/cheat-sheet/) lists every function on one page.
-- The [examples](/posts/examples/) are complete strategies to read and modify.
+- The [examples](/posts/examples/) are complete strategies to read and modify, and the [Strategy Recipes](/posts/recipes/) are patterns to reuse.
+- [Yahoo Finance Data](/posts/yahoo-data/) and [Fundamentals](/posts/fundamentals/) cover real data and company reports.
 - Stuck? Try the [FAQ](/posts/faq/), or open an [issue](https://github.com/clojure-finance/clojure-backtesting/issues) if you find a bug or have an idea for an example.
