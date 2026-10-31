@@ -217,7 +217,7 @@ A final value says little about *why*. Recording the picks on each rebalancing d
 | 2024-12-02 | ("BETA" "DLTA") |
 ```
 
-Momentum changed its picks 11 times in 24 months, against 3 times for the value strategy. Each change is two trades, and with commissions that matters, as the next recipe shows. Sorting the picks keeps a reordering of the same two securities from counting as a change.
+Momentum changed its picks 11 times in 24 months, against 3 times for the value strategy. Each change sells one holding outright and buys another, and with commissions that adds up, as the next recipe shows. Sorting the picks keeps a reordering of the same two securities from counting as a change.
 
 ## Sweep a parameter
 

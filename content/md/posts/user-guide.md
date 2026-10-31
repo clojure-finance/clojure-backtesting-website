@@ -7,7 +7,7 @@
 
 ## About the Datasets
 
-The backtester reads two kinds of data: a **main** dataset of daily prices, one row per security and trading day, and optionally **fundamentals**, values from company reports. There are three sources:
+The backtester reads two kinds of data: a **main** dataset of daily prices, one row per security and trading day, and optionally **fundamentals**, values from company reports. They can come from:
 
 | Source | Prices | Fundamentals | Load with |
 | ------ | ------ | ------------ | --------- |

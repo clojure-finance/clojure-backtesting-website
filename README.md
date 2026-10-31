@@ -25,7 +25,12 @@ rebuilds the site when files in `content/` or `themes/` change.
 lein run
 ```
 
-The site is written to `public/clojure-backtesting-website/`.
+The site is written to `public/clojure-backtesting-website/`. Check its
+internal links and anchors with:
+
+```bash
+python3 dev/check_links.py public/clojure-backtesting-website
+```
 
 ## Deploy
 
@@ -49,9 +54,9 @@ cd - && git worktree remove /tmp/gh-pages
 | `content/md/pages/` | The home page (`index.md`) and the About page |
 | `content/md/posts/` | The documentation pages; `examples/` holds the example walkthroughs |
 | `content/img/` | Images and diagrams |
-| `dev/` | The generator of the home page's value-strategy chart |
 | `content/posts/docs/` | CRSP and Compustat column definitions (PDF) |
 | `themes/backtest/` | The theme: templates in `html/`, all styles in `css/style.css`, behaviour in `js/site.js` |
+| `dev/` | The generator of the home page's value-strategy chart, and a link checker |
 
 The sidebar navigation is written out in `themes/backtest/html/base.html`; add a
 link there when you add a page. The previous/next links at the bottom of each
@@ -84,7 +89,9 @@ sample data: `resources/sample-data` (1990, three securities) for most pages,
 and the synthetic Yahoo snapshots in `resources/sample-yahoo` (2022 to 2024)
 for Yahoo Finance Data, Fundamentals, Strategy Helpers, Strategy Recipes and
 the Value Strategy and Quality and Earnings examples. Rerun them when the
-library changes, and update `:library-version`. The pages that follow a
+library changes. On a release, also update `:library-version`, the
+dependency snippets under "Add it to your project" in `get-started.md`, and
+`release-notes.md`. The pages that follow a
 worksheet in the library's `examples/` match its output cells, which
 `lein run -m clojure-backtesting.worksheet examples/*.clj` regenerates.
 

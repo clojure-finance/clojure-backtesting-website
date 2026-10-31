@@ -35,7 +35,7 @@ The repository includes synthetic snapshots in `resources/sample-yahoo`, in exac
 | Ticker | What is special about it |
 | ------ | ------------------------ |
 | ALFA | Pays a quarterly dividend, splits 4-for-1 on 2024-08-01, reports after the close. Downloaded twice (2024-06-01 and 2025-01-02), and one quarter was restated in between |
-| BETA | Lost money until 2022. Yahoo has no report dates for its recent quarters, so they are estimated |
+| BETA | Lost money through 2022. Yahoo has no report dates for its recent periods, so they are estimated |
 | GAMA | Trades in US dollars but reports in euros, before the market opens |
 | DLTA | Prices only, no statements |
 | IDX | An index, to compare strategies against |
@@ -298,7 +298,7 @@ Without the exchange rate, such values are `nil` rather than wrong, and the buil
 Free data has catches. Keep them in mind when you read a result:
 
 - **Survivorship bias.** Yahoo only has securities that still trade. A universe chosen today leaves out the companies that failed or were taken over, which are often the ones a strategy would have lost money on. Treat results as optimistic.
-- **Short fundamentals history.** Yahoo shows about four fiscal years and five quarters at a time, so fundamentals start roughly three and a half years before the download, while prices go back decades. Start a fundamentals strategy once its universe has data, or it trades on the few companies that report first. Downloading every quarter extends the history.
+- **Short fundamentals history.** Fundamentals start roughly three and a half years before the first download, while prices go back decades. Start a fundamentals strategy once its universe has data, or it trades on the few companies that report first. Downloading every quarter extends the history (see [Resuming and updating](#resuming-and-updating)).
 - **Restated, not as first reported.** Within one download, values are as Yahoo has them today, possibly after later corrections.
 - **Estimated report dates.** Where Yahoo has no date, a reporting lag is assumed. The build warns about each such security, and `fundamental-info` flags each such value.
 - **Share classes.** For a few companies with several share classes, Yahoo counts shares in another class than the one quoted (Berkshire Hathaway's B shares in A equivalents). The library checks the share count against net income over EPS, and if they disagree more than twofold it warns and leaves out the ratios on market value.

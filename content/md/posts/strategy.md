@@ -200,7 +200,11 @@ A negative weight sells short, within the [margin rules](/posts/concepts/#long-s
 
 `(portfolio-equity)` is the portfolio's equity as last valued: today's close once `next-date` has run, or the starting capital on the first day. `(target-quantity permno weight whole-shares?)` is the number of shares `order-target-percent` would aim for, without ordering.
 
+On 2024-11-18, the day after a fresh start with nothing bought, and ALFA at $112.0239:
+
 ```clojure
+(init-portfolio "2024-11-15" 100000)
+(next-date)                             ;; => "2024-11-18"
 (portfolio-equity)                      ;; => 100000.0
 (target-quantity "ALFA" 0.25 false)     ;; => 223.1666635423334
 (target-quantity "ALFA" 0.25 true)      ;; => 223.0
@@ -222,7 +226,7 @@ That purchase is skipped, so the portfolio holds slightly less than its target u
 (rebalance (update-vals (equal-weights (top-n earnings-yield 2)) #(* 0.98 %)))
 ```
 
-**Shares are fractional by default**, like the dividends that are reinvested into them. Pass `:whole-shares? true` for whole shares.
+**Shares are fractional by default.** Pass `:whole-shares? true` for whole shares.
 
 **Every trade pays the commission.** With [`update-transaction-cost`](/posts/parameters/#update-transaction-cost) set, a monthly rebalance trades every holding a little every month. The [parameter sweep](/posts/recipes/#sweep-a-parameter) recipe compares rebalancing monthly and quarterly.
 

@@ -29,6 +29,7 @@ In `lein repl` all of these are available right away. In your own namespace, req
 ## A typical rebalancing backtest
 
 ```clojure
+(build-yahoo-dataset! "resources/sample-yahoo" :out-dir "target/sample-yahoo")
 (load-yahoo-dataset "target/sample-yahoo")                  ; 1. prices and fundamentals
 (init-portfolio "2023-01-03" 100000)                        ; 2. start a portfolio
 

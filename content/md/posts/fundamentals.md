@@ -51,7 +51,7 @@ Without a frequency, income-statement and cash-flow fields use `:ttm`, and balan
 
 ### Where a twelve-month value comes from
 
-`:ttm` takes the candidate with the latest period end, preferring Yahoo's trailing figure, then the sum of four consecutive quarters, then the fiscal year. Over the sample, ALFA's twelve-month net income comes from all three sources in turn:
+`:ttm` takes the candidate with the latest period end; on a tie, Yahoo's trailing figure wins over the sum of four consecutive quarters, and that over the fiscal year. Over the sample, ALFA's twelve-month net income comes from all three sources in turn:
 
 | Date | Source (`:source`) | Period end | Net income |
 | ---- | ------------------ | ---------- | ---------- |
@@ -297,7 +297,7 @@ Calendar days since the latest public earnings announcement, or `nil`. On 2024-1
 (days-since-earnings "ALFA")   ;; => 15
 ```
 
-Together, the two make event strategies short: buy on the day of a positive surprise, `(and (= (:public-date e) (get-date)) (pos? (:surprise-pct e)))`, and hold for a few weeks. The [Quality and Earnings](/posts/examples/example-quality-and-earnings/#buying-after-good-news) example does that.
+Together, the two make event strategies short: buy on the day of a positive surprise, `(and (= (:public-date e) (get-date)) (pos? (or (:surprise-pct e) 0)))`, and hold for a few weeks. The [Quality and Earnings](/posts/examples/example-quality-and-earnings/#buying-after-good-news) example does that.
 
 ## Loading and settings
 
@@ -332,4 +332,5 @@ How many months after its period end a value stays usable, 18 by default. Change
 (fundamental "ALFA" :net-income)   ;; => 1.65E8, fiscal 2020
 (update-fundamentals-max-age 12)
 (fundamental "ALFA" :net-income)   ;; => nil, too old
+(update-fundamentals-max-age 18)   ; back to the default
 ```

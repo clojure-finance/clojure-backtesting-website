@@ -91,7 +91,7 @@ It runs on the synthetic Yahoo snapshots bundled with the library, two years of 
 
 <figure>
 <img src="/img/value-strategy.svg" alt="The value strategy's portfolio value from January 2023 to December 2024, ending at $162,866, against the IDX index scaled to the same start, ending at $119,376. A strip below shows the holdings: ALFA and GAMA until March 2024, then mostly ALFA and BETA.">
-<figcaption>The picks change only when a new report becomes public. With three companies and synthetic prices, the result shows the mechanics, not that value investing works.</figcaption>
+<figcaption>The picks change only when a new report becomes public. With three companies that report and synthetic prices, the result shows the mechanics, not that value investing works.</figcaption>
 </figure>
 
 The [Value Strategy](/posts/examples/example-value-strategy/) example explains every step, and [Yahoo Finance Data](/posts/yahoo-data/) shows how to download real data.
