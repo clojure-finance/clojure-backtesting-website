@@ -215,7 +215,7 @@ Order request 2024-03-04 | DLTA | 3.118915784529463 fails due to initial margin 
 | 2024-08-01 | ("BETA" "DLTA") |
 | 2024-11-01 | ("BETA" "GAMA") |
 | 2024-12-02 | ("BETA" "DLTA") |
-</code></pre><p>Momentum changed its picks 11 times in 24 months, against 3 times for the value strategy. Each change is two trades, and with commissions that matters, as the next recipe shows. Sorting the picks keeps a reordering of the same two securities from counting as a change.</p><h2 id="sweep-a-parameter">Sweep a parameter</h2><p>With the backtest as a function, trying several settings is a <code>for</code>. Holding one, two or three momentum stocks, rebalanced monthly or quarterly, with a 0.1% commission:</p><pre><code class="clojure">(update-transaction-cost 0.001)
+</code></pre><p>Momentum changed its picks 11 times in 24 months, against 3 times for the value strategy. Each change sells one holding outright and buys another, and with commissions that adds up, as the next recipe shows. Sorting the picks keeps a reordering of the same two securities from counting as a change.</p><h2 id="sweep-a-parameter">Sweep a parameter</h2><p>With the backtest as a function, trying several settings is a <code>for</code>. Holding one, two or three momentum stocks, rebalanced monthly or quarterly, with a 0.1% commission:</p><pre><code class="clojure">(update-transaction-cost 0.001)
 (def sweep
   (doall
    (for [period [:month :quarter]

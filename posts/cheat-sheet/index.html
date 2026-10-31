@@ -119,7 +119,8 @@
 
 (end-order)                                                  ; 4. close positions
 (print-eval-report)                                          ; 5. review
-</code></pre><h2 id="a-typical-rebalancing-backtest">A typical rebalancing backtest</h2><pre><code class="clojure">(load-yahoo-dataset "target/sample-yahoo")                  ; 1. prices and fundamentals
+</code></pre><h2 id="a-typical-rebalancing-backtest">A typical rebalancing backtest</h2><pre><code class="clojure">(build-yahoo-dataset! "resources/sample-yahoo" :out-dir "target/sample-yahoo")
+(load-yahoo-dataset "target/sample-yahoo")                  ; 1. prices and fundamentals
 (init-portfolio "2023-01-03" 100000)                        ; 2. start a portfolio
 
 (while (neg? (compare (get-date) "2024-12-31"))            ; 3. every trading day:
