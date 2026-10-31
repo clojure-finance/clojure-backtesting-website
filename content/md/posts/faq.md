@@ -87,7 +87,7 @@ A Compustat filing is joined to a day only once it was public: its report date (
 - **Nothing public yet.** Yahoo shows about four fiscal years of statements, so a download's fundamentals start roughly three and a half years before it was made. Earlier dates have prices but no fundamentals.
 - **Too old.** The latest value's period ended more than 18 months before the day; see [`FUNDAMENTALS-MAX-AGE-MONTHS`](/posts/parameters/#fundamentals-max-age-months).
 - **No statements.** Indices, ETFs and currencies have none, and neither does a ticker downloaded with `:fundamentals? false`.
-- **Not downloaded.** The field is not in [`default-fields`](/posts/yahoo-data/#default-fields); download again with `:fields` (and `:force? true` on the same day).
+- **Not downloaded.** The field is not in [`default-fields`](/posts/yahoo-data/#default-fields); download again with `:fields` (and `:force? true` if that ticker was already downloaded today).
 - **No exchange rate** for a company that reports in another currency. The build warns about it.
 - **Meaningless.** `pe-ratio` is `nil` on losses, `return-on-equity` on negative equity. Use `earnings-yield`, which is negative on losses, to rank loss-makers too.
 - **Share count refused.** For some companies with several share classes the share count does not match the quoted shares; the library prints a warning and leaves out every ratio on market value.
@@ -98,7 +98,7 @@ Yahoo's charts show old prices divided by every later split. The dataset has the
 
 ### The download failed or stopped halfway
 
-Yahoo limits how fast you may download. If the download was interrupted, run the same `download-yahoo!` call again: tickers already downloaded today are skipped, so it carries on with the rest. Tickers that failed count as downloaded too, so retry them with `:force? true`; the result lists them under `:failed`. If they keep failing, lower `:concurrency` to 1 or raise `:pause-ms`. See [Resuming and updating](/posts/yahoo-data/#resuming-and-updating).
+Yahoo limits how fast you may download. Run the same `download-yahoo!` call again: tickers downloaded today without errors are skipped, so it fetches the rest and retries the ones that failed; the result lists the failures under `:failed`. If they keep failing, lower `:concurrency` to 1 or raise `:pause-ms`. See [Resuming and updating](/posts/yahoo-data/#resuming-and-updating).
 
 ### The build says the securities trade in different currencies
 

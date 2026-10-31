@@ -201,7 +201,7 @@ Each ratio is a function of one security, on the backtest date. They combine the
 | `net-margin` | Twelve-month net income / revenue | 15.0% | 8.0% | 12.0% | `nil` |
 | `debt-to-equity` | Total debt / book equity | 0.56 | 0.56 | 0.56 | `nil` |
 | `current-ratio` | Current assets / current liabilities | 2.00 | 2.00 | 2.00 | `nil` |
-| `piotroski-f-score` | See [below](#piotroski-f-score) | 4 | 4 | 7 | `nil` |
+| `piotroski-f-score` | See [below](#piotroski-f-score) | 4 | 4 | 4 | `nil` |
 
 The table rounds the values; the functions return plain numbers, such as `(pe-ratio "ALFA")` ⇒ `18.632838423003843`, a price of $115.22 over a twelve-month EPS of $6.18.
 
@@ -257,7 +257,7 @@ Joseph Piotroski's F-score (2000) rates a company's financial health from 0 to 9
 | `:delta-margin` | The gross margin rose |
 | `:delta-turnover` | Revenue over beginning-of-year assets rose |
 
-`piotroski-signals` returns each signal as `true`, `false`, or `nil` when an input is missing. `piotroski-f-score` counts the true ones, and is `nil` unless all nine can be computed, which takes three fiscal years of total assets.
+`piotroski-signals` returns each signal as `true`, `false`, or `nil` when an input is missing. Comparisons ignore differences within rounding, so a ratio that is the same in both years neither rose nor fell. `piotroski-f-score` counts the true signals, and is `nil` unless all nine can be computed, which takes three fiscal years of total assets.
 
 ```clojure
 (piotroski-signals "ALFA")
@@ -268,8 +268,6 @@ Joseph Piotroski's F-score (2000) rates a company's financial health from 0 to 9
 ```
 
 A high score (8 or 9) marks a company whose finances are improving on most fronts; a low one (0 to 2), the opposite. Piotroski found that among cheap stocks (high book-to-market), the high scorers did much better than the low ones. The [Quality and Earnings](/posts/examples/example-quality-and-earnings/) example uses it.
-
-> **Watch out:** a signal that compares two exactly equal ratios is decided by rounding. In the sample, GAMA's margins and turnover are identical every year and its values are converted from euros, so three of its signals flip with the exchange rate: its score is 5 on 2024-06-03, 6 on 2024-08-01 and 7 on 2024-11-15. Real accounts are almost never exactly equal from one year to the next.
 
 ## Earnings announcements
 

@@ -34,20 +34,20 @@ Cheap stocks are often cheap for a reason. In 2000, the accounting professor Jos
 ```
 
 ```text
-{:delta-liquidity false, :no-dilution true, :accrual true, :delta-margin true, :delta-leverage false, :cfo true, :delta-turnover false, :delta-roa false, :roa true}
+{:delta-liquidity false, :no-dilution true, :accrual true, :delta-margin false, :delta-leverage false, :cfo true, :delta-turnover false, :delta-roa false, :roa true}
 ```
 
-GAMA is profitable (`:roa`), generates cash (`:cfo`), earns more cash than profit (`:accrual`), did not issue shares (`:no-dilution`) and improved its gross margin (`:delta-margin`). Its liquidity, leverage, return on assets and asset turnover did not improve. That makes five, which `piotroski-f-score` counts:
+GAMA is profitable (`:roa`), generates cash (`:cfo`), earns more cash than profit (`:accrual`) and did not issue shares (`:no-dilution`). Its liquidity, leverage, gross margin, return on assets and asset turnover did not improve. That makes four, which `piotroski-f-score` counts:
 
 ```clojure
 (for [p ["ALFA" "BETA" "GAMA"]] {:security p :f-score (piotroski-f-score p)})
 ```
 
 ```text
-({:security "ALFA", :f-score 4} {:security "BETA", :f-score 4} {:security "GAMA", :f-score 5})
+({:security "ALFA", :f-score 4} {:security "BETA", :f-score 4} {:security "GAMA", :f-score 4})
 ```
 
-> **Watch out:** the sample's companies grow at exactly the same rate every year, so several of their signals compare two equal ratios. For ALFA and BETA, "rose" and "fell" are then false. For GAMA, whose values are converted from euros, rounding decides, and its score changes with the exchange rate: 5 on this date, 7 on 2024-11-15. With real accounts this practically never happens.
+> **Watch out:** the sample's companies grow at exactly the same rate every year, so their margins, turnover, returns on assets, leverage and liquidity are the same from one year to the next. Those signals neither rose nor fell, so they are false, and all three companies score 4. Real accounts change from year to year, and spread the scores out.
 
 `piotroski-f-score` is `nil` unless all nine signals can be computed, which takes three fiscal years of total assets. In a strategy, use it as a screen: `(filter #(some-> (piotroski-f-score %) (>= 7)) universe)`.
 

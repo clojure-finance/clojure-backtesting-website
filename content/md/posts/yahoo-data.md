@@ -82,16 +82,9 @@ It returns what happened:
 
 ### Resuming and updating
 
-A ticker that was already downloaded today (in UTC) is skipped, so when a download is interrupted, run the same call again and it carries on where it stopped. `:force? true` downloads again anyway.
+A ticker that was already downloaded today (in UTC) without errors is skipped. So when a download is interrupted, or Yahoo rate-limits some requests, run the same call again: it fetches the tickers it has not got yet and retries the ones that failed, including those whose prices arrived but whose statements did not, and any exchange rate that failed. `:force? true` downloads the successful ones again too.
 
-A ticker that **failed**, for example because Yahoo rate-limited the request, is saved too, with its error, so a rerun on the same day skips it as well. Retry the failures with `:force?`:
-
-```clojure
-(def result (download-yahoo! "data/tech" ["AAPL" "MSFT" "NVDA" "GOOGL" "SPY"] :start "2015-01-01"))
-(download-yahoo! "data/tech" (keys (:failed result)) :start "2015-01-01" :force? true)
-```
-
-`:failed` lists the tickers whose prices failed. A ticker whose prices arrived but whose statements did not is not in it; its progress line names the parts with errors.
+`:failed` in the result lists the tickers whose prices failed; the progress line of each ticker names the parts with errors.
 
 Each download adds a new snapshot instead of replacing the old one, and the build merges them. That matters for fundamentals: Yahoo only shows about four fiscal years and five quarters at a time, so **downloading again every quarter makes the history grow** beyond what Yahoo shows on any one day.
 
@@ -106,7 +99,7 @@ Each download adds a new snapshot instead of replacing the old one, and the buil
 | `:fields` | `default-fields` | Yahoo statement fields to fetch, or `:all` for every field clj-yfinance knows |
 | `:concurrency` | `2` | Tickers downloaded at the same time |
 | `:pause-ms` | `300` | Pause between two requests of one thread, in milliseconds |
-| `:force?` | `false` | Download again even if done today |
+| `:force?` | `false` | Also download again what was already downloaded today without errors |
 
 Why do prices always run up to today? Yahoo divides old prices by every split up to today, but only returns the splits inside the requested range. A range that ended earlier could not be turned back into the prices that were actually traded.
 
