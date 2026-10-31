@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Strategy Recipes · Clojure Backtesting</title>
+    
+<meta name="description" content="Short, reusable patterns for strategies that rank and rebalance: running a backtest as a function, momentum, combining factors, screening, logging, cash buffers and parameter sweeps.">
+<meta property="og:title" content="Strategy Recipes">
+<meta property="og:description" content="Short, reusable patterns for strategies that rank and rebalance: running a backtest as a function, momentum, combining factors, screening, logging, cash buffers and parameter sweeps.">
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/recipes/">
+<meta property="og:type" content="article">
+
+    <link rel="icon" type="image/svg+xml" href="/clojure-backtesting-website/img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="doc-page">
+
+<header class="site-header">
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <a class="brand" href="/clojure-backtesting-website/">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+            <defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f6fdb"/><stop offset="1" stop-color="#16a34a"/></linearGradient></defs>
+            <rect width="32" height="32" rx="8" fill="url(#bm)"/>
+            <path d="M6 22.5 L12 16 L16.5 19.5 L25.5 9.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="25.5" cy="9.5" r="2.2" fill="#fff"/>
+        </svg>
+        <span class="brand-name">Clojure Backtesting</span>
+    </a>
+    <span class="version" title="Library version these docs describe">v1.1.3</span>
+    <nav class="header-links" aria-label="External">
+        <a href="/clojure-backtesting-website/posts/examples/">Examples</a>
+        <a href="https://github.com/clojure-finance/clojure-backtesting" class="github" rel="external">
+            <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            <span>GitHub</span>
+        </a>
+    </nav>
+</header>
+
+<div class="layout">
+    <aside class="sidebar" id="sidebar">
+        <nav class="side-nav" aria-label="Documentation">
+            <p class="nav-group">Introduction</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/">Overview</a></li>
+                <li><a href="/clojure-backtesting-website/pages/about/">Why Clojure?</a></li>
+            </ul>
+            <p class="nav-group">Learn</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+                <li><a href="/clojure-backtesting-website/posts/concepts/">Key Concepts</a></li>
+                <li><a href="/clojure-backtesting-website/posts/user-guide/">Data and Trading Rules</a></li>
+                <li><a href="/clojure-backtesting-website/posts/yahoo-data/">Yahoo Finance Data</a></li>
+            </ul>
+            <p class="nav-group">API Reference</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/cheat-sheet/">Cheat Sheet</a></li>
+                <li><a href="/clojure-backtesting-website/posts/api/">Core API</a></li>
+                <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio</a></li>
+                <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation and Plots</a></li>
+                <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+                <li><a href="/clojure-backtesting-website/posts/fundamentals/">Fundamentals</a></li>
+                <li><a href="/clojure-backtesting-website/posts/strategy/">Strategy Helpers</a></li>
+                <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
+                <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
+            </ul>
+            <p class="nav-group">Examples</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/examples/">All Examples</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-golden-cross/">Golden Cross</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-bollinger-bands/">Bollinger Bands</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-buying-on-margin/">Buying on Margin</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-fundamental-analysis/">Fundamental Analysis</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-value-strategy/">Value Strategy</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-quality-and-earnings/">Quality and Earnings</a></li>
+                <li><a href="/clojure-backtesting-website/posts/recipes/">Strategy Recipes</a></li>
+            </ul>
+            <p class="nav-group">Help</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/faq/">FAQ and Troubleshooting</a></li>
+                <li><a href="/clojure-backtesting-website/posts/release-notes/">Release Notes</a></li>
+                <li><a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Report an Issue</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <div class="nav-backdrop" hidden></div>
+
+    <main class="main" id="main">
+        
+<article class="doc has-toc">
+    <header class="doc-header">
+        <p class="eyebrow">Examples</p>
+        <h1>Strategy Recipes</h1>
+        <p class="lead">Short, reusable patterns for strategies that rank and rebalance: running a backtest as a function, momentum, combining factors, screening, logging, cash buffers and parameter sweeps.</p>
+    </header>
+    
+    <details class="page-toc" open>
+        <summary>On this page</summary>
+        <ol class="toc"><li><a href="#run-a-backtest-as-a-function">Run a backtest as a function</a></li><li><a href="#hold-fixed-weights">Hold fixed weights</a></li><li><a href="#rank-by-momentum">Rank by momentum</a></li><li><a href="#keep-a-cash-buffer">Keep a cash buffer</a></li><li><a href="#combine-factors-by-rank">Combine factors by rank</a></li><li><a href="#screen-then-weight">Screen, then weight</a></li><li><a href="#log-what-the-strategy-picked">Log what the strategy picked</a></li><li><a href="#sweep-a-parameter">Sweep a parameter</a></li><li><a href="#more-patterns">More patterns</a></li></ol>
+    </details>
+    
+    <div class="doc-body">
+        <p>Each recipe is a small piece of Clojure you can copy into your own strategy. They build on the <a href="/clojure-backtesting-website/posts/strategy/">Strategy Helpers</a> and the <a href="/clojure-backtesting-website/posts/fundamentals/">Fundamentals</a> functions, and run in order in one <code>lein repl</code> session on the library's synthetic <a href="/clojure-backtesting-website/posts/yahoo-data/#try-it-offline">Yahoo sample</a>:</p><pre><code class="clojure">(build-yahoo-dataset! "resources/sample-yahoo" :out-dir "target/sample-yahoo")
+(load-yahoo-dataset "target/sample-yahoo")
+(def stocks ["ALFA" "BETA" "GAMA" "DLTA"])   ; the universe; IDX is the benchmark
+</code></pre><blockquote><p><strong>Watch out:</strong> the sample has four stocks, three of them with fundamentals, and made-up prices. It shows how the code behaves, not which strategy is good. The numbers below are not evidence for any of the ideas.</p></blockquote><h2 id="run-a-backtest-as-a-function">Run a backtest as a function</h2><p>Once a backtest is a function, you can run it many times with different rules, which most of the recipes below do. <code>backtest</code> rebalances to the weights returned by <code>weights-fn</code> at the start of every period, and summarises the run against the IDX index with <a href="/clojure-backtesting-website/posts/evaluate/#benchmark-stats"><code>benchmark-stats</code></a>:</p><pre><code class="clojure">(defn backtest
+  "Rebalances to (weights-fn) at the start of every period from start to end,
+   and summarises the run against the IDX index."
+  [weights-fn &amp; {:keys [period start end] :or {period :month start "2023-01-03" end "2024-12-31"}}]
+  (init-portfolio start 100000)
+  (while (neg? (compare (get-date) end))
+    (when (new-period? period)
+      (rebalance (weights-fn)))
+    (next-date)
+    (update-eval-report))
+  (end-order)
+  (let [{:keys [portfolio-return benchmark-return beta information-ratio]} (benchmark-stats "IDX")]
+    {:final (format "$%,d" (long (portfolio-total)))
+     :return (format "%.1f%%" (* 100 portfolio-return))
+     :index (format "%.1f%%" (* 100 benchmark-return))
+     :beta (format "%.2f" beta)
+     :max-dd (format "%.1f%%" (* 100 (max-drawdown)))
+     :ir (format "%.2f" information-ratio)}))
+</code></pre><p><code>weights-fn</code> is a function of no arguments, called on each rebalancing day, so it sees that day's data. The <a href="/clojure-backtesting-website/posts/examples/example-value-strategy/">Value Strategy</a>, without its commission, becomes one line:</p><pre><code class="clojure">(backtest #(equal-weights (top-n earnings-yield 2 :universe stocks)))
+;; =&gt; {:final "$163,820", :return "63.8%", :index "19.4%", :beta "1.03", :max-dd "16.8%", :ir "0.99"}
+</code></pre><p><code>#(...)</code> makes the function; without it, the picks of the first day would be used for the whole run.</p><h2 id="hold-fixed-weights">Hold fixed weights</h2><p>A fixed allocation, rebalanced every quarter: 60% in the index and 40% in GAMA. Rebalancing sells what has grown above its weight and buys what has fallen below it.</p><pre><code class="clojure">(backtest (constantly {"IDX" 0.6 "GAMA" 0.4}) :period :quarter)
+;; =&gt; {:final "$134,115", :return "34.1%", :index "19.4%", :beta "0.91", :max-dd "18.0%", :ir "0.85"}
+</code></pre><p>The sample's index can be traded because it has prices; with real data, use an ETF such as <code>"SPY"</code>.</p><h2 id="rank-by-momentum">Rank by momentum</h2><p><em>Momentum</em> buys what has risen most over the last months. Measure the rise with the <strong>adjusted</strong> price <code>:APRC</code>, which follows the total return through dividends and splits:</p><pre><code class="clojure">(defn momentum
+  "Total return over the last 126 trading days (about six months), from adjusted prices."
+  [permno]
+  (let [then (get-prev-n-date 126)
+        a0 (when then (get-permno-by-key then permno :APRC))
+        a1 (get-permno-by-key permno :APRC)]
+    (when (and a0 a1)
+      (- (/ a1 a0) 1.0))))
+</code></pre><p>The same calculation on the raw price is a classic mistake:</p><pre><code class="clojure">(defn raw-momentum [permno]   ; don't: a split looks like a crash
+  (let [then (get-prev-n-date 126)
+        p0 (when then (get-permno-price then permno))
+        p1 (get-permno-price permno)]
+    (when (and p0 p1)
+      (- (/ p1 p0) 1.0))))
+</code></pre><p>ALFA split 4-for-1 on 2024-08-01, so a month later its raw price is about a quarter of what it was six months before:</p><pre><code class="clojure">(init-portfolio "2024-09-03" 100000)
+(rank-by momentum :universe stocks)
+;; =&gt; [["BETA" 0.39266599544274383] ["DLTA" 0.2922469019939975] ["ALFA" 0.21061914246218438] ["GAMA" 0.09593956671617465]]
+(rank-by raw-momentum :universe stocks)
+;; =&gt; [["BETA" 0.39266599544274294] ["DLTA" 0.29224690199399705] ["GAMA" 0.09593956671617287] ["ALFA" -0.697976981442608]]
+</code></pre><p>On raw prices ALFA seems to have lost 70%; it actually gained 21%. Holding the top two each month:</p><pre><code class="clojure">(backtest #(equal-weights (top-n momentum 2 :universe stocks)))
+</code></pre><pre><code class="text">Order request 2023-07-04 | GAMA | 22.193675538430284 fails due to initial margin requirement.
+Order request 2024-03-04 | DLTA | 3.118915784529463 fails due to initial margin requirement.
+{:final "$122,094", :return "22.1%", :index "19.4%", :beta "1.09", :max-dd "21.2%", :ir "0.06"}
+</code></pre><p>Two purchases failed. The next recipe explains why.</p><h2 id="keep-a-cash-buffer">Keep a cash buffer</h2><p>Weights that add up to 100% leave no room for the overnight move between sizing the orders (today's close) and filling them (the next close). When prices rise overnight, the last purchase of a rebalance costs more than the cash left, and if borrowing the difference would break the <a href="/clojure-backtesting-website/posts/parameters/#initial-margin">initial margin</a>, it fails. Scaling the weights to 98% keeps a small buffer:</p><pre><code class="clojure">(defn scaled [weights k] (update-vals weights #(* k %)))
+
+(backtest #(scaled (equal-weights (top-n momentum 2 :universe stocks)) 0.98))
+;; =&gt; {:final "$121,932", :return "21.9%", :index "19.4%", :beta "1.07", :max-dd "20.8%", :ir "0.06"}
+</code></pre><p>No failures now. With three holdings, the raw-price mistake from the previous recipe also costs money, because ALFA drops out of the top three after its split:</p><pre><code class="clojure">(backtest #(scaled (equal-weights (top-n momentum 3 :universe stocks)) 0.98))
+;; =&gt; {:final "$150,437", :return "50.4%", :index "19.4%", :beta "1.05", :max-dd "18.4%", :ir "0.81"}
+(backtest #(scaled (equal-weights (top-n raw-momentum 3 :universe stocks)) 0.98))
+;; =&gt; {:final "$148,222", :return "48.2%", :index "19.4%", :beta "1.04", :max-dd "18.4%", :ir "0.75"}
+</code></pre><h2 id="combine-factors-by-rank">Combine factors by rank</h2><p>Ratios come in different units, so adding them up is meaningless. Ranks can be added: rank the universe by each measure, add up each security's places, and sort by the total.</p><pre><code class="clojure">(defn composite-rank
+  "The securities of universe ranked by the sum of their ranks under each
+   function of fs, best first. Securities missing from any ranking are left out."
+  [fs universe]
+  (let [ranks (for [f fs]
+                (into {} (map-indexed (fn [i [p _]] [p i])) (rank-by f :universe universe)))
+        ranked (filter (fn [p] (every? #(contains? % p) ranks)) universe)]
+    (sort-by (fn [p] [(reduce + (map #(get % p) ranks)) p]) ranked)))
+
+(init-portfolio "2024-11-15" 100000)
+(composite-rank [earnings-yield book-to-market] stocks)
+;; =&gt; ("ALFA" "BETA" "GAMA")
+(composite-rank [earnings-yield book-to-market momentum] stocks)
+;; =&gt; ("BETA" "ALFA" "GAMA")
+</code></pre><p>ALFA has the highest earnings yield and BETA the highest book-to-market, so they tie on the first two measures; ties go to the permno that sorts first. Adding momentum puts BETA ahead. DLTA has no fundamentals, so it is left out. Held as a strategy:</p><pre><code class="clojure">(backtest #(scaled (equal-weights (take 2 (composite-rank [earnings-yield book-to-market] stocks))) 0.98))
+;; =&gt; {:final "$127,851", :return "27.9%", :index "19.4%", :beta "1.22", :max-dd "21.8%", :ir "0.17"}
+</code></pre><p>To weight the measures differently, multiply each rank by a weight before adding.</p><h2 id="screen-then-weight">Screen, then weight</h2><p>A screen is a predicate: keep the securities that pass, then weight them. Here, a return on equity above 10% and revenue that grew over the last fiscal year:</p><pre><code class="clojure">(defn quality?
+  "Return on equity above 10% and growing revenue."
+  [permno]
+  (let [roe (return-on-equity permno)
+        g (growth permno :total-revenue)]
+    (boolean (and roe g (&gt; roe 0.10) (pos? g)))))
+
+(init-portfolio "2024-11-15" 100000)
+(filter quality? stocks)
+;; =&gt; ("ALFA" "GAMA")
+(backtest #(scaled (equal-weights (filter quality? stocks)) 0.98))
+;; =&gt; {:final "$131,438", :return "31.4%", :index "19.4%", :beta "0.90", :max-dd "19.0%", :ir "0.37"}
+</code></pre><p>Check for <code>nil</code> in screens: a company without the data should fail the test, not throw. Here <code>(and roe g ...)</code> does that. Screens and rankings combine: <code>(top-n earnings-yield 2 :universe (filter quality? stocks))</code>.</p><h2 id="log-what-the-strategy-picked">Log what the strategy picked</h2><p>A final value says little about <em>why</em>. Recording the picks on each rebalancing day, and keeping only the days they changed, shows what the strategy actually did:</p><pre><code class="clojure">(defn picks-log
+  "Runs backtest with picks-fn, equally weighted, and returns the days its picks changed."
+  [picks-fn &amp; opts]
+  (let [log (atom [])]
+    (apply backtest
+           #(let [ps (sort (picks-fn))]
+              (swap! log conj {:date (get-date) :picks ps})
+              (scaled (equal-weights ps) 0.98))
+           opts)
+    (map first (partition-by :picks (deref log)))))
+
+(clojure.pprint/print-table (picks-log #(top-n momentum 2 :universe stocks)))
+</code></pre><pre><code class="text">|      :date |          :picks |
+|------------+-----------------|
+| 2023-01-03 | ("BETA" "GAMA") |
+| 2023-03-01 | ("DLTA" "GAMA") |
+| 2023-04-03 | ("BETA" "GAMA") |
+| 2023-06-01 | ("DLTA" "GAMA") |
+| 2023-07-03 | ("ALFA" "GAMA") |
+| 2023-08-01 | ("DLTA" "GAMA") |
+| 2023-10-02 | ("BETA" "DLTA") |
+| 2024-02-01 | ("DLTA" "GAMA") |
+| 2024-03-01 | ("ALFA" "DLTA") |
+| 2024-08-01 | ("BETA" "DLTA") |
+| 2024-11-01 | ("BETA" "GAMA") |
+| 2024-12-02 | ("BETA" "DLTA") |
+</code></pre><p>Momentum changed its picks 11 times in 24 months, against 3 times for the value strategy. Each change is two trades, and with commissions that matters, as the next recipe shows. Sorting the picks keeps a reordering of the same two securities from counting as a change.</p><h2 id="sweep-a-parameter">Sweep a parameter</h2><p>With the backtest as a function, trying several settings is a <code>for</code>. Holding one, two or three momentum stocks, rebalanced monthly or quarterly, with a 0.1% commission:</p><pre><code class="clojure">(update-transaction-cost 0.001)
+(def sweep
+  (doall
+   (for [period [:month :quarter]
+         n [1 2 3]]
+     (merge {:period period :n n}
+            (select-keys (backtest #(scaled (equal-weights (top-n momentum n :universe stocks)) 0.98)
+                                   :period period)
+                         [:final :return :max-dd])))))
+(update-transaction-cost 0.0)
+(clojure.pprint/print-table sweep)
+</code></pre><pre><code class="text">|  :period | :n |   :final | :return | :max-dd |
+|----------+----+----------+---------+---------|
+|   :month |  1 | $171,617 |   71.6% |   22.4% |
+|   :month |  2 | $120,352 |   20.4% |   21.0% |
+|   :month |  3 | $149,237 |   49.2% |   18.5% |
+| :quarter |  1 | $129,466 |   29.5% |   26.8% |
+| :quarter |  2 | $106,822 |    6.8% |   26.8% |
+| :quarter |  3 | $134,341 |   34.3% |   24.5% |
+</code></pre><p><code>doall</code> makes the <code>for</code> run before the commission is set back. The settings are applied before each <code>init-portfolio</code>, as <a href="/clojure-backtesting-website/posts/parameters/">Parameters</a> recommends.</p><blockquote><p><strong>Watch out:</strong> six variants of one idea returned between 6.8% and 71.6%, with no pattern. Picking the best of many backtests and reporting only that one is called <em>overfitting</em> or <em>data snooping</em>: the winner is mostly luck, and will disappoint on new data. Decide on the rules before you look, test the winner on a period you did not use to choose it, and report how many variants you tried.</p></blockquote><h2 id="more-patterns">More patterns</h2><ul><li><strong>Stop-losses</strong> on a rebalanced portfolio: register an <a href="/clojure-backtesting-website/posts/automation/">automation</a> per holding after each rebalance, and cancel them on the next one.</li><li><strong>Event strategies</strong> that trade on earnings announcements: see <a href="/clojure-backtesting-website/posts/examples/example-quality-and-earnings/#buying-after-good-news">Quality and Earnings</a>.</li><li><strong>Indicators as signals</strong> in a ranking: any function of a permno works, for example <code>#(RSI %)</code> with <code>:ascending true</code> for the most oversold. Indicators use raw prices, so mind the splits.</li></ul>
+    </div>
+    <nav class="pager" aria-label="Previous and next page"></nav>
+</article>
+
+
+
+        <footer class="site-footer">
+            <p>Clojure Backtesting is open source under the MIT License and developed at HKU Business School.</p>
+            <p>
+                <a href="https://github.com/clojure-finance/clojure-backtesting" rel="external">Source code</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Issues</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting-website" rel="external">Edit this site</a>
+                <span aria-hidden="true">·</span>
+                Built with <a href="http://cryogenweb.org" rel="external">Cryogen</a>
+            </p>
+        </footer>
+    </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js"></script>
+<script src="/clojure-backtesting-website/js/site.js" type="application/javascript"></script>
+</body>
+</html>

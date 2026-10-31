@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Example: Value Strategy · Clojure Backtesting</title>
+    
+<meta name="description" content="Every month, hold the two companies with the highest earnings yield, using only the reports that were public at the time, and compare the result with an index.">
+<meta property="og:title" content="Example: Value Strategy">
+<meta property="og:description" content="Every month, hold the two companies with the highest earnings yield, using only the reports that were public at the time, and compare the result with an index.">
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/examples/example-value-strategy/">
+<meta property="og:type" content="article">
+
+    <link rel="icon" type="image/svg+xml" href="/clojure-backtesting-website/img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="doc-page">
+
+<header class="site-header">
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <a class="brand" href="/clojure-backtesting-website/">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+            <defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f6fdb"/><stop offset="1" stop-color="#16a34a"/></linearGradient></defs>
+            <rect width="32" height="32" rx="8" fill="url(#bm)"/>
+            <path d="M6 22.5 L12 16 L16.5 19.5 L25.5 9.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="25.5" cy="9.5" r="2.2" fill="#fff"/>
+        </svg>
+        <span class="brand-name">Clojure Backtesting</span>
+    </a>
+    <span class="version" title="Library version these docs describe">v1.1.3</span>
+    <nav class="header-links" aria-label="External">
+        <a href="/clojure-backtesting-website/posts/examples/">Examples</a>
+        <a href="https://github.com/clojure-finance/clojure-backtesting" class="github" rel="external">
+            <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            <span>GitHub</span>
+        </a>
+    </nav>
+</header>
+
+<div class="layout">
+    <aside class="sidebar" id="sidebar">
+        <nav class="side-nav" aria-label="Documentation">
+            <p class="nav-group">Introduction</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/">Overview</a></li>
+                <li><a href="/clojure-backtesting-website/pages/about/">Why Clojure?</a></li>
+            </ul>
+            <p class="nav-group">Learn</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+                <li><a href="/clojure-backtesting-website/posts/concepts/">Key Concepts</a></li>
+                <li><a href="/clojure-backtesting-website/posts/user-guide/">Data and Trading Rules</a></li>
+                <li><a href="/clojure-backtesting-website/posts/yahoo-data/">Yahoo Finance Data</a></li>
+            </ul>
+            <p class="nav-group">API Reference</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/cheat-sheet/">Cheat Sheet</a></li>
+                <li><a href="/clojure-backtesting-website/posts/api/">Core API</a></li>
+                <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio</a></li>
+                <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation and Plots</a></li>
+                <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+                <li><a href="/clojure-backtesting-website/posts/fundamentals/">Fundamentals</a></li>
+                <li><a href="/clojure-backtesting-website/posts/strategy/">Strategy Helpers</a></li>
+                <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
+                <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
+            </ul>
+            <p class="nav-group">Examples</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/examples/">All Examples</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-golden-cross/">Golden Cross</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-bollinger-bands/">Bollinger Bands</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-buying-on-margin/">Buying on Margin</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-fundamental-analysis/">Fundamental Analysis</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-value-strategy/">Value Strategy</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-quality-and-earnings/">Quality and Earnings</a></li>
+                <li><a href="/clojure-backtesting-website/posts/recipes/">Strategy Recipes</a></li>
+            </ul>
+            <p class="nav-group">Help</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/faq/">FAQ and Troubleshooting</a></li>
+                <li><a href="/clojure-backtesting-website/posts/release-notes/">Release Notes</a></li>
+                <li><a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Report an Issue</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <div class="nav-backdrop" hidden></div>
+
+    <main class="main" id="main">
+        
+<article class="doc has-toc">
+    <header class="doc-header">
+        <p class="eyebrow">Examples</p>
+        <h1>Example: Value Strategy</h1>
+        <p class="lead">Every month, hold the two companies with the highest earnings yield, using only the reports that were public at the time, and compare the result with an index.</p>
+    </header>
+    
+    <details class="page-toc" open>
+        <summary>On this page</summary>
+        <ol class="toc"><li><a href="#the-idea">The idea</a></li><li><a href="#setup">Setup</a></li><li><a href="#the-strategy">The strategy</a></li><li><a href="#what-it-picked">What it picked</a></li><li><a href="#results">Results</a></li><li><a href="#against-the-index">Against the index</a></li><li><a href="#takeaways">Takeaways</a></li></ol>
+    </details>
+    
+    <div class="doc-body">
+        <p>This walkthrough follows the worksheet <a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/value_strategy.clj"><code>value_strategy.clj</code></a>. It runs on the library's synthetic Yahoo snapshots, so it needs no network connection; open it in Gorilla REPL with <code>make start</code> (see <a href="/clojure-backtesting-website/posts/get-started/#option-2-gorilla-repl">Get Started</a>), or paste the code into <code>lein repl</code>.</p><p><strong>You will use:</strong> <a href="/clojure-backtesting-website/posts/yahoo-data/"><code>build-yahoo-dataset!</code> and <code>load-yahoo-dataset</code></a>, <a href="/clojure-backtesting-website/posts/fundamentals/#ratios"><code>earnings-yield</code></a>, <a href="/clojure-backtesting-website/posts/strategy/#new-period"><code>new-period?</code></a>, <a href="/clojure-backtesting-website/posts/strategy/#top-n"><code>top-n</code></a>, <a href="/clojure-backtesting-website/posts/strategy/#equal-weights"><code>equal-weights</code></a>, <a href="/clojure-backtesting-website/posts/strategy/#rebalance"><code>rebalance</code></a> and <a href="/clojure-backtesting-website/posts/evaluate/#benchmark-stats"><code>benchmark-stats</code></a>.</p><h2 id="the-idea">The idea</h2><p><em>Value investing</em> buys companies that are cheap relative to what they earn. A common measure is the <strong>earnings yield</strong>: the last twelve months' earnings per share divided by the share price. It is the inverse of the P/E ratio. A company earning $5 a share at a price of $100 has an earnings yield of 5% and a P/E of 20.</p><p>The yield ranks better than the P/E: a company that loses money has a negative yield and ranks last, while its P/E would be meaningless.</p><p>The strategy:</p><ul><li>On the first trading day of every month, rank the universe by earnings yield.</li><li>Hold the top two, half the portfolio each, and sell anything else.</li><li>Pay a commission of 0.1% on every trade.</li></ul><p>The point of a backtest like this is to get the <strong>timing</strong> of the information right. A company's earnings for a quarter are only known weeks after the quarter ends. The fundamentals functions return what was public on each day, so the strategy cannot trade on numbers that were not yet out.</p><h2 id="setup">Setup</h2><p>Build the dataset from the snapshots in <code>resources/sample-yahoo</code> and load it. The universe is the four companies of the sample; IDX is an index, kept as the benchmark.</p><pre><code class="clojure">(build-yahoo-dataset! "resources/sample-yahoo" :out-dir "target/sample-yahoo")
+(load-yahoo-dataset "target/sample-yahoo")
+</code></pre><pre><code class="text">Warning: ZZZZ has no prices: No data found, symbol may be delisted
+Warning: BETA: 7 report dates are estimated from the reporting lag
+"Date range: 2022-01-03 ~ 2025-01-01; Fundamentals: 5 securities, 33 reports, 1 FX series"
+</code></pre><p><a href="/clojure-backtesting-website/posts/yahoo-data/#try-it-offline">Try it offline</a> describes the companies and explains the warnings.</p><h2 id="the-strategy">The strategy</h2><pre><code class="clojure">(update-transaction-cost 0.001)
+(init-portfolio "2023-01-03" 100000)
+
+(def universe ["ALFA" "BETA" "GAMA" "DLTA"])
+(def picks (atom []))
+
+(while (neg? (compare (get-date) "2024-12-31"))
+  (when (new-period? :month)
+    (let [top (top-n earnings-yield 2 :universe universe)]
+      (swap! picks conj {:date (get-date) :picks top})
+      (rebalance (equal-weights top))))
+  (next-date)
+  (update-eval-report))
+(end-order)
+(update-transaction-cost 0.0) ; back to the default for other runs in this session
+</code></pre><p>Line by line:</p><ul><li><code>new-period? :month</code> is true on the first trading day of each month, and on the first day of the run, so the portfolio is invested at once.</li><li><code>top-n earnings-yield 2</code> ranks the universe by <code>earnings-yield</code> and returns the best two. DLTA has no statements, so its yield is <code>nil</code> and it is never picked.</li><li><code>equal-weights</code> turns the two picks into <code>{permno 0.5}</code>, and <code>rebalance</code> places the orders: it sells holdings that are no longer picked and tops up or trims the others to half of the equity each. The orders fill at the next close.</li><li><code>picks</code> records each month's choice, to look at afterwards.</li></ul><h2 id="what-it-picked">What it picked</h2><pre><code class="clojure">(-&gt;&gt; (deref picks)
+     (partition-by :picks)
+     (map first)
+     (clojure.pprint/print-table))
+</code></pre><pre><code class="text">|      :date |          :picks |
+|------------+-----------------|
+| 2023-01-03 | ["ALFA" "GAMA"] |
+| 2024-04-01 | ["ALFA" "BETA"] |
+| 2024-11-01 | ["ALFA" "GAMA"] |
+| 2024-12-02 | ["ALFA" "BETA"] |
+</code></pre><p>ALFA always ranks first. The second place changes three times, and each change follows a report becoming public:</p><table><thead><tr><th>Date</th><th align="right">ALFA</th><th align="right">BETA</th><th align="right">GAMA</th><th>What changed</th></tr></thead><tbody><tr><td>2024-03-28</td><td align="right">5.98%</td><td align="right">−2.55%</td><td align="right">3.06%</td><td>BETA's latest twelve months are still its loss-making fiscal 2022</td></tr><tr><td>2024-04-01</td><td align="right">6.16%</td><td align="right">5.24%</td><td align="right">3.12%</td><td>BETA's fiscal 2023, with a profit, counts as public from today</td></tr><tr><td>2024-11-01</td><td align="right">5.33%</td><td align="right">2.84%</td><td align="right">2.86%</td><td>GAMA's third quarter (public 2024-10-28) lifts it just above BETA</td></tr><tr><td>2024-12-02</td><td align="right">5.91%</td><td align="right">3.57%</td><td align="right">2.89%</td><td>BETA's third quarter (public 2024-11-14) puts it back ahead</td></tr></tbody></table><p>Each row is <code>(rank-by earnings-yield :universe universe)</code> on that day. Notice BETA's dates. Yahoo has no report dates for BETA's recent periods, so the build assumed 90 days after the fiscal year (2024-03-30, a Saturday, so the next trading day) and 45 days after a quarter. <code>fundamental-info</code> says so:</p><pre><code class="clojure">;; on 2024-04-01
+(select-keys (fundamental-info "BETA" :diluted-eps) [:value :period-end :public-date :report-date-source])
+;; =&gt; {:value 0.4338315663650824, :period-end "2023-12-31", :public-date "2024-04-01", :report-date-source :lag}
+</code></pre><p>Had BETA really reported in February, the strategy would have switched two months earlier. When a result hinges on such dates, try a different <a href="/clojure-backtesting-website/posts/yahoo-data/#build-options"><code>:report-lag-days</code></a> and see whether it holds up.</p><h2 id="results">Results</h2><p>The last row of the evaluation report:</p><pre><code class="clojure">(last (deref eval-report-data))
+</code></pre><pre><code class="text">{:date "2024-12-31", :tot-value "$162866", :vol "1.3020%", :r-vol "1.4015%", :sharpe "1.1415", :r-sharpe "-3.2197", :pnl-pt "$1232", :max-drawdown "16.7536%"}
+</code></pre><p>The portfolio grew from $100,000 to $162,866 in two years, after commissions. The daily volatility of 1.30% is about 20.7% a year (× √252), the Sharpe ratio is 1.14, and the worst fall from a peak was 16.8%. The rolling Sharpe ratio is negative because the last 30 trading days were a decline. See <a href="/clojure-backtesting-website/posts/evaluate/#print-eval-report">Evaluation</a> for the definitions.</p><p><img src="/clojure-backtesting-website/img/value-strategy.svg" alt="The value strategy's portfolio value from January 2023 to December 2024, ending at $162,866, against the IDX index scaled to the same start, ending at $119,376. A strip below shows the holdings: ALFA and GAMA until March 2024, then ALFA and BETA, ALFA and GAMA in November 2024, and ALFA and BETA in December." /></p><h2 id="against-the-index">Against the index</h2><p>Did the strategy do better than simply holding the market? <code>benchmark-stats</code> compares its daily returns with those of any security in the dataset, here the IDX index:</p><pre><code class="clojure">(into (sorted-map)
+      (map (fn [[k v]] [k (if (double? v) (format "%.4f" v) v)]))
+      (benchmark-stats "IDX"))
+</code></pre><pre><code class="text">{:alpha "0.1483", :benchmark-return "0.1938", :beta "1.0258", :correlation "0.6613", :days 520, :excess-return "0.4349", :information-ratio "0.9698", :portfolio-return "0.6287", :tracking-error "0.1552"}
+</code></pre><table><thead><tr><th>Statistic</th><th align="right">Value</th><th>Reading</th></tr></thead><tbody><tr><td><code>:portfolio-return</code></td><td align="right">62.9%</td><td>The strategy's total return over the 520 days</td></tr><tr><td><code>:benchmark-return</code></td><td align="right">19.4%</td><td>The index's total return, dividends included</td></tr><tr><td><code>:excess-return</code></td><td align="right">43.5%</td><td>The difference, in fractions of the starting value</td></tr><tr><td><code>:beta</code></td><td align="right">1.03</td><td>The strategy moved about one-for-one with the index: as risky as the market</td></tr><tr><td><code>:alpha</code></td><td align="right">14.8% a year</td><td>Return beyond what the market exposure explains</td></tr><tr><td><code>:correlation</code></td><td align="right">0.66</td><td>Holding two stocks, the portfolio followed the index only loosely</td></tr><tr><td><code>:tracking-error</code></td><td align="right">15.5% a year</td><td>How far its returns strayed from the index</td></tr><tr><td><code>:information-ratio</code></td><td align="right">0.97</td><td>Excess return per unit of tracking error, a year</td></tr></tbody></table><p>With a beta of about 1, the strategy took market risk and earned more than the market. Whether that is skill or luck is another question.</p><h2 id="takeaways">Takeaways</h2><ul><li><strong>Don't trust the numbers yet.</strong> The universe has three companies with fundamentals, the data is synthetic, and the strategy held ALFA the whole time. A real test needs a broad universe, several periods, and costs and slippage that match how you would trade.</li><li><strong>Report dates drive the trades.</strong> Every switch followed a report becoming public. Where dates are estimated, as for BETA, check that the result does not depend on the estimate.</li><li><strong>Survivorship bias.</strong> With real Yahoo data the universe only contains companies that still trade today, which flatters every strategy. See <a href="/clojure-backtesting-website/posts/yahoo-data/#limits-of-the-data">Limits of the data</a>.</li></ul><p><strong>Try it:</strong></p><ul><li>Rank by <code>book-to-market</code> or <code>free-cash-flow-yield</code> instead, or hold three companies.</li><li>Rebalance with <code>(new-period? :quarter)</code>, and compare the commission paid.</li><li>Screen for quality first, for example <code>(filter #(some-&gt; (piotroski-f-score %) (&gt;= 5)) universe)</code>.</li><li>Real data: <code>(download-yahoo! "data/value" ["AAPL" "MSFT" "JNJ" "XOM" "JPM" "KO" "SPY"])</code>, build and load it, and use <code>"SPY"</code> as the benchmark. Start the run about three and a half years before today, when the fundamentals begin.</li></ul>
+    </div>
+    <nav class="pager" aria-label="Previous and next page"></nav>
+</article>
+
+
+
+        <footer class="site-footer">
+            <p>Clojure Backtesting is open source under the MIT License and developed at HKU Business School.</p>
+            <p>
+                <a href="https://github.com/clojure-finance/clojure-backtesting" rel="external">Source code</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Issues</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting-website" rel="external">Edit this site</a>
+                <span aria-hidden="true">·</span>
+                Built with <a href="http://cryogenweb.org" rel="external">Cryogen</a>
+            </p>
+        </footer>
+    </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js"></script>
+<script src="/clojure-backtesting-website/js/site.js" type="application/javascript"></script>
+</body>
+</html>

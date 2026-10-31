@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Evaluation and Plots · Clojure Backtesting</title>
     
-<meta name="description" content="Compute performance metrics, print the evaluation report and draw charts.">
+<meta name="description" content="Compute performance metrics, print the evaluation report, compare with a benchmark and draw charts.">
 <meta property="og:title" content="Evaluation and Plots">
-<meta property="og:description" content="Compute performance metrics, print the evaluation report and draw charts.">
+<meta property="og:description" content="Compute performance metrics, print the evaluation report, compare with a benchmark and draw charts.">
 <meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/evaluate/">
 <meta property="og:type" content="article">
 
@@ -32,7 +32,7 @@
         </svg>
         <span class="brand-name">Clojure Backtesting</span>
     </a>
-    <span class="version" title="Library version these docs describe">v1.1.1</span>
+    <span class="version" title="Library version these docs describe">v1.1.3</span>
     <nav class="header-links" aria-label="External">
         <a href="/clojure-backtesting-website/posts/examples/">Examples</a>
         <a href="https://github.com/clojure-finance/clojure-backtesting" class="github" rel="external">
@@ -55,6 +55,7 @@
                 <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
                 <li><a href="/clojure-backtesting-website/posts/concepts/">Key Concepts</a></li>
                 <li><a href="/clojure-backtesting-website/posts/user-guide/">Data and Trading Rules</a></li>
+                <li><a href="/clojure-backtesting-website/posts/yahoo-data/">Yahoo Finance Data</a></li>
             </ul>
             <p class="nav-group">API Reference</p>
             <ul>
@@ -63,6 +64,8 @@
                 <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio</a></li>
                 <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation and Plots</a></li>
                 <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+                <li><a href="/clojure-backtesting-website/posts/fundamentals/">Fundamentals</a></li>
+                <li><a href="/clojure-backtesting-website/posts/strategy/">Strategy Helpers</a></li>
                 <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
                 <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
             </ul>
@@ -73,10 +76,14 @@
                 <li><a href="/clojure-backtesting-website/posts/examples/example-bollinger-bands/">Bollinger Bands</a></li>
                 <li><a href="/clojure-backtesting-website/posts/examples/example-buying-on-margin/">Buying on Margin</a></li>
                 <li><a href="/clojure-backtesting-website/posts/examples/example-fundamental-analysis/">Fundamental Analysis</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-value-strategy/">Value Strategy</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-quality-and-earnings/">Quality and Earnings</a></li>
+                <li><a href="/clojure-backtesting-website/posts/recipes/">Strategy Recipes</a></li>
             </ul>
             <p class="nav-group">Help</p>
             <ul>
                 <li><a href="/clojure-backtesting-website/posts/faq/">FAQ and Troubleshooting</a></li>
+                <li><a href="/clojure-backtesting-website/posts/release-notes/">Release Notes</a></li>
                 <li><a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Report an Issue</a></li>
             </ul>
         </nav>
@@ -89,16 +96,16 @@
     <header class="doc-header">
         <p class="eyebrow">API Reference</p>
         <h1>Evaluation and Plots</h1>
-        <p class="lead">Compute performance metrics, print the evaluation report and draw charts.</p>
+        <p class="lead">Compute performance metrics, print the evaluation report, compare with a benchmark and draw charts.</p>
     </header>
     
     <details class="page-toc" open>
         <summary>On this page</summary>
-        <ol class="toc"><li><a href="#record-the-metrics">Record the Metrics</a></li><ol><li><a href="#update-eval-report"><code>update-eval-report</code></a></li></ol><li><a href="#read-the-report">Read the Report</a></li><ol><li><a href="#print-eval-report"><code>print-eval-report</code></a></li><li><a href="#individual-metrics">Individual metrics</a></li></ol><li><a href="#rolling-window">Rolling Window</a></li><ol><li><a href="#update-rolling-window"><code>update-rolling-window</code></a></li></ol><li><a href="#plotting">Plotting</a></li><ol><li><a href="#plot"><code>plot</code></a></li></ol></ol>
+        <ol class="toc"><li><a href="#record-the-metrics">Record the Metrics</a></li><ol><li><a href="#update-eval-report"><code>update-eval-report</code></a></li></ol><li><a href="#read-the-report">Read the Report</a></li><ol><li><a href="#print-eval-report"><code>print-eval-report</code></a></li><li><a href="#individual-metrics">Individual metrics</a></li></ol><li><a href="#compare-with-a-benchmark">Compare with a Benchmark</a></li><ol><li><a href="#benchmark-stats"><code>benchmark-stats</code></a></li></ol><li><a href="#rolling-window">Rolling Window</a></li><ol><li><a href="#update-rolling-window"><code>update-rolling-window</code></a></li></ol><li><a href="#plotting">Plotting</a></li><ol><li><a href="#plot"><code>plot</code></a></li></ol></ol>
     </details>
     
     <div class="doc-body">
-        <p>This page features functions for computing metrics that evaluate portfolio performance, printing the evaluation report, and plotting.</p><h2 id="record-the-metrics">Record the Metrics</h2><h3 id="update-eval-report"><code>update-eval-report</code></h3><p>This function computes the evaluation metrics for today and adds them to the evaluation report (see <code>print-eval-report</code> for the list of metrics). It does nothing before the first order has filled or after the run has ended.</p><p><strong>Arguments:</strong> none</p><p><strong>Return</strong></p><p><code>nil</code></p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (update-eval-report)
+        <p>This page features functions for computing metrics that evaluate portfolio performance, printing the evaluation report, comparing with a benchmark, and plotting.</p><h2 id="record-the-metrics">Record the Metrics</h2><h3 id="update-eval-report"><code>update-eval-report</code></h3><p>This function computes the evaluation metrics for today and adds them to the evaluation report (see <code>print-eval-report</code> for the list of metrics). It does nothing before the first order has filled or after the run has ended.</p><p><strong>Arguments:</strong> none</p><p><strong>Return</strong></p><p><code>nil</code></p><p><strong>Example</strong></p><pre><code class="clojure">=&gt; (update-eval-report)
 ;; update the evaluation metrics today
 </code></pre><p>Call it on the days you want in the report, typically once per day after <code>next-date</code>. Over many dates, updating every day takes a lot of memory and time.</p><h2 id="read-the-report">Read the Report</h2><h3 id="print-eval-report"><code>print-eval-report</code></h3><p>This function prints the evaluation report in a table.</p><p><strong>Parameters:</strong></p><ul><li>[<code>n</code>] - number of rows to print, from the start. Without it, or with zero or a negative number, the entire report is printed.</li></ul><p><strong>Output explanation:</strong></p><table><thead><tr><th> Column </th><th align="center"> Format  </th><th align="left"> Meaning</th></tr></thead><tbody><tr><td><code>date</code></td><td align="center"> YYYY-MM-DD</td><td align="left"> Date of record</td></tr><tr><td><code>tot-value</code></td><td align="center"> int, $</td><td align="left"> Total value of the portfolio (cash plus long positions minus short positions)</td></tr><tr><td><code>vol</code></td><td align="center"> float, %</td><td align="left"> Volatility: sample standard deviation of the daily returns since the start</td></tr><tr><td><code>r-vol</code></td><td align="center"> float, %</td><td align="left"> Volatility over the rolling window (the last 30 days by default)</td></tr><tr><td><code>sharpe</code></td><td align="center"> float</td><td align="left"> Annualised Sharpe ratio since the start: mean daily return / standard deviation × √252, with a zero risk-free rate</td></tr><tr><td><code>r-sharpe</code></td><td align="center"> float</td><td align="left"> Annualised Sharpe ratio over the rolling window</td></tr><tr><td><code>pnl-pt</code></td><td align="center"> int, $</td><td align="left"> Profit and loss per trade: (total value − initial capital) / number of filled orders, not counting the orders <code>end-order</code> places to close positions</td></tr><tr><td><code>max-drawdown</code></td><td align="center"> float, %</td><td align="left"> Maximum drawdown: the largest decline of the total value from a previous peak, as a percentage of that peak</td></tr></tbody></table><p>The daily returns are the log returns in the <code>daily-ret</code> column of the <a href="/clojure-backtesting-website/posts/portfolio/#print-portfolio-record">portfolio record</a>.</p><p><strong>Example</strong>:</p><pre><code class="clojure">(print-eval-report 5)
 </code></pre><pre><code class="text">|      :date | :tot-value |    :vol |  :r-vol | :sharpe | :r-sharpe | :pnl-pt | :max-drawdown |
@@ -119,7 +126,9 @@
 
 (max-drawdown)
 ;; =&gt; 0.007590000000000145
-</code></pre><h2 id="rolling-window">Rolling Window</h2><h3 id="update-rolling-window"><code>update-rolling-window</code></h3><p>This function sets the time window, in trading days, for the rolling metrics (<code>r-vol</code> and <code>r-sharpe</code>). By default, the window is <code>30</code>.</p><p><strong>Parameters:</strong></p><ul><li><code>n</code> - the new time window</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(update-rolling-window 10)
+</code></pre><h2 id="compare-with-a-benchmark">Compare with a Benchmark</h2><h3 id="benchmark-stats"><code>benchmark-stats</code></h3><p><code>(benchmark-stats permno)</code></p><p>Compares the portfolio with security <code>permno</code> of the main dataset, typically an index or an ETF, over the run so far. It uses the days on which both have a value, and needs no evaluation report.</p><table><thead><tr><th>Key</th><th>Meaning</th></tr></thead><tbody><tr><td><code>:days</code></td><td>The number of daily returns compared</td></tr><tr><td><code>:portfolio-return</code></td><td>The portfolio's total return over those days, as a fraction</td></tr><tr><td><code>:benchmark-return</code></td><td>The benchmark's total return, from its adjusted price, so dividends are included</td></tr><tr><td><code>:excess-return</code></td><td><code>:portfolio-return</code> minus <code>:benchmark-return</code></td></tr><tr><td><code>:beta</code></td><td>Covariance of the daily returns over the benchmark's variance: how strongly the portfolio moved with it</td></tr><tr><td><code>:alpha</code></td><td>252 × (mean daily return − beta × the benchmark's mean daily return): the yearly return beyond what beta explains, with a zero risk-free rate</td></tr><tr><td><code>:correlation</code></td><td>Correlation of the daily returns</td></tr><tr><td><code>:tracking-error</code></td><td>Standard deviation of the daily return differences, × √252</td></tr><tr><td><code>:information-ratio</code></td><td>Mean daily return difference over its standard deviation, × √252</td></tr></tbody></table><p>Daily returns are log returns, as in the portfolio record. The result is <code>nil</code> with fewer than two common days. <code>:beta</code> and <code>:alpha</code> are <code>nil</code> when the benchmark's returns do not vary, <code>:correlation</code> when either series does not, and <code>:information-ratio</code> when the return differences do not. A portfolio that stays in cash has a beta of 0.</p><p><strong>Example</strong>: the <a href="/clojure-backtesting-website/posts/examples/example-value-strategy/#against-the-index">Value Strategy</a> against the IDX index of the Yahoo sample, after <code>end-order</code>:</p><pre><code class="clojure">(into (sorted-map) (benchmark-stats "IDX"))
+</code></pre><pre><code class="text">{:alpha 0.14832626714576205, :benchmark-return 0.1937698633503946, :beta 1.025831533487977, :correlation 0.6612759265648038, :days 520, :excess-return 0.43489652224687814, :information-ratio 0.9698313526498363, :portfolio-return 0.6286663855972727, :tracking-error 0.15522644373296574}
+</code></pre><p>The portfolio returned 62.9% against the index's 19.4%, with a beta of about 1. The benchmark has to be in the main dataset: with Yahoo data, download an index or ETF along with the stocks, such as <code>"SPY"</code> or <code>"^GSPC"</code>.</p><h2 id="rolling-window">Rolling Window</h2><h3 id="update-rolling-window"><code>update-rolling-window</code></h3><p>This function sets the time window, in trading days, for the rolling metrics (<code>r-vol</code> and <code>r-sharpe</code>). By default, the window is <code>30</code>.</p><p><strong>Parameters:</strong></p><ul><li><code>n</code> - the new time window</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">(update-rolling-window 10)
 ;; output:
 Time window is updated as 10.
 </code></pre><h2 id="plotting">Plotting</h2><h3 id="plot"><code>plot</code></h3><p>This function draws a line chart with <a href="https://github.com/metasoarous/oz">Oz</a> (Vega-Lite), which opens in the browser. It works from a plain REPL as well as from Gorilla REPL.</p><p><strong>Parameters:</strong></p><ul><li><code>dataset</code> - a sequence of maps, e.g. <code>(deref portfolio-value)</code>, <code>(deref eval-record)</code> or <code>(deref order-record)</code></li><li><code>series</code> - the key whose value names the line each row belongs to, shown in the legend</li><li><code>x</code> - the key of the x-axis (time) values, e.g. <code>:date</code></li><li><code>y</code> - the key of the y-axis values, e.g. <code>:tot-value</code>. Pass two keys, <code>y1 y2</code>, to draw both on independent y-axes.</li><li><code>full-date</code> - <code>true</code> to label the x-axis with full dates (year, month, day); <code>false</code> lets the chart choose the labels</li></ul><p><strong>Example</strong>:</p><pre><code class="clojure">;; tag every row with the series name

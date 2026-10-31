@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Yahoo Finance Data · Clojure Backtesting</title>
+    
+<meta name="description" content="Download prices, dividends, splits, financial statements and earnings dates for any ticker, turn them into a dataset the backtester loads, and know where the data falls short.">
+<meta property="og:title" content="Yahoo Finance Data">
+<meta property="og:description" content="Download prices, dividends, splits, financial statements and earnings dates for any ticker, turn them into a dataset the backtester loads, and know where the data falls short.">
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/yahoo-data/">
+<meta property="og:type" content="article">
+
+    <link rel="icon" type="image/svg+xml" href="/clojure-backtesting-website/img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="doc-page">
+
+<header class="site-header">
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <a class="brand" href="/clojure-backtesting-website/">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+            <defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f6fdb"/><stop offset="1" stop-color="#16a34a"/></linearGradient></defs>
+            <rect width="32" height="32" rx="8" fill="url(#bm)"/>
+            <path d="M6 22.5 L12 16 L16.5 19.5 L25.5 9.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="25.5" cy="9.5" r="2.2" fill="#fff"/>
+        </svg>
+        <span class="brand-name">Clojure Backtesting</span>
+    </a>
+    <span class="version" title="Library version these docs describe">v1.1.3</span>
+    <nav class="header-links" aria-label="External">
+        <a href="/clojure-backtesting-website/posts/examples/">Examples</a>
+        <a href="https://github.com/clojure-finance/clojure-backtesting" class="github" rel="external">
+            <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            <span>GitHub</span>
+        </a>
+    </nav>
+</header>
+
+<div class="layout">
+    <aside class="sidebar" id="sidebar">
+        <nav class="side-nav" aria-label="Documentation">
+            <p class="nav-group">Introduction</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/">Overview</a></li>
+                <li><a href="/clojure-backtesting-website/pages/about/">Why Clojure?</a></li>
+            </ul>
+            <p class="nav-group">Learn</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+                <li><a href="/clojure-backtesting-website/posts/concepts/">Key Concepts</a></li>
+                <li><a href="/clojure-backtesting-website/posts/user-guide/">Data and Trading Rules</a></li>
+                <li><a href="/clojure-backtesting-website/posts/yahoo-data/">Yahoo Finance Data</a></li>
+            </ul>
+            <p class="nav-group">API Reference</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/cheat-sheet/">Cheat Sheet</a></li>
+                <li><a href="/clojure-backtesting-website/posts/api/">Core API</a></li>
+                <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio</a></li>
+                <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation and Plots</a></li>
+                <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+                <li><a href="/clojure-backtesting-website/posts/fundamentals/">Fundamentals</a></li>
+                <li><a href="/clojure-backtesting-website/posts/strategy/">Strategy Helpers</a></li>
+                <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
+                <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
+            </ul>
+            <p class="nav-group">Examples</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/examples/">All Examples</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-golden-cross/">Golden Cross</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-bollinger-bands/">Bollinger Bands</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-buying-on-margin/">Buying on Margin</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-fundamental-analysis/">Fundamental Analysis</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-value-strategy/">Value Strategy</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-quality-and-earnings/">Quality and Earnings</a></li>
+                <li><a href="/clojure-backtesting-website/posts/recipes/">Strategy Recipes</a></li>
+            </ul>
+            <p class="nav-group">Help</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/faq/">FAQ and Troubleshooting</a></li>
+                <li><a href="/clojure-backtesting-website/posts/release-notes/">Release Notes</a></li>
+                <li><a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Report an Issue</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <div class="nav-backdrop" hidden></div>
+
+    <main class="main" id="main">
+        
+<article class="doc has-toc">
+    <header class="doc-header">
+        <p class="eyebrow">Learn</p>
+        <h1>Yahoo Finance Data</h1>
+        <p class="lead">Download prices, dividends, splits, financial statements and earnings dates for any ticker, turn them into a dataset the backtester loads, and know where the data falls short.</p>
+    </header>
+    
+    <details class="page-toc" open>
+        <summary>On this page</summary>
+        <ol class="toc"><li><a href="#the-three-steps">The three steps</a></li><li><a href="#try-it-offline">Try it offline</a></li><li><a href="#downloading">Downloading</a></li><ol><li><a href="#resuming-and-updating">Resuming and updating</a></li><li><a href="#download-options">Download options</a></li></ol><li><a href="#building">Building</a></li><ol><li><a href="#the-main-dataset">The main dataset</a></li><li><a href="#prices-as-traded">Prices as traded</a></li><li><a href="#report-dates">Report dates</a></li><li><a href="#snapshots-and-restatements">Snapshots and restatements</a></li><li><a href="#build-options">Build options</a></li><li><a href="#what-was-built">What was built</a></li></ol><li><a href="#loading">Loading</a></li><li><a href="#currencies">Currencies</a></li><li><a href="#limits-of-the-data">Limits of the data</a></li><li><a href="#function-reference">Function reference</a></li><ol><li><a href="#download-yahoo"><code>download-yahoo!</code></a></li><li><a href="#build-yahoo-dataset"><code>build-yahoo-dataset!</code></a></li><li><a href="#load-yahoo-dataset"><code>load-yahoo-dataset</code></a></li><li><a href="#yahoo-dataset"><code>yahoo-dataset!</code></a></li><li><a href="#dataset-info"><code>dataset-info</code></a></li><li><a href="#default-fields"><code>default-fields</code></a></li><li><a href="#regenerating-the-sample">Regenerating the sample</a></li></ol></ol>
+    </details>
+    
+    <div class="doc-body">
+        <p>CRSP and Compustat are the reference data for academic backtests, but they need a licence. Since version 1.1.2 the library can also use <a href="https://finance.yahoo.com/">Yahoo Finance</a>, through the <a href="https://github.com/clojure-finance/clj-yfinance">clj-yfinance</a> library: free, with no API key, for any ticker Yahoo quotes. You get daily prices with dividends and splits, plus the financial statements and earnings dates behind <a href="/clojure-backtesting-website/posts/fundamentals/">point-in-time fundamentals</a>.</p><h2 id="the-three-steps">The three steps</h2><pre><code class="clojure">(download-yahoo! "data/tech" ["AAPL" "MSFT" "NVDA" "GOOGL" "SPY"] :start "2015-01-01")
+(build-yahoo-dataset! "data/tech")
+(load-yahoo-dataset "data/tech")
+(init-portfolio "2023-03-01" 100000)
+</code></pre><table><thead><tr><th>Step</th><th>What it does</th><th>Needs the network</th></tr></thead><tbody><tr><td><a href="#download-yahoo"><code>download-yahoo!</code></a></td><td>Saves Yahoo's answers, unchanged, under <code>data/tech/raw</code>: one snapshot file per security and download</td><td>Yes</td></tr><tr><td><a href="#build-yahoo-dataset"><code>build-yahoo-dataset!</code></a></td><td>Turns the snapshots into a main dataset (<code>main/</code>), the fundamentals (<code>fundamentals.edn</code>) and a description (<code>dataset.edn</code>)</td><td>No</td></tr><tr><td><a href="#load-yahoo-dataset"><code>load-yahoo-dataset</code></a></td><td>Loads the prices as the main dataset and the fundamentals</td><td>No</td></tr></tbody></table><p>Building is separate from downloading, so you can rebuild with other options as often as you like without asking Yahoo again. <a href="#yahoo-dataset"><code>yahoo-dataset!</code></a> runs all three steps in one call.</p><p>After loading, everything on this site works as with any other dataset. The security id (the <em>permno</em>) is the ticker, so you write <code>(get-permno-price "AAPL")</code> and <code>(order "MSFT" 10)</code>.</p><blockquote><p><strong>Tip:</strong> <code>lein repl</code> in a clone of the library has these functions loaded. In your own namespace, require <code>clojure-backtesting.yahoo</code> and <code>clojure-backtesting.fundamentals</code>, as in <a href="/clojure-backtesting-website/posts/get-started/#use-the-library-in-your-own-namespace">Get Started</a>.</p></blockquote><h2 id="try-it-offline">Try it offline</h2><p>The repository includes synthetic snapshots in <code>resources/sample-yahoo</code>, in exactly the shape a real download has. They let you try the whole pipeline without a network connection, and this page and the <a href="/clojure-backtesting-website/posts/fundamentals/">Fundamentals</a> page use them for every example. The companies are made up, each to exercise one feature:</p><table><thead><tr><th>Ticker</th><th>What is special about it</th></tr></thead><tbody><tr><td>ALFA</td><td>Pays a quarterly dividend, splits 4-for-1 on 2024-08-01, reports after the close. Downloaded twice (2024-06-01 and 2025-01-02), and one quarter was restated in between</td></tr><tr><td>BETA</td><td>Lost money until 2022. Yahoo has no report dates for its recent quarters, so they are estimated</td></tr><tr><td>GAMA</td><td>Trades in US dollars but reports in euros, before the market opens</td></tr><tr><td>DLTA</td><td>Prices only, no statements</td></tr><tr><td>IDX</td><td>An index, to compare strategies against</td></tr><tr><td>ZZZZ</td><td>Not found by Yahoo, like a delisted ticker</td></tr></tbody></table><p>The prices cover the weekdays of 2022 to 2024. Build them into <code>target/sample-yahoo</code> and load the result:</p><pre><code class="clojure">(build-yahoo-dataset! "resources/sample-yahoo" :out-dir "target/sample-yahoo")
+(load-yahoo-dataset "target/sample-yahoo")
+</code></pre><pre><code class="text">Warning: ZZZZ has no prices: No data found, symbol may be delisted
+Warning: BETA: 7 report dates are estimated from the reporting lag
+"Date range: 2022-01-03 ~ 2025-01-01; Fundamentals: 5 securities, 33 reports, 1 FX series"
+</code></pre><p>The warnings are expected: they say what the build could not do exactly. ZZZZ is left out, and seven of BETA's reports are dated by an assumed reporting lag, because Yahoo gave no date for them (see <a href="#report-dates">Report dates</a>).</p><pre><code class="clojure">(init-portfolio "2024-11-15" 100000)
+(available-permnos)
+;; =&gt; ("ALFA" "BETA" "DLTA" "GAMA" "IDX")
+</code></pre><h2 id="downloading">Downloading</h2><p><code>download-yahoo!</code> fetches each ticker in turn, two at a time by default, and prints a line per ticker saying whether it worked. For each one it saves:</p><ul><li>the daily bars (open, high, low, close, volume) with dividends and splits, from <code>:start</code> up to today;</li><li>for companies (Yahoo's instrument type <code>EQUITY</code>): annual, quarterly and trailing twelve-month values of the statement fields in <a href="#default-fields"><code>default-fields</code></a>, Yahoo's earnings history and its earnings announcement dates.</li></ul><p>Indices, ETFs and currencies have prices only. After the tickers, it fetches the exchange rates needed to convert statements reported in another currency than the one the security trades in, such as <code>EURUSD=X</code> for a company that reports in euros and trades in dollars.</p><p>It returns what happened:</p><pre><code class="clojure">{:downloaded ["AAPL" "MSFT" ...]   ; tickers fetched now
+ :skipped    []                    ; already downloaded today
+ :failed     {"XYZ" {...}}         ; tickers whose prices failed, with Yahoo's error
+ :fx         [["EUR" "USD"] ...]}  ; exchange rates fetched
+</code></pre><h3 id="resuming-and-updating">Resuming and updating</h3><p>A ticker that was already downloaded today (in UTC) is skipped, so when a download is interrupted, run the same call again and it carries on where it stopped. <code>:force? true</code> downloads again anyway.</p><p>A ticker that <strong>failed</strong>, for example because Yahoo rate-limited the request, is saved too, with its error, so a rerun on the same day skips it as well. Retry the failures with <code>:force?</code>:</p><pre><code class="clojure">(def result (download-yahoo! "data/tech" ["AAPL" "MSFT" "NVDA" "GOOGL" "SPY"] :start "2015-01-01"))
+(download-yahoo! "data/tech" (keys (:failed result)) :start "2015-01-01" :force? true)
+</code></pre><p><code>:failed</code> lists the tickers whose prices failed. A ticker whose prices arrived but whose statements did not is not in it; its progress line names the parts with errors.</p><p>Each download adds a new snapshot instead of replacing the old one, and the build merges them. That matters for fundamentals: Yahoo only shows about four fiscal years and five quarters at a time, so <strong>downloading again every quarter makes the history grow</strong> beyond what Yahoo shows on any one day.</p><blockquote><p><strong>Watch out:</strong> Yahoo's endpoints are unofficial. They are undocumented, rate-limited, and may change. Keep the defaults of two tickers at a time with 300 ms between requests, and check Yahoo's terms before using the data commercially.</p></blockquote><h3 id="download-options">Download options</h3><table><thead><tr><th>Option</th><th>Default</th><th>Meaning</th></tr></thead><tbody><tr><td><code>:start</code></td><td>all history</td><td>First date of the price history, <code>"yyyy-MM-dd"</code>. Prices always run up to today; end the dataset earlier with the build's <code>:end</code></td></tr><tr><td><code>:fundamentals?</code></td><td><code>true</code></td><td>Also fetch statements and earnings dates. <code>false</code> downloads prices only, which is quicker</td></tr><tr><td><code>:fields</code></td><td><code>default-fields</code></td><td>Yahoo statement fields to fetch, or <code>:all</code> for every field clj-yfinance knows</td></tr><tr><td><code>:concurrency</code></td><td><code>2</code></td><td>Tickers downloaded at the same time</td></tr><tr><td><code>:pause-ms</code></td><td><code>300</code></td><td>Pause between two requests of one thread, in milliseconds</td></tr><tr><td><code>:force?</code></td><td><code>false</code></td><td>Download again even if done today</td></tr></tbody></table><p>Why do prices always run up to today? Yahoo divides old prices by every split up to today, but only returns the splits inside the requested range. A range that ended earlier could not be turned back into the prices that were actually traded.</p><h2 id="building">Building</h2><p><code>build-yahoo-dataset!</code> reads every snapshot under <code>&lt;dir&gt;/raw</code> and writes three things into <code>&lt;dir&gt;</code>, or into <code>:out-dir</code> when given:</p><table><thead><tr><th>Output</th><th>Contents</th></tr></thead><tbody><tr><td><code>main/</code></td><td>The main dataset: one row per security and trading day, in the CRSP layout, already furnished with the adjusted prices</td></tr><tr><td><code>fundamentals.edn</code></td><td>The point-in-time fundamentals and the exchange rates</td></tr><tr><td><code>dataset.edn</code></td><td>What was built: coverage per security, the options and the warnings. Read it back with <a href="#dataset-info"><code>dataset-info</code></a></td></tr></tbody></table><p>It prints the warnings and returns the contents of <code>dataset.edn</code>.</p><h3 id="the-main-dataset">The main dataset</h3><p>The rows have the CRSP columns the backtester knows, so orders, dividends, splits and indicators work exactly as with CRSP data:</p><table><thead><tr><th>Column</th><th>Meaning</th></tr></thead><tbody><tr><td><code>:PERMNO</code>, <code>:TICKER</code></td><td>The ticker, used as the security id</td></tr><tr><td><code>:PRC</code>, <code>:OPENPRC</code>, <code>:BIDLO</code>, <code>:ASKHI</code></td><td>Close, open, low and high, as traded on the day</td></tr><tr><td><code>:VOL</code></td><td>Volume, in shares of the day</td></tr><tr><td><code>:DIVAMT</code></td><td>Cash dividend per share going ex on this day, as paid</td></tr><tr><td><code>:RET</code>, <code>:RETX</code></td><td>Total return (dividends included, at the ex-date) and the return without dividends</td></tr><tr><td><code>:CFACPR</code>, <code>:CFACSHR</code></td><td>The product of the later splits: how many of today's shares one share of that day has become</td></tr><tr><td><code>:CURRENCY</code></td><td>The quote currency, such as <code>"USD"</code></td></tr><tr><td><code>:APRC</code>, <code>:INIT-PRICE</code>, <code>:CUM-RET</code></td><td>The adjusted price and its helper columns, so <code>add-aprc</code> is not needed</td></tr></tbody></table><p>Trading dates are taken in the exchange's time zone. The download day itself is left out, because its trading session may not have ended.</p><h3 id="prices-as-traded">Prices as traded</h3><p>Yahoo quotes every old price divided by all later splits, so on its charts ALFA never cost more than about $120. The build restores the prices as they were traded, and records the split in <code>:CFACPR</code>. On the day of ALFA's 4-for-1 split the price drops to a quarter, but the total return <code>:RET</code> and the adjusted price <code>:APRC</code> do not jump:</p><pre><code class="clojure">(for [date ["2024-07-30" "2024-07-31" "2024-08-01" "2024-08-02"]]
+  (select-keys (get-permno-info date "ALFA") [:date :PRC :CFACPR :RET :DIVAMT :APRC]))
+</code></pre><pre><code class="text">({:date "2024-07-30", :PRC 393.5576, :CFACPR 4.0, :RET -0.008683018442094403, :DIVAMT 0.0, :APRC 397.58620611357276}
+ {:date "2024-07-31", :PRC 382.4636, :CFACPR 4.0, :RET -0.02818901223099235, :DIVAMT 0.0, :APRC 386.37864368656335}
+ {:date "2024-08-01", :PRC 93.9474, :CFACPR 1.0, :RET -0.017450026616911973, :DIVAMT 0.0, :APRC 379.6363260700265}
+ {:date "2024-08-02", :PRC 93.4705, :CFACPR 1.0, :RET -0.005076244792298623, :DIVAMT 0.0, :APRC 377.7091991468461})
+</code></pre><p>Dividends are restated the same way. ALFA pays $0.40 a quarter before the split and $0.10 after it, the same amount per original share:</p><pre><code class="clojure">(select-keys (get-permno-info "2024-05-16" "ALFA") [:date :PRC :DIVAMT :CFACPR :RET :RETX])
+;; =&gt; {:date "2024-05-16", :PRC 370.6972, :DIVAMT 0.4, :CFACPR 4.0, :RET -0.0017431294338166037, :RETX -0.0028191352571600437}
+(select-keys (get-permno-info "2024-08-15" "ALFA") [:date :PRC :DIVAMT :CFACPR :RET :RETX])
+;; =&gt; {:date "2024-08-15", :PRC 98.8489, :DIVAMT 0.1, :CFACPR 1.0, :RET 0.020163269177633003, :RETX 0.019132269066284957}
+</code></pre><p>Traded prices matter because a strategy that orders 100 shares should pay what 100 shares cost at the time. They also mean that indicators, which use the raw price, see a split as a crash, as with CRSP data; see <a href="/clojure-backtesting-website/posts/concepts/#prices-raw-and-adjusted">Prices: raw and adjusted</a>.</p><h3 id="report-dates">Report dates</h3><p>A statement value is only useful in a backtest together with the date it became public. The build gives every reported period a <strong>public date</strong>, the first trading day a strategy may use its numbers, from the best source available:</p><table><thead><tr><th>Source</th><th>Used when</th><th><code>:report-date-source</code></th></tr></thead><tbody><tr><td>Yahoo's earnings history</td><td>Yahoo pairs the period with its report date</td><td><code>:earnings-history</code></td></tr><tr><td>Yahoo's earnings announcements</td><td>The first earnings announcement within 100 days after the period end</td><td><code>:announcement</code></td></tr><tr><td>An assumed reporting lag</td><td>Neither is known: 45 days after a quarter, 90 after a fiscal year (also for the quarter that ends a fiscal year)</td><td><code>:lag</code></td></tr></tbody></table><p>Some details:</p><ul><li>An announcement <strong>after the market close</strong> counts from the next trading day. So does one without a time, to be safe. The close is 16:00 local time for most exchanges, and earlier for Tokyo, Shanghai, Seoul, Taipei, Mumbai, Karachi and Manila. An announcement before the open, or at a known time before the close, counts from the same day.</li><li>A public date on a weekend or holiday moves to the next trading day.</li><li>The lag is roughly the SEC's filing deadline. For US large caps it is later than the real report, so estimated dates err on the safe side. For markets that report more slowly, pass a longer <code>:report-lag-days</code>.</li></ul><p>The <a href="/clojure-backtesting-website/posts/concepts/#fundamentals-as-they-were-known">Key Concepts</a> page has a diagram of a report date. <a href="/clojure-backtesting-website/posts/fundamentals/#fundamental-info"><code>fundamental-info</code></a> tells you where a value's date came from.</p><h3 id="snapshots-and-restatements">Snapshots and restatements</h3><p>When a ticker has several snapshots, the build merges them. Values are rebased to one share basis across splits, so a quarter downloaded before ALFA's split and after it agree. When Yahoo has <strong>restated</strong> a value between two downloads, the build keeps the first version by default (<code>:vintage :first</code>), the one closest to what was originally reported. <code>:vintage :latest</code> keeps the newest. ALFA's net income for the fourth quarter of 2023 was restated in the sample:</p><pre><code class="clojure">(build-yahoo-dataset! "resources/sample-yahoo" :out-dir "target/sample-yahoo-latest" :vintage :latest)
+(load-yahoo-dataset "target/sample-yahoo-latest")
+(init-portfolio "2024-03-01" 100000)
+(fundamental "ALFA" :net-income :quarterly)
+;; =&gt; 5.8801916250000015E7    with the default :vintage :first, 5.7648937500000015E7
+</code></pre><p>Within a single download, values are as Yahoo shows them today, which may already include restatements.</p><h3 id="build-options">Build options</h3><table><thead><tr><th>Option</th><th>Default</th><th>Meaning</th></tr></thead><tbody><tr><td><code>:out-dir</code></td><td>the input directory</td><td>Where to write <code>main/</code>, <code>fundamentals.edn</code> and <code>dataset.edn</code></td></tr><tr><td><code>:start</code>, <code>:end</code></td><td>all dates</td><td>Keep only price rows within these dates, <code>"yyyy-MM-dd"</code></td></tr><tr><td><code>:report-lag-days</code></td><td><code>{:quarterly 45 :annual 90 :trailing 45}</code></td><td>Days after the period end assumed when Yahoo has no report date</td></tr><tr><td><code>:after-close-hour</code></td><td>the exchange's close, 16 for most</td><td>Local hour from which an announcement counts from the next day</td></tr><tr><td><code>:vintage</code></td><td><code>:first</code></td><td><code>:first</code> or <code>:latest</code>, for values Yahoo restated between downloads</td></tr><tr><td><code>:allow-mixed-currencies?</code></td><td><code>false</code></td><td>Build even though the securities trade in different currencies; see <a href="#currencies">Currencies</a></td></tr></tbody></table><p>A longer reporting lag pushes BETA's estimated dates later. With 60 days instead of 45, on 2024-11-15 its third quarter is not public yet, and the second quarter is the latest:</p><pre><code class="clojure">(build-yahoo-dataset! "resources/sample-yahoo" :out-dir "target/sample-yahoo-lag"
+                      :report-lag-days {:quarterly 60 :annual 120 :trailing 60})
+(load-yahoo-dataset "target/sample-yahoo-lag")
+(init-portfolio "2024-11-15" 100000)
+(select-keys (fundamental-info "BETA" :net-income :quarterly) [:period-end :public-date :report-date-source])
+;; =&gt; {:period-end "2024-06-30", :public-date "2024-08-29", :report-date-source :lag}
+</code></pre><p>With the default lag, the same call returns the quarter ending 2024-09-30, public on 2024-11-14. <code>:start</code> and <code>:end</code> cut the price history:</p><pre><code class="clojure">(:date-range (build-yahoo-dataset! "resources/sample-yahoo" :out-dir "target/sample-yahoo-2024"
+                                   :start "2024-01-01" :end "2024-06-30"))
+;; =&gt; ["2024-01-01" "2024-06-28"]
+</code></pre><p>A range without any prices is an error: <code>"No prices between 2030-01-01 and the end."</code></p><h3 id="what-was-built">What was built</h3><p><code>dataset.edn</code> records the coverage of every security, how its report dates were found, and the warnings. Part of it for the sample:</p><pre><code class="clojure">(get-in (dataset-info "target/sample-yahoo") [:securities "ALFA"])
+</code></pre><pre><code class="text">{:first-date "2022-01-03",
+ :last-date "2025-01-01",
+ :days 783,
+ :currency "USD",
+ :reporting-currency "USD",
+ :snapshots 2,
+ :fundamentals {:periods 13,
+                :values 213,
+                :restated 1,
+                :report-sources {:earnings-history 9, :announcement 4}}}
+</code></pre><p>ALFA has 13 reported periods with 213 values, one of them restated between its two downloads, and every report date came from Yahoo. The <code>:warnings</code> are the ones the build printed, as data:</p><pre><code class="clojure">(:warnings (dataset-info "target/sample-yahoo"))
+</code></pre><pre><code class="text">[{:type :no-prices, :ticker "ZZZZ",
+  :error {:type :http-error, :status 404, :message "No data found, symbol may be delisted"}}
+ {:type :estimated-report-dates, :ticker "BETA", :periods 7}]
+</code></pre><p>A third kind, <code>:missing-fx</code>, names an exchange rate that is needed but was not downloaded.</p><h2 id="loading">Loading</h2><p><code>load-yahoo-dataset</code> loads <code>&lt;dir&gt;/main</code> as the main dataset and <code>&lt;dir&gt;/fundamentals.edn</code> as the fundamentals. A Compustat-style dataset loaded earlier is unloaded, because it belongs to another universe of securities. Then start a portfolio as usual:</p><pre><code class="clojure">(load-yahoo-dataset "target/sample-yahoo")
+;; =&gt; "Date range: 2022-01-03 ~ 2025-01-01; Fundamentals: 5 securities, 33 reports, 1 FX series"
+(init-portfolio "2023-01-03" 100000)
+</code></pre><p>From here, the <a href="/clojure-backtesting-website/posts/fundamentals/">Fundamentals</a> functions answer what was known on each day, and the <a href="/clojure-backtesting-website/posts/strategy/">Strategy Helpers</a> rank securities and rebalance to target weights. The <a href="/clojure-backtesting-website/posts/examples/example-value-strategy/">Value Strategy</a> example puts it all together.</p><h2 id="currencies">Currencies</h2><p><strong>One currency per portfolio.</strong> The backtester adds up cash and positions as plain numbers, so it cannot mix dollars and euros. The build refuses securities quoted in different currencies, and asks you to build one dataset per currency. <code>:allow-mixed-currencies? true</code> builds anyway, for strategies that never hold more than one of them at a time.</p><p><strong>Statements in another currency.</strong> Many companies report in a different currency than the one their shares trade in, for example European companies listed in New York. Their values are converted into the trading currency at the previous day's exchange rate, since a day's exchange rate closes after many stock markets do. GAMA reports in euros and trades in dollars:</p><pre><code class="clojure">(init-portfolio "2024-11-15" 100000)
+(select-keys (fundamental-info "GAMA" :total-revenue) [:value :currency :reported-value :reported-currency])
+;; =&gt; {:value 2.8602568584212475E9, :currency "USD", :reported-value 2.40873877504E9, :reported-currency "EUR"}
+</code></pre><p>Without the exchange rate, such values are <code>nil</code> rather than wrong, and the build warns about the missing rate.</p><p><strong>Pence and cents.</strong> London quotes most shares in pence (<code>GBp</code>), Johannesburg in cents. Prices stay as quoted, so <code>:PRC</code> is in pence, but fundamentals and ratios are stated in the major unit (pounds), and ratios such as P/E take the unit into account.</p><h2 id="limits-of-the-data">Limits of the data</h2><p>Free data has catches. Keep them in mind when you read a result:</p><ul><li><strong>Survivorship bias.</strong> Yahoo only has securities that still trade. A universe chosen today leaves out the companies that failed or were taken over, which are often the ones a strategy would have lost money on. Treat results as optimistic.</li><li><strong>Short fundamentals history.</strong> Yahoo shows about four fiscal years and five quarters at a time, so fundamentals start roughly three and a half years before the download, while prices go back decades. Start a fundamentals strategy once its universe has data, or it trades on the few companies that report first. Downloading every quarter extends the history.</li><li><strong>Restated, not as first reported.</strong> Within one download, values are as Yahoo has them today, possibly after later corrections.</li><li><strong>Estimated report dates.</strong> Where Yahoo has no date, a reporting lag is assumed. The build warns about each such security, and <code>fundamental-info</code> flags each such value.</li><li><strong>Share classes.</strong> For a few companies with several share classes, Yahoo counts shares in another class than the one quoted (Berkshire Hathaway's B shares in A equivalents). The library checks the share count against net income over EPS, and if they disagree more than twofold it warns and leaves out the ratios on market value.</li><li><strong>Unofficial API.</strong> See the warning under <a href="#resuming-and-updating">Resuming and updating</a>.</li></ul><h2 id="function-reference">Function reference</h2><p>All of these are in <code>clojure-backtesting.yahoo</code>.</p><h3 id="download-yahoo"><code>download-yahoo!</code></h3><p><code>(download-yahoo! dir tickers &amp; options)</code></p><p>Downloads <code>tickers</code> (a sequence of strings, such as <code>["AAPL" "^GSPC" "BRK-B"]</code>) into <code>&lt;dir&gt;/raw</code>, plus the exchange rates their statements need. Options are listed under <a href="#download-options">Download options</a>. Returns <code>{:downloaded :skipped :failed :fx}</code>.</p><h3 id="build-yahoo-dataset"><code>build-yahoo-dataset!</code></h3><p><code>(build-yahoo-dataset! dir &amp; options)</code></p><p>Builds <code>main/</code>, <code>fundamentals.edn</code> and <code>dataset.edn</code> from the snapshots in <code>&lt;dir&gt;/raw</code>, offline. Options are listed under <a href="#build-options">Build options</a>. Prints the warnings and returns the dataset description. Throws when no security has prices, when the securities trade in different currencies (unless allowed), or when <code>:start</code> and <code>:end</code> leave no prices.</p><h3 id="load-yahoo-dataset"><code>load-yahoo-dataset</code></h3><p><code>(load-yahoo-dataset dir)</code></p><p>Loads a built dataset: its prices as the main dataset and its fundamentals. Unloads a Compustat-style dataset. Returns a description of the date range and the fundamentals.</p><h3 id="yahoo-dataset"><code>yahoo-dataset!</code></h3><p><code>(yahoo-dataset! dir tickers &amp; options)</code></p><p>Downloads, builds and loads in one call. Takes the options of <code>download-yahoo!</code> and <code>build-yahoo-dataset!</code>, and prints the tickers that could not be downloaded.</p><pre><code class="clojure">(yahoo-dataset! "data/banks" ["JPM" "BAC" "WFC" "C" "XLF"] :start "2018-01-01")
+</code></pre><h3 id="dataset-info"><code>dataset-info</code></h3><p><code>(dataset-info dir)</code></p><p>The description <code>build-yahoo-dataset!</code> wrote to <code>&lt;dir&gt;/dataset.edn</code>: <code>:date-range</code>, <code>:securities</code> (per ticker: first and last date, number of days, currency, reporting currency, number of snapshots and a summary of its fundamentals), <code>:fx-pairs</code>, <code>:options</code> and <code>:warnings</code>.</p><h3 id="default-fields"><code>default-fields</code></h3><p>The 54 Yahoo statement fields downloaded unless <code>:fields</code> says otherwise: the inputs of every <a href="/clojure-backtesting-website/posts/fundamentals/#ratios">ratio</a> and of most textbook factors. They include <code>TotalRevenue</code>, <code>GrossProfit</code>, <code>OperatingIncome</code>, <code>EBITDA</code>, <code>NetIncome</code>, <code>DilutedEPS</code>, <code>TotalAssets</code>, <code>CurrentAssets</code>, <code>CurrentLiabilities</code>, <code>TotalDebt</code>, <code>LongTermDebt</code>, <code>StockholdersEquity</code>, <code>CommonStockEquity</code>, <code>OrdinarySharesNumber</code>, <code>OperatingCashFlow</code>, <code>CapitalExpenditure</code>, <code>FreeCashFlow</code> and <code>CashDividendsPaid</code>. In the fundamentals they are spelled in kebab case: <code>:total-revenue</code>, <code>:diluted-eps</code>, and so on.</p><h3 id="regenerating-the-sample">Regenerating the sample</h3><p><code>lein run -m clojure-backtesting.sample-yahoo</code> rewrites the synthetic snapshots in <code>resources/sample-yahoo</code>. They are generated from fixed random seeds, so the result is the same every time.</p>
+    </div>
+    <nav class="pager" aria-label="Previous and next page"></nav>
+</article>
+
+
+
+        <footer class="site-footer">
+            <p>Clojure Backtesting is open source under the MIT License and developed at HKU Business School.</p>
+            <p>
+                <a href="https://github.com/clojure-finance/clojure-backtesting" rel="external">Source code</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Issues</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting-website" rel="external">Edit this site</a>
+                <span aria-hidden="true">·</span>
+                Built with <a href="http://cryogenweb.org" rel="external">Cryogen</a>
+            </p>
+        </footer>
+    </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js"></script>
+<script src="/clojure-backtesting-website/js/site.js" type="application/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Strategy Helpers · Clojure Backtesting</title>
+    
+<meta name="description" content="Calendar triggers, ranking and screening, and orders that target a fraction of the portfolio: the building blocks of strategies that pick from many securities.">
+<meta property="og:title" content="Strategy Helpers">
+<meta property="og:description" content="Calendar triggers, ranking and screening, and orders that target a fraction of the portfolio: the building blocks of strategies that pick from many securities.">
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/strategy/">
+<meta property="og:type" content="article">
+
+    <link rel="icon" type="image/svg+xml" href="/clojure-backtesting-website/img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="doc-page">
+
+<header class="site-header">
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <a class="brand" href="/clojure-backtesting-website/">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+            <defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f6fdb"/><stop offset="1" stop-color="#16a34a"/></linearGradient></defs>
+            <rect width="32" height="32" rx="8" fill="url(#bm)"/>
+            <path d="M6 22.5 L12 16 L16.5 19.5 L25.5 9.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="25.5" cy="9.5" r="2.2" fill="#fff"/>
+        </svg>
+        <span class="brand-name">Clojure Backtesting</span>
+    </a>
+    <span class="version" title="Library version these docs describe">v1.1.3</span>
+    <nav class="header-links" aria-label="External">
+        <a href="/clojure-backtesting-website/posts/examples/">Examples</a>
+        <a href="https://github.com/clojure-finance/clojure-backtesting" class="github" rel="external">
+            <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            <span>GitHub</span>
+        </a>
+    </nav>
+</header>
+
+<div class="layout">
+    <aside class="sidebar" id="sidebar">
+        <nav class="side-nav" aria-label="Documentation">
+            <p class="nav-group">Introduction</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/">Overview</a></li>
+                <li><a href="/clojure-backtesting-website/pages/about/">Why Clojure?</a></li>
+            </ul>
+            <p class="nav-group">Learn</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+                <li><a href="/clojure-backtesting-website/posts/concepts/">Key Concepts</a></li>
+                <li><a href="/clojure-backtesting-website/posts/user-guide/">Data and Trading Rules</a></li>
+                <li><a href="/clojure-backtesting-website/posts/yahoo-data/">Yahoo Finance Data</a></li>
+            </ul>
+            <p class="nav-group">API Reference</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/cheat-sheet/">Cheat Sheet</a></li>
+                <li><a href="/clojure-backtesting-website/posts/api/">Core API</a></li>
+                <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio</a></li>
+                <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation and Plots</a></li>
+                <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+                <li><a href="/clojure-backtesting-website/posts/fundamentals/">Fundamentals</a></li>
+                <li><a href="/clojure-backtesting-website/posts/strategy/">Strategy Helpers</a></li>
+                <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
+                <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
+            </ul>
+            <p class="nav-group">Examples</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/examples/">All Examples</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-golden-cross/">Golden Cross</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-bollinger-bands/">Bollinger Bands</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-buying-on-margin/">Buying on Margin</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-fundamental-analysis/">Fundamental Analysis</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-value-strategy/">Value Strategy</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-quality-and-earnings/">Quality and Earnings</a></li>
+                <li><a href="/clojure-backtesting-website/posts/recipes/">Strategy Recipes</a></li>
+            </ul>
+            <p class="nav-group">Help</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/faq/">FAQ and Troubleshooting</a></li>
+                <li><a href="/clojure-backtesting-website/posts/release-notes/">Release Notes</a></li>
+                <li><a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Report an Issue</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <div class="nav-backdrop" hidden></div>
+
+    <main class="main" id="main">
+        
+<article class="doc has-toc">
+    <header class="doc-header">
+        <p class="eyebrow">API Reference</p>
+        <h1>Strategy Helpers</h1>
+        <p class="lead">Calendar triggers, ranking and screening, and orders that target a fraction of the portfolio: the building blocks of strategies that pick from many securities.</p>
+    </header>
+    
+    <details class="page-toc" open>
+        <summary>On this page</summary>
+        <ol class="toc"><li><a href="#when-to-trade">When to trade</a></li><ol><li><a href="#new-period"><code>new-period?</code></a></li></ol><li><a href="#ranking-and-screening">Ranking and screening</a></li><ol><li><a href="#rank-by"><code>rank-by</code></a></li><li><a href="#top-n"><code>top-n</code></a></li></ol><li><a href="#weights">Weights</a></li><ol><li><a href="#equal-weights"><code>equal-weights</code></a></li></ol><li><a href="#target-orders">Target orders</a></li><ol><li><a href="#order-target-percent"><code>order-target-percent</code></a></li><li><a href="#rebalance"><code>rebalance</code></a></li><li><a href="#portfolio-equity-and-target-quantity"><code>portfolio-equity</code> and <code>target-quantity</code></a></li></ol><li><a href="#things-to-know">Things to know</a></li></ol>
+    </details>
+    
+    <div class="doc-body">
+        <p>The strategies on the other pages mostly watch one security and trade a number of shares when a signal fires. Many real strategies are <em>cross-sectional</em> instead: every month or quarter they rank a universe of securities, hold the best ones, and give each a target share of the portfolio. <code>clojure-backtesting.strategy</code> turns that into a few lines:</p><pre><code class="clojure">(while (neg? (compare (get-date) "2024-12-31"))
+  (when (new-period? :month)                                   ; on the first trading day of each month
+    (rebalance (equal-weights (top-n earnings-yield 2))))       ; hold the two cheapest, half each
+  (next-date)
+  (update-eval-report))
+(end-order)
+</code></pre><p>The examples run on the library's synthetic <a href="/clojure-backtesting-website/posts/yahoo-data/#try-it-offline">Yahoo sample</a>, from 2024-11-15:</p><pre><code class="clojure">(build-yahoo-dataset! "resources/sample-yahoo" :out-dir "target/sample-yahoo")
+(load-yahoo-dataset "target/sample-yahoo")
+(init-portfolio "2024-11-15" 100000)
+</code></pre><p>The helpers do not need Yahoo data: ranking works with any function of a security, such as an <a href="/clojure-backtesting-website/posts/indicators/">indicator</a>, and the order functions work on any dataset.</p><h2 id="when-to-trade">When to trade</h2><h3 id="new-period"><code>new-period?</code></h3><p><code>(new-period? unit)</code></p><p>True on the first trading day of a new <code>:week</code>, <code>:month</code>, <code>:quarter</code> or <code>:year</code> in the dataset, and on the first day of the run, so that a strategy invests at once instead of waiting for the next period. "First trading day" means the first date in the dataset, so holidays are handled.</p><pre><code class="clojure">(map new-period? [:week :month :quarter :year])
+;; =&gt; (true true true true)      2024-11-15 is the first day of the run
+(next-date)
+;; =&gt; "2024-11-18"
+(map new-period? [:week :month :quarter :year])
+;; =&gt; (true false false false)   a Monday
+</code></pre><p>Any other unit throws: <code>"Unknown period :day, expected :week, :month, :quarter or :year."</code> To trade every day, just leave out the check.</p><h2 id="ranking-and-screening">Ranking and screening</h2><h3 id="rank-by"><code>rank-by</code></h3><p><code>(rank-by f &amp; options)</code></p><p>Ranks securities by <code>(f permno)</code>, highest first, as <code>[[permno value] ...]</code>. Securities for which <code>f</code> returns <code>nil</code>, or a value that is not a finite number, are left out, so <code>f</code> can simply return <code>nil</code> when it has no opinion.</p><table><thead><tr><th>Option</th><th>Default</th><th>Meaning</th></tr></thead><tbody><tr><td><code>:universe</code></td><td><code>(available-permnos)</code></td><td>The securities to rank</td></tr><tr><td><code>:ascending</code></td><td><code>false</code></td><td><code>true</code> ranks the lowest value first</td></tr></tbody></table><pre><code class="clojure">(rank-by earnings-yield)
+;; =&gt; [["ALFA" 0.05366868843586461] ["BETA" 0.03332584981650266] ["GAMA" 0.027329231371534268]]
+(rank-by pe-ratio :ascending true)
+;; =&gt; [["ALFA" 18.632838423003843] ["BETA" 30.006736677568803] ["GAMA" 36.59085710846539]]
+(rank-by book-to-market :universe ["ALFA" "BETA" "DLTA"])
+;; =&gt; [["BETA" 0.39307591783985635] ["ALFA" 0.33069281706309384]]
+</code></pre><p>DLTA and IDX have no statements, so the ratios are <code>nil</code> for them and they drop out. Ties are broken by permno, so results are reproducible.</p><h3 id="top-n"><code>top-n</code></h3><p><code>(top-n f n &amp; options)</code></p><p>The permnos of the <code>n</code> securities with the highest <code>(f permno)</code>, or the lowest with <code>:ascending true</code>. Takes the options of <code>rank-by</code>.</p><pre><code class="clojure">(top-n earnings-yield 2)                 ;; =&gt; ["ALFA" "BETA"]
+(top-n pe-ratio 1 :ascending true)       ;; =&gt; ["ALFA"]
+</code></pre><p>To screen before ranking, filter the universe first. For example, the cheapest companies among those with a return on equity above 10%:</p><pre><code class="clojure">(top-n earnings-yield 2
+       :universe (filter #(some-&gt; (return-on-equity %) (&gt; 0.10)) (available-permnos)))
+;; =&gt; ["ALFA" "GAMA"]
+</code></pre><p>Any function of a permno works, including your own. The <a href="/clojure-backtesting-website/posts/recipes/">Strategy Recipes</a> page ranks by momentum computed from adjusted prices, and combines several ratios into one score.</p><h2 id="weights">Weights</h2><p>A target portfolio is a map from permno to its fraction of equity, such as <code>{"ALFA" 0.5 "BETA" 0.5}</code>. What the weights leave over stays in cash; weights above 1 in total borrow cash, and a negative weight is a short position.</p><h3 id="equal-weights"><code>equal-weights</code></h3><p><code>(equal-weights permnos)</code></p><p><code>{permno 1/n}</code> for the given securities; duplicates count once, and no securities give <code>{}</code>.</p><pre><code class="clojure">(equal-weights ["ALFA" "GAMA"])   ;; =&gt; {"ALFA" 0.5, "GAMA" 0.5}
+(equal-weights [])                ;; =&gt; {}
+</code></pre><p>Other weightings are ordinary Clojure. Market-cap weights, for example:</p><pre><code class="clojure">(defn cap-weights [permnos]
+  (let [caps (into {} (keep (fn [p] (when-let [c (market-cap p)] [p c]))) permnos)
+        total (reduce + (vals caps))]
+    (update-vals caps #(/ % total))))
+
+(cap-weights (available-permnos))
+;; =&gt; {"ALFA" 0.23022370075470155, "BETA" 0.11010479921892811, "GAMA" 0.6596715000263703}
+</code></pre><h2 id="target-orders">Target orders</h2><h3 id="order-target-percent"><code>order-target-percent</code></h3><p><code>(order-target-percent permno weight &amp; options)</code></p><p>Orders <code>permno</code> so that it becomes <code>weight</code> of today's equity, at today's price. Like every order, it fills at the next close, and the trade is the difference to the holding at that time, so calling it for a security you already hold only trades the difference. Returns the target quantity, or <code>nil</code> (and orders nothing) when the security has no price today.</p><table><thead><tr><th>Option</th><th>Default</th><th>Meaning</th></tr></thead><tbody><tr><td><code>:whole-shares?</code></td><td><code>false</code></td><td>Round the target toward zero to whole shares</td></tr><tr><td><code>:expiration</code>, <code>:leverage</code>, <code>:print</code>, <code>:direct</code></td><td>as for <a href="/clojure-backtesting-website/posts/api/#order"><code>order</code></a></td><td>Passed on to the order</td></tr></tbody></table><p>On 2024-11-15, with $100,000 of equity and DLTA at $44.5727:</p><pre><code class="clojure">(order-target-percent "DLTA" 0.1 :whole-shares? true)   ;; =&gt; 224.0
+(order-target-percent "NOPE" 0.1)                       ;; =&gt; nil, no price today
+</code></pre><h3 id="rebalance"><code>rebalance</code></h3><p><code>(rebalance weights &amp; options)</code></p><p>Targets the whole portfolio: every security in <code>weights</code> gets an <code>order-target-percent</code>, and every holding <strong>not</strong> in <code>weights</code> is closed. Takes the options of <code>order-target-percent</code>, and returns <code>{permno target-quantity}</code> for the securities in <code>weights</code> that have a price today; the orders that close other holdings are not in it.</p><pre><code class="clojure">(init-portfolio "2024-11-15" 100000)
+(rebalance (equal-weights (top-n earnings-yield 2)))
+;; =&gt; {"ALFA" 433.93511455019154, "BETA" 3318.180309918041}
+(next-date)
+(print-portfolio)
+</code></pre><pre><code class="text">| :asset |   :price |    :aprc | :quantity | :tot-val |
+|--------+----------+----------+-----------+----------|
+|   cash |      N/A |      N/A |       N/A |  2574.15 |
+|   ALFA | 112.0239 | 453.5382 |  433.9351 | 48611.10 |
+|   BETA |  14.7113 |  14.7113 | 3318.1803 | 48814.75 |
+</code></pre><p>The next day, a new target without BETA sells all of BETA, trims ALFA and buys GAMA. Sales fill before purchases, so their proceeds pay for GAMA:</p><pre><code class="clojure">(rebalance {"ALFA" 0.3 "GAMA" 0.3})
+;; =&gt; {"ALFA" 267.79999625080006, "GAMA" 371.1507032687242}
+(next-date)
+(print-order-record)
+</code></pre><pre><code class="text">|      :date | :permno |   :price |  :aprc |  :quantity |
+|------------+---------+----------+--------+------------|
+| 2024-11-18 |    ALFA | 112.0239 | 453.54 |   433.9351 |
+| 2024-11-18 |    BETA |  14.7113 |  14.71 |  3318.1803 |
+| 2024-11-19 |    ALFA | 111.8384 | 452.79 |  -166.1351 |
+| 2024-11-19 |    BETA |  14.9191 |  14.92 | -3318.1803 |
+| 2024-11-19 |    GAMA |  80.0449 |  80.04 |   371.1507 |
+</code></pre><p>A negative weight sells short, within the <a href="/clojure-backtesting-website/posts/concepts/#long-short-and-borrowed-money">margin rules</a>. Half long ALFA, half short GAMA:</p><pre><code class="clojure">(init-portfolio "2024-11-15" 100000)
+(rebalance {"ALFA" 0.5 "GAMA" -0.5})
+;; =&gt; {"ALFA" 433.93511455019154, "GAMA" -597.1760737822982}
+(next-date)
+(print-portfolio)
+</code></pre><pre><code class="text">| :asset |   :price |    :aprc | :quantity |  :tot-val |
+|--------+----------+----------+-----------+-----------|
+|   cash |      N/A |      N/A |       N/A |  99658.46 |
+|   GAMA |  80.8297 |  80.8297 | -597.1761 | -48269.56 |
+|   ALFA | 112.0239 | 453.5382 |  433.9351 |  48611.10 |
+</code></pre><h3 id="portfolio-equity-and-target-quantity"><code>portfolio-equity</code> and <code>target-quantity</code></h3><p><code>(portfolio-equity)</code> is the portfolio's equity as last valued: today's close once <code>next-date</code> has run, or the starting capital on the first day. <code>(target-quantity permno weight whole-shares?)</code> is the number of shares <code>order-target-percent</code> would aim for, without ordering.</p><pre><code class="clojure">(portfolio-equity)                      ;; =&gt; 100000.0
+(target-quantity "ALFA" 0.25 false)     ;; =&gt; 223.1666635423334
+(target-quantity "ALFA" 0.25 true)      ;; =&gt; 223.0
+</code></pre><h2 id="things-to-know">Things to know</h2><p><strong>Weights drift between sizing and filling.</strong> Targets are sized at today's close, but the orders fill at the next close. In the first <code>rebalance</code> above, both prices fell overnight, so $2,574 of the $100,000 stayed in cash. When prices rise instead, the purchases cost a little more than the cash available, and the portfolio borrows the difference.</p><p><strong>A fully invested rebalance can fail a purchase.</strong> Borrowing to buy must meet the <a href="/clojure-backtesting-website/posts/parameters/#initial-margin">initial margin</a>: with the default of 50%, your own cash has to pay for at least half of each purchase. When a rebalance has spent nearly all the cash, a last small top-up can fail. The <a href="/clojure-backtesting-website/posts/recipes/#keep-a-cash-buffer">momentum recipe</a>, fully invested, prints:</p><pre><code class="text">Order request 2023-07-04 | GAMA | 22.193675538430284 fails due to initial margin requirement.
+</code></pre><p>That purchase is skipped, so the portfolio holds slightly less than its target until the next rebalance. To avoid it, leave a small cash buffer, for example by scaling the weights to 98%:</p><pre><code class="clojure">(rebalance (update-vals (equal-weights (top-n earnings-yield 2)) #(* 0.98 %)))
+</code></pre><p><strong>Shares are fractional by default</strong>, like the dividends that are reinvested into them. Pass <code>:whole-shares? true</code> for whole shares.</p><p><strong>Every trade pays the commission.</strong> With <a href="/clojure-backtesting-website/posts/parameters/#update-transaction-cost"><code>update-transaction-cost</code></a> set, a monthly rebalance trades every holding a little every month. The <a href="/clojure-backtesting-website/posts/recipes/#sweep-a-parameter">parameter sweep</a> recipe compares rebalancing monthly and quarterly.</p><p><strong>Compare with a benchmark.</strong> <a href="/clojure-backtesting-website/posts/evaluate/#benchmark-stats"><code>benchmark-stats</code></a> compares the run with an index or ETF in the dataset: returns, beta, alpha, tracking error and information ratio.</p>
+    </div>
+    <nav class="pager" aria-label="Previous and next page"></nav>
+</article>
+
+
+
+        <footer class="site-footer">
+            <p>Clojure Backtesting is open source under the MIT License and developed at HKU Business School.</p>
+            <p>
+                <a href="https://github.com/clojure-finance/clojure-backtesting" rel="external">Source code</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Issues</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting-website" rel="external">Edit this site</a>
+                <span aria-hidden="true">·</span>
+                Built with <a href="http://cryogenweb.org" rel="external">Cryogen</a>
+            </p>
+        </footer>
+    </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js"></script>
+<script src="/clojure-backtesting-website/js/site.js" type="application/javascript"></script>
+</body>
+</html>

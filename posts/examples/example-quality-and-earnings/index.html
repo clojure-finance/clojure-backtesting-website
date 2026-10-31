@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Example: Quality and Earnings · Clojure Backtesting</title>
+    
+<meta name="description" content="Two more uses of point-in-time fundamentals: Piotroski&#39;s F-score as a quality screen, and a strategy that buys after an earnings announcement beats the estimate.">
+<meta property="og:title" content="Example: Quality and Earnings">
+<meta property="og:description" content="Two more uses of point-in-time fundamentals: Piotroski&#39;s F-score as a quality screen, and a strategy that buys after an earnings announcement beats the estimate.">
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/examples/example-quality-and-earnings/">
+<meta property="og:type" content="article">
+
+    <link rel="icon" type="image/svg+xml" href="/clojure-backtesting-website/img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="doc-page">
+
+<header class="site-header">
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <a class="brand" href="/clojure-backtesting-website/">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+            <defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f6fdb"/><stop offset="1" stop-color="#16a34a"/></linearGradient></defs>
+            <rect width="32" height="32" rx="8" fill="url(#bm)"/>
+            <path d="M6 22.5 L12 16 L16.5 19.5 L25.5 9.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="25.5" cy="9.5" r="2.2" fill="#fff"/>
+        </svg>
+        <span class="brand-name">Clojure Backtesting</span>
+    </a>
+    <span class="version" title="Library version these docs describe">v1.1.3</span>
+    <nav class="header-links" aria-label="External">
+        <a href="/clojure-backtesting-website/posts/examples/">Examples</a>
+        <a href="https://github.com/clojure-finance/clojure-backtesting" class="github" rel="external">
+            <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            <span>GitHub</span>
+        </a>
+    </nav>
+</header>
+
+<div class="layout">
+    <aside class="sidebar" id="sidebar">
+        <nav class="side-nav" aria-label="Documentation">
+            <p class="nav-group">Introduction</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/">Overview</a></li>
+                <li><a href="/clojure-backtesting-website/pages/about/">Why Clojure?</a></li>
+            </ul>
+            <p class="nav-group">Learn</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+                <li><a href="/clojure-backtesting-website/posts/concepts/">Key Concepts</a></li>
+                <li><a href="/clojure-backtesting-website/posts/user-guide/">Data and Trading Rules</a></li>
+                <li><a href="/clojure-backtesting-website/posts/yahoo-data/">Yahoo Finance Data</a></li>
+            </ul>
+            <p class="nav-group">API Reference</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/cheat-sheet/">Cheat Sheet</a></li>
+                <li><a href="/clojure-backtesting-website/posts/api/">Core API</a></li>
+                <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio</a></li>
+                <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation and Plots</a></li>
+                <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+                <li><a href="/clojure-backtesting-website/posts/fundamentals/">Fundamentals</a></li>
+                <li><a href="/clojure-backtesting-website/posts/strategy/">Strategy Helpers</a></li>
+                <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
+                <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
+            </ul>
+            <p class="nav-group">Examples</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/examples/">All Examples</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-golden-cross/">Golden Cross</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-bollinger-bands/">Bollinger Bands</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-buying-on-margin/">Buying on Margin</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-fundamental-analysis/">Fundamental Analysis</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-value-strategy/">Value Strategy</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-quality-and-earnings/">Quality and Earnings</a></li>
+                <li><a href="/clojure-backtesting-website/posts/recipes/">Strategy Recipes</a></li>
+            </ul>
+            <p class="nav-group">Help</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/faq/">FAQ and Troubleshooting</a></li>
+                <li><a href="/clojure-backtesting-website/posts/release-notes/">Release Notes</a></li>
+                <li><a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Report an Issue</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <div class="nav-backdrop" hidden></div>
+
+    <main class="main" id="main">
+        
+<article class="doc has-toc">
+    <header class="doc-header">
+        <p class="eyebrow">Examples</p>
+        <h1>Example: Quality and Earnings</h1>
+        <p class="lead">Two more uses of point-in-time fundamentals: Piotroski&#39;s F-score as a quality screen, and a strategy that buys after an earnings announcement beats the estimate.</p>
+    </header>
+    
+    <details class="page-toc" open>
+        <summary>On this page</summary>
+        <ol class="toc"><li><a href="#setup">Setup</a></li><li><a href="#a-quality-score-the-f-score">A quality score: the F-score</a></li><li><a href="#history-and-growth">History and growth</a></li><li><a href="#buying-after-good-news">Buying after good news</a></li><li><a href="#takeaways">Takeaways</a></li></ol>
+    </details>
+    
+    <div class="doc-body">
+        <p>This walkthrough follows the worksheet <a href="https://github.com/clojure-finance/clojure-backtesting/blob/master/examples/quality_and_earnings.clj"><code>quality_and_earnings.clj</code></a>. Like the <a href="/clojure-backtesting-website/posts/examples/example-value-strategy/">Value Strategy</a>, it runs offline on the library's synthetic Yahoo snapshots.</p><p><strong>You will use:</strong> <a href="/clojure-backtesting-website/posts/fundamentals/#piotroski-f-score"><code>piotroski-signals</code> and <code>piotroski-f-score</code></a>, <a href="/clojure-backtesting-website/posts/fundamentals/#fundamental-history"><code>fundamental-history</code></a>, <a href="/clojure-backtesting-website/posts/fundamentals/#growth"><code>growth</code></a>, <a href="/clojure-backtesting-website/posts/fundamentals/#latest-earnings"><code>latest-earnings</code></a>, <a href="/clojure-backtesting-website/posts/strategy/#order-target-percent"><code>order-target-percent</code></a> and <a href="/clojure-backtesting-website/posts/api/#get-prev-n-date"><code>get-prev-n-date</code></a>.</p><h2 id="setup">Setup</h2><pre><code class="clojure">(build-yahoo-dataset! "resources/sample-yahoo" :out-dir "target/sample-yahoo")
+(load-yahoo-dataset "target/sample-yahoo")
+(init-portfolio "2024-06-03" 100000)
+</code></pre><pre><code class="text">Warning: ZZZZ has no prices: No data found, symbol may be delisted
+Warning: BETA: 7 report dates are estimated from the reporting lag
+"Date: 2024-06-03 Cash: $100000"
+</code></pre><h2 id="a-quality-score-the-f-score">A quality score: the F-score</h2><p>Cheap stocks are often cheap for a reason. In 2000, the accounting professor Joseph Piotroski proposed a simple test of whether a company's finances are getting stronger or weaker: nine yes-or-no signals from its last two annual reports, covering profitability, cash flow, debt, liquidity, dilution, margins and efficiency. The <strong>F-score</strong> counts the yeses, from 0 (deteriorating on every front) to 9 (improving on every front). Among cheap stocks, he found that high scorers went on to do much better than low scorers.</p><p><code>piotroski-signals</code> shows each signal; the <a href="/clojure-backtesting-website/posts/fundamentals/#piotroski-f-score">Fundamentals</a> page defines them.</p><pre><code class="clojure">(piotroski-signals "GAMA")
+</code></pre><pre><code class="text">{:delta-liquidity false, :no-dilution true, :accrual true, :delta-margin true, :delta-leverage false, :cfo true, :delta-turnover false, :delta-roa false, :roa true}
+</code></pre><p>GAMA is profitable (<code>:roa</code>), generates cash (<code>:cfo</code>), earns more cash than profit (<code>:accrual</code>), did not issue shares (<code>:no-dilution</code>) and improved its gross margin (<code>:delta-margin</code>). Its liquidity, leverage, return on assets and asset turnover did not improve. That makes five, which <code>piotroski-f-score</code> counts:</p><pre><code class="clojure">(for [p ["ALFA" "BETA" "GAMA"]] {:security p :f-score (piotroski-f-score p)})
+</code></pre><pre><code class="text">({:security "ALFA", :f-score 4} {:security "BETA", :f-score 4} {:security "GAMA", :f-score 5})
+</code></pre><blockquote><p><strong>Watch out:</strong> the sample's companies grow at exactly the same rate every year, so several of their signals compare two equal ratios. For ALFA and BETA, "rose" and "fell" are then false. For GAMA, whose values are converted from euros, rounding decides, and its score changes with the exchange rate: 5 on this date, 7 on 2024-11-15. With real accounts this practically never happens.</p></blockquote><p><code>piotroski-f-score</code> is <code>nil</code> unless all nine signals can be computed, which takes three fiscal years of total assets. In a strategy, use it as a screen: <code>(filter #(some-&gt; (piotroski-f-score %) (&gt;= 7)) universe)</code>.</p><h2 id="history-and-growth">History and growth</h2><p><code>fundamental-history</code> lists what was public on the day, newest first. ALFA's revenue over its last four fiscal years:</p><pre><code class="clojure">(map #(select-keys % [:period-end :value :public-date])
+     (fundamental-history "ALFA" :total-revenue :annual 4))
+</code></pre><pre><code class="text">({:period-end "2023-12-31", :value 1.4641000000000005E9, :public-date "2024-02-12"} {:period-end "2022-12-31", :value 1.3310000000000005E9, :public-date "2023-02-10"} {:period-end "2021-12-31", :value 1.2100000000000002E9, :public-date "2022-02-10"} {:period-end "2020-12-31", :value 1.1E9, :public-date "2021-02-10"})
+</code></pre><p>Revenue grew 10% a year, from $1.1 billion to $1.46 billion. <code>growth</code> computes the latest year-on-year change:</p><pre><code class="clojure">{:revenue-growth (growth "ALFA" :total-revenue)
+ :eps-growth (growth "ALFA" :diluted-eps)}
+</code></pre><pre><code class="text">{:revenue-growth 0.09999999999999987, :eps-growth 0.11111111111111116}
+</code></pre><p>Earnings per share grew faster than revenue, by 11.1%, because net income grew 10% while the share count fell 1%.</p><h2 id="buying-after-good-news">Buying after good news</h2><p>When a company's results beat what analysts expected, its share price tends to keep drifting up for weeks afterwards, a long-studied effect called <em>post-earnings-announcement drift</em>. This strategy tries to catch it:</p><ul><li>On the day an announcement becomes public with a positive surprise, put 30% of the portfolio into the company.</li><li>Sell 20 trading days later.</li></ul><p><code>latest-earnings</code> returns the latest announcement public on the backtest date, with <code>:surprise-pct</code>, how far the actual EPS beat (or missed) the estimate in percent. Comparing its <code>:public-date</code> with today finds the announcement days:</p><pre><code class="clojure">(init-portfolio "2023-01-03" 100000)
+
+(def bought (atom {})) ; permno -&gt; date bought
+
+(while (neg? (compare (get-date) "2024-12-31"))
+  (doseq [p ["ALFA" "BETA" "GAMA"]]
+    (let [e (latest-earnings p)]
+      (when (and e (= (:public-date e) (get-date)) (pos? (or (:surprise-pct e) 0.0))
+                 (not (contains? (deref bought) p)))
+        (order-target-percent p 0.3)
+        (swap! bought assoc p (get-date)))))
+  (doseq [[p d] (deref bought)]
+    (when (= d (get-prev-n-date 20))
+      (order p 0 :remaining true)
+      (swap! bought dissoc p)))
+  (next-date)
+  (update-eval-report))
+(end-order)
+(print-order-record 10)
+</code></pre><pre><code class="text">|      :date | :permno |   :price |  :aprc |  :quantity |
+|------------+---------+----------+--------+------------|
+| 2023-02-13 |    ALFA |  367.336 | 368.72 |    81.2456 |
+| 2023-02-15 |    GAMA |  55.6942 |  55.69 |   547.6275 |
+| 2023-02-21 |    BETA |   8.0031 |   8.00 |  3729.5818 |
+| 2023-03-13 |    ALFA |  334.448 | 336.09 |   -81.3361 |
+| 2023-03-15 |    GAMA |  55.0107 |  55.01 |  -547.6275 |
+| 2023-03-21 |    BETA |   8.0405 |   8.04 | -3729.5818 |
+| 2023-05-01 |    GAMA |  59.1238 |  59.12 |   491.1352 |
+| 2023-05-02 |    ALFA | 362.5512 | 364.33 |    81.5209 |
+| 2023-05-09 |    BETA |    9.184 |   9.18 |  3157.1325 |
+| 2023-05-29 |    GAMA |  60.8056 |  60.81 |  -491.1352 |
+</code></pre><p>ALFA's fourth-quarter results became public on 2023-02-10, so the strategy ordered that day and the order filled at the next close, on 2023-02-13. The sale 20 trading days later is a little larger than the purchase (81.3361 against 81.2456 shares) because ALFA's dividend on 2023-02-14 was reinvested.</p><pre><code class="clojure">(last (deref eval-report-data))
+</code></pre><pre><code class="text">{:date "2024-12-31", :tot-value "$92246", :vol "0.4041%", :r-vol "0.1472%", :sharpe "-0.6085", :r-sharpe "-5.6701", :pnl-pt "$-215", :max-drawdown "8.1014%"}
+</code></pre><p>The strategy lost 7.8% over two years. That is the expected answer here: the sample's prices are random walks that do not react to the reports, and every announcement in it beats the estimate by the same 3.09%, so the strategy simply buys after every report. On real data, the same code tests whether the drift exists for your universe and period.</p><h2 id="takeaways">Takeaways</h2><ul><li><code>latest-earnings</code> and <code>days-since-earnings</code> make event strategies a few lines long. Use <code>:surprise-pct</code> rather than the EPS figures, which are Yahoo's adjusted numbers in an inconsistent share basis.</li><li>An announcement after the close becomes public the next trading day, and the order fills the day after that. The backtest cannot buy at the price before the news.</li><li><strong>Try it:</strong> buy only surprises above 5%, hold for 10 or 40 days, or combine both parts: only buy after good news when the F-score is 6 or more.</li></ul>
+    </div>
+    <nav class="pager" aria-label="Previous and next page"></nav>
+</article>
+
+
+
+        <footer class="site-footer">
+            <p>Clojure Backtesting is open source under the MIT License and developed at HKU Business School.</p>
+            <p>
+                <a href="https://github.com/clojure-finance/clojure-backtesting" rel="external">Source code</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Issues</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting-website" rel="external">Edit this site</a>
+                <span aria-hidden="true">·</span>
+                Built with <a href="http://cryogenweb.org" rel="external">Cryogen</a>
+            </p>
+        </footer>
+    </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js"></script>
+<script src="/clojure-backtesting-website/js/site.js" type="application/javascript"></script>
+</body>
+</html>

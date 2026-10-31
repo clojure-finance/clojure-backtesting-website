@@ -31,7 +31,7 @@
         </svg>
         <span class="brand-name">Clojure Backtesting</span>
     </a>
-    <span class="version" title="Library version these docs describe">v1.1.1</span>
+    <span class="version" title="Library version these docs describe">v1.1.3</span>
     <nav class="header-links" aria-label="External">
         <a href="/clojure-backtesting-website/posts/examples/">Examples</a>
         <a href="https://github.com/clojure-finance/clojure-backtesting" class="github" rel="external">
@@ -54,6 +54,7 @@
                 <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
                 <li><a href="/clojure-backtesting-website/posts/concepts/">Key Concepts</a></li>
                 <li><a href="/clojure-backtesting-website/posts/user-guide/">Data and Trading Rules</a></li>
+                <li><a href="/clojure-backtesting-website/posts/yahoo-data/">Yahoo Finance Data</a></li>
             </ul>
             <p class="nav-group">API Reference</p>
             <ul>
@@ -62,6 +63,8 @@
                 <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio</a></li>
                 <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation and Plots</a></li>
                 <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+                <li><a href="/clojure-backtesting-website/posts/fundamentals/">Fundamentals</a></li>
+                <li><a href="/clojure-backtesting-website/posts/strategy/">Strategy Helpers</a></li>
                 <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
                 <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
             </ul>
@@ -72,10 +75,14 @@
                 <li><a href="/clojure-backtesting-website/posts/examples/example-bollinger-bands/">Bollinger Bands</a></li>
                 <li><a href="/clojure-backtesting-website/posts/examples/example-buying-on-margin/">Buying on Margin</a></li>
                 <li><a href="/clojure-backtesting-website/posts/examples/example-fundamental-analysis/">Fundamental Analysis</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-value-strategy/">Value Strategy</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-quality-and-earnings/">Quality and Earnings</a></li>
+                <li><a href="/clojure-backtesting-website/posts/recipes/">Strategy Recipes</a></li>
             </ul>
             <p class="nav-group">Help</p>
             <ul>
                 <li><a href="/clojure-backtesting-website/posts/faq/">FAQ and Troubleshooting</a></li>
+                <li><a href="/clojure-backtesting-website/posts/release-notes/">Release Notes</a></li>
                 <li><a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Report an Issue</a></li>
             </ul>
         </nav>
@@ -92,7 +99,7 @@
     </header>
     
     <div class="doc-body">
-        <p>Clojure Backtesting is an open-source library for testing trading strategies on historical daily data, developed at HKU Business School as part of the <a href="https://github.com/clojure-finance">clojure-finance</a> projects. The source code is on <a href="https://github.com/clojure-finance/clojure-backtesting">GitHub</a> under the MIT License.</p><h2 id="why-clojure">Why Clojure</h2><p>Clojure is a functional programming language that runs on the Java Virtual Machine. Several of its features suit financial modelling and data-heavy research:</p><ul><li><strong>Immutable data.</strong> Values do not change under you, which makes a long simulation easier to reason about and to test.</li><li><strong>The REPL.</strong> You build a strategy interactively, one expression at a time, and inspect the portfolio after every step.</li><li><strong>The JVM.</strong> Clojure code can call any Java library, and runs at the speed of compiled Java.</li><li><strong>Built for concurrency.</strong> Immutable data and Clojure's reference types make parallel work safer and simpler.</li><li><strong>Lazy sequences.</strong> Data can be processed as it is read, which is how the backtester handles datasets larger than memory.</li></ul><p>Functional languages have a long history in finance: Jane Street, for example, uses <a href="https://blog.janestreet.com/why-ocaml/">OCaml</a> as its primary language, and many banks use Scala. We believe Clojure has a lot to offer here too, and this library is one of the resources we are building for the community.</p><h2 id="report-bugs-and-contribute">Report bugs and contribute</h2><p>The library is under active development. If you find a bug or a mistake in these pages, please <a href="https://github.com/clojure-finance/clojure-backtesting/issues">open an issue</a>. Ideas for new examples are welcome too.</p>
+        <p>Clojure Backtesting is an open-source library for testing trading strategies on historical daily data, developed at HKU Business School as part of the <a href="https://github.com/clojure-finance">clojure-finance</a> projects. The source code is on <a href="https://github.com/clojure-finance/clojure-backtesting">GitHub</a> under the MIT License, and releases are on <a href="https://clojars.org/com.github.clojure-finance/clojure-backtesting">Clojars</a>.</p><p>It builds on two other clojure-finance libraries: <a href="https://github.com/clojure-finance/clj-yfinance">clj-yfinance</a> downloads the Yahoo Finance data, and <a href="https://clojure-finance.github.io/clojask-website/">Clojask</a> powers <code>clojask-script</code>, which converts large CSV files such as CRSP's into the backtester's layout.</p><h2 id="why-clojure">Why Clojure</h2><p>Clojure is a functional programming language that runs on the Java Virtual Machine. Several of its features suit financial modelling and data-heavy research:</p><ul><li><strong>Immutable data.</strong> Values do not change under you, which makes a long simulation easier to reason about and to test.</li><li><strong>The REPL.</strong> You build a strategy interactively, one expression at a time, and inspect the portfolio after every step.</li><li><strong>The JVM.</strong> Clojure code can call any Java library, and runs at the speed of compiled Java.</li><li><strong>Built for concurrency.</strong> Immutable data and Clojure's reference types make parallel work safer and simpler.</li><li><strong>Lazy sequences.</strong> Data can be processed as it is read, which is how the backtester handles datasets larger than memory.</li></ul><p>Functional languages have a long history in finance: Jane Street, for example, uses <a href="https://blog.janestreet.com/why-ocaml/">OCaml</a> as its primary language, and many banks use Scala. We believe Clojure has a lot to offer here too, and this library is one of the resources we are building for the community.</p><h2 id="report-bugs-and-contribute">Report bugs and contribute</h2><p>The library is under active development. If you find a bug or a mistake in these pages, please <a href="https://github.com/clojure-finance/clojure-backtesting/issues">open an issue</a>. Ideas for new examples are welcome too.</p>
     </div>
     <nav class="pager" aria-label="Previous and next page"></nav>
 </article>

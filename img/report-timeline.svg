@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 352" width="760" height="352" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">When a quarterly report becomes visible</title>
+  <desc id="d">ALFA's second quarter ends on 2024-06-30. Its results are announced on 2024-07-30 after the market close, so they become public on the next trading day, 2024-07-31. On 2024-07-30 the strategy still sees the first quarter's net income of 60.4 million dollars; from 2024-07-31 it sees the second quarter's 57.4 million. When Yahoo gives no report date, 45 days after a quarter or 90 after a fiscal year are assumed.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="760" height="352" fill="#ffffff"/>
+  <g font-size="13">
+    <!-- What the strategy sees -->
+    <rect x="60" y="104" width="502" height="10" rx="3" fill="#cfd8e3"/>
+    <rect x="562" y="104" width="160" height="10" rx="3" fill="#16a34a" fill-opacity="0.75"/>
+    <text x="70" y="136" font-size="12" fill="#64748b">The strategy still sees the first quarter</text>
+    <text x="572" y="136" font-size="12" fill="#15803d" font-weight="600">Second quarter visible</text>
+
+    <!-- Axis -->
+    <line x1="40" y1="109" x2="300" y2="109" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="300" y1="109" x2="360" y2="109" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <line x1="360" y1="109" x2="736" y2="109" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#a)"/>
+    <text x="330" y="96" font-size="11" fill="#94a3b8" text-anchor="middle">30 days</text>
+
+    <!-- Period end -->
+    <circle cx="60" cy="109" r="7" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="60" y="30" font-weight="700" fill="#0f172a">2024-06-30</text>
+    <text x="60" y="48" font-size="12" fill="#64748b">The quarter ends</text>
+    <text x="60" y="64" font-size="12" fill="#64748b">(the period end)</text>
+
+    <!-- Announcement -->
+    <circle cx="430" cy="109" r="7" fill="#f59e0b"/>
+    <text x="430" y="30" font-weight="700" fill="#0f172a" text-anchor="middle">2024-07-30</text>
+    <text x="430" y="48" font-size="12" fill="#64748b" text-anchor="middle">Results announced</text>
+    <text x="430" y="64" font-size="12" fill="#64748b" text-anchor="middle">after the 16:00 close</text>
+
+    <!-- Public -->
+    <circle cx="562" cy="109" r="7" fill="#16a34a"/>
+    <text x="562" y="30" font-weight="700" fill="#0f172a" text-anchor="middle">2024-07-31</text>
+    <text x="562" y="48" font-size="12" fill="#64748b" text-anchor="middle">Public: the next</text>
+    <text x="562" y="64" font-size="12" fill="#64748b" text-anchor="middle">trading day</text>
+
+    <!-- Two lookups -->
+    <rect x="40" y="168" width="330" height="104" rx="10" fill="#f6f8fb" stroke="#d5dde8"/>
+    <text x="56" y="192" font-weight="600" fill="#0f172a">On 2024-07-30</text>
+    <text x="56" y="216" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="12" fill="#1d4fb8">(fundamental "ALFA" :net-income</text>
+    <text x="150" y="232" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="12" fill="#1d4fb8">:quarterly)</text>
+    <text x="56" y="258" font-size="12.5" fill="#334155">$60.4 million, the quarter ending 2024-03-31</text>
+
+    <rect x="390" y="168" width="330" height="104" rx="10" fill="#e8f6ee" stroke="#9fd8b5"/>
+    <text x="406" y="192" font-weight="600" fill="#14532d">On 2024-07-31</text>
+    <text x="406" y="216" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="12" fill="#1d4fb8">(fundamental "ALFA" :net-income</text>
+    <text x="500" y="232" font-family="'JetBrains Mono', Menlo, Consolas, monospace" font-size="12" fill="#1d4fb8">:quarterly)</text>
+    <text x="406" y="258" font-size="12.5" fill="#14532d">$57.4 million, the quarter ending 2024-06-30</text>
+
+    <!-- Fallback -->
+    <rect x="40" y="290" width="680" height="44" rx="10" fill="#fff7e6" stroke="#f0c36d"/>
+    <text x="56" y="317" font-size="12.5" font-weight="700" fill="#8a5a00">No date from Yahoo?</text>
+    <text x="196" y="317" font-size="12.5" fill="#8a5a00">45 days after a quarter, or 90 after a fiscal year, are assumed and flagged as :lag.</text>
+  </g>
+</svg>

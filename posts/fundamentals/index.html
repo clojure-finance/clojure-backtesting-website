@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fundamentals · Clojure Backtesting</title>
+    
+<meta name="description" content="Financial statement values as they were known on the backtest date, and the valuation, quality and growth ratios built on them.">
+<meta property="og:title" content="Fundamentals">
+<meta property="og:description" content="Financial statement values as they were known on the backtest date, and the valuation, quality and growth ratios built on them.">
+<meta property="og:url" content="https://clojure-finance.github.io/clojure-backtesting-website/clojure-backtesting-website/posts/fundamentals/">
+<meta property="og:type" content="article">
+
+    <link rel="icon" type="image/svg+xml" href="/clojure-backtesting-website/img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="/clojure-backtesting-website/css/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="doc-page">
+
+<header class="site-header">
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <a class="brand" href="/clojure-backtesting-website/">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+            <defs><linearGradient id="bm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f6fdb"/><stop offset="1" stop-color="#16a34a"/></linearGradient></defs>
+            <rect width="32" height="32" rx="8" fill="url(#bm)"/>
+            <path d="M6 22.5 L12 16 L16.5 19.5 L25.5 9.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="25.5" cy="9.5" r="2.2" fill="#fff"/>
+        </svg>
+        <span class="brand-name">Clojure Backtesting</span>
+    </a>
+    <span class="version" title="Library version these docs describe">v1.1.3</span>
+    <nav class="header-links" aria-label="External">
+        <a href="/clojure-backtesting-website/posts/examples/">Examples</a>
+        <a href="https://github.com/clojure-finance/clojure-backtesting" class="github" rel="external">
+            <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            <span>GitHub</span>
+        </a>
+    </nav>
+</header>
+
+<div class="layout">
+    <aside class="sidebar" id="sidebar">
+        <nav class="side-nav" aria-label="Documentation">
+            <p class="nav-group">Introduction</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/">Overview</a></li>
+                <li><a href="/clojure-backtesting-website/pages/about/">Why Clojure?</a></li>
+            </ul>
+            <p class="nav-group">Learn</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/get-started/">Get Started</a></li>
+                <li><a href="/clojure-backtesting-website/posts/concepts/">Key Concepts</a></li>
+                <li><a href="/clojure-backtesting-website/posts/user-guide/">Data and Trading Rules</a></li>
+                <li><a href="/clojure-backtesting-website/posts/yahoo-data/">Yahoo Finance Data</a></li>
+            </ul>
+            <p class="nav-group">API Reference</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/cheat-sheet/">Cheat Sheet</a></li>
+                <li><a href="/clojure-backtesting-website/posts/api/">Core API</a></li>
+                <li><a href="/clojure-backtesting-website/posts/portfolio/">Portfolio</a></li>
+                <li><a href="/clojure-backtesting-website/posts/evaluate/">Evaluation and Plots</a></li>
+                <li><a href="/clojure-backtesting-website/posts/indicators/">Indicators</a></li>
+                <li><a href="/clojure-backtesting-website/posts/fundamentals/">Fundamentals</a></li>
+                <li><a href="/clojure-backtesting-website/posts/strategy/">Strategy Helpers</a></li>
+                <li><a href="/clojure-backtesting-website/posts/parameters/">Parameters</a></li>
+                <li><a href="/clojure-backtesting-website/posts/automation/">Automation</a></li>
+            </ul>
+            <p class="nav-group">Examples</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/examples/">All Examples</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-golden-cross/">Golden Cross</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-bollinger-bands/">Bollinger Bands</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-buying-on-margin/">Buying on Margin</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-fundamental-analysis/">Fundamental Analysis</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-value-strategy/">Value Strategy</a></li>
+                <li><a href="/clojure-backtesting-website/posts/examples/example-quality-and-earnings/">Quality and Earnings</a></li>
+                <li><a href="/clojure-backtesting-website/posts/recipes/">Strategy Recipes</a></li>
+            </ul>
+            <p class="nav-group">Help</p>
+            <ul>
+                <li><a href="/clojure-backtesting-website/posts/faq/">FAQ and Troubleshooting</a></li>
+                <li><a href="/clojure-backtesting-website/posts/release-notes/">Release Notes</a></li>
+                <li><a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Report an Issue</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <div class="nav-backdrop" hidden></div>
+
+    <main class="main" id="main">
+        
+<article class="doc has-toc">
+    <header class="doc-header">
+        <p class="eyebrow">API Reference</p>
+        <h1>Fundamentals</h1>
+        <p class="lead">Financial statement values as they were known on the backtest date, and the valuation, quality and growth ratios built on them.</p>
+    </header>
+    
+    <details class="page-toc" open>
+        <summary>On this page</summary>
+        <ol class="toc"><li><a href="#how-a-value-is-chosen">How a value is chosen</a></li><li><a href="#fields-and-frequencies">Fields and frequencies</a></li><ol><li><a href="#where-a-twelve-month-value-comes-from">Where a twelve-month value comes from</a></li></ol><li><a href="#look-up-values">Look up values</a></li><ol><li><a href="#fundamental"><code>fundamental</code></a></li><li><a href="#fundamental-info"><code>fundamental-info</code></a></li><li><a href="#fundamental-as-of"><code>fundamental-as-of</code></a></li><li><a href="#fundamental-history"><code>fundamental-history</code></a></li><li><a href="#available-fields"><code>available-fields</code></a></li></ol><li><a href="#ratios">Ratios</a></li><ol><li><a href="#shares-outstanding"><code>shares-outstanding</code></a></li><li><a href="#market-cap"><code>market-cap</code></a></li><li><a href="#growth"><code>growth</code></a></li><li><a href="#piotroski-f-score">Piotroski F-score</a></li></ol><li><a href="#earnings-announcements">Earnings announcements</a></li><ol><li><a href="#latest-earnings"><code>latest-earnings</code></a></li><li><a href="#days-since-earnings"><code>days-since-earnings</code></a></li></ol><li><a href="#loading-and-settings">Loading and settings</a></li><ol><li><a href="#load-fundamentals-and-clear-fundamentals"><code>load-fundamentals</code> and <code>clear-fundamentals!</code></a></li><li><a href="#fx-rate"><code>fx-rate</code></a></li><li><a href="#fundamentals-max-age-months"><code>FUNDAMENTALS-MAX-AGE-MONTHS</code></a></li></ol></ol>
+    </details>
+    
+    <div class="doc-body">
+        <p>The functions on this page, in <code>clojure-backtesting.fundamentals</code>, answer one question: <em>what did the market know about this company on the backtest date?</em> They read the point-in-time fundamentals of a <a href="/clojure-backtesting-website/posts/yahoo-data/">Yahoo Finance dataset</a>, loaded with <code>load-yahoo-dataset</code>. (A Compustat-style dataset works differently: its columns are joined onto the daily rows; see <a href="/clojure-backtesting-website/posts/user-guide/#crsp-and-compustat">Data and Trading Rules</a>.)</p><p>The examples use the library's synthetic Yahoo sample with the clock at <strong>2024-11-15</strong>, after all three companies have reported their third quarter:</p><pre><code class="clojure">(build-yahoo-dataset! "resources/sample-yahoo" :out-dir "target/sample-yahoo")
+(load-yahoo-dataset "target/sample-yahoo")
+(init-portfolio "2024-11-15" 100000)
+</code></pre><h2 id="how-a-value-is-chosen">How a value is chosen</h2><p>Every lookup follows the same rules, so that a strategy cannot use information it would not have had:</p><ol><li><strong>Only what was public.</strong> A value becomes visible on the first trading day its report was public, never earlier. Report dates come from Yahoo, or from an assumed reporting lag when Yahoo has none (<a href="/clojure-backtesting-website/posts/yahoo-data/#report-dates">Report dates</a>). The <a href="/clojure-backtesting-website/posts/concepts/#fundamentals-as-they-were-known">Key Concepts</a> page shows this as a timeline.</li><li><strong>Per share of the day.</strong> Per-share values (EPS) and share counts are stated per share of the backtest date, so they match the day's quoted price even when the company split its shares later.</li><li><strong>In the trading currency.</strong> Values reported in another currency are converted at the previous day's exchange rate. The original stays available in <code>fundamental-info</code>.</li><li><strong>Not too old.</strong> A value whose period ended more than <code>FUNDAMENTALS-MAX-AGE-MONTHS</code> (18) months before the day is ignored: the company has stopped reporting, or the data has no newer period.</li><li><strong><code>nil</code> rather than a guess.</strong> When a value cannot be stated this way (nothing public yet, too old, no exchange rate, or an unknown field), the result is <code>nil</code>. Ratios also return <code>nil</code> where a number would mislead, such as a P/E on losses.</li></ol><h2 id="fields-and-frequencies">Fields and frequencies</h2><p>Fields are Yahoo's statement fields in kebab case: <code>:total-revenue</code>, <code>:gross-profit</code>, <code>:operating-income</code>, <code>:ebitda</code>, <code>:net-income</code>, <code>:diluted-eps</code>, <code>:total-assets</code>, <code>:stockholders-equity</code>, <code>:total-debt</code>, <code>:ordinary-shares-number</code>, <code>:operating-cash-flow</code>, <code>:free-cash-flow</code>, and so on. <a href="#available-fields"><code>available-fields</code></a> lists what a security has; the <a href="/clojure-backtesting-website/posts/yahoo-data/#default-fields">download</a> decides which fields are there.</p><p>Each value belongs to a period, and you choose which kind:</p><table><thead><tr><th>Frequency</th><th>Meaning</th></tr></thead><tbody><tr><td><code>:quarterly</code></td><td>The latest quarter</td></tr><tr><td><code>:annual</code></td><td>The latest fiscal year</td></tr><tr><td><code>:trailing</code></td><td>Yahoo's own trailing twelve-month figure</td></tr><tr><td><code>:ttm</code></td><td>Twelve months, from whichever of these ends latest: Yahoo's trailing figure, the sum of the last four quarters, or the last fiscal year. Income-statement and cash-flow fields only; <code>nil</code> for balance-sheet fields</td></tr><tr><td><code>:latest</code></td><td>The latest quarter or fiscal year, whichever ends latest</td></tr></tbody></table><p>Without a frequency, income-statement and cash-flow fields use <code>:ttm</code>, and balance-sheet fields use <code>:latest</code>. That is usually what you want: a year of earnings, and the most recent balance sheet.</p><pre><code class="clojure">(fundamental "ALFA" :net-income)              ;; =&gt; 2.3581160625000006E8   twelve months to 2024-09-30
+(fundamental "ALFA" :net-income :quarterly)   ;; =&gt; 6.0394125000000015E7   the quarter to 2024-09-30
+(fundamental "ALFA" :net-income :annual)      ;; =&gt; 2.1961500000000006E8   fiscal 2023
+(fundamental "ALFA" :stockholders-equity)     ;; =&gt; 1.4349644100000005E9   balance sheet of 2024-09-30
+(fundamental "ALFA" :diluted-eps)             ;; =&gt; 6.1839531575471245     twelve months, per share of today
+</code></pre><h3 id="where-a-twelve-month-value-comes-from">Where a twelve-month value comes from</h3><p><code>:ttm</code> takes the candidate with the latest period end, preferring Yahoo's trailing figure, then the sum of four consecutive quarters, then the fiscal year. Over the sample, ALFA's twelve-month net income comes from all three sources in turn:</p><table><thead><tr><th>Date</th><th>Source (<code>:source</code>)</th><th>Period end</th><th>Net income</th></tr></thead><tbody><tr><td>2022-01-03</td><td><code>:annual</code></td><td>2020-12-31</td><td>$165.0M</td></tr><tr><td>2022-03-01</td><td><code>:annual</code></td><td>2021-12-31</td><td>$181.5M</td></tr><tr><td>2023-11-01</td><td><code>:annual</code></td><td>2022-12-31</td><td>$199.7M</td></tr><tr><td>2024-03-01</td><td><code>:sum-of-quarters</code></td><td>2023-12-31</td><td>$219.6M</td></tr><tr><td>2024-08-01</td><td><code>:sum-of-quarters</code></td><td>2024-06-30</td><td>$230.3M</td></tr><tr><td>2024-11-15</td><td><code>:trailing</code></td><td>2024-09-30</td><td>$235.8M</td></tr></tbody></table><p>On 2023-11-01 only three quarters of 2023 were public, so the fiscal year 2022 was still the latest full twelve months. Share counts and rates are not added up over quarters; for them, <code>:ttm</code> takes the latest quarter.</p><h2 id="look-up-values">Look up values</h2><h3 id="fundamental"><code>fundamental</code></h3><p><code>(fundamental permno field [frequency])</code></p><p>The latest public value of <code>field</code> for <code>permno</code> on the backtest date, or <code>nil</code>. See <a href="#fields-and-frequencies">Fields and frequencies</a>.</p><pre><code class="clojure">(fundamental "ALFA" :total-revenue)   ;; =&gt; 1.5720773750000005E9
+(fundamental "DLTA" :net-income)      ;; =&gt; nil, DLTA has no statements
+(fundamental "ALFA" :no-such-field)   ;; =&gt; nil
+</code></pre><h3 id="fundamental-info"><code>fundamental-info</code></h3><p><code>(fundamental-info permno field [frequency])</code></p><p>Like <code>fundamental</code>, but returns the value together with where it comes from:</p><pre><code class="clojure">(fundamental-info "ALFA" :net-income)
+</code></pre><pre><code class="text">{:period-end "2024-09-30",
+ :reported-value 2.3581160625000006E8,
+ :reported-currency "USD",
+ :value 2.3581160625000006E8,
+ :frequency :trailing,
+ :field :net-income,
+ :source :trailing,
+ :currency "USD",
+ :report-date-source :earnings-history,
+ :public-date "2024-10-31",
+ :report-date "2024-10-30"}
+</code></pre><table><thead><tr><th>Key</th><th>Meaning</th></tr></thead><tbody><tr><td><code>:value</code></td><td>The value, per share of today and in <code>:currency</code></td></tr><tr><td><code>:currency</code></td><td>The trading currency, in its major unit (pounds, not pence)</td></tr><tr><td><code>:reported-value</code>, <code>:reported-currency</code></td><td>The value as reported</td></tr><tr><td><code>:period-end</code></td><td>The last day of the period the value covers</td></tr><tr><td><code>:frequency</code></td><td>The kind of period: <code>:quarterly</code>, <code>:annual</code>, <code>:trailing</code>, or <code>:ttm</code> for a sum of quarters</td></tr><tr><td><code>:source</code></td><td>For <code>:ttm</code> lookups, which candidate won: <code>:trailing</code>, <code>:sum-of-quarters</code> or <code>:annual</code>, or <code>:quarterly</code> for share counts and rates. For other lookups, the same as <code>:frequency</code></td></tr><tr><td><code>:report-date</code></td><td>The day the report was announced</td></tr><tr><td><code>:public-date</code></td><td>The first trading day the value is visible: the report date, or the next trading day for an announcement after the close</td></tr><tr><td><code>:report-date-source</code></td><td>How the date was found: <code>:earnings-history</code>, <code>:announcement</code>, or <code>:lag</code> when it is an assumed reporting lag</td></tr></tbody></table><p><code>:report-date-source :lag</code> is worth checking before trusting a result that depends on the timing of reports. BETA's recent report dates are estimated:</p><pre><code class="clojure">(select-keys (fundamental-info "BETA" :net-income :quarterly) [:period-end :public-date :report-date-source])
+;; =&gt; {:period-end "2024-09-30", :public-date "2024-11-14", :report-date-source :lag}
+</code></pre><p>GAMA reports in euros; its value is converted at the previous day's rate, 1.18745 dollars per euro:</p><pre><code class="clojure">(select-keys (fundamental-info "GAMA" :total-revenue) [:value :currency :reported-value :reported-currency])
+;; =&gt; {:value 2.8602568584212475E9, :currency "USD", :reported-value 2.40873877504E9, :reported-currency "EUR"}
+</code></pre><h3 id="fundamental-as-of"><code>fundamental-as-of</code></h3><p><code>(fundamental-as-of date permno field [frequency])</code>, and <code>(fundamental-info-as-of date permno field frequency)</code></p><p>Like <code>fundamental</code> and <code>fundamental-info</code>, for another date than the backtest date. Useful for comparisons and for checking when a value appeared; a strategy should normally use the backtest date. ALFA reported its third quarter on 2024-10-30 after the close:</p><pre><code class="clojure">(fundamental-as-of "2024-10-30" "ALFA" :diluted-eps :quarterly)   ;; =&gt; 1.508281257938323   second quarter
+(fundamental-as-of "2024-10-31" "ALFA" :diluted-eps :quarterly)   ;; =&gt; 1.5876644820403398  third quarter
+</code></pre><blockquote><p><strong>Watch out:</strong> a date after the backtest date looks into the future. The function does not stop you.</p></blockquote><h3 id="fundamental-history"><code>fundamental-history</code></h3><p><code>(fundamental-history permno field frequency n)</code></p><p>Up to <code>n</code> values of <code>field</code> at <code>frequency</code> (<code>:quarterly</code>, <code>:annual</code> or <code>:trailing</code>) that were public on the backtest date, newest first, each described like <code>fundamental-info</code>. Unlike <code>fundamental</code>, it includes old values regardless of their age.</p><pre><code class="clojure">(map #(select-keys % [:period-end :value :public-date])
+     (fundamental-history "ALFA" :diluted-eps :quarterly 5))
+</code></pre><pre><code class="text">({:period-end "2024-09-30", :value 1.5876644820403398, :public-date "2024-10-31"}
+ {:period-end "2024-06-30", :value 1.508281257938323, :public-date "2024-07-31"}
+ {:period-end "2024-03-31", :value 1.5876644820403398, :public-date "2024-05-01"}
+ {:period-end "2023-12-31", :value 1.5003429355281213, :public-date "2024-02-12"}
+ {:period-end "2023-09-30", :value 1.428898033836306, :public-date "2023-10-31"})
+</code></pre><p>All five are per share of 2024-11-15, after the 4-for-1 split. Asked on 2024-07-31, before the split, the same quarters come back per share of that day, four times larger: 6.033125031753292 for the quarter ending 2024-06-30.</p><h3 id="available-fields"><code>available-fields</code></h3><p><code>(available-fields permno)</code></p><p>The fields known for a security, sorted. The sample has 18; a real download with the default fields has many more.</p><pre><code class="clojure">(available-fields "ALFA")
+;; =&gt; (:cash-and-cash-equivalents :common-stock-equity :current-assets :current-liabilities
+;;     :diluted-average-shares :diluted-eps :ebitda :free-cash-flow :gross-profit :long-term-debt
+;;     :net-income :operating-cash-flow :operating-income :ordinary-shares-number
+;;     :stockholders-equity :total-assets :total-debt :total-revenue)
+(available-fields "DLTA")
+;; =&gt; ()
+</code></pre><h2 id="ratios">Ratios</h2><p>Each ratio is a function of one security, on the backtest date. They combine the day's price with the fundamentals public that day, and return <code>nil</code> when an input is missing or the ratio would be meaningless. Being plain functions, they plug straight into <a href="/clojure-backtesting-website/posts/strategy/#ranking-and-screening"><code>rank-by</code> and <code>top-n</code></a>.</p><table><thead><tr><th>Function</th><th>Definition</th><th align="right">ALFA</th><th align="right">BETA</th><th align="right">GAMA</th><th align="right">DLTA</th></tr></thead><tbody><tr><td><code>market-cap</code></td><td>Price × shares outstanding</td><td align="right">$4.34B</td><td align="right">$2.08B</td><td align="right">$12.43B</td><td align="right"><code>nil</code></td></tr><tr><td><code>enterprise-value</code></td><td>Market cap + total debt − cash</td><td align="right">$4.82B</td><td align="right">$2.35B</td><td align="right">$13.29B</td><td align="right"><code>nil</code></td></tr><tr><td><code>pe-ratio</code></td><td>Price / twelve-month diluted EPS; <code>nil</code> unless EPS is positive</td><td align="right">18.63</td><td align="right">30.01</td><td align="right">36.59</td><td align="right"><code>nil</code></td></tr><tr><td><code>earnings-yield</code></td><td>Twelve-month diluted EPS / price; negative on losses</td><td align="right">5.4%</td><td align="right">3.3%</td><td align="right">2.7%</td><td align="right"><code>nil</code></td></tr><tr><td><code>book-to-market</code></td><td>Book equity / market cap</td><td align="right">0.33</td><td align="right">0.39</td><td align="right">0.21</td><td align="right"><code>nil</code></td></tr><tr><td><code>price-to-book</code></td><td>Market cap / book equity; <code>nil</code> unless equity is positive</td><td align="right">3.02</td><td align="right">2.54</td><td align="right">4.83</td><td align="right"><code>nil</code></td></tr><tr><td><code>sales-to-price</code></td><td>Twelve-month revenue / market cap</td><td align="right">0.36</td><td align="right">0.42</td><td align="right">0.23</td><td align="right"><code>nil</code></td></tr><tr><td><code>free-cash-flow-yield</code></td><td>Twelve-month free cash flow / market cap</td><td align="right">4.9%</td><td align="right">3.0%</td><td align="right">2.5%</td><td align="right"><code>nil</code></td></tr><tr><td><code>ev-to-ebitda</code></td><td>Enterprise value / twelve-month EBITDA; <code>nil</code> unless EBITDA is positive</td><td align="right">12.26</td><td align="right">27.06</td><td align="right">19.36</td><td align="right"><code>nil</code></td></tr><tr><td><code>dividend-yield</code></td><td>Dividends that went ex in the last 365 days / price</td><td align="right">0.35%</td><td align="right">0.00%</td><td align="right">0.00%</td><td align="right">0.00%</td></tr><tr><td><code>return-on-equity</code></td><td>Twelve-month net income / book equity</td><td align="right">16.4%</td><td align="right">8.5%</td><td align="right">13.3%</td><td align="right"><code>nil</code></td></tr><tr><td><code>return-on-assets</code></td><td>Twelve-month net income / total assets</td><td align="right">7.4%</td><td align="right">3.8%</td><td align="right">6.0%</td><td align="right"><code>nil</code></td></tr><tr><td><code>gross-margin</code></td><td>Twelve-month gross profit / revenue</td><td align="right">45.0%</td><td align="right">30.0%</td><td align="right">55.0%</td><td align="right"><code>nil</code></td></tr><tr><td><code>operating-margin</code></td><td>Twelve-month operating income / revenue</td><td align="right">20.0%</td><td align="right">5.0%</td><td align="right">18.0%</td><td align="right"><code>nil</code></td></tr><tr><td><code>net-margin</code></td><td>Twelve-month net income / revenue</td><td align="right">15.0%</td><td align="right">8.0%</td><td align="right">12.0%</td><td align="right"><code>nil</code></td></tr><tr><td><code>debt-to-equity</code></td><td>Total debt / book equity</td><td align="right">0.56</td><td align="right">0.56</td><td align="right">0.56</td><td align="right"><code>nil</code></td></tr><tr><td><code>current-ratio</code></td><td>Current assets / current liabilities</td><td align="right">2.00</td><td align="right">2.00</td><td align="right">2.00</td><td align="right"><code>nil</code></td></tr><tr><td><code>piotroski-f-score</code></td><td>See <a href="#piotroski-f-score">below</a></td><td align="right">4</td><td align="right">4</td><td align="right">7</td><td align="right"><code>nil</code></td></tr></tbody></table><p>The table rounds the values; the functions return plain numbers, such as <code>(pe-ratio "ALFA")</code> ⇒ <code>18.632838423003843</code>, a price of $115.22 over a twelve-month EPS of $6.18.</p><p>Some notes on the inputs:</p><ul><li><em>Book equity</em> is common stock equity, else stockholders' equity. <em>Cash</em> is cash and equivalents, else cash plus short-term investments.</li><li><code>dividend-yield</code> uses the dividends in the price history, so it works without statements (DLTA's is 0, not <code>nil</code>).</li><li>Besides the ratios marked "<code>nil</code> unless positive", <code>return-on-equity</code>, <code>return-on-assets</code>, the margins, <code>debt-to-equity</code> and <code>current-ratio</code> are also <code>nil</code> when their denominator is zero or negative: a company with negative equity has no meaningful return on equity. The other ratios are <code>nil</code> only for a zero denominator.</li><li>The sample's margins are identical every year by construction. Real data is not so tidy.</li></ul><h3 id="shares-outstanding"><code>shares-outstanding</code></h3><p><code>(shares-outstanding permno)</code></p><p>Shares outstanding in today's share basis: the latest ordinary shares number, else shares issued, else diluted average shares. It also checks the count against net income divided by diluted EPS. If the two differ more than twofold, which happens for a few companies with several share classes, it prints a warning once and returns <code>nil</code>, so <code>market-cap</code> and every ratio on market value are <code>nil</code> too rather than wrong.</p><pre><code class="clojure">(shares-outstanding "ALFA")   ;; =&gt; 3.765920597604E7
+</code></pre><h3 id="market-cap"><code>market-cap</code></h3><p><code>(market-cap permno)</code></p><p>Today's price times <code>shares-outstanding</code>, in the trading currency's major unit.</p><h3 id="growth"><code>growth</code></h3><p><code>(growth permno field [frequency])</code></p><p>Year-on-year growth of <code>field</code>: the latest value over the one a year earlier, minus 1. With <code>:annual</code> (the default) it compares the last two fiscal years; with <code>:quarterly</code>, the latest quarter with the same quarter a year before. <code>nil</code> when the year-earlier value is missing or not positive.</p><pre><code class="clojure">(growth "ALFA" :total-revenue)              ;; =&gt; 0.09999999999999987    10% a year
+(growth "GAMA" :net-income :quarterly)      ;; =&gt; 0.040000000000000036   4% on the same quarter of 2023
+</code></pre><h3 id="piotroski-f-score">Piotroski F-score</h3><p><code>(piotroski-signals permno)</code> and <code>(piotroski-f-score permno)</code></p><p>Joseph Piotroski's F-score (2000) rates a company's financial health from 0 to 9, one point for each of nine signals computed from the last two fiscal years:</p><table><thead><tr><th>Signal</th><th>True when</th></tr></thead><tbody><tr><td><code>:roa</code></td><td>Net income over beginning-of-year assets is positive</td></tr><tr><td><code>:cfo</code></td><td>Operating cash flow is positive</td></tr><tr><td><code>:delta-roa</code></td><td>Return on assets improved on the year before</td></tr><tr><td><code>:accrual</code></td><td>Operating cash flow exceeds net income</td></tr><tr><td><code>:delta-leverage</code></td><td>Long-term debt over assets fell</td></tr><tr><td><code>:delta-liquidity</code></td><td>The current ratio rose</td></tr><tr><td><code>:no-dilution</code></td><td>The number of shares did not increase</td></tr><tr><td><code>:delta-margin</code></td><td>The gross margin rose</td></tr><tr><td><code>:delta-turnover</code></td><td>Revenue over beginning-of-year assets rose</td></tr></tbody></table><p><code>piotroski-signals</code> returns each signal as <code>true</code>, <code>false</code>, or <code>nil</code> when an input is missing. <code>piotroski-f-score</code> counts the true ones, and is <code>nil</code> unless all nine can be computed, which takes three fiscal years of total assets.</p><pre><code class="clojure">(piotroski-signals "ALFA")
+;; =&gt; {:delta-liquidity false, :no-dilution true, :accrual true, :delta-margin false, :delta-leverage false,
+;;     :cfo true, :delta-turnover false, :delta-roa false, :roa true}
+(piotroski-f-score "ALFA")
+;; =&gt; 4
+</code></pre><p>A high score (8 or 9) marks a company whose finances are improving on most fronts; a low one (0 to 2), the opposite. Piotroski found that among cheap stocks (high book-to-market), the high scorers did much better than the low ones. The <a href="/clojure-backtesting-website/posts/examples/example-quality-and-earnings/">Quality and Earnings</a> example uses it.</p><blockquote><p><strong>Watch out:</strong> a signal that compares two exactly equal ratios is decided by rounding. In the sample, GAMA's margins and turnover are identical every year and its values are converted from euros, so three of its signals flip with the exchange rate: its score is 5 on 2024-06-03, 6 on 2024-08-01 and 7 on 2024-11-15. Real accounts are almost never exactly equal from one year to the next.</p></blockquote><h2 id="earnings-announcements">Earnings announcements</h2><h3 id="latest-earnings"><code>latest-earnings</code></h3><p><code>(latest-earnings permno)</code></p><p>The latest earnings announcement public on the backtest date, or <code>nil</code>:</p><pre><code class="clojure">(latest-earnings "ALFA")
+;; =&gt; {:report-date "2024-10-30", :public-date "2024-10-31", :period-end "2024-09-30",
+;;     :eps-actual 1.5877, :eps-estimate 1.54, :surprise-pct 3.09}
+</code></pre><p><code>:surprise-pct</code> is how far the actual EPS beat (positive) or missed (negative) the analysts' estimate, in percent. Use it rather than the EPS figures: Yahoo's EPS here is the analysts' <em>adjusted</em> figure, and its share basis is not consistent across splits. <code>:period-end</code> is <code>nil</code> when Yahoo only has the announcement date.</p><h3 id="days-since-earnings"><code>days-since-earnings</code></h3><p><code>(days-since-earnings permno)</code></p><p>Calendar days since the latest public earnings announcement, or <code>nil</code>. On 2024-11-15, 15 days after ALFA's report became public:</p><pre><code class="clojure">(days-since-earnings "ALFA")   ;; =&gt; 15
+</code></pre><p>Together, the two make event strategies short: buy on the day of a positive surprise, <code>(and (= (:public-date e) (get-date)) (pos? (:surprise-pct e)))</code>, and hold for a few weeks. The <a href="/clojure-backtesting-website/posts/examples/example-quality-and-earnings/#buying-after-good-news">Quality and Earnings</a> example does that.</p><h2 id="loading-and-settings">Loading and settings</h2><p><code>load-yahoo-dataset</code> loads the fundamentals for you. These functions are for other cases.</p><h3 id="load-fundamentals-and-clear-fundamentals"><code>load-fundamentals</code> and <code>clear-fundamentals!</code></h3><p><code>(load-fundamentals path)</code> loads a <code>fundamentals.edn</code> file as the build writes it, replacing any fundamentals loaded before; useful to pair one dataset's prices with fundamentals built with other options. <code>(clear-fundamentals!)</code> unloads them.</p><pre><code class="clojure">(load-fundamentals "target/sample-yahoo/fundamentals.edn")
+;; =&gt; "Fundamentals: 5 securities, 33 reports, 1 FX series"
+</code></pre><h3 id="fx-rate"><code>fx-rate</code></h3><p><code>(fx-rate from to date)</code></p><p>Units of <code>to</code> per unit of <code>from</code> known on <code>date</code>: the latest rate dated <em>before</em> it. <code>1.0</code> for the same currency, <code>nil</code> when unknown.</p><pre><code class="clojure">(fx-rate "EUR" "USD" "2024-11-15")   ;; =&gt; 1.18745
+(fx-rate "GBP" "USD" "2024-11-15")   ;; =&gt; nil, not in the sample
+</code></pre><h3 id="fundamentals-max-age-months"><code>FUNDAMENTALS-MAX-AGE-MONTHS</code></h3><p>How many months after its period end a value stays usable, 18 by default. Change it with <code>update-fundamentals-max-age</code> (see <a href="/clojure-backtesting-website/posts/parameters/#fundamentals-max-age-months">Parameters</a>). On 2022-01-03 ALFA's latest public year is 2020, which ended 12 months and 3 days earlier:</p><pre><code class="clojure">(init-portfolio "2022-01-03" 100000)
+(fundamental "ALFA" :net-income)   ;; =&gt; 1.65E8, fiscal 2020
+(update-fundamentals-max-age 12)
+(fundamental "ALFA" :net-income)   ;; =&gt; nil, too old
+</code></pre>
+    </div>
+    <nav class="pager" aria-label="Previous and next page"></nav>
+</article>
+
+
+
+        <footer class="site-footer">
+            <p>Clojure Backtesting is open source under the MIT License and developed at HKU Business School.</p>
+            <p>
+                <a href="https://github.com/clojure-finance/clojure-backtesting" rel="external">Source code</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting/issues" rel="external">Issues</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://github.com/clojure-finance/clojure-backtesting-website" rel="external">Edit this site</a>
+                <span aria-hidden="true">·</span>
+                Built with <a href="http://cryogenweb.org" rel="external">Cryogen</a>
+            </p>
+        </footer>
+    </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/clojure.min.js"></script>
+<script src="/clojure-backtesting-website/js/site.js" type="application/javascript"></script>
+</body>
+</html>
